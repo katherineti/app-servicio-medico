@@ -1,0 +1,119 @@
+<h2 mat-dialog-title >
+    Editar usuario 
+</h2>
+
+<mat-dialog-content class="mat-typography">
+    <div class="d-flex align-items-center">
+    <div class="right-bg-content p-10">
+
+        <form [formGroup]="userFormGroup" #f="ngForm">
+           <div class="wrapper-img" >
+            <img
+              class="img"
+              alt="user"
+              [src]="
+                imgBase64 ? imgBase64 : '../../assets/images/user.png'
+              "
+            />
+            <button
+              type="button"
+              color="primary"
+              mat-flat-button
+              (click)="fileInput.click()"
+            >
+              Seleccionar imagen
+            </button>
+            <input
+              hidden
+              (change)="onFileSelected($event)"
+              #fileInput
+              type="file"
+              accept="image/png, image/jpeg"
+            />
+          </div>
+
+          <div class="row p-10">
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Nombre"
+                formControlName="name"
+                required="true"
+                type="text"
+                />
+                <!-- <mat-error>Error</mat-error> -->
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Username"
+                formControlName="username"
+                required="true"
+                type="text"
+                />
+                <!-- <mat-error>Error</mat-error> -->
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Email"
+                formControlName="email"
+                required="true"
+                type="email"
+                />
+                <!-- <mat-error>Error</mat-error> -->
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="roles"
+                formControlName="roles"
+                required="true"
+                >
+                <mat-option [value]="1">{{
+                    'Administrador' | titlecase
+                }}</mat-option>
+                <mat-option [value]="2">{{
+                    'Almacén' | titlecase
+                }}</mat-option>
+                <mat-option [value]="3">{{
+                    'Médico' | titlecase
+                }}</mat-option>
+                <mat-option [value]="3">{{
+                    'Auditor' | titlecase
+                }}</mat-option>
+                </mat-select>
+        
+                <!-- <mat-error>Error</mat-error> -->
+            </mat-form-field>
+
+          </div>
+      
+            <div class="row">
+                <div class="ml-auto">
+                    <button
+                    color="primary"
+                    mat-flat-button
+                    [disabled]="userFormGroup.invalid && disableButton"
+                    (click)="saveUser()"
+                    >
+                    Guardar Usuario
+                    </button>
+                    <button
+                    class="m-r-10 bg-error m-l-8"
+                    mat-flat-button
+                    (click)="cancel()"
+                    >
+                    Cancelar
+                    </button>
+                </div>
+            </div>
+          
+        </form>
+        
+    </div>
+    </div>
+  </mat-dialog-content>

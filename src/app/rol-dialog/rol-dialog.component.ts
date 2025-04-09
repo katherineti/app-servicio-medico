@@ -86,36 +86,6 @@ export class RolDialogComponent {
     else if(this.ROLES_DATA[0].role == this.ROL_AUDITOR){
     this.displayedColumns = [ '#', 'module', 'Consultar', 'Generar'];
     } 
-
-/*     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
-
-      // const adminRole = this.ROLES_DATA.find(rol => rol.role === this.ROL_ADMIN);
-
-      console.log("rol",this.ROLES_DATA[0].role)
-      if(this.ROLES_DATA[0].role === this.ROL_ADMIN){
-        console.log("el permiso es:Gestionar")
-          this.displayedColumns = result.matches
-          ? [ '#', 'module', 'Gestionar']
-          : [ '#', 'module', 'Gestionar'];
-
-        } if(this.ROLES_DATA[0].role == this.ROL_ALMACEN){
-          console.log("el permiso es:Registrar")
-          this.displayedColumns = result.matches
-          ? [ '#', 'module', 'Registrar']
-          : [ '#', 'module', 'Registrar'];
-
-        }else if(this.ROLES_DATA[0].role === this.ROL_MEDICO){
-          this.displayedColumns = result.matches
-          ? [ '#', 'module', 'Consultar']
-          : [ '#', 'module', 'Consultar'];
-
-        }else if(this.ROLES_DATA[0].role === this.ROL_AUDITOR){
-          this.displayedColumns = result.matches
-          ? [ '#', 'module', 'Consultar', 'Generar']
-          : [ '#', 'module', 'Consultar', 'Generar'];
-        }
-    }); */
-
   }
 
   getdata(){

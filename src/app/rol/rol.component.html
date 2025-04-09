@@ -1,0 +1,58 @@
+<app-header-title [title]="'Roles'" ></app-header-title>
+        
+<mat-toolbar style="background-color: white;">
+<mat-form-field appearance="outline">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+</mat-form-field>
+
+<span class="example-spacer"></span>
+
+</mat-toolbar>
+
+<br>
+<mat-card class="">
+    <mat-card-content>
+        <!-- <div class="d-flex w-100"> -->
+        <div class="w-100">
+            <!-- <mat-card-title>Sales Overview</mat-card-title> -->
+            <div class="m-l-auto">
+                
+                <div class="table-responsive">
+                    <mat-table #table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles">
+                    
+                    <ng-container matColumnDef="#">
+                        <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
+                        <mat-cell mat-cell *matCellDef="let element; let i = index">
+                            {{ i + 1 }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rol">
+                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                        Rol
+                        </mat-header-cell>
+                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                        {{ element.rol }}</mat-cell>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                        Acción
+                        </mat-header-cell>
+                        <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                            <i-feather name="edit" class="big fill-red icon-18" (click)="openDialogEditRol(element)"></i-feather>
+                            <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleterol()"></i-feather>
+                        </mat-cell>
+                    </ng-container>                   
+                
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                    </mat-table>
+
+                </div>
+
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

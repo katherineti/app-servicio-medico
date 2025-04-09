@@ -1,42 +1,13 @@
 table {
     width: 100%;
 }
-
- .mat-mdc-form-field {
-// font-size: 14px;
-width: 100% !important;
-} 
 .prueba {
     background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA2L3JtMzQ3LXBvcnBsYS0wMS1lXzEta2ttZDF2eTQuanBn.jpg');
     background-size: cover; /* Ajusta la imagen para cubrir todo el elemento */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-position: center right; /* Centra la imagen horizontalmente y la alinea a la derecha */
     /* Otros estilos opcionales */
-  }
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  
-/*   .p-y-30 {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-} */
-.position-relative{
-    position:relative !important;
 }
-
-i-feather.big.fill-red[name='activity']  {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 20%; 
-    color: rgb(181, 175, 247);
-    margin-right: 5px;
-}
-.icon-18 {
-    height: 18px !important;
-    width: 18px !important;
-    line-height: 26px !important;
+.example-spacer {
+flex: 1 1 auto;
 }

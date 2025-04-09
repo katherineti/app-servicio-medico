@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,17 +10,19 @@ export interface IUser {
   username: string;
   email: string;
   name: string;
+  isActive: boolean;
   urlImage?: string;
   [key: string]: any;
 }
 
 @Component({
   selector: 'app-user-dialog',
-  imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
   templateUrl: './user-dialog.component.html',
   styleUrl: './user-dialog.component.scss'
 })
-export class UserDialogComponent {
+
+export class UserDialogComponent implements OnInit {
   userFormGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
@@ -33,7 +35,7 @@ export class UserDialogComponent {
   constructor( 
     public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IUser){
-    this.buildAddUserForm();
+    this.buildEditUserForm();
   }
 
   async ngOnInit() {
@@ -53,7 +55,7 @@ export class UserDialogComponent {
     return false;
   }
 
-  buildAddUserForm() {
+  buildEditUserForm() {
     this.userFormGroup = this.formBuilder.group({
       username: [
         '',
@@ -81,7 +83,15 @@ export class UserDialogComponent {
           Validators.maxLength(50),
         ],
       ],
-
+      isActive: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(20),
+          Validators.pattern(/^[a-zA-Z0-9]*$/),
+        ],
+      ],
       roles: [],
     });
 
@@ -93,6 +103,7 @@ export class UserDialogComponent {
         username: this.selectedUser?.username,
         email: this.selectedUser?.email,
         name: this.selectedUser?.name,
+        isActive: this.selectedUser?.isActive,
         roles: 1,
       });
   }
@@ -111,7 +122,6 @@ export class UserDialogComponent {
   }
 
   cancel() {
-    // this.setForm();
     this.closeDialog();
   }
 
@@ -148,7 +158,5 @@ export class UserDialogComponent {
     this.disableButton = false;
     this.closeDialog();
   }
-
-
 
 }

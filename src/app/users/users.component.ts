@@ -1,26 +1,8 @@
-/* import { Component } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
-
-@Component({
-  selector: 'app-users',
-  imports: [MaterialModule],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
-})
-export class UsersComponent {
-
-}
- */
 import { Component, inject, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MaterialModule } from '../material/material.module';
 import { FeatherIconsModule } from '../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +12,7 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { SwalService} from '../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { UserCreateComponent } from '../user-create/user-create.component';
+import { HeaderTitleComponent } from '../header-title/header-title.component';
 
 export interface Element {
 id: number;
@@ -41,6 +24,8 @@ budget: number;
 priority: string;
 username:string, 
 email:string, 
+isActive:boolean, 
+rol:string, 
 }
 const PRODUCT_DATA: Element[] = [
 {
@@ -50,6 +35,8 @@ imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q
 name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
+isActive: false, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -61,7 +48,10 @@ id: 2,
 imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Andrew McDownland',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -73,6 +63,8 @@ imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q
 name: 'Christopher Jamil',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
+isActive: false, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -83,7 +75,10 @@ id: 4,
 imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Nirav Joshi',
 username:'usernameejemplo',
-email: 'correo@gmail.com', position: 'Frontend Engineer',
+
+email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -95,6 +90,8 @@ imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q
 name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -106,7 +103,10 @@ id: 2,
 imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Andrew McDownland',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -117,7 +117,10 @@ id: 3,
 imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Christopher Jamil',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -128,7 +131,10 @@ id: 4,
 imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Nirav Joshi',
 username:'usernameejemplo',
-email: 'correo@gmail.com', position: 'Frontend Engineer',
+
+email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -140,6 +146,8 @@ imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q
 name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -151,7 +159,10 @@ id: 2,
 imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Andrew McDownland',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -162,7 +173,10 @@ id: 3,
 imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Christopher Jamil',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -173,7 +187,10 @@ id: 4,
 imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Nirav Joshi',
 username:'usernameejemplo',
-email: 'correo@gmail.com', position: 'Frontend Engineer',
+email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
+position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -185,6 +202,8 @@ imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q
 name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -197,6 +216,8 @@ imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=
 name: 'Andrew McDownland',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -207,7 +228,10 @@ id: 3,
 imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Christopher Jamil',
 username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -218,7 +242,10 @@ id: 4,
 imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 name: 'Nirav Joshi',
 username:'usernameejemplo',
-email: 'correo@gmail.com', position: 'Frontend Engineer',
+
+email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -229,8 +256,10 @@ priority: 'critical',
   imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   name: 'Sunil Joshi',
   username:'usernameejemplo',
-email: 'correo@gmail.com',
-position: 'Web Designer',
+  email: 'correo@gmail.com',
+  isActive: true, 
+  rol: 'ADMIN', 
+  position: 'Web Designer',
   productName: 'Elite Admin',
   budget: 3.9,
   priority: 'low',
@@ -241,7 +270,10 @@ position: 'Web Designer',
   imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   name: 'Andrew McDownland',
   username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
   productName: 'Real Homes Theme',
   budget: 24.5,
@@ -252,7 +284,10 @@ position: 'Web Designer',
   imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   name: 'Christopher Jamil',
   username:'usernameejemplo',
+
 email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', 
 position: 'Web Designer',
   productName: 'MedicalPro Theme',
   budget: 12.8,
@@ -263,35 +298,33 @@ position: 'Web Designer',
   imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   name: 'Nirav Joshi',
   username:'usernameejemplo',
-email: 'correo@gmail.com', position: 'Frontend Engineer',
+
+email: 'correo@gmail.com', 
+isActive: true, 
+rol: 'ADMIN', position: 'Frontend Engineer',
   productName: 'Hosting Press HTML',
   budget: 2.4,
   priority: 'critical',
   },
 ];
 /**
-* @title pagination table 
+* @title pagination table users
 */
 @Component({
 selector: 'app-users',
-imports: [
-MatCardModule,
-MatTableModule,
-CommonModule,
-MatPaginatorModule,
-MatDividerModule,
-FeatherIconsModule,
-MatFormFieldModule, MatInputModule,
-MaterialModule,
-MatIconModule,
-NgOptimizedImage
-],
-
 templateUrl: './users.component.html',
-styleUrl: './users.component.scss'
+styleUrl: './users.component.scss',
+imports: [
+  CommonModule,
+  FeatherIconsModule,
+  MaterialModule,
+  MatIconModule,
+  NgOptimizedImage,
+  HeaderTitleComponent
+]
 })
 export class UsersComponent {
-  // displayedColumns = ['assigned', 'name', 'priority', 'budget'];
+
   displayedColumns = [ 'name', 'email','image','action'];
   dataSource = new MatTableDataSource<Element>(PRODUCT_DATA);
 
@@ -302,8 +335,8 @@ export class UsersComponent {
   constructor(breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'email','image','action']
-    : [ 'name', 'email','image','action'];
+    ? [ 'name', 'email', 'isActive','action']
+    : [ 'name', 'email', 'isActive', 'rol', 'image','action'];
     });
   }
 
@@ -322,7 +355,7 @@ export class UsersComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialog(data?: any): void {
+  openDialogEditUser(data?: any): void {
     const ref = this.dialog.open(UserDialogComponent, {
       data: data || null,
       disableClose: true

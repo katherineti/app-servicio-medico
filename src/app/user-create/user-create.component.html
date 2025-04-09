@@ -5,7 +5,6 @@
 <mat-dialog-content class="mat-typography">
     <div class="d-flex align-items-center">
     <div class="right-bg-content p-10">
-
         <form [formGroup]="userFormGroup" #f="ngForm">
            <div class="wrapper-img" >
             <img
@@ -33,7 +32,6 @@
           </div>
 
           <div class="row p-10">
-        
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
@@ -83,33 +81,45 @@
                     'Auditor' | titlecase
                 }}</mat-option>
                 </mat-select>
-        
             </mat-form-field>
 
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-select
+              placeholder="estado"
+              formControlName="isActive"
+              required="true"
+              >
+                <mat-option [value]="true">{{
+                    'Activo' | titlecase
+                }}</mat-option>
+                <mat-option [value]="false">{{
+                    'Inactivo' | titlecase
+                }}</mat-option>
+              </mat-select>
+              <!-- <mat-error>Error</mat-error> -->
+          </mat-form-field>
           </div>
       
-            <div class="row">
-                <div class="ml-auto">
-                    <button
-                    color="primary"
-                    mat-flat-button
-                    [disabled]="userFormGroup.invalid && disableButton"
-                    (click)="saveUser()"
-                    >
-                    Guardar Usuario
-                    </button>
-                    <button
-                    class="m-r-10 bg-error m-l-8"
-                    mat-flat-button
-                    (click)="cancel()"
-                    >
-                    Cancelar
-                    </button>
-                </div>
-            </div>
-          
+          <div class="row">
+              <div class="ml-auto">
+                  <button
+                  color="primary"
+                  mat-flat-button
+                  [disabled]="userFormGroup.invalid && disableButton"
+                  (click)="saveUser()"
+                  >
+                  Guardar Usuario
+                  </button>
+                  <button
+                  class="m-r-10 bg-error m-l-8"
+                  mat-flat-button
+                  (click)="cancel()"
+                  >
+                  Cancelar
+                  </button>
+              </div>
+          </div>
         </form>
-        
     </div>
     </div>
   </mat-dialog-content>

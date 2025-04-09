@@ -1,50 +1,15 @@
-<!-- <div style="background-color: rgb(93, 135, 255, .15);" class="rounded contenedor-grid position-relative p-y-30"> -->
-<div class="rounded p-y-30 p-x-24 m-b-30 overflow-hidden" style="background-color: rgb(30 49 233 / 71%);">
-<!--     <div>
-        <h4 class="mat-h4" style="margin-bottom: 16px !important;">Usuarios</h4>
-        <p>Dashboard>Usuarios</p>
-    </div>
-
-    <i-feather name="activity" class="big fill-red"></i-feather> -->
-    <div class="row"><div class="col-sm-8">
-        <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16"> Usuarios </h4>
-        <div class="d-flex align-items-center overflow-hidden">
-            <ul class="breadcrumb">
-                <!-- <li class="breadcrumb-item" tabindex="0"><a href="#">Dashboard</a></li> -->
-<!--                 <li class="breadcrumb-item">-->
-                    <!-- <i-tabler name="circle-filled" class="icon-8" _nghost-ng-c2605515766=""> - ->
-                    <i-feather name="activity" class="big fill-red">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" stroke-width="0" fill="currentColor"></path>
-                        </svg>
-
-                    </i-feather>
-                </li> -->
-                <!-- <li class="breadcrumb-item active f-s-14">Employee</li> -->
-            </ul></div></div>
-            <div class="col-sm-4 text-right position-relative">
-                <i-feather name="activity" class="big fill-red"></i-feather> 
-                <!-- <div class="breadcrumb-icon">
-                    <img src="/assets/images/breadcrumb/ChatBc.png" alt="breadcrumb" width="165">
-                </div> -->
-            </div></div>
-</div>
-
-<br><br>
-
-  <mat-toolbar style="background-color: white;">
+<app-header-title [title]="'Usuarios'" ></app-header-title>
+<mat-toolbar style="background-color: white;">
     <mat-form-field appearance="outline">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
     </mat-form-field>
-   
+
     <span class="example-spacer"></span>
     <button mat-flat-button (click)="openDialogCreateUser()" >
         Agregar usuario
-      </button>
-  </mat-toolbar>
-
+    </button>
+</mat-toolbar>
 <br>
 <mat-card class="">
     <mat-card-content>
@@ -54,33 +19,50 @@
             <div class="m-l-auto">
                 
                 <div class="table-responsive">
-                    <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-                    <!-- Name Column -->
+                    <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                         Nombre
                         </mat-header-cell>
                         <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.productName }}</mat-cell>
+                        {{ element.name }}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="email">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                         Email
                         </mat-header-cell>
                         <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.priority }}</mat-cell>
+                        {{ element.email }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="isActive">
+                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Estado
+                        </mat-header-cell>
+                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            @if (element.isActive) {
+                                Activo
+                            }@else {
+                                Inactivo
+                              }
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="rol">
+                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                        Rol
+                        </mat-header-cell>
+                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                        {{ element.rol }}</mat-cell>
                     </ng-container>
                 
                     <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
-                        Accion
+                        Acción
                         </mat-header-cell>
                         <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                            <i-feather name="edit" class="big fill-red icon-18" (click)="openDialog(element)"></i-feather>
+                            <i-feather name="edit" class="big fill-red icon-18" (click)="openDialogEditUser(element)"></i-feather>
                             <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleteuser()"></i-feather>
                         </mat-cell>
                     </ng-container>
-                
                     <ng-container matColumnDef="image">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
                         Foto
@@ -88,14 +70,6 @@
                         <mat-cell class="p-16 p-l-0" *matCellDef="let element">
                             <div class="d-flex align-items-center">
                             <img ngOptimizedImage [ngSrc]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" />
-                <!--                 <div class="m-l-16">
-                                    <h6 class="mat-subtitle-1 f-s-14 f-w-600">
-                                    {{ element.uname }}
-                                    </h6>
-                                    <span class="f-s-14 f-s-12">
-                                    {{ element.position }}
-                                    </span>
-                                </div> -->
                             </div>
                         </mat-cell>
                     </ng-container>
@@ -111,4 +85,3 @@
         </div>
     </mat-card-content>
 </mat-card>
-

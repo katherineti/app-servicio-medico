@@ -103,6 +103,13 @@ export const navItems: NavItem[] = [
     external: true,
     chipClass: 'bg-secondary text-white',
   },
+  {
+    displayName: 'Roles',
+    iconName: 'shield',
+    route: './roles',
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  },
  /*   {
     displayName: 'Notes',
     iconName: 'note',

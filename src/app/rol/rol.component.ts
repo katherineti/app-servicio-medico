@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { RolDialogComponent } from '../rol-dialog/rol-dialog.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
+import { CreateRoleComponent } from '../create-role/create-role.component';
 
 export interface Element {
   id: number;
@@ -89,6 +90,13 @@ export class RolComponent {
       disableClose: true
     });
 
+  }
+
+  openDialogCreateRol(data?: any): void {
+    const ref = this.dialog.open(CreateRoleComponent, {
+      data: data || null,
+      disableClose: true
+    });
   }
 
   async deleterol(){

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title >
+    Crear rol 
+</h2>
+
+<mat-dialog-content class="mat-typography">
+    <div class="d-flex align-items-center">
+    <div class="right-bg-content p-10">
+        <form [formGroup]="roleFormGroup" #f="ngForm">
+
+          <div class="row p-10">
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Rol"
+                formControlName="role"
+                required="true"
+                type="text"
+                />
+            </mat-form-field>
+        
+          </div>
+      
+          <div class="row">
+              <div class="ml-auto">
+                  <button
+                  color="primary"
+                  mat-flat-button
+                  [disabled]="roleFormGroup.invalid && disableButton"
+                  (click)="saveUser()"
+                  >
+                  Guardar
+                  </button>
+                  <button
+                  class="m-r-10 bg-error m-l-8"
+                  mat-flat-button
+                  (click)="cancel()"
+                  >
+                  Cancelar
+                  </button>
+              </div>
+          </div>
+        </form>
+    </div>
+    </div>
+</mat-dialog-content>

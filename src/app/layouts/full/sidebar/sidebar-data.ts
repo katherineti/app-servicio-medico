@@ -97,6 +97,13 @@ export const navItems: NavItem[] = [
     chipClass: 'bg-secondary text-white',
   },
   {
+    displayName: 'Insumos Medicos',
+    iconName: 'box',
+    route: './medical-supplies',
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  },
+  {
     displayName: 'Usuarios',
     iconName: 'user',
     route: './users',

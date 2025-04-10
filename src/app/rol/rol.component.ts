@@ -36,7 +36,10 @@ const ROL_DATA: Element[] = [
     rol: 'Auditor' 
   },
 ];
-  
+
+/**
+* @title pagination table roles
+*/
 @Component({
   selector: 'app-rol',
   templateUrl: './rol.component.html',
@@ -49,6 +52,7 @@ const ROL_DATA: Element[] = [
     HeaderTitleComponent
   ]
 })
+
 export class RolComponent {
 
   displayedColumns = [ '#', 'rol', 'action'];

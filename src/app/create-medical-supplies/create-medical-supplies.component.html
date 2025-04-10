@@ -1,11 +1,11 @@
 <h2 mat-dialog-title >
-    Crear usuario 
+    Crear producto 
 </h2>
 
 <mat-dialog-content class="mat-typography">
     <div class="d-flex align-items-center">
     <div class="right-bg-content p-10">
-        <form [formGroup]="userFormGroup" #f="ngForm">
+        <form [formGroup]="createProdFormGroup" #f="ngForm">
            <div class="wrapper-img" >
             <img
               class="img"
@@ -41,63 +41,77 @@
                 type="text"
                 />
             </mat-form-field>
-        
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
-                placeholder="Username"
-                formControlName="username"
+                placeholder="Descripción"
+                formControlName="description"
+                required="true"
+                type="text"
+                />
+            </mat-form-field>        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Categoría"
+                formControlName="category"
+                required="true"
+                >
+                <mat-option [value]="'categoria1'">{{
+                    'categoria1' | titlecase
+                }}</mat-option>
+                <mat-option [value]="'categoria2'">{{
+                    'categoria2' | titlecase
+                }}</mat-option>
+                <mat-option [value]="'categoria3'">{{
+                    'categoria3' | titlecase
+                }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Tipo"
+                formControlName="type"
+                required="true"
+                >
+                <mat-option value="medicamentos">{{
+                    'Medicamentos' | titlecase
+                }}</mat-option>
+                <mat-option value="uniformes">{{
+                    'Uniformes' | titlecase
+                }}</mat-option>
+                <mat-option value="equipos odontologicos">{{
+                    'Equipos Odontológicos' | titlecase
+                }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Stock"
+                formControlName="stock"
+                required="true"
+                type="number"
+                />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Código"
+                formControlName="code"
                 required="true"
                 type="text"
                 />
             </mat-form-field>
-        
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
-                placeholder="Email"
-                formControlName="email"
+                placeholder="Fecha de vencimiento"
+                formControlName="expiration_date"
                 required="true"
-                type="email"
+                type="text"
                 />
             </mat-form-field>
-        
-            <mat-form-field appearance="outline" class="example-full-width">
-                <mat-select
-                placeholder="roles"
-                formControlName="roles"
-                required="true"
-                >
-                <mat-option [value]="1">{{
-                    'Administrador' | titlecase
-                }}</mat-option>
-                <mat-option [value]="2">{{
-                    'Almacén' | titlecase
-                }}</mat-option>
-                <mat-option [value]="3">{{
-                    'Médico' | titlecase
-                }}</mat-option>
-                <mat-option [value]="3">{{
-                    'Auditor' | titlecase
-                }}</mat-option>
-                </mat-select>
-            </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
-              <mat-select
-              placeholder="estado"
-              formControlName="isActive"
-              required="true"
-              >
-                <mat-option [value]="true">{{
-                    'Activo' | titlecase
-                }}</mat-option>
-                <mat-option [value]="false">{{
-                    'Inactivo' | titlecase
-                }}</mat-option>
-              </mat-select>
-              <!-- <mat-error>Error</mat-error> -->
-          </mat-form-field>
           </div>
       
           <div class="row">
@@ -105,10 +119,10 @@
                   <button
                   color="primary"
                   mat-flat-button
-                  [disabled]="userFormGroup.invalid && disableButton"
+                  [disabled]="createProdFormGroup.invalid && disableButton"
                   (click)="saveUser()"
                   >
-                  Guardar Usuario
+                  Guardar Producto
                   </button>
                   <button
                   class="m-r-10 bg-error m-l-8"

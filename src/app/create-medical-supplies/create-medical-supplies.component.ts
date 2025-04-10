@@ -6,13 +6,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
 
 @Component({
-  selector: 'app-user-create',
+  selector: 'app-create-medical-supplies',
+  templateUrl: './create-medical-supplies.component.html',
+  styleUrl: './create-medical-supplies.component.scss',
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './user-create.component.html',
-  styleUrl: './user-create.component.scss'
 })
-export class UserCreateComponent {
-  userFormGroup!: FormGroup;
+export class CreateMedicalSuppliesComponent {
+  createProdFormGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
   disableButton: boolean = false;
@@ -21,7 +21,7 @@ export class UserCreateComponent {
   private swalService = inject(SwalService);
 
   constructor( 
-    public dialogRef: MatDialogRef<UserCreateComponent>,
+    public dialogRef: MatDialogRef<CreateMedicalSuppliesComponent>,
     ){
     this.buildAddUserForm();
   }
@@ -30,25 +30,7 @@ export class UserCreateComponent {
   }
 
   buildAddUserForm() {
-    this.userFormGroup = this.formBuilder.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
-        ],
-      ],
-      email: [
-        '',
-        [
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(50),
-        ],
-      ],
+    this.createProdFormGroup = this.formBuilder.group({
       name: [
         '',
         [
@@ -57,16 +39,54 @@ export class UserCreateComponent {
           Validators.maxLength(50),
         ],
       ],
-      isActive: [
+      description: [
         '',
         [
           Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
+          Validators.minLength(0),
+          Validators.maxLength(50),
         ],
       ],
-      roles: [],
+      category: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
+      type: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
+      stock: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(100),
+        ],
+      ],
+      code: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
+      expiration_date: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
     });
 
   }
@@ -93,7 +113,7 @@ export class UserCreateComponent {
   }
 
   saveUser() {
-    if (this.userFormGroup) {
+    if (this.createProdFormGroup) {
       return this.createUser();
     }
   }
@@ -102,17 +122,16 @@ export class UserCreateComponent {
     this.swalService.loading();
     this.disableButton = true;
 
-    if (this.userFormGroup.invalid) {
+    if (this.createProdFormGroup.invalid) {
       this.swalService.closeload();
       this.disableButton = false;
       return;
     }
-    const { urlImage, roles, ...params } = this.userFormGroup.value;
+    const { urlImage, ...params } = this.createProdFormGroup.value;
 
     let obj= {
       ...params,
-      roles: roles,
-      urlImage: this.imgBase64,
+      urlImage: (this.imgBase64)?this.imgBase64:null,
     }
     console.log("guardar",obj);
 

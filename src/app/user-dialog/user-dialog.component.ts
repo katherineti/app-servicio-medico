@@ -23,6 +23,7 @@ export interface IUser {
 })
 
 export class UserDialogComponent implements OnInit {
+  readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
   userFormGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
@@ -33,7 +34,6 @@ export class UserDialogComponent implements OnInit {
   private swalService = inject(SwalService);
 
   constructor( 
-    public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IUser){
     this.buildEditUserForm();
   }
@@ -158,5 +158,4 @@ export class UserDialogComponent implements OnInit {
     this.disableButton = false;
     this.closeDialog();
   }
-
 }

@@ -6,15 +6,14 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { NavItem } from './nav-item';
-import { Router } from '@angular/router';
-import { NavService } from '../../../../services/nav.service';
-
-// import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../material/material.module';
 import { FeatherIconsModule } from '../../../../feathericons/feathericons.module';
 import { trigger, state, style, transition, animate } from '@angular/animations'; // Importa las funciones de animación
+import { NavItem } from './nav-item';
+import { Router, RouterModule } from '@angular/router';
+import { NavService } from '../../../../services/nav.service';
+
 
 @Component({
   selector: 'app-nav-item',
@@ -22,6 +21,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     MaterialModule, 
     CommonModule,
     FeatherIconsModule,
+    RouterModule,
 ],
   templateUrl: './nav-item.component.html',
   styleUrls: [],
@@ -39,12 +39,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 export class AppNavItemComponent implements OnChanges {
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() item: NavItem | any;
+  @Input() item?: NavItem | any;
 
   expanded: any = false;
 
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
-  @Input() depth: any;
+  @Input() depth?: any;
 
   constructor(public navService: NavService, public router: Router) {}
 
@@ -73,12 +73,6 @@ export class AppNavItemComponent implements OnChanges {
       if (window.innerWidth < 1024) {
         this.notify.emit();
       }
-    }
-  }
-
-  openExternalLink(url: string): void {
-    if (url) {
-      window.open(url, '_blank');
     }
   }
 

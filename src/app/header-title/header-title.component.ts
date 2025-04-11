@@ -9,5 +9,5 @@ import { FeatherIconsModule } from '../feathericons/feathericons.module';
 })
 export class HeaderTitleComponent {
 
-  @Input() title:string='Ciip';
+  @Input() title: string= 'Ciip';
 }

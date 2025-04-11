@@ -2,7 +2,7 @@ import { Component, Inject, inject } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
 
 @Component({

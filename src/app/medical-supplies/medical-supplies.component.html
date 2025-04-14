@@ -83,6 +83,7 @@
                         <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
                             <i-feather name="edit" class="big fill-red icon-18" (click)="openDialogEdit(element)"></i-feather>
                             <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleteSupplies()"></i-feather>
+                            <i-feather name="share-2" class="big fill-red icon-18" (click)="assignProductToWorker(element)"></i-feather>
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="image">

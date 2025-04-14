@@ -113,6 +113,7 @@ export class EditMedicalSuppliesComponent {
   }
 
   setForm() {
+    this.editProdFormGroup.controls['code'].disable();
 
     this.editProdFormGroup.patchValue({
       id: this.selectedProduct?.id,

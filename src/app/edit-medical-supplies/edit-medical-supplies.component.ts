@@ -85,11 +85,12 @@ export class EditMedicalSuppliesComponent {
         ],
       ],
       stock: [
-        null,
+        0,
         [
           Validators.required,
           Validators.minLength(0),
-          Validators.maxLength(100),
+          Validators.maxLength(3),
+          Validators.max(100)
         ],
       ],
       code: [

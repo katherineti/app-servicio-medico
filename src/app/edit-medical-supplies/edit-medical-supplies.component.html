@@ -40,6 +40,9 @@
                 required="true"
                 type="text"
                 />
+                <mat-error *ngIf="editProdFormGroup.controls['name'].hasError('required') || editProdFormGroup.controls['name'].hasError('maxLength') ">
+                    El nombre es requerido y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
@@ -49,6 +52,9 @@
                 required="true"
                 type="text"
                 />
+                <mat-error *ngIf="editProdFormGroup.controls['description'].hasError('required') || editProdFormGroup.controls['description'].hasError('maxLength') ">
+                    La descripción es requerida y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
         
             <mat-form-field appearance="outline" class="example-full-width">
@@ -67,6 +73,10 @@
                     'categoria3' | titlecase
                 }}</mat-option>
                 </mat-select>
+
+                <mat-error *ngIf="editProdFormGroup.controls['category'].hasError('required') || editProdFormGroup.controls['category'].hasError('maxLength') ">
+                    La categoría es requerida y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
         
             <mat-form-field appearance="outline" class="example-full-width">
@@ -85,6 +95,10 @@
                     'Equipos Odontológicos' | titlecase
                 }}</mat-option>
                 </mat-select>
+
+                <mat-error *ngIf="editProdFormGroup.controls['type'].hasError('required') || editProdFormGroup.controls['type'].hasError('maxLength') ">
+                    El tipo es requerido y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -95,6 +109,16 @@
                 required="true"
                 type="number"
                 />
+
+                <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('required')">
+                    El stock es requerido y como máximo puede tener 3 caracteres.
+                </mat-error>
+                <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('maxLength')">
+                    El stock como máximo puede tener 3 caracteres.
+                </mat-error>
+                <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('max')">
+                    El stock como máximo puede tener un valor de 100.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -105,16 +129,21 @@
                 required="true"
                 type="text"
                 />
+
+                <mat-error *ngIf="editProdFormGroup.controls['code'].hasError('required') || editProdFormGroup.controls['code'].hasError('maxLength') ">
+                    El código es requerido y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
-                <input
-                matInput
-                placeholder="Fecha de vencimiento"
-                formControlName="expiration_date"
-                required="true"
-                type="text"
-                />
+                <input matInput [matDatepicker]="expiration_date" placeholder="Fecha de vencimiento" formControlName="expiration_date" required="true">
+                <mat-hint>MMMM DD, YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="expiration_date"></mat-datepicker-toggle>
+                <mat-datepicker #expiration_date></mat-datepicker>
+
+                <mat-error *ngIf="editProdFormGroup.controls['expiration_date'].hasError('required') || editProdFormGroup.controls['expiration_date'].hasError('maxLength') ">
+                    La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -136,6 +165,10 @@
                     'Caducado'
                 }}</mat-option>
                 </mat-select>
+
+                <mat-error *ngIf="editProdFormGroup.controls['status'].hasError('required')">
+                    El estado es requerido.
+                </mat-error>
             </mat-form-field>
 
           </div>

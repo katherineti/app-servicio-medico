@@ -98,7 +98,7 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Insumos Medicos',
-    iconName: 'box',
+    iconName: 'activity',
     route: './medical-supplies',
     external: true,
     chipClass: 'bg-secondary text-white',

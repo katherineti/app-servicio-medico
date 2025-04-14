@@ -6,7 +6,7 @@
 
     <span class="example-spacer"></span>
     <button mat-flat-button (click)="openDialogCreateSupplies()" >
-        Agregar producto
+        Agregar
     </button>
 </mat-toolbar>
 <br>
@@ -79,7 +79,7 @@
                         </mat-header-cell>
                         <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
                             <mat-chip-set color="primary" >
-                                <mat-chip >
+                                <mat-chip>
                                     {{ element.status | titlecase}}
                                 </mat-chip>
                             </mat-chip-set>

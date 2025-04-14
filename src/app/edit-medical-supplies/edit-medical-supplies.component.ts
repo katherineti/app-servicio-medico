@@ -108,6 +108,14 @@ export class EditMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
+      status: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
     });
 
   }
@@ -126,6 +134,7 @@ export class EditMedicalSuppliesComponent {
       date_entry: this.selectedProduct?.date_entry,
       expiration_date: this.selectedProduct?.expiration_date,
       imagePath:this.selectedProduct?.imagePath,
+      status:this.selectedProduct?.status,
       });
   }
 
@@ -168,6 +177,7 @@ export class EditMedicalSuppliesComponent {
     const id = this.selectedProduct.id;
 
     let obj : IProduct= {
+      id,
       ...params,
       urlImage: this.imgBase64,
     }

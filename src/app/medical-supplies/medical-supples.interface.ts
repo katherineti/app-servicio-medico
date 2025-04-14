@@ -8,5 +8,6 @@ export interface IProduct {
     code: string;
     date_entry: string;
     expiration_date: string;
+    status:string;
     imagePath:string;
 }

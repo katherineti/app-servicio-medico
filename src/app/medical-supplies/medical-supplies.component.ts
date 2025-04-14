@@ -27,6 +27,7 @@ const PRODUCT_DATA: IProduct[] = [
     code: '000363',
     date_entry: '2025-04-10',
     expiration_date: '2025-07-10',
+    status: 'Activo',
     imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   }
 ];
@@ -58,7 +59,7 @@ export class MedicalSuppliesComponent {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ 'name', 'stock', 'code','expiration_date','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','expiration_date','image','action'];
+    : [ 'name', 'category', 'stock', 'code', 'date_entry','expiration_date','image','action','status'];
     });
   }
 

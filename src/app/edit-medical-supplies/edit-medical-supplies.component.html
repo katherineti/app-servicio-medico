@@ -117,6 +117,27 @@
                 />
             </mat-form-field>
 
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Estado"
+                formControlName="status"
+                required="true"
+                >
+                <mat-option value="Activo">{{
+                    'Activo'
+                }}</mat-option>
+                <mat-option value="Inactivo">{{
+                    'Inactivo'
+                }}</mat-option>
+                <mat-option value="Proximo a vencerse">{{
+                    'Proximo a vencerse'
+                }}</mat-option>
+                <mat-option value="Caducado">{{
+                    'Caducado'
+                }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
           </div>
       
           <div class="row">

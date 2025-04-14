@@ -12,9 +12,9 @@
 <br>
 <mat-card class="">
     <mat-card-content>
-        <!-- <div class="d-flex w-100"> -->
+
         <div class="w-100">
-            <!-- <mat-card-title>Sales Overview</mat-card-title> -->
+
             <div class="m-l-auto">
                 
                 <div class="table-responsive">
@@ -61,20 +61,6 @@
                         <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                         {{ element.expiration_date}}</mat-cell>
                     </ng-container>
-<!--                    
-                    <ng-container matColumnDef="isActive">
-                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Estado
-                        </mat-header-cell>
-                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            @if (element.isActive) {
-                                Activo
-                            }@else {
-                                Inactivo
-                              }
-                        </mat-cell>
-                    </ng-container>
-                    -->
                 
                     <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
@@ -82,8 +68,21 @@
                         </mat-header-cell>
                         <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
                             <i-feather name="edit" class="big fill-red icon-18" (click)="openDialogEdit(element)"></i-feather>
-                            <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleteSupplies()"></i-feather>
+                            <!-- <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleteSupplies()"></i-feather> -->
                             <i-feather name="share-2" class="big fill-red icon-18" (click)="assignProductToWorker(element)"></i-feather>
+                        </mat-cell>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                        Estado
+                        </mat-header-cell>
+                        <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                            <mat-chip-set color="primary" >
+                                <mat-chip >
+                                    {{ element.status | titlecase}}
+                                </mat-chip>
+                            </mat-chip-set>
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="image">
@@ -103,7 +102,6 @@
                     <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
                     </mat-paginator>
                 </div>
-
             </div>
         </div>
     </mat-card-content>

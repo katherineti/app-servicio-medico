@@ -147,6 +147,7 @@ export class UserDialogComponent implements OnInit {
     const id = this.selectedUser.id;
 
     let obj= {
+      id,
       ...params,
       roles: roles,
       urlImage: this.imgBase64,

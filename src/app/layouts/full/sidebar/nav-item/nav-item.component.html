@@ -30,7 +30,7 @@
 
 <!--  Link -->
 @if(!item.navCap && item.external) {
-<mat-list-item [routerLink]="[item.route]" class="menu-list-item">
+<mat-list-item class="menu-list-item" (click)="navigate(item.route)">
   <i-feather name="{{ item.iconName }}" class="big fill-red"></i-feather>
   <span class="hide-menu">{{ item.displayName }} </span>
   @if(item.chip) {

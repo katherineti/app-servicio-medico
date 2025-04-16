@@ -6,31 +6,32 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { FeatherIconsModule } from '../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
-import { NgOptimizedImage } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SwalService} from '../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { CreateMedicalSuppliesComponent } from '../create-medical-supplies/create-medical-supplies.component';
-import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
+// import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
 import { IProduct } from './medical-supples.interface';
 import { AssignProductWorkerComponent } from '../assign-product-worker/assign-product-worker.component';
+import { MedicalSuppliesDatatableComponent } from '../medical-supplies-datatable/medical-supplies-datatable.component';
+import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
 
-const PRODUCT_DATA: IProduct[] = [
-  {
-    id: 1,
-    name: 'Atamel',
-    description: 'Descripción del Atamel',
-    category: 'categoria1',
-    type: 'medicamentos', //'medicamentos','uniformes','equipos odontologicos'
-    stock: 5,
-    code: '000363',
-    date_entry: '2025-04-10',
-    expiration_date: '2025-07-10',
-    status: 'Activo',
-    imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  }
-];
+// const PRODUCT_DATA: IProduct[] = [
+//   {
+//     id: 1,
+//     name: 'Atamel',
+//     description: 'Descripción del Atamel',
+//     category: 'categoria1',
+//     type: 'medicamentos', //'medicamentos','uniformes','equipos odontologicos'
+//     stock: 5,
+//     code: '000363',
+//     date_entry: '2025-04-10',
+//     expiration_date: '2025-07-10',
+//     status: 'Activo',
+//     imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+//   }
+// ];
 
 /**
 * @title pagination table medical supplies
@@ -42,16 +43,47 @@ const PRODUCT_DATA: IProduct[] = [
     FeatherIconsModule,
     MaterialModule,
     MatIconModule,
-    NgOptimizedImage,
-    HeaderTitleComponent
+    HeaderTitleComponent,
+    MedicalSuppliesDatatableComponent
   ],
   templateUrl: './medical-supplies.component.html',
   styleUrl: './medical-supplies.component.scss'
 })
 export class MedicalSuppliesComponent {
+
+  PRODUCT_DATA: IProduct[] = [
+    {
+      id: 1,
+      name: 'Atamel',
+      description: 'Descripción del Atamel',
+      category: 'categoria1',
+      type: 'medicamentos', //'medicamentos','uniformes','equipos odontologicos'
+      stock: 5,
+      code: '000363',
+      date_entry: '2025-04-10',
+      expiration_date: '2025-07-10',
+      status: 'Activo',
+      imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 2,
+      name: 'Ibuprofeno',
+      description: 'Descripción del Ibuprofeno',
+      category: 'categoria1',
+      type: 'medicamentos', //'medicamentos','uniformes','equipos odontologicos'
+      stock: 0,
+      code: '000111',
+      date_entry: '2025-04-10',
+      expiration_date: '2025-07-10',
+      status: "Proximo a vencerse",
+      imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    }
+  ];
+
+
   readonly dialog = inject(MatDialog);
   displayedColumns = ['name', 'stock', 'code','expiration_date','action'];
-  dataSource = new MatTableDataSource<IProduct>(PRODUCT_DATA);
+  dataSource = new MatTableDataSource<IProduct>(this.PRODUCT_DATA);
 
   private swalService = inject(SwalService);
     

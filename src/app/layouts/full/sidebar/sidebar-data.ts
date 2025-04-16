@@ -1,9 +1,9 @@
 import { NavItem } from './nav-item/nav-item';
 
 export const navItems: NavItem[] = [
-  {
-    navCap: 'Home',
-  },
+  // {
+  //   navCap: 'Home',
+  // },
 /*   {
     displayName: 'Dashboard',
     // iconName: 'layout-grid-add',
@@ -97,7 +97,7 @@ export const navItems: NavItem[] = [
     chipClass: 'bg-secondary text-white',
   },
   {
-    displayName: 'Insumos Medicos',
+    displayName: 'Insumos Médicos',
     iconName: 'activity',
     route: './medical-supplies',
     external: true,

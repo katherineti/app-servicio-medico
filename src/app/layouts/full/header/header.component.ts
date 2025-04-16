@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MaterialModule } from '../../../material/material.module';
 import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
@@ -19,7 +19,6 @@ import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
     NgScrollbarModule,
     FeatherIconsModule,
     MaterialModule,
-    NgOptimizedImage
   ],
   templateUrl: './header.component.html',
   encapsulation: ViewEncapsulation.None,

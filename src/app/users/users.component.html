@@ -69,7 +69,8 @@
                         </mat-header-cell>
                         <mat-cell class="p-16 p-l-0" *matCellDef="let element">
                             <div class="d-flex align-items-center">
-                            <img ngOptimizedImage [ngSrc]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" />
+                            <!-- <img ngOptimizedImage [ngSrc]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" /> -->
+                            <img [src]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" />
                             </div>
                         </mat-cell>
                     </ng-container>

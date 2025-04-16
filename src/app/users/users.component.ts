@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
 import { FeatherIconsModule } from '../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
-import { NgOptimizedImage } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { SwalService} from '../services/swal.service';
@@ -319,7 +318,7 @@ imports: [
   FeatherIconsModule,
   MaterialModule,
   MatIconModule,
-  NgOptimizedImage,
+  // NgOptimizedImage,
   HeaderTitleComponent
 ]
 })

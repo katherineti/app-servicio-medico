@@ -4,6 +4,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RolComponent } from './rol/rol.component';
 import { MedicalSuppliesComponent } from './medical-supplies/medical-supplies.component';
+import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medical-supplies-expired.component';
 
 export const routes: Routes = [
     {
@@ -30,6 +31,10 @@ export const routes: Routes = [
           {
             path: 'medical-supplies',
             component: MedicalSuppliesComponent
+          },
+          {
+            path: 'expired-medical-supplies',
+            component: MedicalSuppliesExpiredComponent
           },
         ],
       },

@@ -56,7 +56,7 @@ export class AppNavItemComponent implements OnChanges {
     }
   }
 
-  onItemSelected(item: NavItem) {
+  onItemSelected(item: NavItem) { console.log("iten",item)
     if (!item.children || !item.children.length) {
       this.router.navigate([item.route]);
     }
@@ -82,5 +82,9 @@ export class AppNavItemComponent implements OnChanges {
         this.notify.emit();
       }
     }
+  }
+  
+  navigate(route:string) {
+    this.router.navigate([route]);
   }
 }

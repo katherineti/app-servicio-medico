@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RolComponent } from './rol/rol.component';
 import { MedicalSuppliesComponent } from './medical-supplies/medical-supplies.component';
 import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medical-supplies-expired.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
     {
@@ -37,5 +38,9 @@ export const routes: Routes = [
             component: MedicalSuppliesExpiredComponent
           },
         ],
-      },
+    },
+    {
+      path: 'login',
+      component: LoginComponent
+    },
 ];

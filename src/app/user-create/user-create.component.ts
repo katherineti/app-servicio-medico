@@ -7,7 +7,7 @@ import { SwalService } from '../services/swal.service';
 
 @Component({
   selector: 'app-user-create',
-  imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
   templateUrl: './user-create.component.html',
   styleUrl: './user-create.component.scss'
 })
@@ -24,9 +24,6 @@ export class UserCreateComponent {
     public dialogRef: MatDialogRef<UserCreateComponent>,
     ){
     this.buildAddUserForm();
-  }
-
-  async ngOnInit() {
   }
 
   buildAddUserForm() {

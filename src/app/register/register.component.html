@@ -1,0 +1,50 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light" id="login">
+    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+      <div class="col-lg-4 d-flex align-items-center">
+        <mat-card class="cardWithShadow boxed-auth">
+          <mat-card-content class="p-32">
+            <div class="text-center">
+              <a [routerLink]="['/dashboard']">
+                <img src="./assets/logo-ciip.png" class="align-middle m-2" alt="logo" width="200" />
+              </a>
+            </div>
+  
+            <form class="m-t-30" [formGroup]="registerFormGroup" #f="ngForm">
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Nombre</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput required="true" type="text" formControlName="name" />
+              </mat-form-field>
+              <!-- Email -->
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput required="true" type="email" formControlName="email" />
+              </mat-form-field>
+              <!-- Usuario -->
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput required="true" type="text" formControlName="username" />
+              </mat-form-field>
+              <!-- Contraseña -->
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput required="true" type="password" formControlName="password" />
+              </mat-form-field>
+
+              <mat-error *ngIf="typeError === 'campos'">Faltan campos requeridos</mat-error>
+              <mat-error *ngIf="typeError === 'conflicto'">Nombre de usuario o correo electrónico ya existe.</mat-error>
+              <mat-error *ngIf="typeError === 'server'">El formato de los campos es incorrecto, por favor ingrese un valor valido</mat-error>
+  
+              <button class="w-100" (click)="register()" mat-flat-button color="primary">
+                Registrar
+              </button>
+            </form>
+
+            <span class="d-block f-w-500 text-center m-t-24">¿Ya tienes una cuenta?
+              <a [routerLink]="['/login']" class="text-decoration-none text-primary f-w-500 f-s-14">
+                Entra aquí</a>
+            </span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,1 @@
+export type RolesType = 'Admin'|'Almacen'|'Medico'|'Auditor';

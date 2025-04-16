@@ -5,13 +5,13 @@ import { CoreService } from '../../../services/core.service';
   selector: 'app-branding',
   imports: [],
   template: `
-    <a href="/" class="logodark">
+    <a href="/">
       <!-- src="./assets/images/logos/dark-logo.svg" -->
       <img
-        src="https://svg4k.com/wp-content/uploads/2022/01/Logo_Svg_Free.svg"
-        class="align-middle m-2"
-        alt="logo"
-        width="50"
+        src="./assets/logo-ciip.png"
+        class="m-2"
+        alt="logo ciip"
+        width="150"
       />
     </a>
   `,

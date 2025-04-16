@@ -6,11 +6,14 @@ import { RolComponent } from './rol/rol.component';
 import { MedicalSuppliesComponent } from './medical-supplies/medical-supplies.component';
 import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medical-supplies-expired.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { GuardCanActivate } from './services/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
         component: FullComponent,
+        canActivate: [GuardCanActivate],
         children: [
           {
             path: '',
@@ -19,28 +22,32 @@ export const routes: Routes = [
           },
           {
             path: 'dashboard',
-            component: DashboardComponent
+            component: DashboardComponent,
           },
           {
             path: 'users',
-            component: UsersComponent
+            component: UsersComponent,
           },
           {
             path: 'roles',
-            component: RolComponent
+            component: RolComponent,
           },
           {
             path: 'medical-supplies',
-            component: MedicalSuppliesComponent
+            component: MedicalSuppliesComponent,
           },
           {
             path: 'expired-medical-supplies',
-            component: MedicalSuppliesExpiredComponent
+            component: MedicalSuppliesExpiredComponent,
           },
         ],
     },
     {
       path: 'login',
-      component: LoginComponent
+      component: LoginComponent,
+    },
+    {
+      path: 'register',
+      component: RegisterComponent
     },
 ];

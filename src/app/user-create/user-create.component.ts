@@ -28,42 +28,53 @@ export class UserCreateComponent {
 
   buildAddUserForm() {
     this.userFormGroup = this.formBuilder.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
-        ],
-      ],
-      email: [
-        '',
-        [
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(50),
-        ],
-      ],
+      // username: [
+      //   '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(1),
+      //     Validators.maxLength(20),
+      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
+      //   ],
+      // ],
+
       name: [
         '',
         [
           Validators.required,
           Validators.minLength(0),
           Validators.maxLength(50),
+          Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
         ],
       ],
-      isActive: [
+      email: [
+        '', 
+      [
+        Validators.required, 
+        Validators.email,
+        Validators.minLength(3), 
+        Validators.maxLength(50),
+        // Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+      ]],
+      password: [
         '',
         [
           Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
+          Validators.minLength(0),
+          Validators.maxLength(30),
           Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],
       ],
-      roles: [],
+      // isActive: [
+      //   '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(1),
+      //     Validators.maxLength(20),
+      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
+      //   ],
+      // ],
+      role: [""],
     });
 
   }
@@ -104,14 +115,6 @@ export class UserCreateComponent {
       this.disableButton = false;
       return;
     }
-    const { urlImage, roles, ...params } = this.userFormGroup.value;
-
-    let obj= {
-      ...params,
-      roles: roles,
-      urlImage: this.imgBase64,
-    }
-    console.log("guardar",obj);
 
     this.swalService.closeload();
     this.closeDialog();

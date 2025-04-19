@@ -15,16 +15,17 @@ import { HeaderTitleComponent } from '../header-title/header-title.component';
 
 export interface Element {
 id: number;
-imagePath: string;
+// imagePath: string;
 name: string;
 position: string;
 productName: string;
 budget: number;
 priority: string;
-username:string, 
+username:string, //no
 email:string, 
 isActive:boolean, 
-rol:string, 
+role:string, 
+[key: string]: any;
 }
 const PRODUCT_DATA: Element[] = [
 {
@@ -35,7 +36,7 @@ name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
 isActive: false, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -50,7 +51,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -63,7 +64,7 @@ name: 'Christopher Jamil',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
 isActive: false, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -77,7 +78,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', position: 'Frontend Engineer',
+role: 'admin', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -90,7 +91,7 @@ name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -105,7 +106,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -119,7 +120,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -133,7 +134,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', position: 'Frontend Engineer',
+role: 'admin', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -146,7 +147,7 @@ name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -161,7 +162,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -175,7 +176,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -188,7 +189,7 @@ name: 'Nirav Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
@@ -202,7 +203,7 @@ name: 'Sunil Joshi',
 username:'usernameejemplo',
 email: 'correo@gmail.com',
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Elite Admin',
 budget: 3.9,
@@ -216,7 +217,7 @@ name: 'Andrew McDownland',
 username:'usernameejemplo',
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'Real Homes Theme',
 budget: 24.5,
@@ -230,7 +231,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
 productName: 'MedicalPro Theme',
 budget: 12.8,
@@ -244,7 +245,7 @@ username:'usernameejemplo',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', position: 'Frontend Engineer',
+role: 'admin', position: 'Frontend Engineer',
 productName: 'Hosting Press HTML',
 budget: 2.4,
 priority: 'critical',
@@ -257,7 +258,7 @@ priority: 'critical',
   username:'usernameejemplo',
   email: 'correo@gmail.com',
   isActive: true, 
-  rol: 'ADMIN', 
+  role: 'admin', 
   position: 'Web Designer',
   productName: 'Elite Admin',
   budget: 3.9,
@@ -272,7 +273,7 @@ priority: 'critical',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
   productName: 'Real Homes Theme',
   budget: 24.5,
@@ -286,7 +287,7 @@ position: 'Web Designer',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', 
+role: 'admin', 
 position: 'Web Designer',
   productName: 'MedicalPro Theme',
   budget: 12.8,
@@ -300,7 +301,7 @@ position: 'Web Designer',
 
 email: 'correo@gmail.com', 
 isActive: true, 
-rol: 'ADMIN', position: 'Frontend Engineer',
+role: 'admin', position: 'Frontend Engineer',
   productName: 'Hosting Press HTML',
   budget: 2.4,
   priority: 'critical',
@@ -327,15 +328,14 @@ export class UsersComponent {
   displayedColumns = [ 'name', 'email','image','action'];
   dataSource = new MatTableDataSource<Element>(PRODUCT_DATA);
 
-    imagenDeFondo = 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA2L3JtMzQ3LXBvcnBsYS0wMS1lXzEta2ttZDF2eTQuanBn.jpg';
-
   private swalService = inject(SwalService);
     
   constructor(breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ 'name', 'email', 'isActive','action']
-    : [ 'name', 'email', 'isActive', 'rol', 'image','action'];
+    : [ 'name', 'email', 'isActive', 'rol','action'];
+    // : [ 'name', 'email', 'isActive', 'rol', 'image','action'];
     });
   }
 

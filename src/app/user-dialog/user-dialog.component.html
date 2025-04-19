@@ -7,7 +7,7 @@
     <div class="right-bg-content p-10">
 
         <form [formGroup]="userFormGroup" #f="ngForm">
-           <div class="wrapper-img" >
+<!--            <div class="wrapper-img" >
             <img
               class="img"
               alt="user"
@@ -30,7 +30,7 @@
               type="file"
               accept="image/png, image/jpeg"
             />
-          </div>
+          </div> -->
 
           <div class="row p-10">
             <mat-form-field appearance="outline" class="example-full-width">
@@ -44,7 +44,7 @@
                 <!-- <mat-error>Error</mat-error> -->
             </mat-form-field>
     
-            <mat-form-field appearance="outline" class="example-full-width">
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
                 placeholder="Username"
@@ -52,8 +52,7 @@
                 required="true"
                 type="text"
                 />
-                <!-- <mat-error>Error</mat-error> -->
-            </mat-form-field>
+            </mat-form-field> -->
         
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
@@ -69,19 +68,19 @@
             <mat-form-field appearance="outline" class="example-full-width">
                 <mat-select
                 placeholder="roles"
-                formControlName="roles"
+                formControlName="role"
                 required="true"
                 >
-                <mat-option [value]="1">{{
+                <mat-option [value]="'admin'">{{
                     'Administrador' | titlecase
                 }}</mat-option>
-                <mat-option [value]="2">{{
+                <mat-option value="user">{{
                     'Almacén' | titlecase
                 }}</mat-option>
-                <mat-option [value]="3">{{
+                <mat-option value="user">{{
                     'Médico' | titlecase
                 }}</mat-option>
-                <mat-option [value]="3">{{
+                <mat-option value="user">{{
                     'Auditor' | titlecase
                 }}</mat-option>
                 </mat-select>

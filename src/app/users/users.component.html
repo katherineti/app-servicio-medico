@@ -51,7 +51,7 @@
                         Rol
                         </mat-header-cell>
                         <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.rol }}</mat-cell>
+                        {{ element.role }}</mat-cell>
                     </ng-container>
                 
                     <ng-container matColumnDef="action">
@@ -67,17 +67,17 @@
                             </button>
                         </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="image">
+                    <!-- <ng-container matColumnDef="image">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
                         Foto
                         </mat-header-cell>
                         <mat-cell class="p-16 p-l-0" *matCellDef="let element">
                             <div class="d-flex align-items-center">
-                            <!-- <img ngOptimizedImage [ngSrc]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" /> -->
+                            <!-- <img ngOptimizedImage [ngSrc]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" /> - ->
                             <img [src]="element.imagePath" alt="users" width="70" height="60" class="rounded-circle" />
                             </div>
                         </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

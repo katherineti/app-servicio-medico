@@ -7,11 +7,12 @@ import { SwalService } from '../services/swal.service';
 
 export interface IUser {
   id: string;
-  username: string;
+  // username: string;
   email: string;
   name: string;
   isActive: boolean;
-  urlImage?: string;
+  role:string;
+  // urlImage?: string;
   [key: string]: any;
 }
 
@@ -57,15 +58,15 @@ export class UserDialogComponent implements OnInit {
 
   buildEditUserForm() {
     this.userFormGroup = this.formBuilder.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
-        ],
-      ],
+      // username: [
+      //   '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(1),
+      //     Validators.maxLength(20),
+      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
+      //   ],
+      // ],
       email: [
         '',
         [
@@ -92,7 +93,7 @@ export class UserDialogComponent implements OnInit {
           Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],
       ],
-      roles: [],
+      role: [''],
     });
 
   }
@@ -100,11 +101,11 @@ export class UserDialogComponent implements OnInit {
   setForm() {
 
       this.userFormGroup.patchValue({
-        username: this.selectedUser?.username,
+        // username: this.selectedUser?.username,
         email: this.selectedUser?.email,
         name: this.selectedUser?.name,
         isActive: this.selectedUser?.isActive,
-        roles: 1,
+        role: this.selectedUser?.role,
       });
   }
 
@@ -143,14 +144,14 @@ export class UserDialogComponent implements OnInit {
       this.disableButton = false;
       return;
     }
-    const { roles, ...params } = this.userFormGroup.value;
+    const { role, ...params } = this.userFormGroup.value;
     const id = this.selectedUser.id;
 
     let obj= {
       id,
       ...params,
-      roles: roles,
-      urlImage: this.imgBase64,
+      role: role,
+      // urlImage: this.imgBase64,
     }
     console.log("guardar",obj);
 

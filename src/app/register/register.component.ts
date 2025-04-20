@@ -3,31 +3,28 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../authentication/services/auth.service';
+import { SignUpRegisterAdmin } from '../authentication/models/register-admin.reponse.model';
 
-export interface SignUp{
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-  role: string;
-  isActive:boolean;
-  // fatherLastName: string;
-}
 @Component({
   selector: 'app-register',
-  imports: [CommonModule,RouterModule,MaterialModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule,RouterModule,MaterialModule,FormsModule,ReactiveFormsModule,],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
+  providers: [AuthService]
+
 })
 export class RegisterComponent {
-  ADMINISTRADOR: string = "ADMIN";
+  ADMINISTRADOR: string = "admin";
   registerFormGroup!: FormGroup;
   typeError = '';
   conflictDetected: boolean = false;
 
   private formBuilder = inject(FormBuilder);
-  public router = inject(Router)
-  public route = inject(ActivatedRoute)
+  public router = inject(Router);
+  public route = inject(ActivatedRoute);
+  public authService = inject(AuthService);
   
   constructor(){
     this.registerFormGroup = this.formBuilder.group({
@@ -43,12 +40,6 @@ export class RegisterComponent {
         Validators.minLength(3), 
         Validators.maxLength(50),
       ]],
-      username: ['', [
-        Validators.required, 
-        Validators.minLength(0), 
-        Validators.maxLength(30),
-        Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
-      ]],
       password: [
         '',
         [
@@ -62,32 +53,29 @@ export class RegisterComponent {
   }
 
   async register() {
-    let register: SignUp = {
+    localStorage.removeItem('token'); 
+
+    let register: SignUpRegisterAdmin = {
       name: this.registerFormGroup.value.name,
       email: this.registerFormGroup.value.email,
-      username: this.registerFormGroup.value.username,
       password: this.registerFormGroup.value.password,
-      role: this.ADMINISTRADOR,
-      isActive: true
+      role: this.ADMINISTRADOR
     };
-    console.log("registro:",register)
 
-    if(!this.registerFormGroup.invalid){
-
-      try {
-        // await firstValueFrom(this.registerService.register(register));
-        this.router.navigate(['./dashboard']);
-      } catch (error: any) {
-        
-        if (error.status === 400) {
-          this.typeError = 'campos';
-        } else if (error.status === 409) {
-          this.typeError = 'conflicto';
-          this.conflictDetected = true;
-        } else {
-          this.typeError = 'server';
-        }
+    try {
+      await firstValueFrom(this.authService.register(register));
+      this.router.navigate(['./login']);
+    } catch (error: any) {
+      if (error.status === 400) {
+        this.typeError = 'campos';
+      } else if (error.status === 409) {
+        this.typeError = 'conflicto';
+        this.conflictDetected = true;
+      } else {
+        this.typeError = 'server';
+        console.log("Error: " , error);
       }
     }
   }
+
 }

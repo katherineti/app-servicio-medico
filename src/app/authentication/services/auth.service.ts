@@ -1,12 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-// import { TokenAuth } from '../models/token-auth.model';
-// import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 import { SwalService } from '../../services/swal.service';
 import { API_URL } from '../../../../environment';
 import { Observable } from 'rxjs';
 import { TokenAuth } from '../models/token-auth.model';
+import { Admin, SignUpRegisterAdmin } from '../models/register-admin.reponse.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,17 +17,17 @@ export class AuthService {
   private readonly router= inject(Router)
   private readonly swalService= inject(SwalService)
 
-  register(body : any): Observable<any>{
+  register(body: SignUpRegisterAdmin): Observable<Admin>{
     return this.http.post(
         this.endPoint + '/signup',
         body
-    ) as Observable<any>;
-}
+    ) as Observable<Admin>;
+  }
 
-  signin(email: string, pass: string) {
+  signin(email: string, passw: string) {
     return this.http.post<{ token: string }>(this.endPoint + '/signin', {
       email: email,
-      password: pass,
+      password: passw,
     });
   }
 
@@ -45,15 +44,15 @@ export class AuthService {
     await this.router.navigateByUrl('/login');
   }
 
-  // async getPlainToken(): Promise<string> {
-  //   if (await this.getToken()) {
-  //     if (await this.isAuthenticated()) {
-  //       return localStorage.getItem('token') as string;
-  //     }
-  //   }
-  //   await this.logout();
-  //   return '';
-  // }
+  async getPlainToken(): Promise<string> {
+    if (await this.getToken()) {
+      if (await this.isAuthenticated()) {
+        return localStorage.getItem('token') as string;
+      }
+    }
+    await this.logout();
+    return '';
+  }
 
   async getToken(): Promise<TokenAuth> {
     if (localStorage.getItem('token')) {
@@ -83,8 +82,7 @@ export class AuthService {
   async isAuthenticated() {
     const token = await this.getToken();
     if (token) {
-      // const tokenIsExpirated = this.tokenIsExpirated(token);
-      const tokenIsExpirated = false;
+      const tokenIsExpirated = this.tokenIsExpirated(token);
       if (tokenIsExpirated) {
         this.clearToken();
         this.swalService.expiredSession();
@@ -93,7 +91,7 @@ export class AuthService {
     }
     return false;
   }
-/*
+
   tokenIsExpirated(token: TokenAuth): boolean {
     if (!token) {
       return false;
@@ -103,7 +101,7 @@ export class AuthService {
     }
     return Number(new Date()) > token.exp * 100000;
   }
-
+/*
   async hasRole(roles: string[]) {
     const token = await this.getToken();
     const inter = roles.filter((e) => token.roles.includes(e));

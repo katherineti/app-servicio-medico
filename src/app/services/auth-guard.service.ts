@@ -6,7 +6,7 @@ import { RolesType } from '../interfaces/roles.interface';
   providedIn: 'root'
 })
 
-export class AuthService {
+export class AuthGuardService {
   private _isAuthSource$ = new BehaviorSubject<boolean>(false);
   private _errorMessageSource$ = new BehaviorSubject<string>('La ruta no exiaste');
 

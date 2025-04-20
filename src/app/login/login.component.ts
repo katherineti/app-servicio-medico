@@ -2,7 +2,7 @@ import { Component, inject, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthGuardService } from '../services/auth-guard.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -13,15 +13,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class LoginComponent {
 
-  private _authService = inject(AuthService);
+  private authGuardService = inject(AuthGuardService);
   isLogged!: Signal<boolean | undefined>;
   constructor(){
     this.session()
   }
 
   session(){
-    this._authService.login();
-    this.isLogged = toSignal(this._authService.isAuth$);
+    this.authGuardService.login();
+    this.isLogged = toSignal(this.authGuardService.isAuth$);
     console.log("this.isLogged()", this.isLogged())
   }
 

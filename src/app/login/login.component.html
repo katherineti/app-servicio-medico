@@ -9,18 +9,18 @@
               </a>
             </div>
   
-            <form class="m-t-30">
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
+            <form class="m-t-30" [formGroup]="loginFormGroup" #f="ngForm">
+              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput />
+                <input matInput required="true" type="email" formControlName="email" />
               </mat-form-field>
               <!-- password -->
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput type="password" />
+                <input matInput required="true" type="password" formControlName="password"  />
               </mat-form-field>
   
-              <button class="w-100" [routerLink]="['/']" mat-flat-button color="primary">
+              <button class="w-100" (click)="login()" mat-flat-button color="primary">
                 Iniciar sesión
               </button>
               <!-- input -->

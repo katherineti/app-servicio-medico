@@ -7,13 +7,13 @@ import { MedicalSuppliesComponent } from './medical-supplies/medical-supplies.co
 import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medical-supplies-expired.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { GuardCanActivate } from './services/auth.guard';
+import { AuthGuard } from './authentication/guards/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
         component: FullComponent,
-        canActivate: [GuardCanActivate],
+        canActivate: [AuthGuard],
         children: [
           {
             path: '',

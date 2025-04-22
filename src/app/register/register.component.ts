@@ -4,16 +4,15 @@ import { MaterialModule } from '../material/material.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from '../authentication/services/auth.service';
 import { SignUpRegisterAdmin } from '../authentication/models/register-admin.reponse.model';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-register',
   imports: [CommonModule,RouterModule,MaterialModule,FormsModule,ReactiveFormsModule,],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
-  providers: [AuthService]
-
+  providers: [LoginService]
 })
 export class RegisterComponent {
   ADMINISTRADOR: string = "admin";
@@ -24,7 +23,7 @@ export class RegisterComponent {
   private formBuilder = inject(FormBuilder);
   public router = inject(Router);
   public route = inject(ActivatedRoute);
-  public authService = inject(AuthService);
+  public loginService = inject(LoginService);
   
   constructor(){
     this.registerFormGroup = this.formBuilder.group({
@@ -63,7 +62,7 @@ export class RegisterComponent {
     };
 
     try {
-      await firstValueFrom(this.authService.register(register));
+      await firstValueFrom(this.loginService.register(register));
       this.router.navigate(['./login']);
     } catch (error: any) {
       if (error.status === 400) {

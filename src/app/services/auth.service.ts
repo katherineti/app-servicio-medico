@@ -1,11 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { TokenAuth } from '../authentication/models/token-auth.model';
 import { Router } from '@angular/router';
-import { SwalService } from '../../services/swal.service';
-import { API_URL } from '../../../../environment';
+import { SwalService } from './swal.service';
+import { API_URL } from '../../../environment';
 import { Observable } from 'rxjs';
-import { TokenAuth } from '../models/token-auth.model';
-import { Admin, SignUpRegisterAdmin } from '../models/register-admin.reponse.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +12,17 @@ import { Admin, SignUpRegisterAdmin } from '../models/register-admin.reponse.mod
 export class AuthService {
   endPoint = API_URL + 'auth';
 
-  private readonly http= inject(HttpClient)
-  private readonly router= inject(Router)
-  private readonly swalService= inject(SwalService)
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly swalService: SwalService
+  ) { }
 
-  register(body: SignUpRegisterAdmin): Observable<Admin>{
-    return this.http.post(
-        this.endPoint + '/signup',
-        body
-    ) as Observable<Admin>;
-  }
-
-  signin(email: string, passw: string) {
-    return this.http.post<{ token: string }>(this.endPoint + '/signin', {
-      email: email,
-      password: passw,
-    });
+  async headerToken(): Promise<HttpHeaders> {
+    return new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + (await this.getPlainToken())
+    );
   }
 
   saveToken(token: string) {
@@ -37,11 +31,19 @@ export class AuthService {
 
   clearToken() {
     localStorage.removeItem('token');
+    localStorage.removeItem('tipoLogin');
   }
 
   async logout() {
+    const isAdmin = this.isAdmin();
     this.clearToken();
-    await this.router.navigateByUrl('/login');
+    this.clearImageProfile();
+
+    if (isAdmin) {
+      await this.router.navigateByUrl('/auth/admin/login');
+    } else if (isAdmin === false) {
+      await this.router.navigateByUrl('/auth/login');
+    }
   }
 
   async getPlainToken(): Promise<string> {
@@ -71,14 +73,6 @@ export class AuthService {
     }
   }
 
-  async getRol(): Promise<string> {
-    const token = await this.getToken();
-    if (!token.role) {
-      return 'SIN ROL';
-    }
-    return token.role;
-  }
-
   async isAuthenticated() {
     const token = await this.getToken();
     if (token) {
@@ -101,17 +95,17 @@ export class AuthService {
     }
     return Number(new Date()) > token.exp * 100000;
   }
-/*
+
   async hasRole(roles: string[]) {
     const token = await this.getToken();
-    const inter = roles.filter((e) => token.roles.includes(e));
+    const inter = roles.filter((e) => token.role.includes(e));
     if (inter.length > 0) {
       return true;
     } else {
       return false;
     }
   }
-  */
+
   getUserInfo(): Observable<TokenAuth> {
     return new Observable((observer) => {
       const token = localStorage.getItem('token');
@@ -145,6 +139,10 @@ export class AuthService {
       },
     });
     return isAdmin;
+  }
+
+  clearImageProfile() {
+    localStorage.removeItem('image');
   }
 
   jwt_decode(token: string): any | null {

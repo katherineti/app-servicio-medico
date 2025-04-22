@@ -12,7 +12,6 @@ export interface IUser {
   name: string;
   isActive: boolean;
   role:string;
-  // urlImage?: string;
   [key: string]: any;
 }
 
@@ -151,7 +150,6 @@ export class UserDialogComponent implements OnInit {
       id,
       ...params,
       role: role,
-      // urlImage: this.imgBase64,
     }
     console.log("guardar",obj);
 

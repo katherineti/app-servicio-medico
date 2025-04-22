@@ -11,10 +11,7 @@ import { MaterialModule } from '../material/material.module';
   styleUrl: './medical-supplies-expired.component.scss',
   imports: [
     CommonModule,
-    // FeatherIconsModule,
     MaterialModule,
-    // MatIconModule,
-    // NgOptimizedImage,
     HeaderTitleComponent,
     MedicalSuppliesDatatableComponent
   ],

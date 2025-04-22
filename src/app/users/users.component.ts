@@ -15,7 +15,6 @@ import { HeaderTitleComponent } from '../header-title/header-title.component';
 
 export interface Element {
 id: number;
-// imagePath: string;
 name: string;
 position: string;
 productName: string;
@@ -319,7 +318,6 @@ imports: [
   FeatherIconsModule,
   MaterialModule,
   MatIconModule,
-  // NgOptimizedImage,
   HeaderTitleComponent
 ]
 })
@@ -335,7 +333,6 @@ export class UsersComponent {
     this.displayedColumns = result.matches
     ? [ 'name', 'email', 'isActive','action']
     : [ 'name', 'email', 'isActive', 'rol','action'];
-    // : [ 'name', 'email', 'isActive', 'rol', 'image','action'];
     });
   }
 

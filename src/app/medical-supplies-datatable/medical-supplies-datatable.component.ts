@@ -30,7 +30,6 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 export class MedicalSuppliesDatatableComponent {
   readonly dialog = inject(MatDialog);
   displayedColumns = ['name', 'stock', 'code','expiration_date','action'];
-  // dataSource = new MatTableDataSource<IProduct>(PRODUCT_DATA);
   dataSource = new MatTableDataSource<IProduct>([]);
   @Input()
   data!: IProduct[];

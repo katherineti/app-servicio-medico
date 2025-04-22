@@ -65,15 +65,7 @@ export class UserCreateComponent {
           Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],
       ],
-      // isActive: [
-      //   '',
-      //   [
-      //     Validators.required,
-      //     Validators.minLength(1),
-      //     Validators.maxLength(20),
-      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
-      //   ],
-      // ],
+
       role: [""],
     });
 

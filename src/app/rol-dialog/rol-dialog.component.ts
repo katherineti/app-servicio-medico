@@ -78,7 +78,6 @@ export class RolDialogComponent {
     else if(this.ROLES_DATA[0].role == this.ROL_ALMACEN){
     this.displayedColumns = [ '#', 'module', 'Entradas de insumos','Salidas de insumos'];
 
-    // this.displayedColumns = [ '#', 'module', 'Registrar'];
     } 
     else if(this.ROLES_DATA[0].role == this.ROL_MEDICO){
     this.displayedColumns = [ '#', 'module', 'Consultar'];

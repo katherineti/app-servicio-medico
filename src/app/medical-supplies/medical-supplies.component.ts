@@ -11,7 +11,6 @@ import { SwalService} from '../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { CreateMedicalSuppliesComponent } from '../create-medical-supplies/create-medical-supplies.component';
-// import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
 import { IProduct } from './medical-supples.interface';
 import { AssignProductWorkerComponent } from '../assign-product-worker/assign-product-worker.component';
 import { MedicalSuppliesDatatableComponent } from '../medical-supplies-datatable/medical-supplies-datatable.component';

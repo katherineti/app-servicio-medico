@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenAuth } from '../authentication/models/token-auth.model';
 import { Router } from '@angular/router';
@@ -10,10 +10,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  endPoint = API_URL + 'auth';
 
   constructor(
-    private readonly http: HttpClient,
     private readonly router: Router,
     private readonly swalService: SwalService
   ) { }

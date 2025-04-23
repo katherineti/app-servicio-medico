@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/Token.service';
-import { IGetAllUsers, IUser } from './users.interface';
+import { ICreateUserDTO, IGetAllUsers, IUser } from './users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,14 +23,14 @@ export class UsersService {
       dto
     );
   }
-
+*/
   updateUser(id: string, dto: ICreateUserDTO) {
     return this.http.patch<IUser>(
       `${this.tokenService.endPoint}users/${id}`,
       dto
     );
   }
-*/
+
   deleteUser(id: string) {
     return this.http.delete<IUser>(`${this.tokenService.endPoint}users/${id}`);
   }

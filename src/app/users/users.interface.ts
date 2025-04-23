@@ -22,4 +22,4 @@ export interface IUserPagination {
 }
 
 export interface ICreateUserDTO
-  extends Omit<IUser, 'id' | 'updatedAt' | 'role'> {}
+  extends Omit<IUser, 'id' | 'email' | 'createdAt' | 'updatedAt' > {}

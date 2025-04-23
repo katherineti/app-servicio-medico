@@ -4,22 +4,15 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
-
-export interface IUser {
-  id: string;
-  // username: string;
-  email: string;
-  name: string;
-  isActive: boolean;
-  role:string;
-  [key: string]: any;
-}
+import { UsersService } from '../users/users.service';
+import { IUser } from '../users/users.interface';
 
 @Component({
   selector: 'app-user-dialog',
   imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
   templateUrl: './user-dialog.component.html',
-  styleUrl: './user-dialog.component.scss'
+  styleUrl: './user-dialog.component.scss',
+  providers: [UsersService]
 })
 
 export class UserDialogComponent implements OnInit {
@@ -29,9 +22,11 @@ export class UserDialogComponent implements OnInit {
   imgBase64?: any;
   selectedUser!: IUser;
   disableButton: boolean = false;
+  typeError = '';
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
+  private usersService = inject(UsersService);
 
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: IUser){
@@ -41,7 +36,7 @@ export class UserDialogComponent implements OnInit {
   async ngOnInit() {
 
     this.selectedUser = this.data;
-    console.log(this.selectedUser)
+    console.log("this.selectedUser ", this.selectedUser)
     if (this.data) {
       this.setForm();
     }
@@ -57,15 +52,6 @@ export class UserDialogComponent implements OnInit {
 
   buildEditUserForm() {
     this.userFormGroup = this.formBuilder.group({
-      // username: [
-      //   '',
-      //   [
-      //     Validators.required,
-      //     Validators.minLength(1),
-      //     Validators.maxLength(20),
-      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
-      //   ],
-      // ],
       email: [
         '',
         [
@@ -94,31 +80,17 @@ export class UserDialogComponent implements OnInit {
       ],
       role: [''],
     });
-
   }
 
   setForm() {
+    this.userFormGroup.controls['email'].disable();
 
       this.userFormGroup.patchValue({
-        // username: this.selectedUser?.username,
-        email: this.selectedUser?.email,
         name: this.selectedUser?.name,
-        isActive: this.selectedUser?.isActive,
+        email: this.selectedUser?.email,
+        isActive: this.selectedUser?.isActivate,
         role: this.selectedUser?.role,
       });
-  }
-
-  onFileSelected(event: any): void | null {
-    const reader = new FileReader();
-    this.imageField = <File>event.target.files[0];
-    reader.readAsDataURL(this.imageField);
-    reader.onload = () => {
-      this.imgBase64 = reader.result;
-      return reader.result;
-    };
-  }
-  getBase64(data: any) {
-    this.imgBase64 = data;
   }
 
   cancel() {
@@ -143,19 +115,38 @@ export class UserDialogComponent implements OnInit {
       this.disableButton = false;
       return;
     }
-    const { role, ...params } = this.userFormGroup.value;
+    const { name, role, isActive } = this.userFormGroup.value;
     const id = this.selectedUser.id;
 
-    let obj= {
-      id,
-      ...params,
-      role: role,
-    }
-    console.log("guardar",obj);
-
-    this.swalService.closeload();
-    this.swalService.success();
-    this.disableButton = false;
-    this.closeDialog();
+    this.usersService
+      .updateUser(
+        id, 
+        {
+          name, 
+          role,
+          isActivate: isActive,
+        })
+      .subscribe({
+        next: () => {
+          this.swalService.closeload();
+          this.swalService.success();
+          this.disableButton = false;
+          this.closeDialog();
+        },
+        error: (error) => {
+          console.log("error ",error)
+          this.swalService.closeload();
+          this.disableButton = false;
+/*           if (error.error.statusCode === 409) {
+            this.swalService.error('Error', error.error.message);
+            this.typeError = 'user';
+          }
+          if (error.error.statusCode === 400) {
+            this.swalService.error('Error', 'Faltan campos requeridos.');
+            this.typeError = 'fields';
+          } */
+        },
+      });
   }
+
 }

@@ -75,10 +75,11 @@ export class UsersComponent {
       disableClose: true
     });
 
-    // ref.afterClosed().subscribe(() => {
-    //   this.getAllUser(this.pageIndex, this.pageSize);
-    // });
+    ref.afterClosed().subscribe(() => {
+      this.getAllUser(this.pageIndex, this.pageSize);
+    });
   }
+
   openDialogCreateUser(data?: any): void {
     const ref = this.dialog.open(UserCreateComponent, {
       data: data || null,

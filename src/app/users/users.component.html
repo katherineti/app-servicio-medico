@@ -1,10 +1,13 @@
 <app-header-title [title]="'Usuarios'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
+
     <mat-form-field appearance="outline">
-        <!-- <mat-label>Buscar</mat-label> -->
-        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar 1" #input>
-        <input matInput placeholder="Buscar formcontrolname" [formControl]="searhField">
+        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
     </mat-form-field>
+    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
+    (click)="getAllUser(this.pageIndex, this.pageSize)">
+        Buscar
+    </button>
 
     <span class="example-spacer"></span>
     <button mat-flat-button (click)="openDialogCreateUser()" >
@@ -16,7 +19,6 @@
     <mat-card-content>
         <!-- <div class="d-flex w-100"> -->
         <div class="w-100">
-            <!-- <mat-card-title>Sales Overview</mat-card-title> -->
             <div class="m-l-auto">
                 
                 <div class="table-responsive">
@@ -40,7 +42,7 @@
                             Estado
                         </mat-header-cell>
                         <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            @if (element.isActive) {
+                            @if (element.isActivate===true) {
                                 Activo
                             }@else {
                                 Inactivo
@@ -63,7 +65,7 @@
                             <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)">
                                 <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                             </button>
-                            <button mat-icon-button aria-label="Eliminar" (click)="deleteuser()">
+                            <button mat-icon-button aria-label="Eliminar" (click)="deleteUser(element)">
                                 <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
                             </button>
                         </mat-cell>
@@ -72,8 +74,10 @@
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
                     </mat-table>
-                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
-                    </mat-paginator>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                    [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                    aria-describedby="table users"></mat-paginator>
                 </div>
 
             </div>

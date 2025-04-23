@@ -1,5 +1,5 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, inject } from '@angular/core';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
@@ -14,300 +14,8 @@ import { UserCreateComponent } from '../user-create/user-create.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from './users.service';
+import { IGetAllUsers, IUser, IUserPagination } from './users.interface';
 
-export interface Element {
-id: number;
-name: string;
-position: string;
-productName: string;
-budget: number;
-priority: string;
-username:string, //no
-email:string, 
-isActive:boolean, 
-role:string, 
-[key: string]: any;
-}
-const PRODUCT_DATA: Element[] = [
-{
-id: 1,
-// imagePath: 'assets/images/profile/user-1.jpg',
-imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Sunil Joshi',
-username:'usernameejemplo',
-email: 'correo@gmail.com', 
-isActive: false, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Elite Admin',
-budget: 3.9,
-priority: 'low',
-},
-{
-id: 2,
-// imagePath: 'assets/images/profile/user-2.jpg',
-imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Andrew McDownland',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Real Homes Theme',
-budget: 24.5,
-priority: 'medium',
-},
-{
-id: 3,
-imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Christopher Jamil',
-username:'usernameejemplo',
-email: 'correo@gmail.com', 
-isActive: false, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'MedicalPro Theme',
-budget: 12.8,
-priority: 'high',
-},
-{
-id: 4,
-imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Nirav Joshi',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', position: 'Frontend Engineer',
-productName: 'Hosting Press HTML',
-budget: 2.4,
-priority: 'critical',
-},
-{
-id: 1,
-// imagePath: 'assets/images/profile/user-1.jpg',
-imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Sunil Joshi',
-username:'usernameejemplo',
-email: 'correo@gmail.com',
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Elite Admin',
-budget: 3.9,
-priority: 'low',
-},
-{
-id: 2,
-// imagePath: 'assets/images/profile/user-2.jpg',
-imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Andrew McDownland',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Real Homes Theme',
-budget: 24.5,
-priority: 'medium',
-},
-{
-id: 3,
-imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Christopher Jamil',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'MedicalPro Theme',
-budget: 12.8,
-priority: 'high',
-},
-{
-id: 4,
-imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Nirav Joshi',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', position: 'Frontend Engineer',
-productName: 'Hosting Press HTML',
-budget: 2.4,
-priority: 'critical',
-},
-{
-id: 1,
-// imagePath: 'assets/images/profile/user-1.jpg',
-imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Sunil Joshi',
-username:'usernameejemplo',
-email: 'correo@gmail.com',
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Elite Admin',
-budget: 3.9,
-priority: 'low',
-},
-{
-id: 2,
-// imagePath: 'assets/images/profile/user-2.jpg',
-imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Andrew McDownland',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Real Homes Theme',
-budget: 24.5,
-priority: 'medium',
-},
-{
-id: 3,
-imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Christopher Jamil',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'MedicalPro Theme',
-budget: 12.8,
-priority: 'high',
-},
-{
-id: 4,
-imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Nirav Joshi',
-username:'usernameejemplo',
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Frontend Engineer',
-productName: 'Hosting Press HTML',
-budget: 2.4,
-priority: 'critical',
-},
-{
-id: 1,
-// imagePath: 'assets/images/profile/user-1.jpg',
-imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Sunil Joshi',
-username:'usernameejemplo',
-email: 'correo@gmail.com',
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Elite Admin',
-budget: 3.9,
-priority: 'low',
-},
-{
-id: 2,
-// imagePath: 'assets/images/profile/user-2.jpg',
-imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Andrew McDownland',
-username:'usernameejemplo',
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'Real Homes Theme',
-budget: 24.5,
-priority: 'medium',
-},
-{
-id: 3,
-imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Christopher Jamil',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-productName: 'MedicalPro Theme',
-budget: 12.8,
-priority: 'high',
-},
-{
-id: 4,
-imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-name: 'Nirav Joshi',
-username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', position: 'Frontend Engineer',
-productName: 'Hosting Press HTML',
-budget: 2.4,
-priority: 'critical',
-},
-{
-  id: 1,
-  // imagePath: 'assets/images/profile/user-1.jpg',
-  imagePath: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  name: 'Sunil Joshi',
-  username:'usernameejemplo',
-  email: 'correo@gmail.com',
-  isActive: true, 
-  role: 'admin', 
-  position: 'Web Designer',
-  productName: 'Elite Admin',
-  budget: 3.9,
-  priority: 'low',
-  },
-  {
-  id: 2,
-  // imagePath: 'assets/images/profile/user-2.jpg',
-  imagePath: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  name: 'Andrew McDownland',
-  username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-  productName: 'Real Homes Theme',
-  budget: 24.5,
-  priority: 'medium',
-  },
-  {
-  id: 3,
-  imagePath: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  name: 'Christopher Jamil',
-  username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', 
-position: 'Web Designer',
-  productName: 'MedicalPro Theme',
-  budget: 12.8,
-  priority: 'high',
-  },
-  {
-  id: 4,
-  imagePath: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  name: 'Nirav Joshi',
-  username:'usernameejemplo',
-
-email: 'correo@gmail.com', 
-isActive: true, 
-role: 'admin', position: 'Frontend Engineer',
-  productName: 'Hosting Press HTML',
-  budget: 2.4,
-  priority: 'critical',
-  },
-];
 /**
 * @title pagination table users
 */
@@ -322,39 +30,38 @@ imports: [
   MatIconModule,
   HeaderTitleComponent,
   ReactiveFormsModule 
-]
+],
+providers:[UsersService]
 })
 export class UsersComponent {
 
-  displayedColumns = [ 'name', 'email','image','action'];
-  dataSource = new MatTableDataSource<Element>(PRODUCT_DATA);
+  displayedColumns = [ 'name','rol','email','isActive','action'];
+
+  dataSource: any = new MatTableDataSource<IUser>();
   searhField = new FormControl();
+  pageSize: number = 5;
+  pageIndex = 0;
 
   private swalService = inject(SwalService);
   private usersService = inject(UsersService);
+  public dialog = inject(MatDialog);
+  private readonly paginatorIntl = inject(MatPaginatorIntl);
+  private readonly breakpointObserver = inject(BreakpointObserver);
     
-  constructor(breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
-    breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+  constructor() {
+    this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'email', 'isActive','action']
-    : [ 'name', 'email', 'isActive', 'rol','action'];
+    ? [ 'name', 'email', 'isActive', 'action']
+    : [ 'name', 'rol', 'email', 'isActive','action'];
     });
     
-    this.getAllUser();
+    this.dataSource['length'] = 0;
+    this.getAllUser(this.pageIndex, this.pageSize);
+    this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
 
   get searchValue() {
     return this.searhField.value;
-  }
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
-  Object.create(null);
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit(): void {
-   this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
@@ -379,30 +86,36 @@ export class UsersComponent {
     });
   }
 
-  async deleteuser(){
-    const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm('eliminar registro');
-
+  async deleteUser(data: any) {
+    const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
+      'eliminar registro'
+    );
     if (deleteAlert.isConfirmed) {
-      this.swalService.success();
+      this.usersService.deleteUser(data.id).subscribe((element) => {
+        if (element) {
+          this.getAllUser(this.pageIndex, this.pageSize);
+          this.swalService.success();
+        } else {
+          this.swalService.error('Error', 'Error al eliminar usuario.');
+        }
+      });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
       /* cancel */
     }
   }
 
-  // getAllUser(page: number, take: number) {
-  getAllUser() {
-    // const parms: IGetAllUsers = {
-    // const parms: any = {
-    //   page: page + 1, //page del paginador inicia en 0
-    //   take: take,
-    //   username: this.searchValue ? this.searchValue.trim() : null,
-    // };
-    // this.usersService.getUsers(parms).subscribe((data: IUserPagination) => {
-    this.usersService.getUsers(null).subscribe((data) => {
-      console.log("recibido data " , data)
-      this.dataSource = new MatTableDataSource(data);
-      // this.dataSource = new MatTableDataSource(data.list);
-      // this.dataSource.length = data.total;
+  getAllUser(page: number, take: number) {
+    const parms: IGetAllUsers = {
+      page: page + 1, //page del paginador inicia en 0
+      take: take,
+      name: this.searchValue ? this.searchValue.trim() : null,
+    };
+    this.usersService.getUsers(parms).subscribe((data: IUserPagination) => {
+      this.dataSource = new MatTableDataSource<IUser>(data.list);
+      this.dataSource.length = data.total;
     });
+  }
+  handlePageEvent(event: PageEvent) {
+    this.getAllUser(event.pageIndex, event.pageSize);
   }
 }

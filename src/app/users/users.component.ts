@@ -12,6 +12,8 @@ import { SwalService} from '../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { UserCreateComponent } from '../user-create/user-create.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UsersService } from './users.service';
 
 export interface Element {
 id: number;
@@ -318,15 +320,18 @@ imports: [
   FeatherIconsModule,
   MaterialModule,
   MatIconModule,
-  HeaderTitleComponent
+  HeaderTitleComponent,
+  ReactiveFormsModule 
 ]
 })
 export class UsersComponent {
 
   displayedColumns = [ 'name', 'email','image','action'];
   dataSource = new MatTableDataSource<Element>(PRODUCT_DATA);
+  searhField = new FormControl();
 
   private swalService = inject(SwalService);
+  private usersService = inject(UsersService);
     
   constructor(breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
@@ -334,6 +339,12 @@ export class UsersComponent {
     ? [ 'name', 'email', 'isActive','action']
     : [ 'name', 'email', 'isActive', 'rol','action'];
     });
+    
+    this.getAllUser();
+  }
+
+  get searchValue() {
+    return this.searhField.value;
   }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
@@ -376,5 +387,22 @@ export class UsersComponent {
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
       /* cancel */
     }
+  }
+
+  // getAllUser(page: number, take: number) {
+  getAllUser() {
+    // const parms: IGetAllUsers = {
+    // const parms: any = {
+    //   page: page + 1, //page del paginador inicia en 0
+    //   take: take,
+    //   username: this.searchValue ? this.searchValue.trim() : null,
+    // };
+    // this.usersService.getUsers(parms).subscribe((data: IUserPagination) => {
+    this.usersService.getUsers(null).subscribe((data) => {
+      console.log("recibido data " , data)
+      this.dataSource = new MatTableDataSource(data);
+      // this.dataSource = new MatTableDataSource(data.list);
+      // this.dataSource.length = data.total;
+    });
   }
 }

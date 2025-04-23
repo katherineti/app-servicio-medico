@@ -29,19 +29,12 @@ export class AuthService {
 
   clearToken() {
     localStorage.removeItem('token');
-    localStorage.removeItem('tipoLogin');
   }
 
   async logout() {
-    const isAdmin = this.isAdmin();
     this.clearToken();
-    this.clearImageProfile();
 
-    if (isAdmin) {
-      await this.router.navigateByUrl('/auth/admin/login');
-    } else if (isAdmin === false) {
-      await this.router.navigateByUrl('/auth/login');
-    }
+    await this.router.navigateByUrl('/login');
   }
 
   async getPlainToken(): Promise<string> {
@@ -139,9 +132,6 @@ export class AuthService {
     return isAdmin;
   }
 
-  clearImageProfile() {
-    localStorage.removeItem('image');
-  }
 
   jwt_decode(token: string): any | null {
     try {

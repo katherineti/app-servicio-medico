@@ -2,7 +2,8 @@
 <mat-toolbar style="background-color: white;">
     <mat-form-field appearance="outline">
         <!-- <mat-label>Buscar</mat-label> -->
-        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar 1" #input>
+        <input matInput placeholder="Buscar formcontrolname" [formControl]="searhField">
     </mat-form-field>
 
     <span class="example-spacer"></span>

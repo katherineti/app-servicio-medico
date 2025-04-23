@@ -1,7 +1,8 @@
 export interface IUser {
   id: string;
-  email: string;
   name: string;
+  email?: string;
+  password?: string;
   isActivate: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -22,4 +23,4 @@ export interface IUserPagination {
 }
 
 export interface ICreateUserDTO
-  extends Omit<IUser, 'id' | 'email' | 'createdAt' | 'updatedAt' > {}
+  extends Omit<IUser, 'id' | 'createdAt' | 'updatedAt' > {}

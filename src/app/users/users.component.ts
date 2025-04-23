@@ -85,6 +85,10 @@ export class UsersComponent {
       data: data || null,
       disableClose: true
     });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllUser(this.pageIndex, this.pageSize);
+    });
   }
 
   async deleteUser(data: any) {

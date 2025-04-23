@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
+import { UsersService } from '../users/users.service';
 
 @Component({
   selector: 'app-user-create',
@@ -19,6 +20,7 @@ export class UserCreateComponent {
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
+  private usersService = inject(UsersService);
 
   constructor( 
     public dialogRef: MatDialogRef<UserCreateComponent>,
@@ -28,23 +30,13 @@ export class UserCreateComponent {
 
   buildAddUserForm() {
     this.userFormGroup = this.formBuilder.group({
-      // username: [
-      //   '',
-      //   [
-      //     Validators.required,
-      //     Validators.minLength(1),
-      //     Validators.maxLength(20),
-      //     Validators.pattern(/^[a-zA-Z0-9]*$/),
-      //   ],
-      // ],
-
       name: [
         '',
         [
           Validators.required,
           Validators.minLength(0),
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
+          // Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
         ],
       ],
       email: [
@@ -52,9 +44,8 @@ export class UserCreateComponent {
       [
         Validators.required, 
         Validators.email,
-        Validators.minLength(3), 
+        Validators.minLength(0), 
         Validators.maxLength(50),
-        // Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
       ]],
       password: [
         '',
@@ -69,19 +60,6 @@ export class UserCreateComponent {
       role: [""],
     });
 
-  }
-
-  onFileSelected(event: any): void | null {
-    const reader = new FileReader();
-    this.imageField = <File>event.target.files[0];
-    reader.readAsDataURL(this.imageField);
-    reader.onload = () => {
-      this.imgBase64 = reader.result;
-      return reader.result;
-    };
-  }
-  getBase64(data: any) {
-    this.imgBase64 = data;
   }
 
   cancel() {
@@ -107,11 +85,32 @@ export class UserCreateComponent {
       this.disableButton = false;
       return;
     }
+    const { ...params } = this.userFormGroup.value;
+    this.usersService
+      .createUser({
+        ...params,
+      })
+      .subscribe({
+        error: (data) => {
+          this.swalService.closeload();
+          this.disableButton = false;
+          // if (data.error.statusCode === 409) {
+          //   this.swalService.error('Error', data.error.message);
+          //   this.typeError = 'username';
+          // }
 
-    this.swalService.closeload();
-    this.closeDialog();
-    this.disableButton = false;
-    this.swalService.success();
+          // if (data.error.statusCode === 400) {
+          //   this.swalService.error('Error', 'Faltan campos requeridos.');
+          //   this.typeError = 'fields';
+          // }
+        },
+        complete: () => {
+          this.swalService.closeload();
+          this.closeDialog();
+          this.disableButton = false;
+          this.swalService.success();
+        },
+      });
   }
 
 }

@@ -3,7 +3,7 @@ import { catchError, throwError } from 'rxjs';
 import { toast } from 'ngx-sonner';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log(req);
+
   return next(req).pipe(
     catchError( (error: HttpErrorResponse) => {
       if(error.status === 400){

@@ -36,7 +36,7 @@ export class UserDialogComponent implements OnInit {
   async ngOnInit() {
 
     this.selectedUser = this.data;
-    console.log("this.selectedUser ", this.selectedUser)
+    console.log("this.selectedUser ", this.selectedUser.id)
     if (this.data) {
       this.setForm();
     }
@@ -55,9 +55,9 @@ export class UserDialogComponent implements OnInit {
       email: [
         '',
         [
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
-          Validators.required,
-          Validators.minLength(0),
+          Validators.required, 
+          Validators.email,
+          Validators.minLength(0), 
           Validators.maxLength(50),
         ],
       ],
@@ -67,6 +67,7 @@ export class UserDialogComponent implements OnInit {
           Validators.required,
           Validators.minLength(0),
           Validators.maxLength(50),
+          // Validators.pattern('/^[a-zA-ZÀ-ÿ\s]+$/')
         ],
       ],
       isActive: [
@@ -75,7 +76,6 @@ export class UserDialogComponent implements OnInit {
           Validators.required,
           Validators.minLength(1),
           Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],
       ],
       role: [''],

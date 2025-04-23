@@ -10,7 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe( 
     catchError((error: HttpErrorResponse) => {
-    console.log(error);
+
     if(error.status === 401){
       authService.logout().catch((error) => {
         toast.error(error);

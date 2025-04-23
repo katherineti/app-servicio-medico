@@ -27,8 +27,9 @@
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                         Nombre
                         </mat-header-cell>
-                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.name }}</mat-cell>
+                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                            element.name | titlecase
+                        }}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="email">
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
@@ -53,8 +54,9 @@
                         <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                         Rol
                         </mat-header-cell>
-                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.role }}</mat-cell>
+                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                            element.role | titlecase
+                        }}</mat-cell>
                     </ng-container>
                 
                     <ng-container matColumnDef="action">

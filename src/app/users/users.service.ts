@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/Token.service';
 import { ICreateUserDTO, IGetAllUsers, IUser } from './users.interface';
@@ -7,23 +7,27 @@ import { ICreateUserDTO, IGetAllUsers, IUser } from './users.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
-  constructor(private readonly tokenService: TokenService, private readonly http: HttpClient) {}
 
-    getUsers(params: IGetAllUsers): Observable<any> {
+export class UsersService {
+  
+  private readonly tokenService = inject(TokenService);
+  private readonly http = inject(HttpClient);
+
+  getUsers(params: IGetAllUsers): Observable<any> {
     return this.http.post<IUser[]>(
       `${this.tokenService.endPoint}users/getAll`,
       params
     );
   }
 
-/*   createUser(dto: ICreateUserDTO) {
+  createUser(dto: ICreateUserDTO) {
+    console.log("dto create" , dto)
     return this.http.post<IUser>(
-      `${this.tokenService.endPoint}auth/createAccount`,
+      `${this.tokenService.endPoint}users/createAccount`,
       dto
     );
   }
-*/
+
   updateUser(id: string, dto: ICreateUserDTO) {
     return this.http.patch<IUser>(
       `${this.tokenService.endPoint}users/${id}`,
@@ -35,12 +39,4 @@ export class UsersService {
     return this.http.delete<IUser>(`${this.tokenService.endPoint}users/${id}`);
   }
   
-/*   getUserById(userId: string): Observable<IUser> {
-    return this.http.get<IUser>(
-      `${this.tokenService.endPoint}users/${userId}`,
-      {
-        headers: this.tokenService.headerToken(),
-      }
-    );
-  }  */ 
 }

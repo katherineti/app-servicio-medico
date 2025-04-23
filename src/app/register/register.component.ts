@@ -31,12 +31,12 @@ export class RegisterComponent {
         Validators.required, 
         Validators.minLength(0), 
         Validators.maxLength(50),
-        Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
+        // Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
       ]],
       email: ['', [
         Validators.required, 
         Validators.email,
-        Validators.minLength(3), 
+        Validators.minLength(0), 
         Validators.maxLength(50),
       ]],
       password: [

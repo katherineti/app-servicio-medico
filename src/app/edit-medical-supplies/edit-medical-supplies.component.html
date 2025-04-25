@@ -6,22 +6,45 @@
     <div class="d-flex align-items-center">
     <div class="right-bg-content p-10">
         <form [formGroup]="editProdFormGroup" #f="ngForm">
-           <div class="wrapper-img" >
+          <div class="wrapper-img" [class.has-image]="!!imgBase64()">
             <img
               class="img"
-              alt="user"
-              [src]="
-                imgBase64 ? imgBase64 : '../../assets/images/user.png'
-              "
+              alt="product"
+              [src]="imgBase64() ? imgBase64() : '../../assets/images/user.png'"
             />
-            <button
-              type="button"
-              color="primary"
-              mat-flat-button
-              (click)="fileInput.click()"
-            >
-              Seleccionar imagen
-            </button>
+            
+            @if (isLoading()) {
+              <div class="loading-overlay">
+                <span>Cargando imagen...</span>
+              </div>
+            }
+            
+            <div class="image-actions">
+              <button
+                type="button"
+                color="primary"
+                mat-flat-button
+                (click)="fileInput.click()"
+              >
+                @if (!imgBase64()) {
+                  Seleccionar imagen
+                } @else {
+                  Cambiar imagen
+                }
+              </button>
+              
+              @if (imgBase64()) {
+                <button
+                  type="button"
+                  color="warn"
+                  mat-flat-button
+                  (click)="removeImage()"
+                >
+                  Eliminar
+                </button>
+              }
+            </div>
+            
             <input
               hidden
               (change)="onFileSelected($event)"
@@ -30,7 +53,6 @@
               accept="image/png, image/jpeg"
             />
           </div>
-
           <div class="row p-10">
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
@@ -63,14 +85,14 @@
                 formControlName="category"
                 required="true"
                 >
-                <mat-option [value]="'categoria1'">{{
-                    'categoria1' | titlecase
+                <mat-option [value]="1">{{
+                    'Categoria 1' 
                 }}</mat-option>
-                <mat-option [value]="'categoria2'">{{
-                    'categoria2' | titlecase
+                <mat-option [value]="2">{{
+                    'Categoria 2' 
                 }}</mat-option>
-                <mat-option [value]="'categoria3'">{{
-                    'categoria3' | titlecase
+                <mat-option [value]="3">{{
+                    'Categoria 3' 
                 }}</mat-option>
                 </mat-select>
 
@@ -85,15 +107,9 @@
                 formControlName="type"
                 required="true"
                 >
-                <mat-option value="medicamentos">{{
-                    'Medicamentos' | titlecase
-                }}</mat-option>
-                <mat-option value="uniformes">{{
-                    'Uniformes' | titlecase
-                }}</mat-option>
-                <mat-option value="equipos odontologicos">{{
-                    'Equipos Odontológicos' | titlecase
-                }}</mat-option>
+                <mat-option value="Medicamentos">Medicamentos</mat-option>
+                <mat-option value="Uniformes">Uniformes</mat-option>
+                <mat-option value="Equipos odontologicos">Equipos Odontológicos</mat-option>
                 </mat-select>
 
                 <mat-error *ngIf="editProdFormGroup.controls['type'].hasError('required') || editProdFormGroup.controls['type'].hasError('maxLength') ">
@@ -136,33 +152,19 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
-                <input matInput [matDatepicker]="expiration_date" placeholder="Fecha de vencimiento" formControlName="expiration_date" required="true">
-                <mat-hint>MMMM DD, YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="expiration_date"></mat-datepicker-toggle>
-                <mat-datepicker #expiration_date></mat-datepicker>
-
-                <mat-error *ngIf="editProdFormGroup.controls['expiration_date'].hasError('required') || editProdFormGroup.controls['expiration_date'].hasError('maxLength') ">
-                    La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="example-full-width">
                 <mat-select
                 placeholder="Estado"
                 formControlName="status"
                 required="true"
                 >
-                <mat-option value="Activo">{{
+                <mat-option [value]="1">{{
                     'Activo'
                 }}</mat-option>
-                <mat-option value="Inactivo">{{
+                <mat-option [value]="2">{{
                     'Inactivo'
                 }}</mat-option>
-                <mat-option value="Proximo a vencerse">{{
-                    'Proximo a vencerse'
-                }}</mat-option>
-                <mat-option value="Caducado">{{
-                    'Caducado'
+                <mat-option [value]="3">{{
+                    'Próximo a vencerse'
                 }}</mat-option>
                 </mat-select>
 
@@ -181,7 +183,7 @@
                   [disabled]="editProdFormGroup.invalid && disableButton"
                   (click)="save()"
                   >
-                  Guardar Producto
+                  Guardar
                   </button>
                   <button
                   class="m-r-10 bg-error m-l-8"

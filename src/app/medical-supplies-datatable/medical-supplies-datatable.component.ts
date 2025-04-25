@@ -1,18 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { FeatherIconsModule } from '../feathericons/feathericons.module';
 import { MaterialModule } from '../material/material.module';
 import { MatDialog } from '@angular/material/dialog';
-import { IProduct } from '../medical-supplies/medical-supples.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { SwalService } from '../services/swal.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { AssignProductWorkerComponent } from '../assign-product-worker/assign-product-worker.component';
 import { RouterModule } from '@angular/router';
 import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
 import { CreateMedicalSuppliesComponent } from '../create-medical-supplies/create-medical-supplies.component';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import { IGetAllProducts, IProduct, IProductPagination } from '../medical-supplies/medical-supplies.interface';
+import { Category, MedicalSuppliesService } from '../medical-supplies/medical-supplies.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { API_URL } from '../../../environment';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -22,43 +27,58 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
     CommonModule,
     FeatherIconsModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
     // NgOptimizedImage,
   ],
 })
 
 export class MedicalSuppliesDatatableComponent {
   readonly dialog = inject(MatDialog);
-  displayedColumns = ['name', 'stock', 'code','expiration_date','action'];
-  dataSource = new MatTableDataSource<IProduct>([]);
+  displayedColumns = ['name', 'stock', 'code','action'];
   @Input()
-  data!: IProduct[];
+  data!: string;
+
+  dataSource: any = new MatTableDataSource<IProduct>();
+  searhField = new FormControl();
+  pageSize: number = 5;
+  pageIndex = 0;
+
+  categories :any;   loadingCategorie = signal(false);
+  API_URL= API_URL;
   
   private swalService = inject(SwalService);
-    
-  constructor(breakpointObserver: BreakpointObserver) {
-    breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+  private medicalSuppliesService = inject(MedicalSuppliesService);
+  private readonly paginatorIntl = inject(MatPaginatorIntl);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  constructor() {
+    this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'stock', 'code','expiration_date','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','expiration_date','image','action','status'];
+    ? [ 'name', 'stock', 'code','action']
+    : [ 'name', 'category', 'stock', 'code', 'date_entry','image','status','action'];
     });
+
+    this.loadingCategorie.set(true);
+    this.categories = toSignal(
+       this.medicalSuppliesService.getCategories().pipe( tap(() => this.loadingCategorie.set(false)) ), { initialValue: [] as Category[] },
+     );
   }
 
   async ngOnInit() {
-    if(this.data){
-      const PRODUCT_DATA = this.data;
-      this.dataSource = new MatTableDataSource<IProduct>(PRODUCT_DATA);
+ 
+    if(this.data=='allProducts'){
+      this.dataSource['length'] = 0;
+      this.getAllProducts(this.pageIndex, this.pageSize);
+      this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
+
+    }else if(this.data=='expiredProducts'){
+
     }
   }
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
-  Object.create(null);
-  /**
-  * Set the paginator after the view init since this component will
-  * be able to query its view for the initialized paginator.
-  */
-  ngAfterViewInit(): void {
-   this.dataSource.paginator = this.paginator;
+  get searchValue() {
+    return this.searhField.value;
   }
 
   applyFilter(event: Event) {
@@ -66,17 +86,24 @@ export class MedicalSuppliesDatatableComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialogEdit(data?: any): void {
+  openDialogEditProduct(data?: any): void {
     const ref = this.dialog.open(EditMedicalSuppliesComponent, {
       data: data || null,
       disableClose: true
     });
 
+    ref.afterClosed().subscribe(() => {
+      this.getAllProducts(this.pageIndex, this.pageSize);
+    });
   }
   openDialogCreateSupplies(data?: any): void {
     const ref = this.dialog.open(CreateMedicalSuppliesComponent, {
       data: data || null,
       disableClose: true
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllProducts(this.pageIndex, this.pageSize);
     });
   }
 
@@ -94,6 +121,23 @@ export class MedicalSuppliesDatatableComponent {
     const ref = this.dialog.open(AssignProductWorkerComponent, {
       data: data || null,
       disableClose: true
+    });
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.getAllProducts(event.pageIndex, event.pageSize);
+  }
+
+  getAllProducts(page: number, take: number) {
+    const parms: IGetAllProducts = {
+      page: page + 1,
+      take: take,
+      name: this.searchValue ? this.searchValue.trim() : null,
+    };
+    this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
+      console.log(data)
+      this.dataSource = new MatTableDataSource<IProduct>(data.list);
+      this.dataSource.length = data.total;
     });
   }
 }

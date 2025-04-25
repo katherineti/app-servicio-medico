@@ -1,10 +1,14 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, SecurityContext, signal } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
-import { IProduct } from '../medical-supplies/medical-supples.interface';
+import { IProduct } from '../medical-supplies/medical-supplies.interface';
+import { MedicalSuppliesService } from '../medical-supplies/medical-supplies.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { toast } from 'ngx-sonner';
+import { API_URL } from '../../../environment';
 
 @Component({
   selector: 'app-edit-medical-supplies',
@@ -17,26 +21,32 @@ export class EditMedicalSuppliesComponent {
   readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
   editProdFormGroup!: FormGroup;
   imageField?: File;
-  imgBase64?: any;
   disableButton: boolean = false;
   selectedProduct!: IProduct;
 
+  imgBase64 = signal<string | null>(null);
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+  selectedFile: File | null = null;
+
+   API_URL= API_URL;
+
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
+  private medicalSuppliesService = inject(MedicalSuppliesService);
 
   constructor( 
       @Inject(MAT_DIALOG_DATA) 
-      public data: IProduct
+      public data: IProduct,
+      private readonly sanitizer: DomSanitizer,
     ){
     this.buildForm();
   }
 
   async ngOnInit() {
 
-    this.selectedProduct = this.data;
-    console.log("this.data", this.selectedProduct )
+    this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct )
 
-    console.log(this.selectedProduct)
     if (this.data) {
       this.setForm();
     }
@@ -101,14 +111,6 @@ export class EditMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
-      expiration_date: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(50),
-        ],
-      ],
       status: [
         '',
         [
@@ -117,6 +119,8 @@ export class EditMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
+      url_image: [null],
+
     });
 
   }
@@ -128,28 +132,18 @@ export class EditMedicalSuppliesComponent {
       id: this.selectedProduct?.id,
       name: this.selectedProduct?.name,
       description: this.selectedProduct?.description,
-      category: this.selectedProduct?.category,
+      category: this.selectedProduct?.categoryId,
       type: this.selectedProduct?.type,
       stock: this.selectedProduct?.stock,
       code: this.selectedProduct?.code,
-      date_entry: this.selectedProduct?.date_entry,
-      expiration_date: this.selectedProduct?.expiration_date,
-      imagePath:this.selectedProduct?.imagePath,
-      status:this.selectedProduct?.status,
+      date_entry: this.selectedProduct?.createdAt,
+      url_image:this.selectedProduct?.url_image,
+      status:this.selectedProduct?.statusId,
       });
-  }
 
-  onFileSelected(event: any): void | null {
-    const reader = new FileReader();
-    this.imageField = <File>event.target.files[0];
-    reader.readAsDataURL(this.imageField);
-    reader.onload = () => {
-      this.imgBase64 = reader.result;
-      return reader.result;
-    };
-  }
-  getBase64(data: any) {
-    this.imgBase64 = data;
+      if (this.selectedProduct.url_image) {
+        this.imgBase64.set( API_URL+'uploads'+ this.selectedProduct?.url_image);
+      }
   }
 
   cancel() {
@@ -162,32 +156,114 @@ export class EditMedicalSuppliesComponent {
 
   save(){
     if (this.checkPropId) {
-      return this.updateProduct();
+      // return this.updateProduct();
+      return this.guardarProducto();
     }
   }
 
-  private updateProduct() {
-    this.swalService.loading();
-    this.disableButton = true;
-    if (this.editProdFormGroup.invalid) {
-      this.swalService.closeload();
-      this.disableButton = false;
+  removeImage(): void {
+    this.imgBase64.set(null)
+    this.editProdFormGroup.patchValue({
+      url_image: null,
+    })
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files?.length) {
+      this.selectedFile = null; // Resetear si no se selecciona archivo
+      this.editProdFormGroup.patchValue({ url_image: null });
       return;
     }
-    const { ...params } = this.editProdFormGroup.value;
+
+    const file = input.files[0];
+    this.selectedFile = file; // Guarda el archivo original
+
+    // Validar tipo de archivo
+    if (!file.type.match(/image\/(jpeg|png)/)) {
+      this.errorMessage.set("Solo se permiten imágenes JPG o PNG");
+      toast.error("Solo se permiten imágenes JPG o PNG");
+      this.selectedFile = null;
+      this.editProdFormGroup.patchValue({ url_image: null });
+      return;
+    }
+
+    // Validar tamaño (máximo 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      this.errorMessage.set("La imagen no debe superar los 5MB");
+      toast.error("La imagen no debe superar los 5MB");
+      this.selectedFile = null;
+      this.editProdFormGroup.patchValue({ url_image: null });
+      return;
+    }
+
+    this.errorMessage.set(null);
+    this.isLoading.set(true);
+
+    // Convertir a base64 para la previsualización (opcional)
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imgBase64.set(reader.result as string);
+      this.isLoading.set(false);
+    };
+    reader.onerror = () => {
+      this.errorMessage.set("Error al procesar la imagen");
+      toast.error("Error al procesar la imagen");
+      this.isLoading.set(false);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  guardarProducto(): void {console.log(this.editProdFormGroup.value)
+    if (this.editProdFormGroup.invalid ) {
+      toast.error("Por favor, completa el formulario correctamente.");
+      return;
+    }
+
+    this.isLoading.set(true);
+    const formData = new FormData();
+
+    // Agregar los campos del formulario al FormData
+    Object.keys(this.editProdFormGroup.value).forEach(key => {
+      if (key !== 'url_image') { // No agregamos la cadena Base64 aquí
+        formData.append(key, this.editProdFormGroup.get(key)?.value);
+      }
+    });
+
+    // Agregar el archivo de la imagen al FormData
+    if (this.selectedFile) {
+      formData.append('url_image', this.selectedFile, this.selectedFile.name);
+    }
+    for (const entry of formData.entries()) {
+      console.log(`${entry[0]}: ${entry[1]}`);
+    }
     const id = this.selectedProduct.id;
 
-    let obj : IProduct= {
-      id,
-      ...params,
-      urlImage: this.imgBase64,
-    }
-    console.log("guardar",obj);
-
-    this.swalService.closeload();
-    this.swalService.success();
-    this.disableButton = false;
-    this.closeDialog();
+     this.medicalSuppliesService
+      .updateProduct(id, formData)
+      .subscribe({
+        complete: () => {
+          toast.success('Producto modificado');
+          this.isLoading.set(false);
+          this.editProdFormGroup.reset();
+          this.imgBase64.set(null);
+          this.selectedFile = null;
+          this.closeDialog();
+        },
+        error: (error) => {
+          this.swalService.closeload();
+          this.disableButton = false;
+          this.errorMessage.set('Error al crear el producto.');
+          this.isLoading.set(false);
+          console.error('Error al crear el producto', error);
+          if (error.status === 413) {
+            toast.error('La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.');
+          } else {
+            toast.error('Error al crear el producto. Por favor, inténtalo de nuevo.');
+          }
+        }
+      });   
   }
 
 }

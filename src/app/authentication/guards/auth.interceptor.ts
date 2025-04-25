@@ -15,7 +15,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       authService.logout().catch((error) => {
         toast.error(error);
       });
-    }else{
+    }else if (error.status === 413) {
+      // errorMessage = 'La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.';
+      toast.error('La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.');
+      console.error(error.error.message);
+
+    } else{
       console.error(error.error.message);
     }
     return throwError(()=>error)

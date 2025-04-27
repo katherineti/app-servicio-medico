@@ -38,7 +38,7 @@ export class MedicalSuppliesDatatableComponent {
   data!: string;
 
   dataSource: any = new MatTableDataSource<IProduct>();
-  searhField = new FormControl();
+  searhField = new FormControl();  searhCategoryField = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
 
@@ -77,6 +77,9 @@ export class MedicalSuppliesDatatableComponent {
 
   get searchValue() {
     return this.searhField.value;
+  }
+  get searchCategoryValue() {
+    return this.searhCategoryField.value;
   }
 
   applyFilter(event: Event) {
@@ -121,6 +124,7 @@ export class MedicalSuppliesDatatableComponent {
       page: page + 1,
       take: take,
       name: this.searchValue ? this.searchValue.trim() : null,
+      category: this.searchCategoryValue ? this.searchCategoryValue.trim() : null,
     };
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
       console.log(data)

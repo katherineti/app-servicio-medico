@@ -2,7 +2,10 @@
     <mat-form-field appearance="outline">
         <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
     </mat-form-field>
-    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
+    <mat-form-field appearance="outline" class="m-l-10 ">
+        <input matInput class="p-b-0" placeholder="Buscar por categoría" [formControl]="searhCategoryField" />
+    </mat-form-field>
+    <button mat-flat-button color="primary" class="m-l-10 m-r-10 margin-left-none" id="filter"
     (click)="getAllProducts(this.pageIndex, this.pageSize)">
         Buscar
     </button>

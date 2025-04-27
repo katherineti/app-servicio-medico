@@ -15,9 +15,10 @@ export interface IProduct {
 }
 
 export interface IGetAllProducts {
-  name?: string;
   page: number;
   take: number;
+  name?: string;
+  category?: string;
 }
 
 export interface IProductPagination {

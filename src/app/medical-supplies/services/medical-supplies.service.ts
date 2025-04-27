@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TokenService } from '../services/Token.service';
-import { ICreateProductDTO, IGetAllProducts, IProduct } from './medical-supplies.interface';
+import { TokenService } from '../../services/Token.service';
+import { ICreateProductDTO, IGetAllProducts, IProduct } from '../interfaces/medical-supplies.interface';
 
 export interface Category {
   id: number;

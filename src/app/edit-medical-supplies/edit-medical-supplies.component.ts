@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
-import { IProduct } from '../medical-supplies/medical-supplies.interface';
-import { MedicalSuppliesService } from '../medical-supplies/medical-supplies.service';
+import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
+import { MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { toast } from 'ngx-sonner';
 import { API_URL } from '../../../environment';
@@ -244,7 +244,7 @@ export class EditMedicalSuppliesComponent {
       .updateProduct(id, formData)
       .subscribe({
         complete: () => {
-          toast.success('Producto modificado');
+          toast.success('Producto editado.');
           this.isLoading.set(false);
           this.editProdFormGroup.reset();
           this.imgBase64.set(null);

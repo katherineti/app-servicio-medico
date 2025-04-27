@@ -13,8 +13,8 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { UserCreateComponent } from '../user-create/user-create.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { UsersService } from './users.service';
-import { IGetAllUsers, IUser, IUserPagination } from './users.interface';
+import { UsersService } from './services/users.service';
+import { IGetAllUsers, IUser, IUserPagination } from './interfaces/users.interface';
 
 /**
 * @title pagination table users

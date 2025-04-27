@@ -1,37 +1,12 @@
-<h2 mat-dialog-title >
+<!-- <p>assignment works!</p> -->
+<h2 mat-dialog-title>
     Asignar producto a un empleado 
 </h2>
 
 <mat-dialog-content class="mat-typography">
     <div class="d-flex align-items-center">
     <div class="right-bg-content p-10">
-
         <form [formGroup]="AssignProductForm" #f="ngForm">
-           <div class="wrapper-img">
-            <img
-              class="img"
-              alt="user"
-              [src]="
-                imgBase64 ? imgBase64 : '../../assets/images/user.png'
-              "
-            />
-            <button
-              type="button"
-              color="primary"
-              mat-flat-button
-              (click)="fileInput.click()"
-            >
-              Seleccionar imagen
-            </button>
-            <input
-              hidden
-              (change)="onFileSelected($event)"
-              #fileInput
-              type="file"
-              accept="image/png, image/jpeg"
-            />
-          </div>
-
           <div class="row p-10">
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
@@ -42,7 +17,7 @@
                 type="text"
                 />
                 <mat-error *ngIf="AssignProductForm.controls['name'].hasError('required') || AssignProductForm.controls['name'].hasError('maxLength') ">
-                    El nombre es requerido y como máximo puede tener 50 caracteres.
+                    El nombre es requerido y como máximo puede tener 100 caracteres.
                 </mat-error>
             </mat-form-field>
 
@@ -50,13 +25,15 @@
                 <input
                 matInput
                 placeholder="Número de productos"
-                formControlName="quantity"
+                formControlName="products"
                 required="true"
                 type="number"
                 />
-
-                <mat-error *ngIf="AssignProductForm.controls['quantity'].hasError('required') || AssignProductForm.controls['quantity'].hasError('max') ">
+                <mat-error *ngIf="AssignProductForm.controls['products'].hasError('required') || AssignProductForm.controls['products'].hasError('max') ">
                     La cantidad de productos es requerido y como máximo puede ingresar 3.
+                </mat-error>
+                <mat-error *ngIf="AssignProductForm.controls['products'].hasError('min') ">
+                    Como mínimo puede asignar 1  producto.
                 </mat-error>
             </mat-form-field>
 
@@ -65,34 +42,27 @@
                 <input type="text" matInput placeholder="Empleado" formControlName="employee" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                   @for (option of filteredOptions | async; track option) {
-                    <mat-option [value]="option">{{option.name}}</mat-option>
+                    <mat-option [value]="option">{{option.name | titlecase }}-{{option.cedula}}</mat-option>
                   }
                 </mat-autocomplete>
-
                 <mat-error *ngIf="AssignProductForm.controls['employee'].hasError('required') || AssignProductForm.controls['employee'].hasError('maxLength') ">
-                    El empleado es requerido y como máximo puede tener 50 caracteres.
+                    El empleado es requerido y como máximo puede tener 200 caracteres.
                 </mat-error>
             </mat-form-field>
         
             @if (this.AssignProductForm.controls['checked_addFamily'].value) {
-
                 <mat-form-field appearance="outline" class="example-full-width">
                     <mat-select
                     placeholder="Familiar"
                     formControlName="family"
                     >
                     <mat-option [value]="null">Ninguno</mat-option>
-                    <mat-option [value]="1">{{
-                        'familiar1' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="2">{{
-                        'familiar2' | titlecase
-                    }}</mat-option>
-    
+                    @for (item of listFamily; track item) {
+                        <mat-option [value]="item">{{item.name | titlecase}}-{{item.cedula}}</mat-option>
+                    }
                     </mat-select>
-
                     <mat-error *ngIf="AssignProductForm.controls['family'].hasError('maxLength') ">
-                        El familiar como máximo puede tener 50 caracteres.
+                        El familiar como máximo puede tener 200 caracteres.
                     </mat-error>
                 </mat-form-field>
             }
@@ -103,38 +73,31 @@
               formControlName="type"
               required="true"
               >
-                <mat-option [value]="'tipo1'">{{
-                    'tipo1' | titlecase
-                }}</mat-option>
-                <mat-option [value]="'tipo2'">{{
-                    'tipo2' | titlecase
-                }}</mat-option>
-
+              @for (item of listTypesAssignment; track item) {
+                <mat-option [value]="item">{{item.name | titlecase}}</mat-option>
+              }
               </mat-select>
 
               <mat-error *ngIf="AssignProductForm.controls['type'].hasError('required') || AssignProductForm.controls['type'].hasError('maxLength') ">
-                El tipo es requerido y como máximo puede tener 50 caracteres.
-            </mat-error>
-          </mat-form-field>
+                El tipo es requerido y como máximo puede tener 30 caracteres.
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" class="example-full-width">
-            <input
-            matInput
-            placeholder="Observación"
-            formControlName="observation"
-            required="true"
-            type="text"
-            />
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Observación"
+                formControlName="observation"
+                type="text"
+                />
+                <mat-error *ngIf="AssignProductForm.controls['observation'].hasError('maxLength') ">
+                    La observación como máximo puede tener 200 caracteres.
+                </mat-error>
+            </mat-form-field>
 
-            <mat-error *ngIf="AssignProductForm.controls['observation'].hasError('required') || AssignProductForm.controls['observation'].hasError('maxLength') ">
-                La observación es requerida y como máximo puede tener 50 caracteres.
-            </mat-error>
-          </mat-form-field>
-
-          <section class="example-section">
-            <mat-checkbox class="example-margin" formControlName="checked_addFamily">Asignar a un familiar</mat-checkbox>
-          </section>
-
+            <section class="example-section">
+                <mat-checkbox class="example-margin" formControlName="checked_addFamily">Asignar a un familiar</mat-checkbox>
+            </section>
           </div>
       
           <div class="row">
@@ -156,9 +119,7 @@
                   </button>
               </div>
           </div>
-          
         </form>
-        
     </div>
     </div>
   </mat-dialog-content>

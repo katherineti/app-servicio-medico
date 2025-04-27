@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TokenService } from '../services/Token.service';
-import { ICreateUserDTO, IGetAllUsers, IUser } from './users.interface';
+import { TokenService } from '../../services/Token.service';
+import { ICreateUserDTO, IGetAllUsers, IUser } from '../interfaces/users.interface';
 
 @Injectable({
   providedIn: 'root',

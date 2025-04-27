@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
-import { UsersService } from '../users/users.service';
-import { IUser } from '../users/users.interface';
+import { UsersService } from '../users/services/users.service';
+import { IUser } from '../users/interfaces/users.interface';
 
 @Component({
   selector: 'app-user-dialog',

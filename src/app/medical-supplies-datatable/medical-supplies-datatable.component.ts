@@ -7,17 +7,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SwalService } from '../services/swal.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
-import { AssignProductWorkerComponent } from '../assign-product-worker/assign-product-worker.component';
 import { RouterModule } from '@angular/router';
 import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
 import { CreateMedicalSuppliesComponent } from '../create-medical-supplies/create-medical-supplies.component';
-import Swal, { SweetAlertResult } from 'sweetalert2';
-import { IGetAllProducts, IProduct, IProductPagination } from '../medical-supplies/medical-supplies.interface';
-import { Category, MedicalSuppliesService } from '../medical-supplies/medical-supplies.service';
+import { IGetAllProducts, IProduct, IProductPagination } from '../medical-supplies/interfaces/medical-supplies.interface';
+import { Category, MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { API_URL } from '../../../environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
+import { AssignmentComponent } from '../assignment/assignment.component';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -29,7 +28,6 @@ import { tap } from 'rxjs';
     MaterialModule,
     RouterModule,
     ReactiveFormsModule
-    // NgOptimizedImage,
   ],
 })
 
@@ -44,7 +42,7 @@ export class MedicalSuppliesDatatableComponent {
   pageSize: number = 5;
   pageIndex = 0;
 
-  categories :any;   loadingCategorie = signal(false);
+  categories: any;   loadingCategorie = signal(false);
   API_URL= API_URL;
   
   private swalService = inject(SwalService);
@@ -107,18 +105,8 @@ export class MedicalSuppliesDatatableComponent {
     });
   }
 
-  async deleteSupplies(){
-    const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm('eliminar registro');
-
-    if (deleteAlert.isConfirmed) {
-      this.swalService.success();
-    } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
-    }
-  }
-
   assignProductToWorker(data?: any): void {
-    const ref = this.dialog.open(AssignProductWorkerComponent, {
+    const ref = this.dialog.open(AssignmentComponent, {
       data: data || null,
       disableClose: true
     });

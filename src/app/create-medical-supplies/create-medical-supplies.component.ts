@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
-import { Category, MedicalSuppliesService } from '../medical-supplies/medical-supplies.service';
+import { Category, MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
 import { Subscription, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { toast } from 'ngx-sonner';

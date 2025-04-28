@@ -1,5 +1,5 @@
 export interface IEmployee{
-    id:number ,
+    id:number,
     name: string,
     cedula: string,
     email: string,
@@ -20,3 +20,11 @@ export interface ITypesAssignment{
     id: number,
     name: string,
 }
+
+export interface IEmployeeFamily{
+    id:number,
+    employeeId: number,
+    familyId: number,
+    familyName:string,
+    familyCedula:string
+} 

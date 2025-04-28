@@ -50,15 +50,17 @@
                 </mat-error>
             </mat-form-field>
         
-            @if (this.AssignProductForm.controls['checked_addFamily'].value) {
+            <!-- @if (this.AssignProductForm.controls['checked_addFamily'].value) { -->
+            @if (this.AssignProductForm.controls['employee'].value) {
                 <mat-form-field appearance="outline" class="example-full-width">
                     <mat-select
                     placeholder="Familiar"
                     formControlName="family"
                     >
+                    <option [value]="null" disabled selected>Seleccionar familiar</option>
                     <mat-option [value]="null">Ninguno</mat-option>
                     @for (item of listFamily; track item) {
-                        <mat-option [value]="item">{{item.name | titlecase}}-{{item.cedula}}</mat-option>
+                        <mat-option [value]="item.familyId">{{item.familyName | titlecase}}</mat-option>
                     }
                     </mat-select>
                     <mat-error *ngIf="AssignProductForm.controls['family'].hasError('maxLength') ">

@@ -3,11 +3,11 @@ import { Component, Inject, inject, model, OnInit } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, of, startWith, switchMap } from 'rxjs';
 import { SwalService } from '../services/swal.service';
 import { AssignmentService } from './services/assignment.service';
 import { toast } from 'ngx-sonner';
-import { IEmployee, IFamily, ITypesAssignment } from './intefaces/assignment.interface';
+import { IEmployee, IEmployeeFamily, ITypesAssignment } from './intefaces/assignment.interface';
 import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
 
 @Component({
@@ -25,7 +25,7 @@ export class AssignmentComponent implements OnInit {
   options: IEmployee[] = [];
   filteredOptions!: Observable<IEmployee[]>;
   checked_addFamily = model(false);
-  listFamily: IFamily[] = [];
+  listFamily: IEmployeeFamily[] = [];
   listTypesAssignment: ITypesAssignment[] = [];
 
   private formBuilder = inject(FormBuilder);
@@ -49,7 +49,7 @@ export class AssignmentComponent implements OnInit {
     if (this.selectedProduct?.id !== null && this.selectedProduct?.id !== undefined) {
       return true;
     }
-    console.log("Falta id del producto seleccionado");
+    console.log("Falta el id del producto seleccionado");
     return false;
   }
 
@@ -86,7 +86,7 @@ export class AssignmentComponent implements OnInit {
         ],
       ],
       family: [
-        '',
+        { value: '', disabled: true },
         [
           Validators.minLength(1),
           Validators.maxLength(50),
@@ -117,7 +117,6 @@ export class AssignmentComponent implements OnInit {
       this.AssignProductForm.patchValue({
         name: this.selectedProduct?.name,
       });
-      console.log(  this.AssignProductForm.controls['checked_addFamily'].value )
 
       //Empleados
       this.assignmentService.getEmployees().subscribe((employees: IEmployee[]) => {
@@ -131,17 +130,33 @@ export class AssignmentComponent implements OnInit {
         );
       });
 
-      //Familiares
-      this.assignmentService.getFamilies().subscribe((listFamily: any[]) => {
-        this.listFamily = listFamily; 
-        console.log('Lista familiares:', this.options);
-      });
-      
+      //Familiares por empleado
+      this.familiares();
+            
       //Tipos de asignacion
-      this.assignmentService.getAllTypesAssignment().subscribe((listTypesAssignment: any[]) => {
-        this.listTypesAssignment = listTypesAssignment; 
-        console.log('Tipos de asignacion:', this.listTypesAssignment); 
-      });
+      this.assignmentService.getAllTypesAssignment().subscribe((listTypesAssignment: ITypesAssignment[]) => this.listTypesAssignment = listTypesAssignment );
+  }
+
+  familiares() {
+    this.AssignProductForm.get('employee')?.valueChanges.pipe(
+      switchMap((empleadoSeleccionado: IEmployee) => {
+        console.log("empleadoSeleccionado *" , empleadoSeleccionado)
+        this.AssignProductForm.get('family')?.disable(); // Deshabilita el select de familiares al cambiar de empleado
+        this.listFamily = []; // Limpia los familiares al cambiar de empleado
+
+        if (empleadoSeleccionado?.id) {
+          // Servicio para obtener los familiares del empleado seleccionado
+          return this.assignmentService.getFamiliesByEmployee(empleadoSeleccionado.id);
+        } else {
+          return of([]); // Si no se cumple la condición, emite un array vacío
+        }
+      })
+    ).subscribe(familiares => {
+      this.listFamily = familiares; console.log("familiares " , familiares)
+      if (this.listFamily.length > 0) {
+        this.AssignProductForm.get('family')?.enable();
+      }
+    });
   }
 
   cancel() {
@@ -181,7 +196,6 @@ export class AssignmentComponent implements OnInit {
   }
   
   private assignProductToEmployee() { 
-    console.log( "AssignProductForm", this.AssignProductForm )
     this.swalService.loading();
     this.disableButton = true;
     if (this.AssignProductForm.invalid) { 
@@ -192,7 +206,7 @@ export class AssignmentComponent implements OnInit {
 
     const { products,employee,family,type,observation} = this.AssignProductForm.value;
     const productId = this.selectedProduct.id;
-    
+    console.log("Formulario " , this.AssignProductForm.value)
     let obj:any= {
       employeeId: employee.id,
       type: type.id,
@@ -200,9 +214,9 @@ export class AssignmentComponent implements OnInit {
       productId: productId,
       products: products,
     };
-    if(family){ obj.familyId = family.id }
+    if(family){ obj.familyId = family }
 
-    console.log("Guardar: ", obj);
+    console.log("Objeto para guardar: ", obj);
  
      this.assignmentService
       .createAssignment(obj)

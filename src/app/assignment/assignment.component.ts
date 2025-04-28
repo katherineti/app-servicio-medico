@@ -7,7 +7,7 @@ import { map, Observable, of, startWith, switchMap } from 'rxjs';
 import { SwalService } from '../services/swal.service';
 import { AssignmentService } from './services/assignment.service';
 import { toast } from 'ngx-sonner';
-import { IEmployee, IEmployeeFamily, ITypesAssignment } from './intefaces/assignment.interface';
+import { ICreateFamily, IEmployee, IEmployeeFamily, ITypesAssignment } from './intefaces/assignment.interface';
 import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
 
 @Component({
@@ -20,6 +20,7 @@ import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interf
 export class AssignmentComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AssignmentComponent>);
   AssignProductForm!: FormGroup;
+  familyMemberForm!: FormGroup;
   selectedProduct!: IProduct;
   disableButton: boolean = false;
   options: IEmployee[] = [];
@@ -28,13 +29,19 @@ export class AssignmentComponent implements OnInit {
   listFamily: IEmployeeFamily[] = [];
   listTypesAssignment: ITypesAssignment[] = [];
 
+  showNewFamilyMemberForm = false
+
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private assignmentService = inject(AssignmentService);
 
-  constructor( 
+  constructor(
     @Inject(MAT_DIALOG_DATA) public data: any){
     this.buildEditUserForm();
+    this.familyMemberForm = this.formBuilder.group({
+      name: ["", Validators.required],
+      documentId: [""],
+    })
   }
   
   async ngOnInit() {  
@@ -148,6 +155,7 @@ export class AssignmentComponent implements OnInit {
           // Servicio para obtener los familiares del empleado seleccionado
           return this.assignmentService.getFamiliesByEmployee(empleadoSeleccionado.id);
         } else {
+          this.showNewFamilyMemberForm = false
           return of([]); // Si no se cumple la condición, emite un array vacío
         }
       })
@@ -223,7 +231,7 @@ export class AssignmentComponent implements OnInit {
       .subscribe({
         complete: () => {
           this.AssignProductForm.reset();
-          toast.error("Asignación de producto realizado con éxito.");
+          toast.success("Asignación de producto realizado con éxito.");
           this.closeDialog();
         },
         error: (error) => {
@@ -233,5 +241,40 @@ export class AssignmentComponent implements OnInit {
           console.error('Error al crear la asignacion de producto', error);
         }
       }); 
+  }
+
+  toggleNewFamilyMemberForm(): void {
+    this.showNewFamilyMemberForm = !this.showNewFamilyMemberForm
+    if (!this.showNewFamilyMemberForm) {
+      this.familyMemberForm.reset()
+    }
+  }
+  
+  saveFamilyMember(): void {
+    if (this.familyMemberForm.valid && this.controlEmployee.value.id) {
+      const  {name,documentId } = this.familyMemberForm.value;
+      const newFamilyMember:ICreateFamily = {
+        employeeId: this.controlEmployee.value.id,
+        name,
+        cedula: documentId,
+      }; 
+      console.log("newFamilyMember " , newFamilyMember)
+      this.assignmentService.addFamilyMember(newFamilyMember).subscribe(savedMember => {
+        this.listFamily.push(savedMember)
+        console.log(" listFamily ", this.listFamily)
+        console.log(" id del familiar  ", savedMember.familyId)
+        this.AssignProductForm.get("family")?.setValue(savedMember.familyId)
+        this.showNewFamilyMemberForm = false
+        this.familyMemberForm.reset()
+        toast.success("Familiar agregado correctamente.");
+        if (this.listFamily.length > 0) {
+          this.AssignProductForm.get('family')?.enable();
+        }
+      })
+    }
+  }
+  cancelFamilyMember(): void {
+    this.showNewFamilyMemberForm = false
+    this.familyMemberForm.reset()
   }
 }

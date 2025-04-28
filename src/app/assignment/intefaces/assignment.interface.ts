@@ -28,3 +28,9 @@ export interface IEmployeeFamily{
     familyName:string,
     familyCedula:string
 } 
+
+export interface ICreateFamily{
+    employeeId: number,
+    name:string,
+    cedula:string
+} 

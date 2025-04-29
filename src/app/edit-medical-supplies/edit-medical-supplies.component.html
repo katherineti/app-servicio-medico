@@ -1,5 +1,9 @@
-<h2 mat-dialog-title >
+<h2 mat-dialog-title>
+  @if (!this.edit) {
+    Ver producto {{this.selectedProduct?.code}}
+  }@else {
     Editar producto 
+}
 </h2>
 
 <mat-dialog-content class="mat-typography">
@@ -9,9 +13,13 @@
           <div class="wrapper-img" [class.has-image]="!!imgBase64()">
             <img
               class="img"
-              alt="product"
-              [src]="imgBase64() ? imgBase64() : '../../assets/images/user.png'"
+              alt="Producto"
+              [src]="imgBase64() ? imgBase64() : '../../assets/images/products/default_product_image.png'"
+              (error)="handleImageError()"
             />
+            @if (imageError && !this.edit) {
+              <div>No se pudo cargar la imagen del producto.</div><br>
+            }
             
             @if (isLoading()) {
               <div class="loading-overlay">
@@ -19,7 +27,7 @@
               </div>
             }
             
-            <div class="image-actions">
+            <div class="image-actions" *ngIf="this.edit">
               <button
                 type="button"
                 color="primary"
@@ -174,26 +182,31 @@
             </mat-form-field>
 
           </div>
-      
           <div class="row">
-              <div class="ml-auto">
-                  <button
-                  color="primary"
-                  mat-flat-button
-                  [disabled]="editProdFormGroup.invalid && disableButton"
-                  (click)="save()"
-                  >
-                  Guardar
-                  </button>
-                  <button
-                  class="m-r-10 bg-error m-l-8"
-                  mat-flat-button
-                  (click)="cancel()"
-                  >
-                  Cancelar
-                  </button>
-              </div>
-          </div>
+            <div class="ml-auto">
+                  @if (this.edit) {
+                    <button
+                    color="primary"
+                    mat-flat-button
+                    [disabled]="editProdFormGroup.invalid && disableButton"
+                    (click)="save()"
+                    >
+                    Guardar
+                    </button>
+                  }
+                    <button
+                    class="m-r-10 bg-error m-l-8"
+                    mat-flat-button
+                    (click)="cancel()"
+                    >
+                    @if (!this.edit){
+                      Cerrar
+                    }@else {
+                      Cancelar
+                    }
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
     </div>

@@ -29,7 +29,9 @@ export class EditMedicalSuppliesComponent {
   errorMessage = signal<string | null>(null);
   selectedFile: File | null = null;
 
-   API_URL= API_URL;
+  API_URL= API_URL;
+  edit:boolean | undefined;
+  imageError = false;
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -45,7 +47,8 @@ export class EditMedicalSuppliesComponent {
 
   async ngOnInit() {
 
-    this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct )
+    this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct );
+    this.edit = this.data.actionEdit; 
 
     if (this.data) {
       this.setForm();
@@ -126,6 +129,15 @@ export class EditMedicalSuppliesComponent {
   }
 
   setForm() {
+    if(!this.edit){
+      this.editProdFormGroup.controls['name'].disable();
+      this.editProdFormGroup.controls['description'].disable();
+      this.editProdFormGroup.controls['category'].disable();
+      this.editProdFormGroup.controls['type'].disable();
+      this.editProdFormGroup.controls['stock'].disable();
+      this.editProdFormGroup.controls['status'].disable();
+    }
+
     this.editProdFormGroup.controls['code'].disable();
 
     this.editProdFormGroup.patchValue({
@@ -264,6 +276,11 @@ export class EditMedicalSuppliesComponent {
           }
         }
       });   
+  }
+
+  handleImageError() {
+    this.imageError = true;
+    this.imgBase64.set( '../../assets/images/products/default_product_image.png');
   }
 
 }

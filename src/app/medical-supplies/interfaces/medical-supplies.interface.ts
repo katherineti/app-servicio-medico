@@ -12,6 +12,8 @@ export interface IProduct {
   url_image?: string;
   createdAt?: string;
   updatedAt?: string;
+
+  actionEdit?:boolean;
 }
 
 export interface IGetAllProducts {

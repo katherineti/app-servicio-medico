@@ -20,7 +20,6 @@
 <br>
 <mat-card class="">
     <mat-card-content>
-
         <div class="w-100">
 
             <div class="m-l-auto">
@@ -109,11 +108,14 @@
                             Acción
                             </mat-header-cell>
                             <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeProduct(element)">
+                                    <i-feather name="eye"></i-feather>
+                                </button>
                                 <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)">
-                                    <i-feather name="edit" class="" ></i-feather>
+                                    <i-feather name="edit" ></i-feather>
                                 </button>
                                 <button mat-icon-button aria-label="Editar" (click)="assignProductToWorker(element)">
-                                    <i-feather name="share-2" class="" (click)="assignProductToWorker(element)"></i-feather>
+                                    <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
                                 </button>
                             </mat-cell>
                         </ng-container>

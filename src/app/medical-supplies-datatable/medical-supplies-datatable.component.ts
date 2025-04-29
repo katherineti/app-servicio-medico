@@ -87,7 +87,20 @@ export class MedicalSuppliesDatatableComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  openDialogSeeProduct(data?: any): void {
+    data.actionEdit=false;
+    const ref = this.dialog.open(EditMedicalSuppliesComponent, {
+      data: data || null,
+      disableClose: true
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllProducts(this.pageIndex, this.pageSize);
+    });
+  }
+
   openDialogEditProduct(data?: any): void {
+    data.actionEdit=true;
     const ref = this.dialog.open(EditMedicalSuppliesComponent, {
       data: data || null,
       disableClose: true

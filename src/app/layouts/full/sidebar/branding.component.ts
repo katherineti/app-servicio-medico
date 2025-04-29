@@ -6,7 +6,6 @@ import { CoreService } from '../../../services/core.service';
   imports: [],
   template: `
     <a href="/">
-      <!-- src="./assets/images/logos/dark-logo.svg" -->
       <img
         src="./assets/logo-ciip.png"
         class="m-2"

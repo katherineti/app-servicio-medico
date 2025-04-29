@@ -4,12 +4,14 @@ import {
   EventEmitter,
   Input,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MaterialModule } from '../../../material/material.module';
 import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -27,4 +29,6 @@ export class HeaderComponent {
   @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
+  authService = inject(AuthService)
+
 }

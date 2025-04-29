@@ -5,9 +5,9 @@
     <i-feather name="menu" class="big fill-red"></i-feather> 
   </button>
 
-  <button mat-icon-button aria-label="Notifications">
+  <!-- <button mat-icon-button aria-label="Notifications">
     <mat-icon matBadge="1" fontIcon="notifications" aria-hidden="false"></mat-icon>
-  </button>
+  </button> -->
 
   <span class="flex-1-auto"></span>
 
@@ -24,7 +24,7 @@
     class="rounded-circle object-cover d-block" /> -->
   </button>
   <mat-menu #profilemenu="matMenu" class="cardWithShadow topbar-dd">
-    <button mat-menu-item>
+<!--     <button mat-menu-item>
       <mat-icon class="d-flex align-items-center">
         <i-feather name="user" class="big fill-red"></i-feather>
       </mat-icon>My
@@ -35,10 +35,11 @@
         <i-feather name="mail" class="big fill-red"></i-feather>
       </mat-icon>My
       Account
-    </button>
+    </button> -->
 
     <div class="p-x-12 m-t-12">
-      <a [routerLink]="['/authentication/login']" mat-stroked-button class="w-100">Cerrar sesión</a>
+      <!-- <a [routerLink]="['/authentication/login']" mat-stroked-button class="w-100">Cerrar sesión</a> -->
+      <a (click)="authService.logout()" mat-stroked-button class="w-100">Cerrar sesión</a>
     </div>
   </mat-menu>
 </mat-toolbar>

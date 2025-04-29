@@ -21,15 +21,18 @@ export class AssignmentComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AssignmentComponent>);
   AssignProductForm!: FormGroup;
   familyMemberForm!: FormGroup;
+  employeeForm!: FormGroup;
   selectedProduct!: IProduct;
   disableButton: boolean = false;
   options: IEmployee[] = [];
   filteredOptions!: Observable<IEmployee[]>;
-  checked_addFamily = model(false);
+  employees: IEmployee[] = []
   listFamily: IEmployeeFamily[] = [];
   listTypesAssignment: ITypesAssignment[] = [];
-
-  showNewFamilyMemberForm = false
+  
+  showNewFamilyMemberForm = false;
+  showNewEmployeeForm = false;
+  checked_addFamily = model(false);
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -38,9 +41,27 @@ export class AssignmentComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any){
     this.buildEditUserForm();
+
     this.familyMemberForm = this.formBuilder.group({
       name: ["", Validators.required],
-      documentId: [""],
+      documentId: [null ,[Validators.maxLength(10)]],
+    });
+
+    this.employeeForm = this.formBuilder.group({
+      name: ["", [
+        Validators.required,
+        Validators.maxLength(200),
+      ]],
+      cedula: ["", [
+        Validators.required, 
+        Validators.maxLength(10)
+      ]],
+      email: ["", [
+        Validators.required, 
+        Validators.email,
+        Validators.maxLength(100),
+      ]],
+      phone: ["", [Validators.required, Validators.maxLength(50)]],
     })
   }
   
@@ -84,19 +105,18 @@ export class AssignmentComponent implements OnInit {
           Validators.max(3)
         ],
       ],
-      employee: [
+      employee: [//su valor es un objeto del empleado seleccioando
         '',
         [
           Validators.required,
           Validators.minLength(1),
-          Validators.maxLength(50),
+          // Validators.maxLength(200),
         ],
       ],
-      family: [
+      family: [//su valor es el id del familiar seelccionado
         { value: '', disabled: true },
         [
-          Validators.minLength(1),
-          Validators.maxLength(50),
+          Validators.maxLength(10),
         ]
       ],
       type: [
@@ -110,7 +130,7 @@ export class AssignmentComponent implements OnInit {
       observation: [
         '',
         [
-          Validators.maxLength(100),
+          Validators.maxLength(200),
         ],
       ],
       checked_addFamily:[false]
@@ -244,9 +264,18 @@ export class AssignmentComponent implements OnInit {
   }
 
   toggleNewFamilyMemberForm(): void {
-    this.showNewFamilyMemberForm = !this.showNewFamilyMemberForm
+    this.showNewFamilyMemberForm = !this.showNewFamilyMemberForm;
+    this.showNewEmployeeForm = false;
     if (!this.showNewFamilyMemberForm) {
       this.familyMemberForm.reset()
+    }
+  }
+
+  toggleNewEmployeeForm(): void {
+    this.showNewEmployeeForm = !this.showNewEmployeeForm;
+    this.showNewFamilyMemberForm = false;
+    if (!this.showNewEmployeeForm) {
+      this.employeeForm.reset()
     }
   }
   
@@ -258,14 +287,14 @@ export class AssignmentComponent implements OnInit {
         name,
         cedula: documentId,
       }; 
-      console.log("newFamilyMember " , newFamilyMember)
+      console.log("newFamilyMember " , newFamilyMember);
       this.assignmentService.addFamilyMember(newFamilyMember).subscribe(savedMember => {
-        this.listFamily.push(savedMember)
-        console.log(" listFamily ", this.listFamily)
-        console.log(" id del familiar  ", savedMember.familyId)
-        this.AssignProductForm.get("family")?.setValue(savedMember.familyId)
-        this.showNewFamilyMemberForm = false
-        this.familyMemberForm.reset()
+        this.listFamily.push(savedMember);
+        console.log(" listFamily ", this.listFamily);
+        console.log(" id del familiar  ", savedMember.familyId);
+        this.AssignProductForm.get("family")?.setValue(savedMember.familyId);
+        this.showNewFamilyMemberForm = false;
+        this.familyMemberForm.reset();
         toast.success("Familiar agregado correctamente.");
         if (this.listFamily.length > 0) {
           this.AssignProductForm.get('family')?.enable();
@@ -273,8 +302,36 @@ export class AssignmentComponent implements OnInit {
       })
     }
   }
+
+  saveEmployee(): void {
+    if (this.employeeForm.valid) {
+      const newEmployee = {
+        ...this.employeeForm.value,
+      }
+      console.log("newEmployee " , newEmployee)
+      this.assignmentService.addEmployee(newEmployee).subscribe((savedEmployee) => {
+        // this.employees = [...this.employees, savedEmployee]
+        // this.employees.push(savedEmployee)
+        this.options.push(savedEmployee);
+        // this.AssignProductForm.get("employee")?.setValue(savedEmployee.id);
+        this.AssignProductForm.get("employee")?.setValue(savedEmployee);
+        this.filteredOptions = this.controlEmployee.valueChanges.pipe(
+          startWith(savedEmployee),
+          map(value => typeof value === 'string' ? this._filter(value) : this._filter(value?.name || '')),
+        );
+        this.showNewEmployeeForm = false;
+        this.employeeForm.reset();
+        toast.success("Empleado agregado correctamente.");
+      })
+    }
+  }
   cancelFamilyMember(): void {
     this.showNewFamilyMemberForm = false
     this.familyMemberForm.reset()
+  }
+
+  cancelEmployee(): void {
+    this.showNewEmployeeForm = false
+    this.employeeForm.reset()
   }
 }

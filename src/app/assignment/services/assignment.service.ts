@@ -2,19 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TokenService } from '../../services/Token.service';
 import { Observable } from 'rxjs';
-import { ICreateFamily, IEmployee, IEmployeeFamily, ITypesAssignment } from '../intefaces/assignment.interface';
-
-interface ICreateAssignment {
-  id?: number;
-  employeeId: number;
-  familyId?: number;
-  type: number;
-  observation?: string;
-  productId?:number;
-  products: number;//numero de productos asignados a un empleado ?
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { ICreateAssignment, ICreateFamily, ICretateEmployee, IEmployee, IEmployeeFamily, ITypesAssignment } from '../intefaces/assignment.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +38,9 @@ export class AssignmentService {
 
   addFamilyMember(familyMember: ICreateFamily): Observable<IEmployeeFamily> {
     return this.http.post<IEmployeeFamily>(`${this.tokenService.endPoint}${this.controller}/addFamilyMember`, familyMember);
+  }
+
+  addEmployee(newEmployee: ICretateEmployee): Observable<IEmployee> {
+    return this.http.post<any>(`${this.tokenService.endPoint}${this.controller}/addEmployee`, newEmployee);
   }
 }

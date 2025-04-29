@@ -1,3 +1,15 @@
+export interface ICreateAssignment {
+    id?: number;
+    employeeId: number;
+    familyId?: number;
+    type: number;
+    observation?: string;
+    productId?:number;
+    products: number;//numero de productos asignados a un empleado ?
+    createdAt?: Date;
+    updatedAt?: Date;
+  }
+  
 export interface IEmployee{
     id:number,
     name: string,
@@ -8,6 +20,8 @@ export interface IEmployee{
     updatedAt: Date,
 } 
 
+export interface ICretateEmployee extends Omit<IEmployee, 'id' | 'createdAt' | 'updatedAt' > {}
+
 export interface IFamily{
     id: number,
     name: string,
@@ -15,6 +29,12 @@ export interface IFamily{
     createdAt: Date,
     updatedAt: Date
 }
+
+export interface ICreateFamily{
+    employeeId: number,
+    name:string,
+    cedula:string
+} 
 
 export interface ITypesAssignment{
     id: number,
@@ -27,10 +47,4 @@ export interface IEmployeeFamily{
     familyId: number,
     familyName:string,
     familyCedula:string
-} 
-
-export interface ICreateFamily{
-    employeeId: number,
-    name:string,
-    cedula:string
 } 

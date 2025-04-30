@@ -1,6 +1,10 @@
-<h2 mat-dialog-title >
-    Editar usuario 
-</h2>
+<h2 mat-dialog-title>
+    @if (!this.edit) {
+        Ver usuario {{this.selectedUser?.name | titlecase}}
+    }@else {
+        Editar usuario 
+    }
+  </h2>
 
 <mat-dialog-content class="mat-typography">
     <div class="d-flex align-items-center">
@@ -73,20 +77,26 @@
       
           <div class="row">
               <div class="ml-auto">
+                @if (this.edit) {
                   <button
                   color="primary"
                   mat-flat-button
                   [disabled]="userFormGroup.invalid && disableButton"
                   (click)="saveUser()"
                   >
-                  Guardar Usuario
+                  Guardar
                   </button>
+                }
                   <button
                   class="m-r-10 bg-error m-l-8"
                   mat-flat-button
                   (click)="cancel()"
                   >
-                  Cancelar
+                  @if (!this.edit){
+                    Cerrar
+                  }@else {
+                    Cancelar
+                  }
                   </button>
               </div>
           </div>

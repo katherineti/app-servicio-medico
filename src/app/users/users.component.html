@@ -64,6 +64,9 @@
                         Acción
                         </mat-header-cell>
                         <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                            <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)">
+                                <i-feather name="eye"></i-feather>
+                            </button>
                             <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)">
                                 <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                             </button>

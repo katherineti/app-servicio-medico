@@ -69,7 +69,20 @@ export class UsersComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  openDialogSeeUser(data?: any): void {
+    data.actionEdit=false;
+    const ref = this.dialog.open(UserDialogComponent, {
+      data: data || null,
+      disableClose: true
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllUser(this.pageIndex, this.pageSize);
+    });
+  }
+
   openDialogEditUser(data?: any): void {
+    data.actionEdit=true;
     const ref = this.dialog.open(UserDialogComponent, {
       data: data || null,
       disableClose: true

@@ -42,11 +42,11 @@ export class DashboardComponent {
     }
   }
   
-  navigate(route:string) {
+  navigate(route:string){
     this.router.navigate([route]);
   }
 
-  async totalUsers() {
+  async totalUsers(){
     try {
       let users:{count: number} = await firstValueFrom(
         this.dashboardService.totalUsers()
@@ -59,7 +59,7 @@ export class DashboardComponent {
     }
   }
 
-  async totalProductsOfTheDay() {
+  async totalProductsOfTheDay(){
     try {
       let totalProductsOfTheDay:{count: number} = await firstValueFrom(
         this.dashboardService.totalProductsOfTheDay()
@@ -72,7 +72,7 @@ export class DashboardComponent {
     }
   }
 
-  async totalProductsOfMonth() {
+  async totalProductsOfMonth(){
     try {
       let totalProductsOfMonth:{count: number} = await firstValueFrom(
         this.dashboardService.totalProductsOfMonth()
@@ -85,7 +85,7 @@ export class DashboardComponent {
     }
   }
 
-  async totalAssignmentOfTheDay() {
+  async totalAssignmentOfTheDay(){
     try {
       let totalAssignmentOfTheDay:{count: number} = await firstValueFrom(
         this.dashboardService.totalAssignmentOfTheDay()
@@ -99,7 +99,7 @@ export class DashboardComponent {
     }
   }
 
-  async totalAssignmentOfMonth() {
+  async totalAssignmentOfMonth(){
     try {
       let totalAssignmentOfMonth:{count: number} = await firstValueFrom(
         this.dashboardService.totalAssignmentOfMonth()
@@ -111,6 +111,7 @@ export class DashboardComponent {
       console.error('Error al obtener la cantidad de asignaciones del mes', e);
     }
   }
+
   getLocalDate(): Date {
     return new Date();
   }

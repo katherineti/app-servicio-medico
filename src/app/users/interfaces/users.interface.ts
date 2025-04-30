@@ -7,6 +7,8 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   role: string;
+
+  actionEdit?:boolean;
   [key: string]: any;
 }
 

@@ -23,6 +23,7 @@ export class UserDialogComponent implements OnInit {
   selectedUser!: IUser;
   disableButton: boolean = false;
   typeError = '';
+  edit:boolean | undefined;
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -36,7 +37,8 @@ export class UserDialogComponent implements OnInit {
   async ngOnInit() {
 
     this.selectedUser = this.data;
-    console.log("this.selectedUser ", this.selectedUser.id)
+    console.log("this.selectedUser ", this.selectedUser.id);
+    this.edit = this.data.actionEdit;
     if (this.data) {
       this.setForm();
     }
@@ -83,6 +85,12 @@ export class UserDialogComponent implements OnInit {
   }
 
   setForm() {
+    if(!this.edit){
+      this.userFormGroup.controls['name'].disable();
+      this.userFormGroup.controls['isActive'].disable();
+      this.userFormGroup.controls['role'].disable();
+    }
+
     this.userFormGroup.controls['email'].disable();
 
       this.userFormGroup.patchValue({

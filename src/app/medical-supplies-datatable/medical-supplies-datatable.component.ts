@@ -17,6 +17,7 @@ import { API_URL } from '../../../environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { AssignmentComponent } from '../assignment/assignment.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -32,23 +33,25 @@ import { AssignmentComponent } from '../assignment/assignment.component';
 })
 
 export class MedicalSuppliesDatatableComponent {
-  readonly dialog = inject(MatDialog);
+  role:string='';
   displayedColumns = ['name', 'stock', 'code','action'];
   @Input()
   data!: string;
-
+  
   dataSource: any = new MatTableDataSource<IProduct>();
   searhField = new FormControl();  searhCategoryField = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
-
+  
   categories: any;   loadingCategorie = signal(false);
   API_URL= API_URL;
   
+  readonly dialog = inject(MatDialog);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private authService = inject(AuthService);
 
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
@@ -64,6 +67,8 @@ export class MedicalSuppliesDatatableComponent {
   }
 
   async ngOnInit() {
+    
+    this.role = await this.authService.getRol();
  
     if(this.data=='allProducts'){
       this.dataSource['length'] = 0;

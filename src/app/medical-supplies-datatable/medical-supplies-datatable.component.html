@@ -11,10 +11,12 @@
     </button>
 
     <!-- agregar producto -->
-    <span class="example-spacer"></span>
-    <button mat-flat-button (click)="openDialogCreateSupplies()" >
-        Agregar
-    </button>
+     @if (this.role === 'admin' || this.role === 'almacen') {
+        <span class="example-spacer"></span>
+        <button mat-flat-button (click)="openDialogCreateSupplies()" >
+            Agregar
+        </button>
+     }
 </mat-toolbar>
 
 <br>

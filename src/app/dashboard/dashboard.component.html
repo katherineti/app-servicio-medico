@@ -20,13 +20,13 @@
                 </button>
             </div>
         </div>
-        <h4 class="f-s-24 m-b-6">6</h4>
-        <div class="d-flex align-items-center m-t-32">
+        <h4 class="f-s-24 m-b-6">{{countUsers}}</h4>
+        <!-- <div class="d-flex align-items-center m-t-32">
             <div class="d-flex align-items-center">
                  <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
                  <div class="m-l-12 f-s-14">2025</div>
             </div>
-        </div>
+        </div> -->
     </mat-card-content>
 </mat-card>
 <!-- cantidad de insumos al dia-->
@@ -40,11 +40,11 @@
                 </button>
             </div>
         </div>
-        <h4 class="f-s-24 m-b-6">10</h4>
+        <h4 class="f-s-24 m-b-6">{{countProductsOfTheDay}}</h4>
         <div class="d-flex align-items-center m-t-32">
             <div class="d-flex align-items-center">
                  <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
-                 <div class="m-l-12 f-s-14">13 de Abril de 2025</div>
+                 <div class="m-l-12 f-s-14">{{ formatearFecha(localDate) }}</div>
             </div>
         </div>
     </mat-card-content>
@@ -60,11 +60,11 @@
                 </button>
             </div>
         </div>
-        <h4 class="f-s-24 m-b-6">10</h4>
+        <h4 class="f-s-24 m-b-6">{{countProductsOfMonth}}</h4>
         <div class="d-flex align-items-center m-t-32">
             <div class="d-flex align-items-center">
                  <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
-                 <div class="m-l-12 f-s-14">Abril de 2025</div>
+                 <div class="m-l-12 f-s-14">{{ formatearFecha(localDate,'mes') }}</div>
             </div>
         </div>
     </mat-card-content>
@@ -82,7 +82,7 @@
                 </button>
             </div>
         </div>
-        <h4 class="f-s-24 m-b-6">1</h4>
+        <h4 class="f-s-24 m-b-6">0</h4>
         <div class="d-flex align-items-center m-t-32">
             <div class="d-flex align-items-center">
                 <i-feather name="calendar" class="text-error d-flex"></i-feather>

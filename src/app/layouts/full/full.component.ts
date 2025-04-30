@@ -1,4 +1,4 @@
-import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
@@ -11,15 +11,14 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
-import { navItems } from './sidebar/sidebar-data';
-import { AppTopstripComponent } from './top-strip/topstrip.component';
+import { navItems, navItemsAdmin } from './sidebar/sidebar-data';
 import { MaterialModule } from '../../material/material.module';
 import { FeatherIconsModule } from '../../feathericons/feathericons.module';
+import { AuthService } from '../../services/auth.service';
 
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
-
 
 @Component({
   selector: 'app-full',
@@ -34,13 +33,11 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
     FeatherIconsModule
   ],
   templateUrl: './full.component.html',
-  styleUrls: [],
   encapsulation: ViewEncapsulation.None
 })
 export class FullComponent implements OnInit {
-  navItems = navItems;
+  navItems = navItemsAdmin;
 
-  // public sidenav: MatSidenav;
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav = new MatSidenav;
   resView = false;
@@ -52,15 +49,16 @@ export class FullComponent implements OnInit {
   private isContentWidthFixed = true;
   private isCollapsedWidthFixed = false;
   private htmlElement!: HTMLHtmlElement;
+  private role:string='';
 
   get isOver(): boolean {
     return this.isMobileScreen;
   }
 
-  //dependency injection
   private settings = inject(CoreService);
   private router = inject(Router);
   private breakpointObserver = inject(BreakpointObserver);
+  private authService = inject(AuthService);
 
   constructor() {
     this.options = this.settings.getOptions();
@@ -81,10 +79,18 @@ export class FullComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((e) => {
         this.content.scrollTo({ top: 0 });
-      });
+    });
   }
 
-  ngOnInit(): void { }
+  async ngOnInit(): Promise<void> {
+    this.role = await this.authService.getRol();
+    console.log(this.role);
+    if( this.role === 'admin' ){
+      this.navItems = navItemsAdmin;
+    }else{
+      this.navItems = navItems;
+    }
+   }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();

@@ -6,6 +6,7 @@ import { DashboardService } from './services/dashboard.service';
 import { firstValueFrom } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,15 +22,18 @@ export class DashboardComponent {
   countUsers:number = 0;
   countProductsOfTheDay:number = 0;
   countProductsOfMonth:number = 0;
-  localDate!: Date;
   formattedLocalDate!: string;
-  ngOnInit(){
-    this.totalUsers();
+  role:string='';
+
+  private authService = inject(AuthService);
+  
+  async ngOnInit(){
+    this.role = await this.authService.getRol();
+    if( this.role === 'admin' ){
+      this.totalUsers();
+    }
     this.totalProductsOfTheDay();
     this.totalProductsOfMonth();
-
-    this.localDate = this.getLocalDate();
-
   }
   
   navigate(route:string) {
@@ -38,7 +42,7 @@ export class DashboardComponent {
 
   async totalUsers() {
     try {
-      let users: { count: number }= await firstValueFrom(
+      let users:{count: number} = await firstValueFrom(
         this.dashboardService.totalUsers()
       );
       this.countUsers = users.count;
@@ -51,7 +55,7 @@ export class DashboardComponent {
 
   async totalProductsOfTheDay() {
     try {
-      let totalProductsOfTheDay: { count: number }= await firstValueFrom(
+      let totalProductsOfTheDay:{count: number} = await firstValueFrom(
         this.dashboardService.totalProductsOfTheDay()
       );
       this.countProductsOfTheDay = totalProductsOfTheDay.count;
@@ -64,7 +68,7 @@ export class DashboardComponent {
 
   async totalProductsOfMonth() {
     try {
-      let totalProductsOfMonth: { count: number }= await firstValueFrom(
+      let totalProductsOfMonth:{count: number} = await firstValueFrom(
         this.dashboardService.totalProductsOfMonth()
       );
       this.countProductsOfMonth = totalProductsOfMonth.count;

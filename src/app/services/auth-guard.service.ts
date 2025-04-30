@@ -8,7 +8,7 @@ import { RolesType } from '../interfaces/roles-type.interface';
 
 export class AuthGuardService {
   private _isAuthSource$ = new BehaviorSubject<boolean>(false);
-  private _errorMessageSource$ = new BehaviorSubject<string>('La ruta no exiaste');
+  private _errorMessageSource$ = new BehaviorSubject<string>('La ruta no existe');
 
   isAuth$ = this._isAuthSource$.asObservable();
   errorMessage$ = this._errorMessageSource$.asObservable();

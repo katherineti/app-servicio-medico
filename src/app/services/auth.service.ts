@@ -110,6 +110,14 @@ export class AuthService {
     });
   }
 
+  async getRol(): Promise<string> {
+    const token = await this.getToken();
+    if (!token.role) {
+      return 'SIN ROL';
+    }
+    return token.role;
+  }
+
   isAdmin(): boolean | null {
     let isAdmin = null;
 

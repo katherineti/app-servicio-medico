@@ -13,18 +13,20 @@ import { AuthService } from '../services/auth.service';
   imports: [CommonModule, MaterialModule, FeatherIconsModule ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  providers:[DashboardService]
+  providers:[DashboardService, AuthService]
 })
 
 export class DashboardComponent {
-  public router = inject(Router)
-  public dashboardService = inject(DashboardService)
   countUsers:number = 0;
   countProductsOfTheDay:number = 0;
   countProductsOfMonth:number = 0;
+  countAssignmentOfTheDay:number = 0;
+  countAssignmentOfMonth:number = 0;
   formattedLocalDate!: string;
   role:string='';
-
+  
+  public router = inject(Router)
+  public dashboardService = inject(DashboardService)
   private authService = inject(AuthService);
   
   async ngOnInit(){
@@ -34,6 +36,10 @@ export class DashboardComponent {
     }
     this.totalProductsOfTheDay();
     this.totalProductsOfMonth();
+    if(this.role === 'admin' || this.role === 'almacen'){
+      this.totalAssignmentOfTheDay();
+      this.totalAssignmentOfMonth();
+    }
   }
   
   navigate(route:string) {
@@ -79,6 +85,32 @@ export class DashboardComponent {
     }
   }
 
+  async totalAssignmentOfTheDay() {
+    try {
+      let totalAssignmentOfTheDay:{count: number} = await firstValueFrom(
+        this.dashboardService.totalAssignmentOfTheDay()
+      );
+      console.log("totalAssignmentOfTheDay " , totalAssignmentOfTheDay)
+      this.countAssignmentOfTheDay = totalAssignmentOfTheDay.count;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener la cantidad de asignaciones del día', e);
+    }
+  }
+
+  async totalAssignmentOfMonth() {
+    try {
+      let totalAssignmentOfMonth:{count: number} = await firstValueFrom(
+        this.dashboardService.totalAssignmentOfMonth()
+      );
+      this.countAssignmentOfMonth = totalAssignmentOfMonth.count;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener la cantidad de asignaciones del mes', e);
+    }
+  }
   getLocalDate(): Date {
     return new Date();
   }

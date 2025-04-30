@@ -91,26 +91,17 @@ export class UserCreateComponent {
         ...params,
       })
       .subscribe({
-        error: (data) => {
+        error: (msj) => {
           this.swalService.closeload();
           this.disableButton = false;
-          // if (data.error.statusCode === 409) {
-          //   this.swalService.error('Error', data.error.message);
-          //   this.typeError = 'username';
-          // }
-
-          // if (data.error.statusCode === 400) {
-          //   this.swalService.error('Error', 'Faltan campos requeridos.');
-          //   this.typeError = 'fields';
-          // }
+          this.swalService.error('Error', msj);
         },
         complete: () => {
           this.swalService.closeload();
+          this.swalService.success();
           this.closeDialog();
           this.disableButton = false;
-          this.swalService.success();
         },
       });
   }
-
 }

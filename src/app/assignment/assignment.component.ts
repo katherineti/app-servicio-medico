@@ -257,7 +257,7 @@ export class AssignmentComponent implements OnInit {
         error: (error) => {
           this.swalService.closeload();
           this.disableButton = false;
-          toast.error("Error al crear la asignacion de producto.");
+          toast.error(error);
           console.error('Error al crear la asignacion de producto', error);
         }
       }); 

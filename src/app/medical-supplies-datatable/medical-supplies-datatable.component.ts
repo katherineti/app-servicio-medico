@@ -126,6 +126,9 @@ export class MedicalSuppliesDatatableComponent {
       data: data || null,
       disableClose: true
     });
+    ref.afterClosed().subscribe(() => {
+      this.getAllProducts(this.pageIndex, this.pageSize);
+    });
   }
 
   handlePageEvent(event: PageEvent) {

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
 import { UsersService } from '../users/services/users.service';
+import { IRole } from '../rol/interfaces/roles.interface';
 
 @Component({
   selector: 'app-user-create',
@@ -17,6 +18,7 @@ export class UserCreateComponent {
   imageField?: File;
   imgBase64?: any;
   disableButton: boolean = false;
+  listRolesActives!: {id:number,name:string}[];
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -26,6 +28,7 @@ export class UserCreateComponent {
     public dialogRef: MatDialogRef<UserCreateComponent>,
     ){
     this.buildAddUserForm();
+    this.getRolesActives();
   }
 
   buildAddUserForm() {
@@ -103,5 +106,12 @@ export class UserCreateComponent {
           this.disableButton = false;
         },
       });
+  }
+
+  getRolesActives() {
+    this.usersService.getRolesActives().subscribe((data: any) => {
+      this.listRolesActives = data;
+      console.log("LISTA DE ROLES ACTIVOS",data)
+    });
   }
 }

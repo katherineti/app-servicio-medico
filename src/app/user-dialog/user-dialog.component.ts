@@ -24,6 +24,7 @@ export class UserDialogComponent implements OnInit {
   disableButton: boolean = false;
   typeError = '';
   edit:boolean | undefined;
+  listRolesActives!: {id:number,name:string}[];
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -32,12 +33,13 @@ export class UserDialogComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: IUser){
     this.buildEditUserForm();
+    this.getRolesActives();
   }
 
   async ngOnInit() {
 
     this.selectedUser = this.data;
-    console.log("this.selectedUser ", this.selectedUser.id);
+    console.log("this.selectedUser ", this.selectedUser);
     this.edit = this.data.actionEdit;
     if (this.data) {
       this.setForm();
@@ -97,7 +99,7 @@ export class UserDialogComponent implements OnInit {
         name: this.selectedUser?.name,
         email: this.selectedUser?.email,
         isActive: this.selectedUser?.isActivate,
-        role: this.selectedUser?.role,
+        role: this.selectedUser?.roleId,
       });
   }
 
@@ -125,6 +127,14 @@ export class UserDialogComponent implements OnInit {
     }
     const { name, role, isActive } = this.userFormGroup.value;
     const id = this.selectedUser.id;
+console.log(
+
+  "guardando:",{
+    name, 
+    role,
+    isActivate: isActive,
+  }
+)
 
     this.usersService
       .updateUser(
@@ -148,6 +158,13 @@ export class UserDialogComponent implements OnInit {
           this.swalService.error('Error', error);
         },
       });
+  }
+
+  getRolesActives() {
+    this.usersService.getRolesActives().subscribe((data: any) => {
+      this.listRolesActives = data;
+      console.log("LISTA DE ROLES ACTIVOS",data)
+    });
   }
 
 }

@@ -1,14 +1,13 @@
-export interface IUser {
+export interface IUser{
   id: string;
   name: string;
-  email?: string;
+  email: string;
   password?: string;
+  roleId?: number;
+  role: string;
   isActivate: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  // role: string;
-  role: number;
-
   actionEdit?:boolean;
   [key: string]: any;
 }

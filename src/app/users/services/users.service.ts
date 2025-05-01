@@ -44,5 +44,10 @@ export class UsersService {
       `${this.tokenService.endPoint}users/${id}`
     );
   }
-  
+
+  getRolesActives(): Observable<{id:number,name:string}[]> {
+    return this.http.get<{id:number,name:string}[]>(
+      `${this.tokenService.endPoint}roles/getRolesActives`
+    );
+  }  
 }

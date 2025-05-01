@@ -36,6 +36,22 @@
             </mat-form-field>
         
             <mat-form-field appearance="outline" class="example-full-width">
+              <mat-select
+              placeholder="roles"
+              formControlName="role"
+              required="true"
+              >
+              <mat-option value="null">
+                  Ninguno
+              </mat-option>
+              @for (item of listRolesActives; track item) {
+                  <mat-option [value]="item.id">{{
+                      item.name | titlecase
+                  }}</mat-option>
+              }
+              </mat-select>
+           </mat-form-field>
+<!--             <mat-form-field appearance="outline" class="example-full-width">
                 <mat-select
                 placeholder="roles"
                 formControlName="role"
@@ -54,8 +70,7 @@
                     'Auditor' | titlecase
                 }}</mat-option>
                 </mat-select>
-                <!-- <mat-error>Error</mat-error> -->
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-select

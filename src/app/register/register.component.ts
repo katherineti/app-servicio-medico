@@ -15,7 +15,8 @@ import { LoginService } from '../services/login.service';
   providers: [LoginService]
 })
 export class RegisterComponent {
-  ADMINISTRADOR: string = "admin";
+  // ADMINISTRADOR: string = "admin";
+  ADMINISTRADOR = 1;
   registerFormGroup!: FormGroup;
   typeError = '';
   conflictDetected: boolean = false;

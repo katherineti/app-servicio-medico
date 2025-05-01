@@ -1,10 +1,3 @@
 export interface User{
     user: User;
 }
-
-export interface SignUpRegister{
-    name: string;
-    email: string;
-    password: string;
-    role: string;
-}

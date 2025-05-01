@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../../environment';
 import { Observable } from 'rxjs';
 import { LoginResponse, SigInLogin } from '../authentication/models/login.response.model';
-import { Admin, SignUpRegisterAdmin } from '../authentication/models/register-admin.reponse.model';
+import { SignUpRegisterAdmin } from '../authentication/models/register-admin.reponse.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +22,11 @@ export class LoginService {
     ) as Observable<LoginResponse>;
   }
 
-  register(body : SignUpRegisterAdmin): Observable<Admin>{
+  register(body : SignUpRegisterAdmin): Observable<any>{
     return this.http.post(
         this.urlEndPoint + '/signup',
         body
-    ) as Observable<Admin>;
+    ) as Observable<any>;
 }
 
 }

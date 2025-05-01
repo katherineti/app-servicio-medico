@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
+import { RolesService } from '../rol/services/roles.service';
 
 @Component({
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
@@ -13,20 +14,16 @@ import { SwalService } from '../services/swal.service';
 })
 export class CreateRoleComponent {
   roleFormGroup!: FormGroup;
-  imageField?: File;
-  imgBase64?: any;
   disableButton: boolean = false;
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
+  private rolesService = inject(RolesService);
 
   constructor( 
     public dialogRef: MatDialogRef<CreateRoleComponent>,
     ){
     this.buildAddUserForm();
-  }
-
-  async ngOnInit() {
   }
 
   buildAddUserForm() {
@@ -36,23 +33,16 @@ export class CreateRoleComponent {
         [
           Validators.required,
           Validators.minLength(0),
+          Validators.maxLength(40),
+        ],
+      ],
+      description: [
+        '',
+        [
           Validators.maxLength(50),
         ],
       ],
     });
-  }
-
-  onFileSelected(event: any): void | null {
-    const reader = new FileReader();
-    this.imageField = <File>event.target.files[0];
-    reader.readAsDataURL(this.imageField);
-    reader.onload = () => {
-      this.imgBase64 = reader.result;
-      return reader.result;
-    };
-  }
-  getBase64(data: any) {
-    this.imgBase64 = data;
   }
 
   cancel() {
@@ -63,13 +53,13 @@ export class CreateRoleComponent {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  saveUser() {
+  save() {
     if (this.roleFormGroup) {
-      return this.createUser();
+      return this.create();
     }
   }
 
-  private createUser() {
+  private create() {
     this.swalService.loading();
     this.disableButton = true;
 
@@ -78,14 +68,24 @@ export class CreateRoleComponent {
       this.disableButton = false;
       return;
     }
-    const { role } = this.roleFormGroup.value;
-
-    console.log("guardar",role);
-
-    this.swalService.closeload();
-    this.closeDialog();
-    this.disableButton = false;
-    this.swalService.success();
+    const { role, description } = this.roleFormGroup.value;
+    this.rolesService
+      .create({
+        name:role,
+        description
+      })
+      .subscribe({
+        error: (msj) => {
+          this.swalService.closeload();
+          this.disableButton = false;
+          this.swalService.error('Error', msj);
+        },
+        complete: () => {
+          this.swalService.closeload();
+          this.swalService.success();
+          this.closeDialog();
+          this.disableButton = false;
+        },
+      });
   }
-
 }

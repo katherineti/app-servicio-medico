@@ -12,7 +12,7 @@ import { LoginService } from '../services/login.service';
   imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [LoginService]
+  providers: [LoginService, SwalService]
 })
 export class LoginComponent {
   public loginFormGroup: FormGroup;
@@ -47,8 +47,7 @@ export class LoginComponent {
       await this.router.navigate(['/']);
 
     } catch (e: any) {
-      
-      this.swalService.warningEdit('Verifique', e.error.message);
+      this.swalService.warningEdit('Verifique', e);
     }
   }
 

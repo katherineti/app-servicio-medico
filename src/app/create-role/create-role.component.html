@@ -16,29 +16,45 @@
                 required="true"
                 type="text"
                 />
+                <mat-error *ngIf="roleFormGroup.controls['role'].hasError('required')">
+                    El rol es requerido
+                </mat-error>
+                <mat-error *ngIf="roleFormGroup.controls['role'].errors?.['maxLength']">
+                    Máximo de 40 caracteres.
+                </mat-error>
             </mat-form-field>
-        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Descripción"
+                formControlName="description"
+                type="text"
+                />
+                <mat-error *ngIf="roleFormGroup.controls['description'].errors?.['maxLength']">
+                    Máximo de 50 caracteres.
+                </mat-error>
+            </mat-form-field>        
           </div>
       
           <div class="row">
-              <div class="ml-auto">
-                  <button
-                  color="primary"
-                  mat-flat-button
-                  [disabled]="roleFormGroup.invalid && disableButton"
-                  (click)="saveUser()"
-                  >
-                  Guardar
-                  </button>
-                  <button
-                  class="m-r-10 bg-error m-l-8"
-                  mat-flat-button
-                  (click)="cancel()"
-                  >
-                  Cancelar
-                  </button>
-              </div>
-          </div>
+            <div class="ml-auto">
+                <button
+                color="primary"
+                mat-flat-button
+                [disabled]="roleFormGroup.invalid && disableButton"
+                (click)="save()"
+                >
+                Guardar
+                </button>
+                <button
+                class="m-r-10 bg-error m-l-8"
+                mat-flat-button
+                (click)="cancel()"
+                >
+                Cancelar
+                </button>
+            </div>
+        </div>
         </form>
     </div>
     </div>

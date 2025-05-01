@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
-import { ICreateUserDTO, IGetAllUsers, IUser } from '../interfaces/users.interface';
+import { ICreateUserDTO, IGetAllUsers, IUser, IUserPagination } from '../interfaces/users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,8 @@ export class UsersService {
   private readonly tokenService = inject(TokenService);
   private readonly http = inject(HttpClient);
 
-  getUsers(params: IGetAllUsers): Observable<any> {
-    return this.http.post<IUser[]>(
+  getUsers(params: IGetAllUsers): Observable<IUserPagination> {
+    return this.http.post<IUserPagination>(
       `${this.tokenService.endPoint}users/getAll`,
       params
     );

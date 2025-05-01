@@ -1,60 +1,73 @@
 <app-header-title [title]="'Roles'" ></app-header-title>
-        
 <mat-toolbar style="background-color: white;">
+
     <mat-form-field appearance="outline">
-        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
     </mat-form-field>
+    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
+    (click)="getAll(this.pageIndex, this.pageSize)">
+        Buscar
+    </button>
 
     <span class="example-spacer"></span>
     <button mat-flat-button (click)="openDialogCreateRol()" >
-        Agregar rol
+        Agregar
     </button>
 </mat-toolbar>
 
 <br>
 <mat-card class="">
     <mat-card-content>
-        <!-- <div class="d-flex w-100"> -->
         <div class="w-100">
-            <!-- <mat-card-title>Sales Overview</mat-card-title> -->
-            <div class="m-l-auto">
-                
-                <div class="table-responsive">
-                    <mat-table #table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles">
+            <div class="m-l-auto">   
+                @if (dataSource.length) {
+                    <div class="table-responsive">
+                        <mat-table #table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles">
+                        
+                        <ng-container matColumnDef="#">
+                            <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
+                            <mat-cell mat-cell *matCellDef="let element; let i = index">
+                                {{ i + 1 }}
+                            </mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="rol">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Rol
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.name }}</mat-cell>
+                        </ng-container>
                     
-                    <ng-container matColumnDef="#">
-                        <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
-                        <mat-cell mat-cell *matCellDef="let element; let i = index">
-                            {{ i + 1 }}
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="rol">
-                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                        Rol
-                        </mat-header-cell>
-                        <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                        {{ element.rol }}</mat-cell>
-                    </ng-container>
-                
-                    <ng-container matColumnDef="action">
-                        <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
-                        Acción
-                        </mat-header-cell>
-                        <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                            <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
-                                <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
-                            </button>
-                            <button mat-icon-button aria-label="Editar" (click)="deleterol()">
-                                <i-feather name="Trash2" class="big fill-red icon-18" (click)="deleterol()"></i-feather>
-                            </button>
-                        </mat-cell>
-                    </ng-container>                   
-                
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                    </mat-table>
-                </div>
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                            Acción
+                            </mat-header-cell>
+                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
+                                    <i-feather name="eye"></i-feather>
+                                </button>
+                                <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
+                                    <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
+                                </button>
+                                <button mat-icon-button aria-label="Editar" (click)="deleteRol(element)">
+                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                </button>
+                            </mat-cell>
+                        </ng-container>                   
+                    
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                        aria-describedby="table users"></mat-paginator>
+                    </div>
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
+                }
             </div>
         </div>
     </mat-card-content>

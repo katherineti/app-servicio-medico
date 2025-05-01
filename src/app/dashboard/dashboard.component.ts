@@ -94,7 +94,6 @@ export class DashboardComponent {
       let totalAssignmentOfTheDay:{count: number} = await firstValueFrom(
         this.dashboardService.totalAssignmentOfTheDay()
       );
-      console.log("totalAssignmentOfTheDay " , totalAssignmentOfTheDay)
       this.countAssignmentOfTheDay = totalAssignmentOfTheDay.count;
     } catch (e: any) {
       

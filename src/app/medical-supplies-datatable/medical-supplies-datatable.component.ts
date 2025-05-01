@@ -148,7 +148,6 @@ export class MedicalSuppliesDatatableComponent {
       category: this.searchCategoryValue ? this.searchCategoryValue.trim() : null,
     };
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
-      console.log(data)
       this.dataSource = new MatTableDataSource<IProduct>(data.list);
       this.dataSource.length = data.total;
     });

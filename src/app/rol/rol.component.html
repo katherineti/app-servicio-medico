@@ -38,6 +38,19 @@
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                             {{ element.name }}</mat-cell>
                         </ng-container>
+    
+                        <ng-container matColumnDef="isActivate">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Estado
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            @if (element.isActivate===true) {
+                                Activo
+                            }@else {
+                                Inactivo
+                              }
+                        </mat-cell>
+                        </ng-container>
                     
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">

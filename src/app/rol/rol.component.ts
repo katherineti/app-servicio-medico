@@ -34,7 +34,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 export class RolComponent {
 
-  displayedColumns = [ '#', 'rol', 'action'];
+  displayedColumns = [ '#', 'rol', 'isActivate', 'action'];
 
   dataSource: any = new MatTableDataSource<IRole>();
   searhField = new FormControl();
@@ -51,7 +51,7 @@ export class RolComponent {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ '#', 'rol', 'action']
-    : [ '#', 'rol', 'action'];
+    : [ '#', 'rol', 'isActivate', 'action'];
     });
 
     this.dataSource['length'] = 0;
@@ -85,6 +85,7 @@ export class RolComponent {
       data: data || null,
       disableClose: true
     });
+    console.log("Roles: data enviada desde la tabla: " , data)
 
     ref.afterClosed().subscribe(() => {
       this.getAll(this.pageIndex, this.pageSize);

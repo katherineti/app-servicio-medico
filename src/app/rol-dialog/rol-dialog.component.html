@@ -1,172 +1,71 @@
-<h2 mat-dialog-title >
-     Rol {{data.rol}}
+<h2 mat-dialog-title>
+    @if (!this.modeEdit) {
+      Ver rol {{this.selectedRole?.name | titlecase}}
+    }@else {
+      Editar rol 
+  }
 </h2>
 
-@if(ROLES_DATA){
-    <mat-dialog-content class="mat-typography">
-        <div class="d-flex align-items-center">
-        <div class="right-bg-content p-10">
-    
-            <div class="row p-10">
-                <mat-card class="">
-                    <mat-card-content>
-                        <div class="w-100">
-                            <div class="m-l-auto">
-                                <form [formGroup]="rolFormGroup"  #f="ngForm" ngNativeValidate>
-                                    <div class="table-responsive">
-                                        <mat-table #table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles" formArrayName="roles">
-                                        
-                                        <ng-container matColumnDef="#">
-                                            <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
-                                            <mat-cell mat-cell *matCellDef="let element; let i = index">
-                                                {{ i + 1 }}
-                                            </mat-cell>
-                                        </ng-container>
-    
-                                        <ng-container matColumnDef="module">
-                                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                            Módulo
-                                            </mat-header-cell>
-                                            <mat-cell class="p-16 f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-                                                <mat-form-field appearance="outline" class="example-full-width">
-                                                    <input
-                                                    matInput
-                                                    placeholder="module"
-                                                    formControlName="module"
-                                                    required="true"
-                                                    type="text"
-                                                    />
-                                                </mat-form-field>
-                                            </mat-cell>
-    
-                                        </ng-container>
+<mat-dialog-content class="mat-typography">
+    <div class="d-flex align-items-center">
+    <div class="right-bg-content p-10">
+        <form [formGroup]="roleFormGroup" #f="ngForm">
 
-    
-                                        @if(data.rol=="Administrador" ){
-                                            <ng-container [matColumnDef]="'Gestionar '+this.ROLES_DATA[0].module">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                    Gestionar {{this.ROLES_DATA[0].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="gestionarUsuarios"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-    
-                                        @if(data.rol=="Administrador" ){
-                                            <ng-container [matColumnDef]="'Gestionar '+this.ROLES_DATA[1].module">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                    Gestionar {{this.ROLES_DATA[1].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="gestionarRoles"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-                                        @if(data.rol=="Administrador" ){
-                                            <ng-container [matColumnDef]="'Gestionar '+this.ROLES_DATA[2].module">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                    Gestionar {{this.ROLES_DATA[2].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="gestionarConfig"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-    
-                                        @if(data.rol=="Almacen" ){
-                                            <ng-container [matColumnDef]="this.ROLES_DATA[0].module">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                {{this.ROLES_DATA[0].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="registroEntradaInsumos"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-                                        @if(data.rol=="Almacen" ){
-                                            <ng-container [matColumnDef]="this.ROLES_DATA[1].module">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                {{this.ROLES_DATA[1].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="registroSalidaInsumos"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-    
-                                        @if(data.rol=="Medico" && this.ROLES_DATA[0].permission){
-                                            <ng-container [matColumnDef]="this.ROLES_DATA[0].permission">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                {{this.ROLES_DATA[0].module}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="disponibilidadInsumos"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-                                        @if(data.rol=="Auditor" && this.ROLES_DATA[0].permission){
-                                            <ng-container [matColumnDef]="this.ROLES_DATA[0].permission">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                {{this.ROLES_DATA[0].permission}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="consultarRegistros"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-                                        @if(data.rol=="Auditor" && this.ROLES_DATA[1].permission){
-                                            <ng-container [matColumnDef]="this.ROLES_DATA[1].permission">
-                                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                                {{this.ROLES_DATA[1].permission}}
-                                                </mat-header-cell>
-                                                <mat-cell class="p-16" class="f-s-14" *matCellDef="let element; let i = index" [formGroupName]="i">
-        
-                                                <mat-slide-toggle formControlName="generarReporte"></mat-slide-toggle>
-                                            </mat-cell>
-                                            </ng-container>      
-                                        }                                    
-                                    
-                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                                    </mat-table>
-    
-                                    </div>
-                                </form>      
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-    
-            <div class="row p-x-10">
-                <div class="ml-auto">
+          <div class="row p-10">
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Rol"
+                formControlName="role"
+                required="true"
+                type="text"
+                />
+                <mat-error *ngIf="roleFormGroup.controls['role'].hasError('required')">
+                    El rol es requerido
+                </mat-error>
+                <mat-error *ngIf="roleFormGroup.controls['role'].errors?.['maxLength']">
+                    Máximo de 40 caracteres.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Descripción"
+                formControlName="description"
+                type="text"
+                />
+                <mat-error *ngIf="roleFormGroup.controls['description'].errors?.['maxLength']">
+                    Máximo de 50 caracteres.
+                </mat-error>
+            </mat-form-field>        
+          </div>
+      
+          <div class="row">
+            <div class="ml-auto">
+                @if (this.modeEdit) {
                     <button
                     color="primary"
                     mat-flat-button
+                    [disabled]="roleFormGroup.invalid && disableButton"
                     (click)="save()"
                     >
                     Guardar
                     </button>
-                    <button
-                    class="m-r-10 bg-error m-l-8"
-                    mat-flat-button
-                    (click)="closeDialog()"
-                    >
-                    Salir
-                    </button>
-                </div>
-            </div> 
-    
+                }
+                <button
+                class="m-r-10 bg-error m-l-8"
+                mat-flat-button
+                (click)="cancel()"
+                >
+                @if (!this.modeEdit){
+                  Cerrar
+                }@else {
+                  Cancelar
+                }
+                </button>
+            </div>
         </div>
-        </div>
-    </mat-dialog-content>
-}
-
+        </form>
+    </div>
+    </div>
+</mat-dialog-content>

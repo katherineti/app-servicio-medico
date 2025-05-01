@@ -39,8 +39,7 @@ export class HeaderComponent {
   private usersService = inject(UsersService);
 
   async ngOnInit(): Promise<void> {
-    this.token =  this.authService.getTokenInfo( await this.authService.getPlainToken() );
-    console.log(this.token )
+    this.token = this.authService.getTokenInfo( await this.authService.getPlainToken() );
     if( this.token.sub ){
       this.getUser(this.token.sub ) 
     }
@@ -49,7 +48,6 @@ export class HeaderComponent {
   getUser(id:number) {
     this.usersService.getUser(id).subscribe((data: IUser) => {
       this.user = data;
-      console.log(data)
     });
   }
 }

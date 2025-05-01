@@ -1,11 +1,8 @@
 export interface IRole {
   id: string;
   name: string;
-  // isActivate: boolean;
-  // createdAt?: Date;
-  // updatedAt?: Date;
-  // role: string;
-
+  description: string;
+  isActivate: boolean;
   actionEdit?:boolean;
   [key: string]: any;
 }
@@ -23,4 +20,9 @@ export interface IRolePagination {
 }
 
 export interface ICreateRoleDTO
-  extends Omit<IRole, 'id' | 'createdAt' | 'updatedAt' > {}
+  extends Omit<IRole, 'id' > {}
+
+export interface IUpdateRole {
+  name: string;
+  description: string;
+}

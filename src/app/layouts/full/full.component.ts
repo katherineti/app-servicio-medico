@@ -84,7 +84,6 @@ export class FullComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.role = await this.authService.getRol();
-    console.log(this.role);
     if( this.role === 'admin' ){
       this.navItems = navItemsAdmin;
     }else{

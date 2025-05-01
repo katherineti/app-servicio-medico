@@ -42,4 +42,11 @@ export class DashboardService {
       `${this.tokenService.endPoint}dashboard/totalAssignmentOfMonth`
     );
   }
+
+    //Solo almacen
+    totalAllProducts(): Observable<{ count: number }> {
+      return this.http.get<{ count: number }>(
+        `${this.tokenService.endPoint}dashboard/totalAllProducts`
+      );
+    }
 }

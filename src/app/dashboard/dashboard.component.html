@@ -32,46 +32,65 @@
     </mat-card>
 }
 
-<!-- cantidad de insumos al dia-->
-<mat-card class="cardWithShadow overflow-hidden">
-    <mat-card-content class="p-b-0">
-        <div class="d-flex align-items-center m-b-8">
-            <mat-card-title>Total de Insumos Médicos del Día</mat-card-title>
-            <div class="m-l-auto">
-                <button mat-fab class="icon-48 bg-secondary ">
-                    <i-feather name="activity" class="icon-20 d-flex align-items-center"></i-feather>
-                </button>
+@if (this.role === 'admin') {
+    <!-- cantidad de insumos al dia-->
+    <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card-content class="p-b-0">
+            <div class="d-flex align-items-center m-b-8">
+                <mat-card-title>Total de Insumos Médicos del Día</mat-card-title>
+                <div class="m-l-auto">
+                    <button mat-fab class="icon-48 bg-secondary ">
+                        <i-feather name="activity" class="icon-20 d-flex align-items-center"></i-feather>
+                    </button>
+                </div>
             </div>
-        </div>
-        <h4 class="f-s-24 m-b-6">{{countProductsOfTheDay}}</h4>
-        <div class="d-flex align-items-center m-t-32">
-            <div class="d-flex align-items-center">
-                 <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
-                 <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(), null) }}</div>
+            <h4 class="f-s-24 m-b-6">{{countProductsOfTheDay}}</h4>
+            <div class="d-flex align-items-center m-t-32">
+                <div class="d-flex align-items-center">
+                     <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
+                     <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(), null) }}</div>
+                </div>
             </div>
-        </div>
-    </mat-card-content>
-</mat-card>
-<!-- cantidad de insumos mes-->
-<mat-card class="cardWithShadow overflow-hidden">
-    <mat-card-content class="p-b-0">
-        <div class="d-flex align-items-center m-b-8">
-            <mat-card-title>Total de Insumos Médicos del Mes</mat-card-title>
-            <div class="m-l-auto">
-                <button mat-fab class="icon-48 bg-secondary ">
-                    <i-feather name="briefcase" class="icon-20 d-flex align-items-center"></i-feather>
-                </button>
+        </mat-card-content>
+    </mat-card>
+    <!-- cantidad de insumos mes-->
+    <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card-content class="p-b-0">
+            <div class="d-flex align-items-center m-b-8">
+                <mat-card-title>Total de Insumos Médicos del Mes</mat-card-title>
+                <div class="m-l-auto">
+                    <button mat-fab class="icon-48 bg-secondary ">
+                        <i-feather name="briefcase" class="icon-20 d-flex align-items-center"></i-feather>
+                    </button>
+                </div>
             </div>
-        </div>
-        <h4 class="f-s-24 m-b-6">{{countProductsOfMonth}}</h4>
-        <div class="d-flex align-items-center m-t-32">
-            <div class="d-flex align-items-center">
-                 <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
-                 <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
+            <h4 class="f-s-24 m-b-6">{{countProductsOfMonth}}</h4>
+            <div class="d-flex align-items-center m-t-32">
+                <div class="d-flex align-items-center">
+                     <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-primary d-flex"></mat-icon>
+                     <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
+                </div>
             </div>
-        </div>
-    </mat-card-content>
-</mat-card>
+        </mat-card-content>
+    </mat-card>
+}
+
+@if (this.role === 'almacen') {
+    <!-- cantidad total de productos -->
+    <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card-content class="p-b-0">
+            <div class="d-flex align-items-center m-b-8">
+                <mat-card-title>Total de Insumos Médicos</mat-card-title>
+                <div class="m-l-auto">
+                    <button mat-fab class="icon-48 bg-secondary ">
+                        <i-feather name="users" class="icon-20 d-flex align-items-center"></i-feather>
+                    </button>
+                </div>
+            </div>
+            <h4 class="f-s-24 m-b-6">{{countAllProducts}}</h4>
+        </mat-card-content>
+    </mat-card>
+}
 
 @if (this.role === 'admin' || this.role === 'almacen') {
     <!-- cantidad de asignaciones de productos realizadas en el dia-->
@@ -133,7 +152,7 @@
         <div class="d-flex align-items-center m-t-32">
             <div class="d-flex align-items-center">
                 <i-feather name="calendar" class="text-error d-flex"></i-feather>
-                 <div class="m-l-12 f-s-14">En 5 días</div>
+                 <div class="m-l-12 f-s-14">En 0 días</div>
             </div>
         </div>
 

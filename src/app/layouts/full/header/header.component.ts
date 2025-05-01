@@ -12,6 +12,9 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MaterialModule } from '../../../material/material.module';
 import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
 import { AuthService } from '../../../services/auth.service';
+import { TokenAuth } from '../../../authentication/models/token-auth.model';
+import { UsersService } from '../../../users/services/users.service';
+import { IUser } from '../../../users/interfaces/users.interface';
 
 @Component({
   selector: 'app-header',
@@ -26,9 +29,27 @@ import { AuthService } from '../../../services/auth.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent {
+  token!: TokenAuth;
+  user!: IUser;
+
   @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
   authService = inject(AuthService)
+  private usersService = inject(UsersService);
 
+  async ngOnInit(): Promise<void> {
+    this.token =  this.authService.getTokenInfo( await this.authService.getPlainToken() );
+    console.log(this.token )
+    if( this.token.sub ){
+      this.getUser(this.token.sub ) 
+    }
+  }
+
+  getUser(id:number) {
+    this.usersService.getUser(id).subscribe((data: IUser) => {
+      this.user = data;
+      console.log(data)
+    });
+  }
 }

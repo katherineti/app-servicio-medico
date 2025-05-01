@@ -22,6 +22,7 @@ export class DashboardComponent {
   countProductsOfMonth:number = 0;
   countAssignmentOfTheDay:number = 0;
   countAssignmentOfMonth:number = 0;
+  countAllProducts:number = 0;
   formattedLocalDate!: string;
   role:string='';
   
@@ -33,12 +34,15 @@ export class DashboardComponent {
     this.role = await this.authService.getRol();
     if( this.role === 'admin' ){
       this.totalUsers();
+      this.totalProductsOfTheDay();
+      this.totalProductsOfMonth();
     }
-    this.totalProductsOfTheDay();
-    this.totalProductsOfMonth();
     if(this.role === 'admin' || this.role === 'almacen'){
       this.totalAssignmentOfTheDay();
       this.totalAssignmentOfMonth();
+    }
+    if(this.role === 'almacen'){
+      this.totalAllProducts();
     }
   }
   
@@ -109,6 +113,19 @@ export class DashboardComponent {
       
       toast.error(e.error.message);
       console.error('Error al obtener la cantidad de asignaciones del mes', e);
+    }
+  }
+
+  async totalAllProducts(){
+    try {
+      let totalAllProducts:{count: number} = await firstValueFrom(
+        this.dashboardService.totalAllProducts()
+      );
+      this.countAllProducts = totalAllProducts.count;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener la cantidad de productos', e);
     }
   }
 

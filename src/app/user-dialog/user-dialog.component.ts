@@ -145,14 +145,7 @@ export class UserDialogComponent implements OnInit {
           console.log("error ",error)
           this.swalService.closeload();
           this.disableButton = false;
-/*           if (error.error.statusCode === 409) {
-            this.swalService.error('Error', error.error.message);
-            this.typeError = 'user';
-          }
-          if (error.error.statusCode === 400) {
-            this.swalService.error('Error', 'Faltan campos requeridos.');
-            this.typeError = 'fields';
-          } */
+          this.swalService.error('Error', error);
         },
       });
   }

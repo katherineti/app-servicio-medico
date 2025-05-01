@@ -1,6 +1,6 @@
 export interface TokenAuth {
   [x: string]: any;
-  id: number;
+  sub: number;
   email: string;
   role: string;
   iat?: number;

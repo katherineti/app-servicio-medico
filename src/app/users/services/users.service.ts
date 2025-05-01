@@ -38,5 +38,11 @@ export class UsersService {
   deleteUser(id: string) {
     return this.http.delete<IUser>(`${this.tokenService.endPoint}users/${id}`);
   }
+
+  getUser(id:number): Observable<IUser> {
+    return this.http.get<IUser>(
+      `${this.tokenService.endPoint}users/${id}`
+    );
+  }
   
 }

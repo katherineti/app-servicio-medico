@@ -25,7 +25,7 @@
         <div class="w-100">
 
             <div class="m-l-auto">
-                @if( this.data){
+                @if(dataSource.length){
                     <div class="table-responsive">
                         <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical supplies">
                         <ng-container matColumnDef="name">
@@ -130,6 +130,10 @@
                         [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
                         aria-describedby="table medical supplies"></mat-paginator>
                     </div>
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
                 }
             </div>
         </div>

@@ -98,7 +98,7 @@ export class CreateMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
-      expiration_date: [
+      expirationDate: [
         '',
         [
           Validators.required,
@@ -234,7 +234,6 @@ export class CreateMedicalSuppliesComponent {
           }
         }
       });
-      
   }
 
   loadCategories(): void {

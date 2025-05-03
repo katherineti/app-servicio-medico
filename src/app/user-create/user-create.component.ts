@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
 import { UsersService } from '../users/services/users.service';
-import { IRole } from '../rol/interfaces/roles.interface';
 
 @Component({
   selector: 'app-user-create',

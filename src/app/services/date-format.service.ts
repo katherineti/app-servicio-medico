@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import moment, { MomentInput } from 'moment-timezone';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -20,5 +21,12 @@ export class DateFormatService {
 
   getDateFormats() {
     return MY_DATE_FORMATS;
+  }
+
+  convertUtcToVenezuelaWithMoment(fechaUtc: MomentInput): string {
+    const timeZone = 'America/Caracas';
+    const fechaLocalVenezuela = moment.utc(fechaUtc).tz(timeZone);
+    return fechaLocalVenezuela.format('YYYY-MM-DD HH:mm:ss ZZ');
+    // return fechaLocalVenezuela.format('YYYY-MM-DD HH:mm:ss zzzz');
   }
 }

@@ -58,18 +58,18 @@
                         </ng-container>
                         <ng-container matColumnDef="date_entry">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Fecha de entrada
+                            Fecha de ingreso
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                             {{ element.createdAt | date:'dd-MM-yyyy'}}</mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="expiration_date">
+                        <ng-container matColumnDef="expirationDate">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                             Fecha de vencimiento
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            00/00/0000
-                        </mat-cell>
+                                {{ element.expirationDate | date:'dd-MM-yyyy'}}
+                            </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="image">

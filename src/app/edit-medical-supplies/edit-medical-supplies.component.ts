@@ -122,7 +122,7 @@ export class EditMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
-      expiration_date: [
+      expirationDate: [
         '',
         [
           Validators.required,
@@ -148,7 +148,7 @@ export class EditMedicalSuppliesComponent {
       this.editProdFormGroup.controls['category'].disable();
       this.editProdFormGroup.controls['type'].disable();
       this.editProdFormGroup.controls['stock'].disable();
-      this.editProdFormGroup.controls['expiration_date'].disable();
+      this.editProdFormGroup.controls['expirationDate'].disable();
       this.editProdFormGroup.controls['status'].disable();
     }
 
@@ -164,7 +164,8 @@ export class EditMedicalSuppliesComponent {
       code: this.selectedProduct?.code,
       date_entry: this.selectedProduct?.createdAt,
       url_image:this.selectedProduct?.url_image,
-      expiration_date:this.selectedProduct?.expiration_date,
+      // expirationDate:this.selectedProduct?.expirationDate,
+      expirationDate: new Date(this.selectedProduct?.expirationDate),
       status:this.selectedProduct?.statusId,
       });
 

@@ -18,6 +18,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { AssignmentComponent } from '../assignment/assignment.component';
 import { AuthService } from '../services/auth.service';
+import { DateFormatService } from '../services/date-format.service';
+// import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -52,12 +54,13 @@ export class MedicalSuppliesDatatableComponent {
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
+  private dateFormatService= inject(DateFormatService);
 
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ 'name','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','expiration_date','image','status','action'];
+    : [ 'name', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
     });
 
     this.loadingCategorie.set(true);
@@ -148,6 +151,12 @@ export class MedicalSuppliesDatatableComponent {
       category: this.searchCategoryValue ? this.searchCategoryValue.trim() : null,
     };
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
+      console.log(data)
+      data.list.forEach((ele:any) => {
+        ele.expirationDate = ele.expirationDate ? this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.expirationDate ) ) : "";
+        ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );
+        ele.updatedAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.updatedAt ) );
+      }); 
       this.dataSource = new MatTableDataSource<IProduct>(data.list);
       this.dataSource.length = data.total;
     });

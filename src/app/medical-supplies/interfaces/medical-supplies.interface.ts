@@ -12,7 +12,7 @@ export interface IProduct {
   url_image?: string;
   createdAt?: string;
   updatedAt?: string;
-  expiration_date?: string;
+  expirationDate: string;
 
   actionEdit?:boolean;
 }

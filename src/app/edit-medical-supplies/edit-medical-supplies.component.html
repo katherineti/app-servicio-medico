@@ -182,9 +182,15 @@
                 <mat-option [value]="2">{{
                     'Inactivo'
                 }}</mat-option>
-                <mat-option [value]="3">{{
-                    'Próximo a vencerse'
-                }}</mat-option>
+                <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
+                @if (this.role === 'admin' || this.role === 'almacen') {
+                  <mat-option [value]="3">{{
+                      'Próximo a vencerse'
+                  }}</mat-option>
+                  <mat-option [value]="4">{{
+                    'Caducado'
+                  }}</mat-option>
+                }
                 </mat-select>
 
                 <mat-error *ngIf="editProdFormGroup.controls['status'].hasError('required')">

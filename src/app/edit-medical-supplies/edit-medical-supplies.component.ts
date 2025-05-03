@@ -11,6 +11,7 @@ import { toast } from 'ngx-sonner';
 import { API_URL } from '../../../environment';
 import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-edit-medical-supplies',
@@ -27,6 +28,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 export class EditMedicalSuppliesComponent {
   readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
   editProdFormGroup!: FormGroup;
+  role:string='';
   imageField?: File;
   disableButton: boolean = false;
   selectedProduct!: IProduct;
@@ -44,6 +46,7 @@ export class EditMedicalSuppliesComponent {
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private dateFormatService= inject(DateFormatService);
+  private authService = inject(AuthService);
 
   constructor( 
       @Inject(MAT_DIALOG_DATA) 
@@ -54,6 +57,7 @@ export class EditMedicalSuppliesComponent {
   }
 
   async ngOnInit() {
+    this.role = await this.authService.getRol();
 
     this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct );
     this.edit = this.data.actionEdit; 

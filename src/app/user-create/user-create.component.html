@@ -42,6 +42,27 @@
 
           <mat-form-field appearance="outline" class="example-full-width">
             <mat-select
+            placeholder="Roles"
+            formControlName="role"
+            required="true"
+            >
+            <mat-option [value]="1">{{
+                'Administrador' | titlecase
+            }}</mat-option>
+            <mat-option [value]="2">{{
+                'Almacén' | titlecase
+            }}</mat-option>
+            <mat-option [value]="3">{{
+                'Médico' | titlecase
+            }}</mat-option>
+            <mat-option [value]="4">{{
+                'Auditor' | titlecase
+            }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+<!--           <mat-form-field appearance="outline" class="example-full-width">
+            <mat-select
             placeholder="roles"
             formControlName="role"
             required="true"
@@ -55,7 +76,8 @@
                 }}</mat-option>
             }
             </mat-select>
-         </mat-form-field>
+         </mat-form-field> -->
+
 <!--           <mat-form-field appearance="outline" class="example-full-width">
             <mat-select
             placeholder="roles"

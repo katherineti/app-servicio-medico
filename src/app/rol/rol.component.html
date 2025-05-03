@@ -36,7 +36,7 @@
                             Rol
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            {{ element.name }}</mat-cell>
+                            {{ element.name | titlecase}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef="isActivate">

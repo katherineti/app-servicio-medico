@@ -100,10 +100,9 @@ export class RolDialogComponent {
 
     this.roleFormGroup.patchValue({
       id: this.selectedRole?.id,
-      role: this.selectedRole?.name,
+      role: this.toTitleCase(this.selectedRole?.name),
       description: this.selectedRole?.description,
       });
-
   }
 
   cancel() {
@@ -158,5 +157,13 @@ export class RolDialogComponent {
     this.snackBar.open(message, action, {
       duration: durationInSeconds * 1000,
     });
+  }
+
+  // Función para convertir un string a Title Case
+  toTitleCase(str: string): string {
+    if (!str) {
+      return '';
+    }
+    return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }
 }

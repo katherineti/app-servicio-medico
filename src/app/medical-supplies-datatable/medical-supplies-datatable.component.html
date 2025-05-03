@@ -63,13 +63,14 @@
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                             {{ element.createdAt | date:'dd-MM-yyyy'}}</mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="expiration_date">
+                        <ng-container matColumnDef="expiration_date">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                             Fecha de vencimiento
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            {{ element.expiration_date}}</mat-cell>
-                        </ng-container> -->
+                            00/00/0000
+                        </mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="image">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">

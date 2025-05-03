@@ -1,4 +1,4 @@
-import { Component, Inject, inject, SecurityContext, signal } from '@angular/core';
+import { Component, Inject, inject, signal } from '@angular/core';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,12 +9,19 @@ import { MedicalSuppliesService } from '../medical-supplies/services/medical-sup
 import { DomSanitizer } from '@angular/platform-browser';
 import { toast } from 'ngx-sonner';
 import { API_URL } from '../../../environment';
+import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-edit-medical-supplies',
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
   templateUrl: './edit-medical-supplies.component.html',
-  styleUrl: './edit-medical-supplies.component.scss'
+  styleUrl: './edit-medical-supplies.component.scss',
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-VE' }, // Configura el locale directamente aquí
+  ],
 })
 
 export class EditMedicalSuppliesComponent {
@@ -36,6 +43,7 @@ export class EditMedicalSuppliesComponent {
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
+  private dateFormatService= inject(DateFormatService);
 
   constructor( 
       @Inject(MAT_DIALOG_DATA) 
@@ -114,6 +122,13 @@ export class EditMedicalSuppliesComponent {
           Validators.maxLength(50),
         ],
       ],
+      expiration_date: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+        ],
+      ],
       status: [
         '',
         [
@@ -123,9 +138,7 @@ export class EditMedicalSuppliesComponent {
         ],
       ],
       url_image: [null],
-
     });
-
   }
 
   setForm() {
@@ -135,6 +148,7 @@ export class EditMedicalSuppliesComponent {
       this.editProdFormGroup.controls['category'].disable();
       this.editProdFormGroup.controls['type'].disable();
       this.editProdFormGroup.controls['stock'].disable();
+      this.editProdFormGroup.controls['expiration_date'].disable();
       this.editProdFormGroup.controls['status'].disable();
     }
 
@@ -150,6 +164,7 @@ export class EditMedicalSuppliesComponent {
       code: this.selectedProduct?.code,
       date_entry: this.selectedProduct?.createdAt,
       url_image:this.selectedProduct?.url_image,
+      expiration_date:this.selectedProduct?.expiration_date,
       status:this.selectedProduct?.statusId,
       });
 
@@ -282,5 +297,4 @@ export class EditMedicalSuppliesComponent {
     this.imageError = true;
     this.imgBase64.set( '../../assets/images/products/default_product_image.png');
   }
-
 }

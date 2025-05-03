@@ -146,6 +146,17 @@
                     El código es requerido y como máximo puede tener 50 caracteres.
                 </mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <input matInput [matDatepicker]="expiration_date" placeholder="Fecha de vencimiento" formControlName="expiration_date" required="true">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="expiration_date"></mat-datepicker-toggle>
+              <mat-datepicker #expiration_date></mat-datepicker>
+
+              <mat-error *ngIf="createProdFormGroup.controls['expiration_date'].hasError('required') || createProdFormGroup.controls['expiration_date'].hasError('maxLength') ">
+                  La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
+              </mat-error>
+          </mat-form-field>
               
           </div>
       

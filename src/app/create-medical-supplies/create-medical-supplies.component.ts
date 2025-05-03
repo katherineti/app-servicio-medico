@@ -5,15 +5,21 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../services/swal.service';
 import { Category, MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
-import { Subscription, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
 
 @Component({
   selector: 'app-create-medical-supplies',
   templateUrl: './create-medical-supplies.component.html',
   styleUrl: './create-medical-supplies.component.scss',
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-VE' }, // Configura el locale directamente aquí
+  ],
 })
 export class CreateMedicalSuppliesComponent {
   createProdFormGroup!: FormGroup;
@@ -27,11 +33,12 @@ export class CreateMedicalSuppliesComponent {
   selectedFile: File | null = null;
 
   categories: any[] = [];
-  private categoriesSubscription: Subscription | undefined;
 
+  private categoriesSubscription: Subscription | undefined;
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
+  private dateFormatService= inject(DateFormatService);
 
   constructor( 
     public dialogRef: MatDialogRef<CreateMedicalSuppliesComponent>,
@@ -84,6 +91,14 @@ export class CreateMedicalSuppliesComponent {
         ],
       ],
       code: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
+      expiration_date: [
         '',
         [
           Validators.required,

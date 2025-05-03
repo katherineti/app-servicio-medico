@@ -57,7 +57,7 @@ export class MedicalSuppliesDatatableComponent {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ 'name','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','image','status','action'];
+    : [ 'name', 'category', 'stock', 'code', 'date_entry','expiration_date','image','status','action'];
     });
 
     this.loadingCategorie.set(true);

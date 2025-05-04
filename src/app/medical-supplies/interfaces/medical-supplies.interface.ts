@@ -22,6 +22,7 @@ export interface IGetAllProducts {
   take: number;
   name?: string;
   category?: string;
+  expirationDate?: Date;
 }
 
 export interface IProductPagination {

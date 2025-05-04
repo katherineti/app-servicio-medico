@@ -18,8 +18,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { AssignmentComponent } from '../assignment/assignment.component';
 import { AuthService } from '../services/auth.service';
-import { DateFormatService } from '../services/date-format.service';
-// import * as moment from 'moment-timezone';
+//Formateo a fecha local en dd/mm/yyyy
+import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -32,6 +33,12 @@ import { DateFormatService } from '../services/date-format.service';
     RouterModule,
     ReactiveFormsModule
   ],
+//Formateo a fecha local en dd/mm/yyyy
+  providers: [ 
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-VE' },
+  ],
 })
 
 export class MedicalSuppliesDatatableComponent {
@@ -41,7 +48,7 @@ export class MedicalSuppliesDatatableComponent {
   data!: string;
   
   dataSource: any = new MatTableDataSource<IProduct>();
-  searhField = new FormControl();  searhCategoryField = new FormControl();
+  searhField = new FormControl();  searhCategoryField = new FormControl();  searh_expirationDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
   
@@ -88,6 +95,9 @@ export class MedicalSuppliesDatatableComponent {
   }
   get searchCategoryValue() {
     return this.searhCategoryField.value;
+  }
+  get searchExpirationDateValue() {
+    return this.searh_expirationDate.value;
   }
 
   applyFilter(event: Event) {
@@ -149,9 +159,10 @@ export class MedicalSuppliesDatatableComponent {
       take: take,
       name: this.searchValue ? this.searchValue.trim() : null,
       category: this.searchCategoryValue ? this.searchCategoryValue.trim() : null,
+      expirationDate: this.searchExpirationDateValue ? this.searchExpirationDateValue : null,
     };
+
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
-      console.log(data)
       data.list.forEach((ele:any) => {
         ele.expirationDate = ele.expirationDate ? this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.expirationDate ) ) : "";
         ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );

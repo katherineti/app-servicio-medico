@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-medical-supplies',
@@ -23,6 +24,7 @@ import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.serv
 })
 export class CreateMedicalSuppliesComponent {
   createProdFormGroup!: FormGroup;
+  role:string='';
   imageField?: File;
   disableButton: boolean = false;
 
@@ -34,6 +36,7 @@ export class CreateMedicalSuppliesComponent {
 
   categories: any[] = [];
 
+  private authService = inject(AuthService);
   private categoriesSubscription: Subscription | undefined;
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -45,6 +48,13 @@ export class CreateMedicalSuppliesComponent {
     ){
     this.buildAddUserForm();
     this.loadCategories();
+    this.createProdFormGroup.patchValue({
+      status: 1,
+      });
+  }
+
+  async ngOnInit(){
+    this.role = await this.authService.getRol();
   }
 
   buildAddUserForm() {
@@ -99,6 +109,14 @@ export class CreateMedicalSuppliesComponent {
         ],
       ],
       expirationDate: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(50),
+        ],
+      ],
+      status: [
         '',
         [
           Validators.required,

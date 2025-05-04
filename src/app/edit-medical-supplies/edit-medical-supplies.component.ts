@@ -42,11 +42,11 @@ export class EditMedicalSuppliesComponent {
   edit:boolean | undefined;
   imageError = false;
 
+  private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private dateFormatService= inject(DateFormatService);
-  private authService = inject(AuthService);
 
   constructor( 
       @Inject(MAT_DIALOG_DATA) 

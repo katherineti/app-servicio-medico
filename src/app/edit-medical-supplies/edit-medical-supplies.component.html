@@ -170,33 +170,33 @@
               </mat-error>
           </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
-                <mat-select
-                placeholder="Estado"
-                formControlName="status"
-                required="true"
-                >
-                <mat-option [value]="1">{{
-                    'Activo'
+          <mat-form-field appearance="outline" class="example-full-width">
+              <mat-select
+              placeholder="Estado"
+              formControlName="status"
+              required="true"
+              >
+              <mat-option [value]="1">{{
+                  'Activo'
+              }}</mat-option>
+              <mat-option [value]="2">{{
+                  'Inactivo'
+              }}</mat-option>
+              <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
+              @if (this.role === 'admin' || this.role === 'almacen') {
+                <mat-option [value]="3">{{
+                    'Próximo a vencerse'
                 }}</mat-option>
-                <mat-option [value]="2">{{
-                    'Inactivo'
+                <mat-option [value]="4">{{
+                  'Caducado'
                 }}</mat-option>
-                <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
-                @if (this.role === 'admin' || this.role === 'almacen') {
-                  <mat-option [value]="3">{{
-                      'Próximo a vencerse'
-                  }}</mat-option>
-                  <mat-option [value]="4">{{
-                    'Caducado'
-                  }}</mat-option>
-                }
-                </mat-select>
+              }
+              </mat-select>
 
-                <mat-error *ngIf="editProdFormGroup.controls['status'].hasError('required')">
-                    El estado es requerido.
-                </mat-error>
-            </mat-form-field>
+              <mat-error *ngIf="editProdFormGroup.controls['status'].hasError('required')">
+                  El estado es requerido.
+              </mat-error>
+          </mat-form-field>
 
           </div>
           <div class="row">

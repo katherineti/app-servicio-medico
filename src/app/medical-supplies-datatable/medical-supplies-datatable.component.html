@@ -119,10 +119,12 @@
                                 <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)">
                                     <i-feather name="edit" ></i-feather>
                                 </button>
-                                <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
-                                    <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
-                                </button>
-                              }
+                             }
+                             @if (this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') {
+                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
+                                     <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
+                                 </button>
+                             }
                             </mat-cell>
                         </ng-container>
                     

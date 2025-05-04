@@ -1,4 +1,4 @@
-<mat-toolbar style="background-color: white;" >
+<mat-toolbar style="background-color: white;">
     <mat-form-field appearance="outline">
         <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
     </mat-form-field>
@@ -114,12 +114,15 @@
                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSeeProduct(element)">
                                     <i-feather name="eye"></i-feather>
                                 </button>
+
+                              @if (this.role === 'admin' || this.role === 'almacen') {
                                 <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)">
                                     <i-feather name="edit" ></i-feather>
                                 </button>
-                                <button mat-icon-button aria-label="Editar" (click)="assignProductToWorker(element)">
+                                <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
                                     <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
                                 </button>
+                              }
                             </mat-cell>
                         </ng-container>
                     

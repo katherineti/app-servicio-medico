@@ -27,6 +27,5 @@ export class LoginService {
         this.urlEndPoint + '/signup',
         body
     ) as Observable<any>;
-}
-
+  }
 }

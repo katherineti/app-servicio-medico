@@ -3,20 +3,14 @@ import { Injectable } from '@angular/core';
 import { TokenAuth } from '../authentication/models/token-auth.model';
 import { Router } from '@angular/router';
 import { SwalService } from './swal.service';
-import { API_URL } from '../../../environment';
-import { firstValueFrom, Observable } from 'rxjs';
-import { LogService } from './log.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  constructor(
-    private readonly router: Router,
-    private readonly swalService: SwalService,
-    private readonly logService: LogService
-  ) { }
+  constructor(private readonly router: Router,private readonly swalService: SwalService) { }
 
   async headerToken(): Promise<HttpHeaders> {
     return new HttpHeaders().set(
@@ -33,12 +27,7 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
-  async logout() {
-    
-    await firstValueFrom(
-      this.logService.createLog("Logout")
-    );
-    
+  async logout() {    
     this.clearToken();
     await this.router.navigateByUrl('/login');
   }

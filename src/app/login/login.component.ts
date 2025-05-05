@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -50,5 +50,4 @@ export class LoginComponent {
       this.swalService.warningEdit('Verifique', e);
     }
   }
-
 }

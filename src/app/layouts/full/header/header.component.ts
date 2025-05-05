@@ -15,6 +15,8 @@ import { AuthService } from '../../../services/auth.service';
 import { TokenAuth } from '../../../authentication/models/token-auth.model';
 import { UsersService } from '../../../users/services/users.service';
 import { IUser } from '../../../users/interfaces/users.interface';
+import { LogService } from '../../../services/log.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -37,6 +39,7 @@ export class HeaderComponent {
   @Output() toggleMobileNav = new EventEmitter<void>();
   authService = inject(AuthService)
   private usersService = inject(UsersService);
+  private logService = inject(LogService)
 
   async ngOnInit(): Promise<void> {
     this.token = this.authService.getTokenInfo( await this.authService.getPlainToken() );
@@ -49,5 +52,11 @@ export class HeaderComponent {
     this.usersService.getUser(id).subscribe((data: IUser) => {
       this.user = data;
     });
+  }
+
+  
+  async logout() {
+    await firstValueFrom( this.logService.createLog("Logout") );
+    this.authService.logout();
   }
 }

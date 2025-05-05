@@ -9,7 +9,7 @@
     </mat-card-content>
 </mat-card> -->
 
-@if (role == 'admin') {
+@if (role === 'admin') {
     <!-- cantidad de usuario -->
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
@@ -30,9 +30,7 @@
             </div> -->
         </mat-card-content>
     </mat-card>
-}
 
-@if (this.role === 'admin') {
     <!-- cantidad de insumos al dia-->
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
@@ -131,6 +129,23 @@
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
                 </div>
             </div>
+        </mat-card-content>
+    </mat-card>
+}
+
+@if (this.role === 'medico') {
+    <!-- cantidad total de asignaciones -->
+    <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card-content class="p-b-0">
+            <div class="d-flex align-items-center m-b-8">
+                <mat-card-title>Total de Asignaciones</mat-card-title>
+                <div class="m-l-auto">
+                    <button mat-fab class="icon-48 bg-secondary ">
+                        <i-feather name="users" class="icon-20 d-flex align-items-center"></i-feather>
+                    </button>
+                </div>
+            </div>
+            <h4 class="f-s-24 m-b-6">{{countAllAssignments}}</h4>
         </mat-card-content>
     </mat-card>
 }

@@ -49,4 +49,10 @@ export class DashboardService {
         `${this.tokenService.endPoint}dashboard/totalAllProducts`
       );
     }
+    //Solo médico
+    totalAllAssignments(): Observable<{ count: number }> {
+      return this.http.get<{ count: number }>(
+        `${this.tokenService.endPoint}dashboard/totalAssignments`
+      );
+    }
 }

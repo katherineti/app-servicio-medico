@@ -18,11 +18,12 @@ import { AuthService } from '../services/auth.service';
 
 export class DashboardComponent {
   countUsers:number = 0;
+  countAllProducts:number = 0;
   countProductsOfTheDay:number = 0;
   countProductsOfMonth:number = 0;
+  countAllAssignments:number = 0;
   countAssignmentOfTheDay:number = 0;
   countAssignmentOfMonth:number = 0;
-  countAllProducts:number = 0;
   formattedLocalDate!: string;
   role:string='';
   
@@ -41,9 +42,10 @@ export class DashboardComponent {
       this.totalAssignmentOfTheDay();
       this.totalAssignmentOfMonth();
     }
-    if(this.role === 'almacen'){
+    if(this.role === 'almacen' || this.role === 'medico'){
       this.totalAllProducts();
     }
+    this.totalAllAssignments();
   }
   
   navigate(route:string){
@@ -125,6 +127,19 @@ export class DashboardComponent {
       
       toast.error(e.error.message);
       console.error('Error al obtener la cantidad de productos', e);
+    }
+  }
+
+  async totalAllAssignments(){
+    try {
+      let totalAllAssignment:{count: number} = await firstValueFrom(
+        this.dashboardService.totalAllAssignments()
+      );
+      this.countAllAssignments = totalAllAssignment.count;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener la cantidad de asignaciones', e);
     }
   }
 

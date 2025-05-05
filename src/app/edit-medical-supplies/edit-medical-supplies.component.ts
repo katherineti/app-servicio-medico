@@ -158,6 +158,9 @@ export class EditMedicalSuppliesComponent {
 
     this.editProdFormGroup.controls['code'].disable();
 
+    const [year, month, day] = this.selectedProduct?.expirationDate.split('-');
+    const date = new Date(+year, +month - 1, +day); // Month is 0-indexe
+
     this.editProdFormGroup.patchValue({
       id: this.selectedProduct?.id,
       name: this.selectedProduct?.name,
@@ -168,8 +171,7 @@ export class EditMedicalSuppliesComponent {
       code: this.selectedProduct?.code,
       date_entry: this.selectedProduct?.createdAt,
       url_image:this.selectedProduct?.url_image,
-      // expirationDate:this.selectedProduct?.expirationDate,
-      expirationDate: new Date(this.selectedProduct?.expirationDate),
+      expirationDate: date,
       status:this.selectedProduct?.statusId,
       });
 

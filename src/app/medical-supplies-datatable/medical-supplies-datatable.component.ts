@@ -161,10 +161,9 @@ export class MedicalSuppliesDatatableComponent {
       category: this.searchCategoryValue ? this.searchCategoryValue.trim() : null,
       expirationDate: this.searchExpirationDateValue ? this.searchExpirationDateValue : null,
     };
-
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
       data.list.forEach((ele:any) => {
-        ele.expirationDate = ele.expirationDate ? this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.expirationDate ) ) : "";
+        // ele.expirationDate = ele.expirationDate ? this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.expirationDate ) ) : "";
         ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );
         ele.updatedAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.updatedAt ) );
       }); 

@@ -9,10 +9,12 @@
         Buscar
     </button>
 
-    <span class="example-spacer"></span>
-    <!-- <button mat-flat-button (click)="openDialogCreateRol()" >
-        Agregar
-    </button> -->
+   <!-- @if (this.role === 'admin') {
+        <span class="example-spacer"></span>
+         <button mat-flat-button (click)="openDialogCreateRol()" >
+            Agregar
+        </button> 
+    }-->
 </mat-toolbar>
 
 <br>
@@ -60,12 +62,15 @@
                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
                                     <i-feather name="eye"></i-feather>
                                 </button>
-                                <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
-                                    <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
-                                </button>
-                                <button mat-icon-button aria-label="Eliminar" (click)="deleteRol(element)">
-                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                </button>
+                                
+                                @if (this.role === 'admin') {
+                                    <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
+                                        <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
+                                    </button>
+                                    <button mat-icon-button aria-label="Eliminar" (click)="deleteRol(element)">
+                                        <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                    </button>
+                                }
                             </mat-cell>
                         </ng-container>                   
                     

@@ -15,6 +15,7 @@ import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from './services/users.service';
 import { IGetAllUsers, IUser, IUserPagination } from './interfaces/users.interface';
+import { AuthService } from '../services/auth.service';
 
 /**
 * @title pagination table users
@@ -34,9 +35,8 @@ imports: [
 providers:[UsersService]
 })
 export class UsersComponent {
-
+  role:string='';
   displayedColumns = [ 'name','rol','email','isActive','action'];
-
   dataSource: any = new MatTableDataSource<IUser>();
   searhField = new FormControl();
   pageSize: number = 5;
@@ -47,7 +47,8 @@ export class UsersComponent {
   public dialog = inject(MatDialog);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
-    
+  private authService = inject(AuthService);
+
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
@@ -58,6 +59,10 @@ export class UsersComponent {
     this.dataSource['length'] = 0;
     this.getAllUser(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
+  }
+
+  async ngOnInit(){
+    this.role = await this.authService.getRol();
   }
 
   get searchValue() {

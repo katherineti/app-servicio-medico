@@ -15,6 +15,7 @@ import { CreateRoleComponent } from '../create-role/create-role.component';
 import { IGetAllRoles, IRolePagination, IRole } from './interfaces/roles.interface';
 import { RolesService } from './services/roles.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 /**
 * @title pagination table roles
 */
@@ -33,9 +34,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 
 export class RolComponent {
-
+  role:string='';
   displayedColumns = [ '#', 'rol', 'isActivate', 'action'];
-
   dataSource: any = new MatTableDataSource<IRole>();
   searhField = new FormControl();
   pageSize: number = 5;
@@ -46,7 +46,8 @@ export class RolComponent {
   public dialog = inject(MatDialog);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
-    
+  private authService = inject(AuthService);
+
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
@@ -57,6 +58,9 @@ export class RolComponent {
     this.dataSource['length'] = 0;
     this.getAll(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
+  }
+  async ngOnInit(){
+    this.role = await this.authService.getRol();
   }
 
   get searchValue() {

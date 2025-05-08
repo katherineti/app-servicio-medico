@@ -73,7 +73,6 @@ export class LogsComponent {
       name_user: this.searchValue ? this.searchValue.trim() : null,
       createdAt: this.searchDateValue ? this.searchDateValue : null
     };
-    console.log(parms)
     this.logsService.getAll(parms).subscribe((data: ILogPagination) => {
       data.list.forEach((ele:any) => {
         ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );

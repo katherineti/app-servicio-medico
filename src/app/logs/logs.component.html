@@ -1,0 +1,94 @@
+<app-header-title [title]="'Logs'" ></app-header-title>
+
+<mat-card class="">
+    <mat-card-content>
+        <!-- <div class="d-flex w-100"> -->
+        <div class="w-100">
+            <div class="m-l-auto">
+                @if (dataSource.length) {
+                    <div class="table-responsive">
+                        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
+                        <ng-container matColumnDef="user_name">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Nombre del usuario
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.userName | titlecase
+                            }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="product">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Producto
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.productName | titlecase}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Log
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{element.action}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="ipAddress">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            IP
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.ipAddress 
+                            }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="hostname">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Hostname
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.hostname 
+                            }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="createdAt">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Fecha
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.createdAt | date:'dd-MM-yyyy'
+                            }}</mat-cell>
+                        </ng-container>
+                    
+                        <!-- <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                            Acción
+                            </mat-header-cell>
+                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button aria-label="Ver" (click)="true">
+                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> - ->
+                                    <i-feather name="eye"></i-feather>
+                                </button>
+                                <button mat-icon-button aria-label="Editar" (click)="true">
+                                <!-- <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)"> - ->
+                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+                                </button>
+                                <button mat-icon-button aria-label="Eliminar" (click)="true">
+                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                </button>
+                            </mat-cell>
+                        </ng-container> -->
+                    
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        </mat-table>
+    
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                        aria-describedby="table users"></mat-paginator>
+                    </div>
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
+                }
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

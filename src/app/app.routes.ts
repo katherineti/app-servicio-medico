@@ -8,6 +8,7 @@ import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medi
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './authentication/guards/auth.guard';
+import { LogsComponent } from './logs/logs.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,10 @@ export const routes: Routes = [
           {
             path: 'expired-medical-supplies',
             component: MedicalSuppliesExpiredComponent,
+          },
+          {
+            path: 'logs',
+            component: LogsComponent,
           },
         ],
     },

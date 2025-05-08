@@ -28,7 +28,14 @@ export const navItemsAdmin: NavItem[] = [
     route: './roles',
     external: true,
     chipClass: 'bg-secondary text-white',
-  }
+  },
+  {
+    displayName: 'Logs',
+    iconName: 'clipboard',
+    route: './logs',
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  },
 ];
 export const navItems: NavItem[] = [
   {

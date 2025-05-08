@@ -33,12 +33,13 @@ export class DashboardComponent {
   
   async ngOnInit(){
     this.role = await this.authService.getRol();
-    if( this.role === 'admin' ){
+    
+    if( this.role === 'admin' || this.role === 'auditor'){
       this.totalUsers();
       this.totalProductsOfTheDay();
       this.totalProductsOfMonth();
     }
-    if(this.role === 'admin' || this.role === 'almacen'){
+    if(this.role === 'admin' || this.role === 'almacen' || this.role === 'auditor'){
       this.totalAssignmentOfTheDay();
       this.totalAssignmentOfMonth();
     }

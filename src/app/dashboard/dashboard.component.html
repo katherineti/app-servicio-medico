@@ -9,7 +9,7 @@
     </mat-card-content>
 </mat-card> -->
 
-@if (role === 'admin') {
+@if (role === 'admin' || role === 'auditor') {
     <!-- cantidad de usuario -->
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
@@ -90,7 +90,7 @@
     </mat-card>
 }
 
-@if (this.role === 'admin' || this.role === 'almacen') {
+@if (this.role === 'admin' || this.role === 'almacen' || role === 'auditor') {
     <!-- cantidad de asignaciones de productos realizadas en el dia-->
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">

@@ -10,9 +10,10 @@ export interface ILog{
 }
 
 export interface IGetAllLogs {
-  name?: string;
   page: number;
   take: number;
+  name_user?: string;
+  createdAt?: string;
 }
 
 export interface ILogPagination {

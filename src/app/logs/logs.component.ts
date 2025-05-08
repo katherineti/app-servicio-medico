@@ -14,7 +14,7 @@ import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IGetAllUsers } from '../users/interfaces/users.interface';
 import { LogsService } from './services/logs.service';
-import { ILog, ILogPagination } from './interfaces/logs.interface';
+import { IGetAllLogs, ILog, ILogPagination } from './interfaces/logs.interface';
 import { DateFormatService } from '../services/date-format.service';
 /**
 * @title pagination table logs
@@ -31,7 +31,7 @@ export class LogsComponent {
 
   // dataSource: any = new MatTableDataSource<IUser>();
   dataSource: any = new MatTableDataSource<any>();
-  searhField = new FormControl();
+  searhField = new FormControl(); searhDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
 
@@ -57,70 +57,23 @@ export class LogsComponent {
   get searchValue() {
     return this.searhField.value;
   }
+  get searchDateValue() {
+    return this.searhDate.value;
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialogSeeUser(data?: any): void {
-    data.actionEdit=false;
-    const ref = this.dialog.open(UserDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllLogs(this.pageIndex, this.pageSize);
-    });
-  }
-
-  openDialogEditUser(data?: any): void {
-    data.actionEdit=true;
-    const ref = this.dialog.open(UserDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllLogs(this.pageIndex, this.pageSize);
-    });
-  }
-
-  openDialogCreateUser(data?: any): void {
-    const ref = this.dialog.open(UserCreateComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllLogs(this.pageIndex, this.pageSize);
-    });
-  }
-
-/*   async deleteUser(data: any) {
-    const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
-      'eliminar registro'
-    );
-    if (deleteAlert.isConfirmed) {
-      this.logsService.deleteUser(data.id).subscribe((element) => {
-        if (element) {
-          this.getAllLogs(this.pageIndex, this.pageSize);
-          this.swalService.success();
-        } else {
-          this.swalService.error('Error', 'Error al eliminar usuario.');
-        }
-      });
-    } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel * /
-    }
-  } */
-
   getAllLogs(page: number, take: number) {
-    const parms: IGetAllUsers = {
+    const parms: IGetAllLogs = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
+      name_user: this.searchValue ? this.searchValue.trim() : null,
+      createdAt: this.searchDateValue ? this.searchDateValue : null
     };
+    console.log(parms)
     this.logsService.getAll(parms).subscribe((data: ILogPagination) => {
       data.list.forEach((ele:any) => {
         ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );

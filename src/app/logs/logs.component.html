@@ -1,4 +1,22 @@
 <app-header-title [title]="'Logs'" ></app-header-title>
+<mat-toolbar style="background-color: white;">
+    <mat-form-field appearance="outline">
+        <input matInput class="p-b-0" placeholder="Buscar por nombre de usuario" [formControl]="searhField" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha" [formControl]="searhDate">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
+        <mat-datepicker #expirationDate></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="m-l-10 m-r-10 margin-left-none" id="filter"
+    (click)="getAllLogs(this.pageIndex, this.pageSize)">
+        Buscar
+    </button>
+
+</mat-toolbar>
 
 <mat-card class="">
     <mat-card-content>
@@ -44,7 +62,7 @@
                                 Hostname
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                element.hostname 
+                                element.hostname | titlecase
                             }}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="createdAt">
@@ -55,25 +73,6 @@
                                 element.createdAt | date:'dd-MM-yyyy'
                             }}</mat-cell>
                         </ng-container>
-                    
-                        <!-- <ng-container matColumnDef="action">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
-                            Acción
-                            </mat-header-cell>
-                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                                <button mat-icon-button aria-label="Ver" (click)="true">
-                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> - ->
-                                    <i-feather name="eye"></i-feather>
-                                </button>
-                                <button mat-icon-button aria-label="Editar" (click)="true">
-                                <!-- <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)"> - ->
-                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
-                                </button>
-                                <button mat-icon-button aria-label="Eliminar" (click)="true">
-                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                </button>
-                            </mat-cell>
-                        </ng-container> -->
                     
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

@@ -8,6 +8,7 @@ import { TokenAuth } from '../authentication/models/token-auth.model';
 import { AuthService } from '../services/auth.service';
 import { toast } from 'ngx-sonner';
 
+const REPORT_STATUS_ENPROCESO = 2;
 @Component({
   selector: 'app-report-form',
   imports: [CommonModule,MaterialModule, ReactiveFormsModule],
@@ -25,10 +26,15 @@ export class ReportFormComponent {
 
   token!: TokenAuth;
   authService = inject(AuthService)
-  user_name = ''
+  user_name = '';
+  reportCreated_id:number=0;
+
+   // Variables para controlar qué sección está visible
+  activeSection: "title" | "summary" | "conclusions" = "title";
+  hiddenButtonCreation=false;
   
   constructor( ){
-    this.buildAddUserForm();
+    this.buildAddReportForm();
   }
   
   async ngOnInit(): Promise<void> {
@@ -38,11 +44,17 @@ export class ReportFormComponent {
       this.getAuditorInSesion();
     }
   }
+
+  // Método para cambiar la sección activa
+  changeSection(section: "title" | "summary" | "conclusions"): void {
+    this.activeSection = section
+  }
+  
   getAuditorInSesion(): void {
     this.reportFormGroup.get('auditor')?.setValue(this.token.sub);
   }
 
-  buildAddUserForm() {
+  buildAddReportForm() {
     this.reportFormGroup = this.formBuilder.group({
       title: [
         '',
@@ -144,6 +156,16 @@ export class ReportFormComponent {
 
 
   async save() {
+    this.disableButton = true;
+
+    // if (this.reportFormGroup.invalid ||
+    //   (this.reportFormGroup.value.title!='' && this.reportFormGroup.value.addressee !='' && this.reportFormGroup.value.auditor !='')
+    // ) {
+/*     if (this.reportFormGroup.invalid) {
+      this.disableButton = false;
+      return;
+    } */
+
     let data = {
       title: this.reportFormGroup.value.title,
       addressee: this.reportFormGroup.value.addressee,
@@ -152,15 +174,58 @@ export class ReportFormComponent {
     console.log(data);
 
     try {
-      let item = await firstValueFrom(
+      let reportCreated = await firstValueFrom(
         this.reportsService.create(data)
       );
+      console.log(reportCreated);
+      this.reportCreated_id = reportCreated.id;
+      this.hiddenButtonCreation = true;
+      this.disableButton = false;
       toast.success('Reporte creado exitosamente');
-      this.cancel();
-      
+      this.changeSection("summary");
+
     } catch (e: any) {
+      this.disableButton = false;
       console.log(e);
       toast.error('Error al crear el reporte');
+    }
+  }
+
+  async saveSummary() {
+    this.disableButton = true;
+
+/*     if (this.reportFormGroup.invalid) {
+      this.disableButton = false;
+      return;
+    } */
+
+    console.log("this.reportCreated_id* ",this.reportCreated_id);
+    let data = {
+      title: this.reportFormGroup.value.title,
+      addressee: this.reportFormGroup.value.addressee,
+      auditorId: this.reportFormGroup.value.auditor,
+      statusId: REPORT_STATUS_ENPROCESO,
+
+      summary_objective: this.reportFormGroup.value.summary_objective,
+      summary_scope: this.reportFormGroup.value.summary_scope,
+      summary_methodology: this.reportFormGroup.value.summary_methodology,
+      summary_conclusionAndObservation: this.reportFormGroup.value.summary_conclusionAndObservation,
+    };
+    console.log(data);
+
+    try {
+      let reportUpdated = await firstValueFrom(
+        this.reportsService.update(this.reportCreated_id, data)
+      );
+      this.hiddenButtonCreation = true;
+      this.disableButton = false;
+      toast.success('Reporte actualizado exitosamente');
+      this.changeSection("conclusions");
+
+    } catch (e: any) {
+      this.disableButton = false;
+      console.log(e);
+      toast.error('Error al actualizar el reporte');
     }
   }
   

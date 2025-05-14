@@ -1,24 +1,21 @@
 <mat-drawer-container class="example-container" autosize>
     <!-- Menu: -->
     <mat-drawer class="example-sidenav" mode="side" [opened]="isSidenavOpen">
-
         <mat-list role="list">
-            <mat-list-item role="listitem">Título</mat-list-item>
-            <mat-list-item role="listitem">Resumen</mat-list-item>
-            <mat-list-item role="listitem">Conclusiones</mat-list-item>
-          </mat-list>
-
+            <mat-list-item role="listitem" (click)="changeSection('title')" [class.active]="activeSection === 'title'">Título</mat-list-item>
+            <mat-list-item role="listitem" (click)="changeSection('summary')" [class.active]="activeSection === 'summary'">Resumen</mat-list-item>
+            <mat-list-item role="listitem" (click)="changeSection('conclusions')" [class.active]="activeSection === 'conclusions'">Conclusiones</mat-list-item>
+        </mat-list>
     </mat-drawer>
-  
-    <!-- Contenido -->
+    <!-- Contenido: -->
     <div class="example-sidenav-content">
-    <!-- form -->
     @if (this.token) {        
         <div class="d-flex align-items-center">
             <div class="right-bg-content p-10">
-                <form [formGroup]="reportFormGroup" #f="ngForm">
-        
-                  <div class="row p-10">
+                <form [formGroup]="reportFormGroup" #f="ngForm" >
+                <!-- Sección de Título -->
+                 @if (activeSection === 'title') {
+                  <div class="row p-10" >
                     <mat-form-field appearance="outline" class="example-full-width">
                       <input
                       matInput
@@ -59,23 +56,112 @@
               
                   <div class="row">
                       <div class="ml-auto">
-                          <button
+                        @if(!hiddenButtonCreation){
+                          <button 
                           color="primary"
                           mat-flat-button 
-                          [disabled]="reportFormGroup.invalid && disableButton"
                           (click)="save()"
                           >
+                          <!-- [disabled]="reportFormGroup.invalid && disableButton" -->
                           Guardar
                           </button>
+                        }
                           <button
-                          class="m-r-10 bg-error m-l-8"
+                          class=" bg-error m-l-8"
                           mat-flat-button 
                           (click)="cancel()"
                           >
                           Cancelar
                           </button>
+                          <button
+                          class="m-r-10 bg-error m-l-8"
+                          mat-flat-button 
+                          (click)="changeSection('summary')"
+                          >
+                          Siguiente  <mat-icon>arrow_forward</mat-icon>
+                          </button>
                       </div>
                   </div>
+                }
+
+                <!-- Sección de Resumen -->
+                <div *ngIf="activeSection === 'summary'">
+                    <div class="row p-10">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <textarea
+                            matInput
+                            placeholder="Objetivo"
+                            formControlName="summary_objective"
+                            required="true"
+                            rows="3"
+                            ></textarea>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <textarea
+                            matInput
+                            placeholder="Alcance"
+                            formControlName="summary_scope"
+                            required="true"
+                            rows="3"
+                            ></textarea>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <textarea
+                            matInput
+                            placeholder="Metodología"
+                            formControlName="summary_methodology"
+                            required="true"
+                            rows="3"
+                            ></textarea>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <textarea
+                            matInput
+                            placeholder="Conclusión y Observación"
+                            formControlName="summary_conclusionAndObservation"
+                            required="true"
+                            rows="3"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <div class="ml-auto">
+                            <button
+                            class="m-r-10 bg-error m-l-8"
+                            mat-flat-button 
+                            (click)="changeSection('title')"
+                            >
+                            Regresar
+                            </button>
+                            <button
+                            color="primary"
+                            mat-flat-button 
+                            (click)="saveSummary()"
+                            >
+                            <!-- [disabled]="reportFormGroup.invalid && disableButton" -->
+                            Guardar
+                            </button>
+                            <button
+                            class=" bg-error m-l-8"
+                            mat-flat-button 
+                            (click)="cancel()"
+                            >
+                            Cancelar
+                            </button>
+                            <button
+                            class="m-r-10 bg-error m-l-8"
+                            mat-flat-button 
+                            (click)="changeSection('conclusions')"
+                            >
+                            Siguiente  <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 </form>
             </div>
         </div>

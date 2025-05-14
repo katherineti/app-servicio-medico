@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './authentication/guards/auth.guard';
 import { LogsComponent } from './logs/logs.component';
+import { ReportFormComponent } from './report-form/report-form.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +45,10 @@ export const routes: Routes = [
           {
             path: 'logs',
             component: LogsComponent,
+          },
+          {
+            path: 'report',
+            component: ReportFormComponent,
           },
         ],
     },

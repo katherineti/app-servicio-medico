@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
+import { ICreateReport, IReport } from '../interfaces/reports.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +12,16 @@ export class ReportsService {
   private readonly tokenService = inject(TokenService);
   private readonly http = inject(HttpClient);
 
-  create(dto: any) {
-    console.log("dto create" , dto)
-    return this.http.post<any>(
+  create(dto: ICreateReport) {
+    console.log("dto create", dto)
+    return this.http.post<IReport>(
       `${this.tokenService.endPoint}auditor-reports`,
       dto
     );
   }
  
-  update(id: number, dto: any) {
-    return this.http.put<any>(
+  update(dto: IReport, id?: number) {
+    return this.http.put<IReport>(
       `${this.tokenService.endPoint}auditor-reports/${id}`,
       dto
     );

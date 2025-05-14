@@ -7,8 +7,11 @@ import { firstValueFrom } from 'rxjs';
 import { TokenAuth } from '../authentication/models/token-auth.model';
 import { AuthService } from '../services/auth.service';
 import { toast } from 'ngx-sonner';
+import { ICreateReport, IReport } from './interfaces/reports.interface';
 
 const REPORT_STATUS_ENPROCESO = 2;
+const REPORT_STATUS_FINALIZADO = 1;
+
 @Component({
   selector: 'app-report-form',
   imports: [CommonModule,MaterialModule, ReactiveFormsModule],
@@ -27,7 +30,8 @@ export class ReportFormComponent {
   token!: TokenAuth;
   authService = inject(AuthService)
   user_name = '';
-  reportCreated_id:number=0;
+  // reportCreated_id:number | null=null;
+  reportCreated_id?:number;
 
    // Variables para controlar qué sección está visible
   activeSection: "title" | "summary" | "conclusions" = "title";
@@ -166,7 +170,7 @@ export class ReportFormComponent {
       return;
     } */
 
-    let data = {
+    let data:ICreateReport = {
       title: this.reportFormGroup.value.title,
       addressee: this.reportFormGroup.value.addressee,
       auditorId: this.reportFormGroup.value.auditor
@@ -178,7 +182,7 @@ export class ReportFormComponent {
         this.reportsService.create(data)
       );
       console.log(reportCreated);
-      this.reportCreated_id = reportCreated.id;
+      this.reportCreated_id = reportCreated? reportCreated.id : 0;
       this.hiddenButtonCreation = true;
       this.disableButton = false;
       toast.success('Reporte creado exitosamente');
@@ -191,7 +195,7 @@ export class ReportFormComponent {
     }
   }
 
-  async saveSummary() {
+  async updateReport() {
     this.disableButton = true;
 
 /*     if (this.reportFormGroup.invalid) {
@@ -200,7 +204,7 @@ export class ReportFormComponent {
     } */
 
     console.log("this.reportCreated_id* ",this.reportCreated_id);
-    let data = {
+    let data:IReport = {
       title: this.reportFormGroup.value.title,
       addressee: this.reportFormGroup.value.addressee,
       auditorId: this.reportFormGroup.value.auditor,
@@ -211,11 +215,19 @@ export class ReportFormComponent {
       summary_methodology: this.reportFormGroup.value.summary_methodology,
       summary_conclusionAndObservation: this.reportFormGroup.value.summary_conclusionAndObservation,
     };
+
+    if(this.activeSection==='conclusions'){
+      data.introduction = this.reportFormGroup.value.introduction,
+      data.detailed_methodology = this.reportFormGroup.value.detailed_methodology,
+      data.findings = this.reportFormGroup.value.findings,
+      data.conclusions = this.reportFormGroup.value.conclusions,
+      data.statusId = REPORT_STATUS_FINALIZADO
+    }
     console.log(data);
 
     try {
       let reportUpdated = await firstValueFrom(
-        this.reportsService.update(this.reportCreated_id, data)
+        this.reportsService.update(data, this.reportCreated_id)
       );
       this.hiddenButtonCreation = true;
       this.disableButton = false;

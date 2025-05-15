@@ -15,14 +15,14 @@ export class ReportsService {
   create(dto: ICreateReport) {
     console.log("dto create", dto)
     return this.http.post<IReport>(
-      `${this.tokenService.endPoint}auditor-reports`,
+      `${this.tokenService.endPoint}temp-auditor-reports`,
       dto
     );
   }
  
   update(dto: IReport, id?: number) {
     return this.http.put<IReport>(
-      `${this.tokenService.endPoint}auditor-reports/${id}`,
+      `${this.tokenService.endPoint}temp-auditor-reports/${id}`,
       dto
     );
   }

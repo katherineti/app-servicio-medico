@@ -1,12 +1,12 @@
 export interface ICreateReport {
   title: string;
-  addressee: string;
+  receiver: string;
   auditorId: number;
 }
 export interface IReport {
   id?: number;
   title: string;
-  addressee: string;
+  receiver: string;
   auditorId: number;
   statusId?: number;
   startDate?: Date;

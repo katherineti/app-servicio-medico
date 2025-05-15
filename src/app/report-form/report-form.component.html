@@ -30,7 +30,7 @@
                       <input
                       matInput
                       placeholder="Destinatario"
-                      formControlName="addressee"
+                      formControlName="receiver"
                       required="true"
                       type="text"
                       />
@@ -56,16 +56,15 @@
               
                   <div class="row">
                       <div class="ml-auto">
-                        @if(!hiddenButtonCreation){
+                        <!-- @if(!hiddenButtonCreation){
                           <button 
                           color="primary"
                           mat-flat-button 
                           (click)="save()"
                           >
-                          <!-- [disabled]="reportFormGroup.invalid && disableButton" -->
                           Guardar
                           </button>
-                        }
+                        } -->
                           <button
                           class=" bg-error m-l-8"
                           mat-flat-button 
@@ -76,10 +75,17 @@
                           <button
                           class="m-r-10 bg-error m-l-8"
                           mat-flat-button 
-                          (click)="changeSection('summary')"
+                          (click)="save();"
                           >
                           Siguiente  <mat-icon>arrow_forward</mat-icon>
                           </button>
+<!--                           <button
+                          class="m-r-10 bg-error m-l-8"
+                          mat-flat-button 
+                          (click)="changeSection('summary')"
+                          >
+                          Siguiente  <mat-icon>arrow_forward</mat-icon>
+                          </button> -->
                       </div>
                   </div>
                 }
@@ -137,14 +143,13 @@
                             >
                             <mat-icon>arrow_back</mat-icon> Regresar
                             </button>
-                            <button
+<!--                             <button
                             color="primary"
                             mat-flat-button 
                             (click)="updateReport()"
                             >
-                            <!-- [disabled]="reportFormGroup.invalid && disableButton" -->
                             Guardar
-                            </button>
+                            </button> -->
                             <button
                             class=" bg-error m-l-8"
                             mat-flat-button 
@@ -155,10 +160,17 @@
                             <button
                             class="m-r-10 bg-error m-l-8"
                             mat-flat-button 
-                            (click)="changeSection('conclusions')"
+                            (click)="updateReport()"
                             >
                             Siguiente  <mat-icon>arrow_forward</mat-icon>
                             </button>
+<!--                             <button
+                            class="m-r-10 bg-error m-l-8"
+                            mat-flat-button 
+                            (click)="changeSection('conclusions')"
+                            >
+                            Siguiente  <mat-icon>arrow_forward</mat-icon>
+                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -222,7 +234,6 @@
                             mat-flat-button 
                             (click)="updateReport()"
                             >
-                            <!-- [disabled]="reportFormGroup.invalid && disableButton" -->
                             Guardar
                             </button>
                             <button

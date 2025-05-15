@@ -68,7 +68,7 @@ export class ReportFormComponent {
           Validators.maxLength(50),
         ],
       ],
-      addressee: [
+      receiver: [
         '',
         [
           Validators.required,
@@ -163,7 +163,7 @@ export class ReportFormComponent {
     this.disableButton = true;
 
     // if (this.reportFormGroup.invalid ||
-    //   (this.reportFormGroup.value.title!='' && this.reportFormGroup.value.addressee !='' && this.reportFormGroup.value.auditor !='')
+    //   (this.reportFormGroup.value.title!='' && this.reportFormGroup.value.receiver !='' && this.reportFormGroup.value.auditor !='')
     // ) {
 /*     if (this.reportFormGroup.invalid) {
       this.disableButton = false;
@@ -172,7 +172,7 @@ export class ReportFormComponent {
 
     let data:ICreateReport = {
       title: this.reportFormGroup.value.title,
-      addressee: this.reportFormGroup.value.addressee,
+      receiver: this.reportFormGroup.value.receiver,
       auditorId: this.reportFormGroup.value.auditor
     };
     console.log(data);
@@ -185,7 +185,7 @@ export class ReportFormComponent {
       this.reportCreated_id = reportCreated? reportCreated.id : 0;
       this.hiddenButtonCreation = true;
       this.disableButton = false;
-      toast.success('Reporte creado exitosamente');
+      toast.success('Guardado');
       this.changeSection("summary");
 
     } catch (e: any) {
@@ -206,7 +206,7 @@ export class ReportFormComponent {
     console.log("this.reportCreated_id* ",this.reportCreated_id);
     let data:IReport = {
       title: this.reportFormGroup.value.title,
-      addressee: this.reportFormGroup.value.addressee,
+      receiver: this.reportFormGroup.value.receiver,
       auditorId: this.reportFormGroup.value.auditor,
       statusId: REPORT_STATUS_ENPROCESO,
 
@@ -231,8 +231,14 @@ export class ReportFormComponent {
       );
       this.hiddenButtonCreation = true;
       this.disableButton = false;
-      toast.success('Reporte actualizado exitosamente');
-      this.changeSection("conclusions");
+      if(this.activeSection==='conclusions'){
+        toast.success('Reporte finalizado');
+        this.changeSection("title");
+        this.cancel();
+      }else{
+        toast.success('Reporte actualizado exitosamente');
+        this.changeSection("conclusions");
+      }
 
     } catch (e: any) {
       this.disableButton = false;

@@ -1,6 +1,6 @@
 <mat-toolbar style="background-color: white;">
     <mat-form-field appearance="outline">
-        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" /> 
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="m-l-10">
@@ -22,7 +22,7 @@
     <!-- agregar producto -->
      @if (this.role === 'admin' || this.role === 'almacen') {
         <span class="example-spacer"></span>
-        <button mat-flat-button (click)="openDialogCreateSupplies()" >
+        <button mat-flat-button (click)="openDialogCreateSupplies()">
             Agregar
         </button>
      }

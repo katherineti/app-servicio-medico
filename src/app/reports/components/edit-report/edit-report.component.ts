@@ -1,25 +1,30 @@
-import { Component, inject } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReportsService } from './services/reports.service';
 import { firstValueFrom } from 'rxjs';
-import { TokenAuth } from '../authentication/models/token-auth.model';
-import { AuthService } from '../services/auth.service';
 import { toast } from 'ngx-sonner';
-import { ICreateReport, IReport } from './interfaces/reports.interface';
-import { ImageFile, ImageUploadComponent } from '../image-upload/image-upload.component';
+import { MaterialModule } from '../../../material/material.module';
+import { ImageFile, ImageUploadComponent } from '../../../image-upload/image-upload.component';
+import { ReportsService } from '../../services/reports.service';
+import { AuthService } from '../../../services/auth.service';
+import { TokenAuth } from '../../../authentication/models/token-auth.model';
+import { ICreateReport, IReport } from '../../interfaces/reports.interface';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { EditMedicalSuppliesComponent } from '../../../edit-medical-supplies/edit-medical-supplies.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { API_URL } from '../../../../../environment';
 
 const REPORT_STATUS_ENPROCESO = 2;
 const REPORT_STATUS_FINALIZADO = 1;
 
 @Component({
-  selector: 'app-report-form',
+  selector: 'app-edit-report',
   imports: [CommonModule,MaterialModule, ReactiveFormsModule, ImageUploadComponent],
-  templateUrl: './report-form.component.html',
-  styleUrl: './report-form.component.scss'
+  templateUrl: './edit-report.component.html',
+  styleUrl: './edit-report.component.scss'
 })
-export class ReportFormComponent {
+export class EditReportComponent {
+  readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
   showFiller = false;
   isSidenavOpen = true; // Establece en true para que el sidenav esté abierto al inicio
   reportFormGroup!: FormGroup;
@@ -33,8 +38,13 @@ export class ReportFormComponent {
   activeSection: "title" | "summary" | "conclusions" = "title";
   hiddenButtonCreation=false;
   selectedImages: ImageFile[] = []
-  
-  constructor( ){
+ 
+  selectedReport!: IReport;
+  edit:boolean | undefined;
+  private API_URL = API_URL; 
+  private sanitizer = inject(DomSanitizer);
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IReport){
     this.buildAddReportForm();
     this.selectedImages = [];
     this.reportCreated_id = 0;
@@ -47,6 +57,12 @@ export class ReportFormComponent {
       this.getAuditorInSesion();
     }
     this.updateValidators(); 
+
+    this.selectedReport = this.data;   console.log("selectedReport ", this.selectedReport );
+    this.edit = this.data.actionEdit; 
+    if (this.data) {
+      this.setForm();
+    }
   }
 
   // Método para cambiar la sección activa
@@ -103,6 +119,55 @@ export class ReportFormComponent {
       conclusions: ['', [Validators.maxLength(50)]],
       images: [null],
     });
+  }
+
+  setForm() {
+    if(!this.edit){
+      this.reportFormGroup.controls['title'].disable();
+      this.reportFormGroup.controls['receiver'].disable();
+      this.reportFormGroup.controls['auditor'].disable();
+      this.reportFormGroup.controls['summary_objective'].disable();
+      this.reportFormGroup.controls['summary_scope'].disable();
+      this.reportFormGroup.controls['summary_methodology'].disable();
+      this.reportFormGroup.controls['summary_conclusionAndObservation'].disable();
+
+      this.reportFormGroup.controls['introduction'].disable();
+      this.reportFormGroup.controls['detailed_methodology'].disable();
+      this.reportFormGroup.controls['findings'].disable();
+      this.reportFormGroup.controls['conclusions'].disable();
+      // this.reportFormGroup.controls['images'].disable();
+    }
+
+    this.reportFormGroup.patchValue({
+      title: this.selectedReport?.title,
+      receiver: this.selectedReport?.receiver,
+      auditor: this.selectedReport?.auditorId,
+      summary_objective: this.selectedReport?.summary_objective,
+      summary_scope: this.selectedReport?.summary_scope,
+      summary_methodology: this.selectedReport?.summary_methodology,
+      summary_conclusionAndObservation: this.selectedReport?.summary_conclusionAndObservation,
+      introduction: this.selectedReport?.introduction,
+      detailed_methodology:this.selectedReport?.detailed_methodology,
+      findings: this.selectedReport?.findings,
+      conclusions:this.selectedReport?.conclusions,
+      });
+
+   // Handle images from the backend
+    if (this.selectedReport.images && this.selectedReport.images.length > 0) {
+      this.selectedImages = this.selectedReport.images.map(imagePath => {
+        const fullUrl = this.normalizeUrl(this.API_URL, imagePath);
+        const safeUrl = this.sanitizer.bypassSecurityTrustUrl(fullUrl);
+        return {
+          file: null, // No original File object from backend
+          preview: safeUrl,
+          isRemote: true, // Mark it as a remote image
+          remoteUrl: imagePath // Store the original backend path
+        } as unknown as ImageFile;
+      });
+      console.log("Images loaded from backend:", this.selectedImages);
+    } else {
+      this.selectedImages = []; // Ensure it's empty if no images from DB
+    }
   }
 
   cancel() {
@@ -232,4 +297,11 @@ export class ReportFormComponent {
       this.changeSection("conclusions");
     }
   }
+
+normalizeUrl(baseUrl: string, path: string): string {
+  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const cleanPath = path.startsWith('/') ? path : '/' + path;
+
+  return cleanBaseUrl + cleanPath;
+}
 }

@@ -5,8 +5,11 @@ import { MaterialModule } from "../material/material.module"
 import { toast } from "ngx-sonner"
 
 export interface ImageFile {
-  file: File
-  preview: SafeUrl
+  file: File;
+  preview: SafeUrl;
+
+  isRemote?: boolean; // Keep these for distinguishing
+  remoteUrl?: string; // Keep these for distinguishing
 }
 
 @Component({

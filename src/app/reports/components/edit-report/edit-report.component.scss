@@ -1,0 +1,32 @@
+.example-full-width {
+    width: 100%;
+}
+.example-container {
+    // width: 500px;
+    // height: 400px;
+    // height: 80vh;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  
+  .example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-sidenav {
+    padding: 20px;
+  }  
+
+  // ancho del submenu
+  mat-drawer.mat-drawer.example-sidenav.mat-drawer-opened.mat-drawer-side {
+    width: 250px;
+    // width: 200px;
+ }
+
+ .hide-on-mobile {
+    @media (max-width: 768px) { /* Tablet breakpoint */
+        display: none;
+    }
+}

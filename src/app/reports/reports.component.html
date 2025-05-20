@@ -1,0 +1,119 @@
+<app-header-title [title]="'Reportes'" ></app-header-title>
+<mat-toolbar style="background-color: white;">
+
+    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+        <input matInput class="p-b-0" placeholder="Buscar por destinatario" [formControl]="searhFieldReceiver" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha" [formControl]="searhField_EndDate">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
+        <mat-datepicker #expirationDate></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
+    (click)="getAllReports(this.pageIndex, this.pageSize)">
+        Buscar
+    </button>
+
+    <!-- @if (this.role === 'admin') {
+        <span class="example-spacer"></span>
+        <button mat-flat-button (click)="true" >
+        <!-- <button mat-flat-button (click)="openDialogCreateUser()" > - ->
+            Agregar
+        </button>
+    } -->
+</mat-toolbar>
+<br>
+<mat-card class="">
+    <mat-card-content>
+        <!-- <div class="d-flex w-100"> -->
+        <div class="w-100">
+            <div class="m-l-auto">
+                @if (dataSource.length) {
+                    <div class="table-responsive">
+                        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Id
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.id 
+                            }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="title">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Título
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.title | titlecase
+                            }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="fechaFin">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Fecha
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.endDate | date:'dd-MM-yyyy'}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Estado
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.status | titlecase
+                           }} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="duplicated">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Duplicado
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                element.idDuplicate 
+                            }}</mat-cell>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                            Acción
+                            </mat-header-cell>
+                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)">
+                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> -->
+                                    <i-feather name="eye"></i-feather>
+                                </button>
+                                <!-- <button mat-icon-button aria-label="Imprimmir" (click)="true">
+                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> - ->
+                                    <i-feather name="Printer"></i-feather>
+                                </button> -->
+
+                                @if (this.role === 'admin') {
+                                    <!-- <button mat-icon-button aria-label="Editar" (click)="true">
+                                    <!-- <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)"> - ->
+                                        <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+                                    </button> -->
+                                    <button mat-icon-button aria-label="Eliminar" (click)="deleteReport(element)">
+                                        <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                    </button>
+                                }
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        </mat-table>
+    
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                        aria-describedby="table reports"></mat-paginator>
+                    </div>
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
+                }
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

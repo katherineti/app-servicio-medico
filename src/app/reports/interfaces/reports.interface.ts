@@ -9,9 +9,10 @@ export interface IReport {
   id?: number;
   title: string;
   receiver: string;
-  auditorId: number;
+  auditorId: number;    auditor: string;
   statusId?: number;
   startDate?: Date;
+  endDate?: Date;
   idDuplicate?: number | null;
   updatedAt?: Date;
   summary_objective: string;
@@ -22,5 +23,24 @@ export interface IReport {
   detailed_methodology?: string;
   findings?: string;
   conclusions?: string;
-  images?:string;
+  images?:string[];
+
+  actionEdit?:boolean;
 }
+
+export interface IGetAllReports {
+  title?: string;
+  receiver?: string;
+  endDate?: Date;
+  page: number;
+  take: number;
+}
+
+export interface IReportPagination {
+  total: number;
+  page: number;
+  list: IReport[];
+}
+
+// export interface ICreateUserDTO
+//   extends Omit<IUser, 'id' | 'createdAt' | 'updatedAt' > {}

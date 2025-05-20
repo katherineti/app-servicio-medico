@@ -47,7 +47,7 @@ export const routes: Routes = [
             component: LogsComponent,
           },
           {
-            path: 'report',
+            path: 'create-report',
             component: ReportFormComponent,
           },
         ],

@@ -20,10 +20,24 @@ export class ReportsService {
     );
   }
  
+  // update(formData: FormData, id?: number) {
+  //   return this.http.put<IReport>(
+  //     `${this.tokenService.endPoint}temp-auditor-reports/${id}`,
+  //     formData
+  //   );
+  // }
   update(dto: IReport, id?: number) {
+    console.log("update",dto)
     return this.http.put<IReport>(
       `${this.tokenService.endPoint}temp-auditor-reports/${id}`,
       dto
+    );
+  }
+
+  updateWithImages(formData: FormData, id?: number) {
+    return this.http.put<IReport>(
+      `${this.tokenService.endPoint}temp-auditor-reports/images/${id}`,
+      formData
     );
   }
 

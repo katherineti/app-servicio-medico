@@ -2,8 +2,10 @@ export interface ICreateReport {
   title: string;
   receiver: string;
   auditorId: number;
+  id?:number;
 }
 export interface IReport {
+  forEach(arg0: (value: any, key: any) => void): unknown;
   id?: number;
   title: string;
   receiver: string;
@@ -20,4 +22,5 @@ export interface IReport {
   detailed_methodology?: string;
   findings?: string;
   conclusions?: string;
+  images?:string;
 }

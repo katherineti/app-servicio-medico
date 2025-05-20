@@ -36,6 +36,13 @@ export const navItemsAdmin: NavItem[] = [
     external: true,
     chipClass: 'bg-secondary text-white',
   },
+  {
+    displayName: 'Reporte',
+    iconName: 'clipboard',
+    route: './create-report',
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  },
 ];
 export const navItems: NavItem[] = [
   {

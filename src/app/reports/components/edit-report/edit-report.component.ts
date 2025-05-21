@@ -125,7 +125,7 @@ export class EditReportComponent {
     if(!this.edit){
       this.reportFormGroup.controls['title'].disable();
       this.reportFormGroup.controls['receiver'].disable();
-      this.reportFormGroup.controls['auditor'].disable();
+      // this.reportFormGroup.controls['auditor'].disable();
       this.reportFormGroup.controls['summary_objective'].disable();
       this.reportFormGroup.controls['summary_scope'].disable();
       this.reportFormGroup.controls['summary_methodology'].disable();
@@ -137,6 +137,7 @@ export class EditReportComponent {
       this.reportFormGroup.controls['conclusions'].disable();
       // this.reportFormGroup.controls['images'].disable();
     }
+    this.reportFormGroup.controls['auditor'].disable();
 
     this.reportFormGroup.patchValue({
       title: this.selectedReport?.title,
@@ -151,6 +152,8 @@ export class EditReportComponent {
       findings: this.selectedReport?.findings,
       conclusions:this.selectedReport?.conclusions,
       });
+
+      this.reportCreated_id = this.data?.id;
 
    // Handle images from the backend
     if (this.selectedReport.images && this.selectedReport.images.length > 0) {
@@ -199,18 +202,19 @@ export class EditReportComponent {
       const isExistingReport = this.reportCreated_id !== undefined && this.reportCreated_id > 0;
       if (isExistingReport) {
         data.id = this.reportCreated_id;
+        const reportCreated = await firstValueFrom(this.reportsService.create(data));
+        // this.reportCreated_id = reportCreated?.id;
+        this.hiddenButtonCreation = true;
+        this.disableButton = false;
+        toast.success('Guardado');
+        this.changeSection("summary");
+      }else{
+        toast.success('El id del reporte no existe');
       }
-
-      const reportCreated = await firstValueFrom(this.reportsService.create(data));
-      this.reportCreated_id = reportCreated?.id;
-      this.hiddenButtonCreation = true;
-      this.disableButton = false;
-      toast.success('Guardado');
-      this.changeSection("summary");
 
     } catch (error: any) {
       this.disableButton = false;
-      console.error('Error al crear/actualizar el título del reporte:', error);
+      console.error('Error al actualizar el título del reporte:', error);
       toast.error(error?.message || 'Error al guardar el título del reporte.');
     }
   }

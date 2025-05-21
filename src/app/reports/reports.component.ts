@@ -18,6 +18,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { SwalService } from '../services/swal.service';
 import { EditReportComponent } from './components/edit-report/edit-report.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /**
 * @title pagination table reports
@@ -48,6 +49,7 @@ export class ReportsComponent {
   searhField_EndDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
+  isGeneratingPdf = false;
 
   private reportsService = inject(ReportsService);
   private dateFormatService= inject(DateFormatService);
@@ -56,6 +58,7 @@ export class ReportsComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
   private swalService = inject(SwalService);
+  private snackBar = inject(MatSnackBar);
 
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
@@ -85,7 +88,7 @@ export class ReportsComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDialogSeeUser(data?: any): void {
+  openDialogSee(data?: any): void {
     data.actionEdit=false;
     const ref = this.dialog.open(EditReportComponent, {
       data: data || null,
@@ -97,9 +100,11 @@ export class ReportsComponent {
     });
   }
 
-/*   openDialogSeeUser(data?: any): void {
-    data.actionEdit=false;
-    const ref = this.dialog.open(UserDialogComponent, {
+ 
+
+  openDialogEdit(data?: any): void {
+    data.actionEdit=true;
+    const ref = this.dialog.open(EditReportComponent, {
       data: data || null,
       disableClose: true
     });
@@ -108,18 +113,6 @@ export class ReportsComponent {
       this.getAllReports(this.pageIndex, this.pageSize);
     });
   }
-
-  openDialogEditUser(data?: any): void {
-    data.actionEdit=true;
-    const ref = this.dialog.open(UserDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllReports(this.pageIndex, this.pageSize);
-    });
-  } */
 
 /*   openDialogCreateUser(data?: any): void {
     const ref = this.dialog.open(UserCreateComponent, {
@@ -170,5 +163,55 @@ export class ReportsComponent {
   }
   handlePageEvent(event: PageEvent) {
     this.getAllReports(event.pageIndex, event.pageSize);
+  }
+
+  
+  /**
+   * Genera y descarga el PDF del reporte
+   * @param element Reporte para el que se generará el PDF
+   */
+  generatePdf(element: IReport): void {
+    if (!element.id || this.isGeneratingPdf) {
+      return;
+    }
+    
+    this.isGeneratingPdf = true;
+    
+    // Mostrar indicador de carga
+    const loadingToast = this.snackBar.open('Generando PDF...', '', {
+      duration: undefined,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+    
+    this.reportsService.generateReportPdf(element.id, element).subscribe({
+      next: () => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de éxito
+        this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      },
+      error: (err) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de error
+        this.snackBar.open(`Error al generar el PDF: ${err.message || 'Error desconocido'}`, 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+        
+        console.error('Error al generar el PDF:', err);
+      }
+    });
   }
 }

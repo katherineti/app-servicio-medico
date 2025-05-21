@@ -79,23 +79,23 @@
                             Acción
                             </mat-header-cell>
                             <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)">
-                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> -->
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
                                     <i-feather name="eye"></i-feather>
                                 </button>
-                                <!-- <button mat-icon-button aria-label="Imprimmir" (click)="true">
-                                <!-- <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)"> - ->
-                                    <i-feather name="Printer"></i-feather>
-                                </button> -->
-
+                                <!-- @if(element.code.charAt(0) === 'O'){ -->
+                                    <button mat-icon-button aria-label="Imprimir" (click)="generatePdf(element)" [disabled]="isGeneratingPdf">
+                                        <i-feather name="Printer"></i-feather>
+                                    </button> 
+                                <!-- } -->
                                 @if (this.role === 'admin') {
-                                    <!-- <button mat-icon-button aria-label="Editar" (click)="true">
-                                    <!-- <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)"> - ->
-                                        <i-feather name="edit" class="big fill-red icon-18"></i-feather>
-                                    </button> -->
-                                    <button mat-icon-button aria-label="Eliminar" (click)="deleteReport(element)">
-                                        <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                    </button>
+                                    @if(element.code.charAt(0) === 'D'){
+                                        <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
+                                           <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+                                       </button>
+                                       <button mat-icon-button aria-label="Eliminar" (click)="deleteReport(element)">
+                                           <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                       </button>
+                                    }
                                 }
                             </mat-cell>
                         </ng-container>

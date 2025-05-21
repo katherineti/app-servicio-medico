@@ -1,3 +1,13 @@
+<!-- <h2 mat-dialog-title> -->
+    <div mat-dialog-title class="center-img">
+        <img
+            src="./assets/logo-ciip.png"
+            class="m-2"
+            alt="logo ciip"
+            width="150"
+        />
+    </div>
+<!-- </h2> -->
 
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer 
@@ -77,27 +87,29 @@
                         </mat-form-field>
 
                     </div>
-                   <!-- <mat-dialog-actions align="end">
-                    <div class="row m-t-5">
-                        <div class="ml-auto">
-                            <button
-                            class=" bg-error m-l-8"
-                            mat-flat-button
-                            (click)="cancel()"
-                            >
-                            Cancelar
-                            </button>
-                            <button
-                            class="m-r-10 bg-error m-l-8"
-                            mat-flat-button
-                            (click)="save();"
-                            >
-                            Siguiente <mat-icon>arrow_forward</mat-icon>
-                            </button>
-
-                        </div>
-                    </div>
-                    </mat-dialog-actions> -->
+                        @if (this.edit) {
+                            <mat-dialog-actions align="end">
+                            <div class="row m-t-5">
+                                <div class="ml-auto">
+                                    <button
+                                    class=" bg-error m-l-8"
+                                    mat-flat-button
+                                    (click)="cancel()"
+                                    >
+                                    Cancelar
+                                    </button>
+                                    <button
+                                    class="m-r-10 bg-error m-l-8"
+                                    mat-flat-button
+                                    (click)="save();"
+                                    >
+                                    Siguiente <mat-icon>arrow_forward</mat-icon>
+                                    </button>
+        
+                                </div>
+                            </div>
+                            </mat-dialog-actions> 
+                        }
                     }
 
                     @if (activeSection === 'summary') {
@@ -171,35 +183,37 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <!-- <mat-dialog-actions align="end">
-                            <div class="row m-t-5">
-                                <div class="ml-auto">
-                                    <button
-                                    class=" bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="changeSection('title')"
-                                    >
-                                    <mat-icon>arrow_back</mat-icon> Regresar
-                                    </button>
-
-                                    <button
-                                    class=" bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="cancel()"
-                                    >
-                                    Cancelar
-                                    </button>
-                                    <button
-                                    class="m-r-10 bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="updateReport()"
-                                    >
-                                    Siguiente <mat-icon>arrow_forward</mat-icon>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </mat-dialog-actions> -->
+                         @if (this.edit) {
+                             <mat-dialog-actions align="end">
+                                 <div class="row m-t-5">
+                                     <div class="ml-auto">
+                                         <button
+                                         class=" bg-error m-l-8"
+                                         mat-flat-button
+                                         (click)="changeSection('title')"
+                                         >
+                                         <mat-icon>arrow_back</mat-icon> Regresar
+                                         </button>
+     
+                                         <button
+                                         class=" bg-error m-l-8"
+                                         mat-flat-button
+                                         (click)="cancel()"
+                                         >
+                                         Cancelar
+                                         </button>
+                                         <button
+                                         class="m-r-10 bg-error m-l-8"
+                                         mat-flat-button
+                                         (click)="updateReport()"
+                                         >
+                                         Siguiente <mat-icon>arrow_forward</mat-icon>
+                                         </button>
+     
+                                     </div>
+                                 </div>
+                             </mat-dialog-actions> 
+                         }
                     </div>
                     }
 
@@ -263,7 +277,7 @@
                                 placeholder="Conclusiones"
                                 formControlName="conclusions"
                                 required="true"
-                                rows="5"
+                                rows="3"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['conclusions'].hasError('required')">
                                     La conclusión es requerida
@@ -281,34 +295,35 @@
                             </app-image-upload>
 
                         </div>
-
-                        <!-- <mat-dialog-actions align="end">
-                        <div class="row m-t-5">
-                            <div class="ml-auto">
-                                <button mat-button
-                                class="m-r-10 bg-error m-l-8"
-                                mat-flat-button
-                                (click)="changeSection('summary')"
-                                >
-                                <mat-icon>arrow_back</mat-icon> Regresar
-                                </button>
-                                <button mat-button
-                                color="primary"
-                                mat-flat-button
-                                (click)="updateReport()"
-                                >
-                                Guardar
-                                </button>
-                                <button mat-button
-                                class=" bg-error m-l-8"
-                                mat-flat-button
-                                (click)="cancel()"
-                                >
-                                Cancelar
-                                </button>
+                        @if (this.edit) {
+                            <mat-dialog-actions align="end">
+                            <div class="row m-t-5">
+                                <div class="ml-auto">
+                                    <button mat-button
+                                    class="m-r-10 bg-error m-l-8"
+                                    mat-flat-button
+                                    (click)="changeSection('summary')"
+                                    >
+                                    <mat-icon>arrow_back</mat-icon> Regresar
+                                    </button>
+                                    <button mat-button
+                                    color="primary"
+                                    mat-flat-button
+                                    (click)="updateReport()"
+                                    >
+                                    Guardar
+                                    </button>
+                                    <button mat-button
+                                    class=" bg-error m-l-8"
+                                    mat-flat-button
+                                    (click)="cancel()"
+                                    >
+                                    Cancelar
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                       </mat-dialog-actions> -->
+                           </mat-dialog-actions>
+                        }
                     </div>
                     }
 

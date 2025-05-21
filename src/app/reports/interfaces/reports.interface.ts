@@ -7,6 +7,7 @@ export interface ICreateReport {
 export interface IReport {
   forEach(arg0: (value: any, key: any) => void): unknown;
   id?: number;
+  code?: string;
   title: string;
   receiver: string;
   auditorId: number;    auditor: string;

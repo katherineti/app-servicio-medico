@@ -30,3 +30,16 @@
         display: none;
     }
 }
+
+.center-img{
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;    /* Centra verticalmente */
+  // height: 100vh;          /* Opcional: Para centrar en toda la altura del viewport */
+  width: 100%; 
+}
+
+/* .mat-drawer-side {
+    border-right-color: red;
+    border-color: red;
+} */

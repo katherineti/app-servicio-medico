@@ -1,6 +1,6 @@
 <app-header-title [title]="'Logs'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="search">
         <input matInput class="p-b-0" placeholder="Buscar por nombre de usuario" [formControl]="searhField" />
     </mat-form-field>
 
@@ -13,7 +13,7 @@
 
     <button mat-flat-button color="primary" class="m-l-10 m-r-10 margin-left-none" id="filter"
     (click)="getAllLogs(this.pageIndex, this.pageSize)">
-        Buscar
+        <i-feather name="search"></i-feather>
     </button>
 
 </mat-toolbar>
@@ -24,64 +24,66 @@
         <div class="w-100">
             <div class="m-l-auto">
                 @if (dataSource.length) {
-                    <div class="table-responsive">
-                        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
-                        <ng-container matColumnDef="user_name">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Nombre del usuario
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                element.userName | titlecase
-                            }}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="product">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Producto
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            {{ element.productName | titlecase}}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="action">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                Log
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                {{element.action}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="ipAddress">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            IP
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                element.ipAddress 
-                            }}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="hostname">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                Hostname
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                element.hostname | titlecase
-                            }}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="createdAt">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                Fecha
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                element.createdAt | date:'dd-MM-yyyy'
-                            }}</mat-cell>
-                        </ng-container>
-                    
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        </mat-table>
-    
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
-                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
-                        aria-describedby="table users"></mat-paginator>
-                    </div>
+                  <section class="example-container mat-elevation-z8" tabindex="0">
+                      <div class="table-responsive">
+                          <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
+                          <ng-container matColumnDef="user_name" sticky>
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Nombre del usuario
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                  element.userName | titlecase
+                              }}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="product">
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Producto
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                              {{ element.productName | titlecase}}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="action">
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                  Log
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                  {{element.action}}
+                              </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="ipAddress">
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              IP
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                  element.ipAddress 
+                              }}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="hostname">
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                  Hostname
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                  element.hostname | titlecase
+                              }}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="createdAt" >
+                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                  Fecha
+                              </mat-header-cell>
+                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                  element.createdAt | date:'dd-MM-yyyy'
+                              }}</mat-cell>
+                          </ng-container>
+                      
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                          </table>
+      
+                          <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                          [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                          aria-describedby="table users"></mat-paginator>
+                      </div>
+                  </section>
                 }@else {
                     <div [style.textAlign]="'center'">
                         <p>No hay datos.</p>

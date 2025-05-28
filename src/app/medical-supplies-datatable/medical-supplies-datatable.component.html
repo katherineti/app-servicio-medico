@@ -1,43 +1,45 @@
 <mat-toolbar style="background-color: white;">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="search">
         <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" /> 
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="m-l-10">
+    <mat-form-field appearance="outline" class="m-l-10 search">
         <input matInput class="p-b-0" placeholder="Buscar por categoría" [formControl]="searhCategoryField" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+    <mat-form-field appearance="outline" class="example-full-width m-l-10 search">
         <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha expiración" [formControl]="searh_expirationDate">
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
         <mat-datepicker #expirationDate></mat-datepicker>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" class="m-l-10 m-r-10 margin-left-none" id="filter"
+    <button mat-flat-button color="primary" class="m-l-10 m-r-10 p-t-5 margin-left-none" id="filter"
     (click)="getAllProducts(this.pageIndex, this.pageSize)">
-        Buscar
+        <i-feather name="search"></i-feather>
     </button>
 
-    <!-- agregar producto -->
-     @if (this.role === 'admin' || this.role === 'almacen') {
-        <span class="example-spacer"></span>
-        <button mat-flat-button (click)="openDialogCreateSupplies()">
-            Agregar
-        </button>
-     }
 </mat-toolbar>
 
+@if (this.role === 'admin' || this.role === 'almacen') {
+   <span class="example-spacer"></span>
+   <button mat-flat-button (click)="openDialogCreateSupplies()" style="padding: 0 35px;" class="m-l-20">
+       Agregar
+   </button>
+}
+
 <br>
+
 <mat-card class="">
     <mat-card-content>
-        <div class="w-100">
+        <div class="w-100" style="width: 100%; overflow-x: auto;">
 
             <div class="m-l-auto">
                 @if(dataSource.length){
+                   <section class="example-container mat-elevation-z8" tabindex="0">
                     <div class="table-responsive">
-                        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical supplies">
-                        <ng-container matColumnDef="name">
+                        <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical supplies">
+                        <ng-container matColumnDef="name" sticky>
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                             Nombre
                             </mat-header-cell>
@@ -115,7 +117,7 @@
                             </mat-cell>
                         </ng-container>
                     
-                        <ng-container matColumnDef="action">
+                        <ng-container matColumnDef="action" aria-label="row actions" >
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
                             Acción
                             </mat-header-cell>
@@ -139,12 +141,14 @@
                     
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        </mat-table>
+                        </table>
                         
                         <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
                         [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
                         aria-describedby="table medical supplies"></mat-paginator>
                     </div>
+                   </section>
+
                 }@else {
                     <div [style.textAlign]="'center'">
                         <p>No hay datos.</p>

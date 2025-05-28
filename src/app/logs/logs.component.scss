@@ -4,3 +4,21 @@ table {
 .example-spacer {
 flex: 1 1 auto;
 }
+.example-container {
+  max-width: 100%;
+  overflow: auto;
+}
+.mat-column-createdAt {
+  width: 600px !important;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+.mat-mdc-table-sticky-border-elem-right {
+  border-left: 1px solid #e0e0e0;
+}
+.mat-mdc-table-sticky-border-elem-left {
+  border-right: 1px solid #e0e0e0;
+}
+.search{
+  width: 270px;
+}

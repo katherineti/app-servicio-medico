@@ -45,7 +45,7 @@ export class LogsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'user_name', 'product', 'action', 'ipAddress', 'hostname']
+    ? [ 'user_name', 'product', 'action', 'ipAddress', 'hostname', 'createdAt']
     : [ 'user_name', 'product', 'action', 'ipAddress', 'hostname','createdAt'];
     });
     

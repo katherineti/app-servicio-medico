@@ -51,7 +51,7 @@ export class RolComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ '#', 'rol', 'action']
+    ? [ 'rol', 'action']
     : [ '#', 'rol', 'isActivate', 'action'];
     });
 

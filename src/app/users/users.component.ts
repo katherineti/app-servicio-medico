@@ -52,7 +52,7 @@ export class UsersComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'email', 'isActive', 'action']
+    ? [ 'name', 'action']
     : [ 'name', 'rol', 'email', 'isActive','action'];
     });
     

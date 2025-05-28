@@ -52,7 +52,8 @@ body {
   margin: 0 auto;
 
   &.maxWidth {
-    max-width: $boxedWidth;
+    max-width: 100%;
+    // max-width: $boxedWidth;
   }
 }
 
@@ -97,7 +98,9 @@ body {
 
   td,
   mat-cell {
-    white-space: nowrap;
+    // white-space: nowrap;
+    white-space: normal;
+    word-break: break-word !important;
     padding: 16px;
   }
 }
@@ -132,3 +135,4 @@ td.hljs-ln-line.hljs-ln-numbers {
     flex-direction: row !important;
   }
 }
+

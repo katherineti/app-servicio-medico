@@ -7,3 +7,41 @@ table {
 #filter{
     margin-top: -15px !important;
 }
+.example-container {
+  max-width: 100%;
+  overflow: auto;
+}
+.mat-column-image{
+  flex: 0 0 80px;
+  width: 80px;
+}
+.mat-column-stock{
+  flex: 0 0 100px;
+}
+.mat-column-date_entry, .mat-column-expirationDate{
+  flex: 0 0 190px;
+}
+.mat-column-status{
+  flex: 0 0 130px;
+}
+.mat-column-action {
+  width: 500px !important;
+  padding-right: 8px;
+}
+th.mat-column-action, td.mat-column-action {
+  padding-left: 8px;
+}
+.mat-mdc-table-sticky-border-elem-right {
+  border-left: 1px solid #e0e0e0;
+}
+.mat-mdc-table-sticky-border-elem-left {
+  border-right: 1px solid #e0e0e0;
+}
+
+.search{
+  width: 90%;
+}
+//phone
+@media only screen and (max-width: 767px) {
+     .mat-column-action { width: 20% !important; }
+}

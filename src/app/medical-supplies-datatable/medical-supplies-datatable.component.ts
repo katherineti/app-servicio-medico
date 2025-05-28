@@ -21,6 +21,7 @@ import { AuthService } from '../services/auth.service';
 //Formateo a fecha local en dd/mm/yyyy
 import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-medical-supplies-datatable',
@@ -170,5 +171,9 @@ export class MedicalSuppliesDatatableComponent {
       this.dataSource = new MatTableDataSource<IProduct>(data.list);
       this.dataSource.length = data.total;
     });
+  }
+
+    isSticky(buttonToggleGroup: MatButtonToggleGroup, id: string) {
+    return (buttonToggleGroup.value || []).indexOf(id) !== -1;
   }
 }

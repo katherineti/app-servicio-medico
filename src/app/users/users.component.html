@@ -1,9 +1,10 @@
 <app-header-title [title]="'Usuarios'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="m-t-20">
         <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
     </mat-form-field>
+    
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
     (click)="getAllUser(this.pageIndex, this.pageSize)">
         <i-feather name="search"></i-feather>

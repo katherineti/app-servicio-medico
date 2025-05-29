@@ -217,3 +217,55 @@ body {
   .cursor_pointer{
     cursor: pointer;
   }
+
+// mat-card { width: 380px !important; display: inline-block; margin-top: 0px; height: 200px; }
+mat-card { width: 100% !important; display: inline-block; margin-top: 0px; height: 200px; }
+// mat-card { width: 25% !important; display: inline-block; margin-top: 0px; }
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+}
+.card {
+    background-color: #ffffff; 
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left; 
+    min-height: 120px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+}
+
+//tablet
+@media (min-width: 600px) and (max-width: 899px) { /* Este rango sería para "2 columnas" */
+  mat-card.cardWithShadow {
+    width: 50% !important;
+  }
+}
+/* --- Media Query para Laptops Pequeñas y Escritorio (900px y más grandes) --- */
+@media (min-width: 900px) and (max-width: 1099px) {
+  mat-card.cardWithShadow {
+    width: 50% !important;
+  }
+}
+
+@media (min-width: 1024px) { 
+   mat-card.cardWithShadow{ 
+    width: 33% !important; 
+  }
+}
+
+@media (min-width: 1440px) { 
+   mat-card.cardWithShadow{ 
+    width: 25% !important; 
+  }
+}
+
+mat-card button{
+  // background-color: #0b0b0be3; //rgb(30 49 233 / 71%);
+  background-color: #ccc;
+}

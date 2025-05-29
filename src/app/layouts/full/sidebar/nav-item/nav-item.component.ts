@@ -13,6 +13,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { NavItem } from './nav-item';
 import { Router, RouterModule } from '@angular/router';
 import { NavService } from '../../../../services/nav.service';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 
 @Component({
@@ -32,9 +33,9 @@ import { NavService } from '../../../../services/nav.service';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ])
   ],
-  // providers: [
-  //   provideAnimations() // Proporciona la configuración de animaciones
-  // ]
+  providers: [
+    provideAnimations() // Proporciona la configuración de animaciones
+  ]
 })
 export class AppNavItemComponent implements OnChanges {
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -1,12 +1,12 @@
 <app-header-title [title]="'Logs'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
-    <mat-form-field appearance="outline" class="search">
+    <mat-form-field appearance="outline" class="search m-t-20" >
         <input matInput class="p-b-0" placeholder="Buscar por nombre de usuario" [formControl]="searhField" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+    <mat-form-field appearance="outline" class="example-full-width m-l-10 m-t-20">
         <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha" [formControl]="searhDate">
-        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-hint>DD/MM/YYYY</mat-hint><br>
         <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
         <mat-datepicker #expirationDate></mat-datepicker>
     </mat-form-field>
@@ -17,6 +17,8 @@
     </button>
 
 </mat-toolbar>
+    
+<br>
 
 <mat-card class="">
     <mat-card-content>

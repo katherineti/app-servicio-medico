@@ -8,13 +8,23 @@ flex: 1 1 auto;
   max-width: 100%;
   overflow: auto;
 }
-.mat-column-action {
-  width: 700px !important;
-  padding-right: 8px;
-}
+
 .mat-mdc-table-sticky-border-elem-right {
   border-left: 1px solid #e0e0e0;
 }
 .mat-mdc-table-sticky-border-elem-left {
   border-right: 1px solid #e0e0e0;
+}
+
+.mat-column-id,
+.mat-column-title,
+.mat-column-status,
+.mat-column-duplicated{
+  flex: 0 0 200px;
+}
+.mat-column-fechaFin{
+  flex: 0 0 190px;
+}
+.mat-column-action{
+  flex: 0 0 120px;
 }

@@ -36,19 +36,33 @@ export const navItemsAdmin: NavItem[] = [
     external: true,
     chipClass: 'bg-secondary text-white',
   },
-  {
-    displayName: 'Crear reporte',
-    iconName: 'file-text',
-    route: './create-report',
-    external: true,
-    chipClass: 'bg-secondary text-white',
-  },
+  // {
+  //   displayName: 'Crear reporte',
+  //   iconName: 'file-text',
+  //   route: './create-report',
+  //   external: true,
+  //   chipClass: 'bg-secondary text-white',
+  // },
+  // {
+  //   navCap: 'Auth',
+  // },
   {
     displayName: 'Reportes',
     iconName: 'file-text',
     route: './reports',
-    external: true,
     chipClass: 'bg-secondary text-white',
+    children: [
+      {
+        displayName: 'Lista reportes',
+        iconName: 'file-text',
+        route: './reports'
+      },
+      {
+        displayName: 'Crear reporte',
+        iconName: 'plus',
+        route: './create-report'
+      },
+    ],
   },
 ];
 export const navItems: NavItem[] = [

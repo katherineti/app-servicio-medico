@@ -3,11 +3,14 @@
     class="example-sidenav" 
     mode="side" 
     [opened]="isSidenavOpen"
-    [ngClass]="{'hide-on-mobile': true}">
+    [ngClass]="{'hide-on-mobile': true}"
+    >
+    
         <mat-list role="list">
             <mat-list-item role="listitem" (click)="changeSection('title')" [class.active]="activeSection === 'title'">Título</mat-list-item>
-            <mat-list-item role="listitem" (click)="changeSection('summary')" [class.active]="activeSection === 'summary'">Resumen</mat-list-item>
-            <mat-list-item role="listitem" (click)="changeSection('conclusions')" [class.active]="activeSection === 'conclusions'">Conclusiones</mat-list-item>
+            <mat-list-item role="listitem" (click)="reportCreated_id==0 || activeSection === 'title'?false:changeSection('summary')" [class.active]="activeSection === 'summary'" [disabled]="reportCreated_id==0 || activeSection === 'title'">Resumen</mat-list-item>
+            <mat-list-item role="listitem" (click)="!activeConclutions || activeSection === 'title' || activeSection === 'summary'?false: changeSection('conclusions')" [class.active]="activeSection === 'conclusions'" [disabled]="!activeConclutions || activeSection === 'title' || activeSection === 'summary'">Conclusiones</mat-list-item>
+            <!-- <mat-list-item role="listitem" (click)="changeSection('conclusions')" [class.active]="activeSection === 'conclusions'">Conclusiones</mat-list-item> -->
         </mat-list>
     </mat-drawer>
     <div class="example-sidenav-content">
@@ -34,7 +37,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="example-full-width m-l-10">
+                        <mat-form-field appearance="outline" class="example-full-width ">
                             <mat-label>Destinatario</mat-label>
                             <input
                             matInput
@@ -51,7 +54,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="example-full-width m-l-10">
+                        <mat-form-field appearance="outline" class="example-full-width">
                             <mat-label>Auditor</mat-label>
                             <mat-select
                             placeholder="Auditor"

@@ -1,9 +1,9 @@
 .example-container {
     // width: 500px;
-    // height: 400px;
-    height: 80vh;
+    // height: 80vh;
     // border: 1px solid rgba(0, 0, 0, 0.5);
     border: 1px solid #d7dde2;
+    border-radius: 10px;
   }
   
   .example-sidenav-content {
@@ -27,4 +27,17 @@
     @media (max-width: 768px) { /* Tablet breakpoint */
         display: none;
     }
+}
+
+.example-full-width{
+  width: 100%;
+}
+
+mat-list-item:hover{
+  cursor: pointer;
+  background-color: #c1dff86b;
+}
+mat-list-item:active, .active{
+   cursor: pointer;
+   background-color: var(--mdc-checkbox-unselected-hover-state-layer-color);
 }

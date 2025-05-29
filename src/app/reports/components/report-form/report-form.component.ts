@@ -33,6 +33,7 @@ export class ReportFormComponent {
   activeSection: "title" | "summary" | "conclusions" = "title";
   hiddenButtonCreation=false;
   selectedImages: ImageFile[] = []
+  activeConclutions=false;
   
   constructor( ){
     this.buildAddReportForm();
@@ -117,6 +118,7 @@ export class ReportFormComponent {
 
   async save(): Promise<void> {
     this.disableButton = true;
+    this.activeConclutions=false;
 
     if (this.activeSection === "title" && this.reportFormGroup.invalid) {
       this.disableButton = false;
@@ -146,7 +148,8 @@ export class ReportFormComponent {
     } catch (error: any) {
       this.disableButton = false;
       console.error('Error al crear/actualizar el título del reporte:', error);
-      toast.error(error?.message || 'Error al guardar el título del reporte.');
+      // toast.error(error?.message || 'Error al guardar el título del reporte.');
+      toast.error(error);
     }
   }
 
@@ -183,6 +186,7 @@ export class ReportFormComponent {
         });
         result = await firstValueFrom(this.reportsService.updateWithImages(formData, this.reportCreated_id));
           console.log("enviando data:");
+          this.activeConclutions=true;
           formData.forEach((value, key) => {
             console.log(key, value);
           });
@@ -197,6 +201,7 @@ export class ReportFormComponent {
         console.log("dataToUpdate " , dataToUpdate)
         delete dataToUpdate.images;
         result = await firstValueFrom(this.reportsService.update(dataToUpdate, this.reportCreated_id));
+        this.activeConclutions=true;
         console.log("enviando data: ", dataToUpdate);
       }
       console.log("resultado update " , result)
@@ -206,12 +211,16 @@ export class ReportFormComponent {
       if (result?.error) {
         toast.error(result.error);
         this.disableButton = false;
+        this.activeConclutions=false;
         return;
       }
 
       this.handleSuccessResponse();
     } catch (error: any) {
       this.disableButton = false;
+      this.activeConclutions=false;
+      this.activeConclutions=false;
+
       console.error('Error al actualizar el reporte:', error);
       toast.error(error?.message || 'Error al actualizar el reporte.');
     }
@@ -227,6 +236,7 @@ export class ReportFormComponent {
       toast.success("Reporte finalizado");
       this.changeSection("title");
       this.cancel();
+      this.activeConclutions=false;
     } else {
       toast.success("Sección guardada y avanzando");
       this.changeSection("conclusions");

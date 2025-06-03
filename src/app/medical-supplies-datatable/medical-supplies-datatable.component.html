@@ -1,20 +1,20 @@
 <mat-toolbar style="background-color: white;">
-    <mat-form-field appearance="outline" class="search">
+    <mat-form-field appearance="outline" class="search m-t-20">
         <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" /> 
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="m-l-10 search">
+    <mat-form-field appearance="outline" class="m-t-20 m-l-10 search">
         <input matInput class="p-b-0" placeholder="Buscar por categoría" [formControl]="searhCategoryField" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="example-full-width m-l-10 search">
-        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha expiración" [formControl]="searh_expirationDate">
+    <mat-form-field appearance="outline" class="m-t-20 m-l-10" style="width: 300px;">
+        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha de expiración" [formControl]="searh_expirationDate">
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
         <mat-datepicker #expirationDate></mat-datepicker>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" class="m-l-10 m-r-10 p-t-5 margin-left-none" id="filter"
+    <button mat-flat-button color="primary" class="m-l-10 m-r-10 p-t-5 margin-left-none" id="filter" style="margin-top: 2px !important;"
     (click)="getAllProducts(this.pageIndex, this.pageSize)">
         <i-feather name="search"></i-feather>
     </button>

@@ -1,12 +1,12 @@
 <app-header-title [title]="'Reportes'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
-    <mat-form-field appearance="outline" class="example-full-width m-l-10">
+    <mat-form-field appearance="outline" class="search m-l-10">
         <input matInput class="p-b-0" placeholder="Buscar por destinatario" [formControl]="searhFieldReceiver" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="example-full-width m-l-10">
-        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha" [formControl]="searhField_EndDate">
+    <mat-form-field appearance="outline" class=" m-l-10" style="width: 300px;">
+        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha de finalización" [formControl]="searhField_EndDate">
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
         <mat-datepicker #expirationDate></mat-datepicker>
@@ -51,9 +51,16 @@
                                     element.title | titlecase
                                 }}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="fechaFin">
+                            <ng-container matColumnDef="startDate">
                                 <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                Fecha
+                                Fecha de inicio
+                                </mat-header-cell>
+                                <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{ element.startDate | date:'dd-MM-yyyy'}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="endDate">
+                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Fecha de finalización
                                 </mat-header-cell>
                                 <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                                 {{ element.endDate | date:'dd-MM-yyyy'}}</mat-cell>

@@ -1,6 +1,34 @@
+table {
+    width: 100%;
+}
 .example-spacer {
     flex: 1 1 auto;
 }
+.example-container {
+    max-width: 100%;
+    overflow: auto;
+}
+
+.mat-mdc-table-sticky-border-elem-right {
+    border-left: 1px solid #e0e0e0;
+}
+.mat-mdc-table-sticky-border-elem-left {
+    border-right: 1px solid #e0e0e0;
+}
+
 .mat-column-action {
     flex: 0 0 145px;
+}
+.mat-column-id{
+  flex: 0 0 100px;
+}
+
+@media only screen and (max-width: 767px) {
+    .mat-column-rol, .mat-column-isActivate{
+      flex: 0 0 120px;
+    }
+}
+
+.search{
+  width: 270px;
 }

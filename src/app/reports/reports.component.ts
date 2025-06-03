@@ -43,7 +43,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ReportsComponent {
   role:string='';
-  displayedColumns = ['id', 'title','fechaFin','status','duplicated','action'];
+  displayedColumns = ['id', 'title','startDate','endDate','status','duplicated','action'];
   dataSource: any = new MatTableDataSource<IUser>();
   searhFieldReceiver = new FormControl(); 
   searhField_EndDate = new FormControl();
@@ -63,8 +63,8 @@ export class ReportsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? ['id', 'title', 'fechaFin', 'status', 'duplicated']
-    : ['id', 'title', 'fechaFin', 'status', 'duplicated','action'];
+    ? ['id', 'title', 'startDate', 'endDate', 'status', 'duplicated', 'action']//phone
+    : ['id', 'title', 'startDate', 'endDate', 'status', 'duplicated', 'action'];
     });
     
     this.dataSource['length'] = 0;
@@ -151,10 +151,13 @@ export class ReportsComponent {
       endDate: this.searchEndDate ? this.searchEndDate : null,
     };
 
-    this.reportsService.getAll(parms).subscribe((data: IReportPagination) => {
+    this.reportsService.getAll(parms).subscribe((data: IReportPagination) => {console.log(data)
       data.list.forEach((ele:any) => {
         if(ele.endDate ){
           ele.endDate = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.endDate ) );
+        }
+        if(ele.startDate ){
+          ele.startDate = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.startDate ) );
         }
       }); 
       this.dataSource = new MatTableDataSource<IReport>(data.list);

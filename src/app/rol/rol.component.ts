@@ -35,7 +35,7 @@ import { AuthService } from '../services/auth.service';
 
 export class RolComponent {
   role:string='';
-  displayedColumns = [ '#', 'rol', 'isActivate', 'action'];
+  displayedColumns = [ 'id', 'rol', 'isActivate', 'action'];
   dataSource: any = new MatTableDataSource<IRole>();
   searhField = new FormControl();
   pageSize: number = 5;
@@ -51,8 +51,8 @@ export class RolComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'rol', 'action']
-    : [ '#', 'rol', 'isActivate', 'action'];
+    ? [ 'id', 'rol', 'isActivate', 'action']
+    : [ 'id', 'rol', 'isActivate', 'action'];
     });
 
     this.dataSource['length'] = 0;

@@ -1,8 +1,8 @@
 <app-header-title [title]="'Roles'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
-    <mat-form-field appearance="outline" class="m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+    <mat-form-field appearance="outline" class="m-t-20 search">
+        <input matInput class="p-b-0" placeholder="Buscar por rol" [formControl]="searhField" />
     </mat-form-field>
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
     (click)="getAll(this.pageIndex, this.pageSize)">
@@ -23,64 +23,66 @@
         <div class="w-100">
             <div class="m-l-auto">   
                 @if (dataSource.length) {
-                    <div class="table-responsive">
-                        <mat-table #table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles">
-                        
-                        <ng-container matColumnDef="#">
-                            <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
-                            <mat-cell mat-cell *matCellDef="let element; let i = index">
-                                {{ i + 1 }}
-                            </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="rol">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Rol
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            {{ element.name | titlecase}}</mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="isActivate">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                            Estado
-                            </mat-header-cell>
-                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            @if (element.isActivate===true) {
-                                Activo
-                            }@else {
-                                Inactivo
-                              }
-                        </mat-cell>
-                        </ng-container>
-                    
-                        <ng-container matColumnDef="action">
-                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
-                            Acción
-                            </mat-header-cell>
-                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                                <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
-                                    <i-feather name="eye"></i-feather>
-                                </button>
-                                
-                                @if (this.role === 'admin') {
-                                    <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
-                                        <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
-                                    </button>
-                                    <button mat-icon-button aria-label="Eliminar" (click)="deleteRol(element)">
-                                        <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                    </button>
+                    <section class="example-container mat-elevation-z8" tabindex="0">
+                        <div class="table-responsive">
+                            <table #table mat-table [dataSource]="dataSource" class="w-100 mat-elevation-z8" aria-describedby="tabla roles">
+                            
+                            <ng-container matColumnDef="id" sticky>
+                                <mat-header-cell  mat-header-cell *matHeaderCellDef>#</mat-header-cell >
+                                <mat-cell mat-cell *matCellDef="let element;">
+                                    {{ element.id }}
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="rol">
+                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Rol
+                                </mat-header-cell>
+                                <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{ element.name | titlecase}}</mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="isActivate">
+                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Estado
+                                </mat-header-cell>
+                                <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                @if (element.isActivate===true) {
+                                    Activo
+                                }@else {
+                                    Inactivo
                                 }
                             </mat-cell>
-                        </ng-container>                   
-                    
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        </mat-table>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
-                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
-                        aria-describedby="table users"></mat-paginator>
-                    </div>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="action">
+                                <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                                Acción
+                                </mat-header-cell>
+                                <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                    <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
+                                        <i-feather name="eye"></i-feather>
+                                    </button>
+                                    
+                                    @if (this.role === 'admin') {
+                                        <button mat-icon-button aria-label="Editar" (click)="openDialogEditRol(element)">
+                                            <i-feather name="edit" class="big fill-red icon-18" ></i-feather>
+                                        </button>
+                                        <button mat-icon-button aria-label="Eliminar" (click)="deleteRol(element)">
+                                            <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                        </button>
+                                    }
+                                </mat-cell>
+                            </ng-container>                   
+                        
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                            [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                            aria-describedby="table users"></mat-paginator>
+                        </div>
+                    </section>
                 }@else {
                     <div [style.textAlign]="'center'">
                         <p>No hay datos.</p>

@@ -16,15 +16,21 @@ flex: 1 1 auto;
   border-right: 1px solid #e0e0e0;
 }
 
-.mat-column-id,
+.mat-column-id{
+  flex: 0 0 100px;
+}
+
 .mat-column-title,
 .mat-column-status,
 .mat-column-duplicated{
   flex: 0 0 200px;
 }
-.mat-column-fechaFin{
+.mat-column-endDate, .mat-column-startDate{
   flex: 0 0 190px;
 }
 .mat-column-action{
   flex: 0 0 120px;
+}
+.search{
+  width: 270px;
 }

@@ -37,7 +37,28 @@
                 <mat-error *ngIf="roleFormGroup.controls['description'].errors?.['maxLength']">
                     Máximo de 50 caracteres.
                 </mat-error>
-            </mat-form-field>        
+            </mat-form-field> 
+            
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Estado"
+                formControlName="isActivate"
+                required="true"
+                >
+                <mat-option [value]="true" selected>{{
+                    'Activo'
+                }}</mat-option>
+                <mat-option [value]="false">{{
+                    'Inactivo'
+                }}</mat-option>
+
+                </mat-select>
+
+                <mat-error *ngIf="roleFormGroup.controls['isActivate'].hasError('required')">
+                    El estado es requerido.
+                </mat-error>
+            </mat-form-field>
+
           </div>
       
           <div class="row">

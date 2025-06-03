@@ -110,7 +110,6 @@ export class UserCreateComponent {
   getRolesActives() {
     this.usersService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
-      console.log("LISTA DE ROLES ACTIVOS",data)
     });
   }
 }

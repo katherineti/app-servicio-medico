@@ -1,5 +1,5 @@
 export interface IRole {
-  id: string;
+  id: number;
   name: string;
   description: string;
   isActivate: boolean;
@@ -25,4 +25,5 @@ export interface ICreateRoleDTO
 export interface IUpdateRole {
   name: string;
   description: string;
+  isActivate: boolean;
 }

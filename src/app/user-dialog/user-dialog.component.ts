@@ -39,7 +39,6 @@ export class UserDialogComponent implements OnInit {
   async ngOnInit() {
 
     this.selectedUser = this.data;
-    console.log("this.selectedUser ", this.selectedUser);
     this.edit = this.data.actionEdit;
     if (this.data) {
       this.setForm();
@@ -50,7 +49,7 @@ export class UserDialogComponent implements OnInit {
     if (this.selectedUser?.id !== null && this.selectedUser?.id !== undefined) {
       return true;
     }
-    console.log("falta id")
+    console.log("Falta id")
     return false;
   }
 
@@ -127,14 +126,6 @@ export class UserDialogComponent implements OnInit {
     }
     const { name, role, isActive } = this.userFormGroup.value;
     const id = this.selectedUser.id;
-console.log(
-
-  "guardando:",{
-    name, 
-    role,
-    isActivate: isActive,
-  }
-)
 
     this.usersService
       .updateUser(
@@ -152,7 +143,7 @@ console.log(
           this.closeDialog();
         },
         error: (error) => {
-          console.log("error ",error)
+          console.log("Error ", error)
           this.swalService.closeload();
           this.disableButton = false;
           this.swalService.error('Error', error);
@@ -163,7 +154,6 @@ console.log(
   getRolesActives() {
     this.usersService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
-      console.log("LISTA DE ROLES ACTIVOS",data)
     });
   }
 

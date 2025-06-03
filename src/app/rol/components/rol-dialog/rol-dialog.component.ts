@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, inject } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SwalService } from '../services/swal.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { FeatherIconsModule } from '../feathericons/feathericons.module';
+import { MaterialModule } from '../../../material/material.module';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SwalService } from '../../../services/swal.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RolesService } from '../rol/services/roles.service';
+import { RolesService } from '../../services/roles.service';
 import { toast } from 'ngx-sonner';
+import { IRole } from '../../interfaces/roles.interface';
 
 export interface Element {
   id: number;
@@ -26,7 +26,6 @@ export interface Element {
 }
 
 //Modal editar rol: Que antes de entrar en el dialog, ya este preseleccionada la data del rol del usuario en sesion. Solo se deben recibir los registros de un rol
-  
 @Component({
   selector: 'app-rol-dialog',
   templateUrl: './rol-dialog.component.html',
@@ -38,19 +37,18 @@ export class RolDialogComponent {
 
   roleFormGroup!: FormGroup;
   disableButton: boolean = false;
-  selectedRole!: any;
+  selectedRole!: IRole;
   modeEdit:boolean | undefined;
   
   readonly dialogRef = inject(MatDialogRef<RolDialogComponent>);
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private rolesService = inject(RolesService);
-
   private snackBar = inject(MatSnackBar);
   
   constructor(
     @Inject(MAT_DIALOG_DATA) 
-         public data: any,
+         public data: IRole,
   ){
     this.buildAddUserForm();
   }
@@ -69,7 +67,7 @@ export class RolDialogComponent {
     if (this.selectedRole?.id !== null && this.selectedRole?.id !== undefined) {
       return true;
     }
-    console.log("falta id")
+    console.log("Falta id")
     return false;
   }
 
@@ -89,6 +87,7 @@ export class RolDialogComponent {
           Validators.maxLength(50),
         ],
       ],
+      isActivate:[]
     });
   }
 
@@ -96,12 +95,14 @@ export class RolDialogComponent {
     if(!this.modeEdit){
       this.roleFormGroup.controls['role'].disable();
       this.roleFormGroup.controls['description'].disable();
+      this.roleFormGroup.controls['isActivate'].disable();
     }
 
     this.roleFormGroup.patchValue({
       id: this.selectedRole?.id,
       role: this.toTitleCase(this.selectedRole?.name),
       description: this.selectedRole?.description,
+      isActivate: this.selectedRole?.isActivate
       });
   }
 
@@ -129,13 +130,14 @@ export class RolDialogComponent {
       toast.error("Por favor, completa el formulario correctamente.");
       return;
     }
-    const { role, description } = this.roleFormGroup.value;
-    const id = this.selectedRole.id;
+    const { role, description, isActivate } = this.roleFormGroup.value;
+    const id:number = this.selectedRole.id;
 
     this.rolesService
       .update(id, {
         name:role,
-        description
+        description,
+        isActivate
       })
       .subscribe({
         error: (msj) => {

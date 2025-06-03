@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SwalService } from '../services/swal.service';
-import { RolesService } from '../rol/services/roles.service';
+import { SwalService } from '../../../services/swal.service';
+import { RolesService } from '../../services/roles.service';
 
 @Component({
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],

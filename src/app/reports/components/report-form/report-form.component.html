@@ -5,12 +5,10 @@
     [opened]="isSidenavOpen"
     [ngClass]="{'hide-on-mobile': true}"
     >
-    
         <mat-list role="list">
             <mat-list-item role="listitem" (click)="changeSection('title')" [class.active]="activeSection === 'title'">Título</mat-list-item>
             <mat-list-item role="listitem" (click)="reportCreated_id==0 || activeSection === 'title'?false:changeSection('summary')" [class.active]="activeSection === 'summary'" [disabled]="reportCreated_id==0 || activeSection === 'title'">Resumen</mat-list-item>
             <mat-list-item role="listitem" (click)="!activeConclutions || activeSection === 'title' || activeSection === 'summary'?false: changeSection('conclusions')" [class.active]="activeSection === 'conclusions'" [disabled]="!activeConclutions || activeSection === 'title' || activeSection === 'summary'">Conclusiones</mat-list-item>
-            <!-- <mat-list-item role="listitem" (click)="changeSection('conclusions')" [class.active]="activeSection === 'conclusions'">Conclusiones</mat-list-item> -->
         </mat-list>
     </mat-drawer>
     <div class="example-sidenav-content">
@@ -54,21 +52,19 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="example-full-width">
-                            <mat-label>Auditor</mat-label>
-                            <mat-select
-                            placeholder="Auditor"
-                            formControlName="auditor"
-                            required="true"
-                            readonly
-                            >
-                            <mat-option [value]="null">{{
-                                'Ninguno' | titlecase
-                            }}</mat-option>
-                            <mat-option [value]="this.token.sub">{{
-                                user_name | titlecase
-                            }}</mat-option>
-                            </mat-select>
+                          <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Auditor principal</mat-label>
+                            
+                            <input type="text"
+                                matInput
+                                placeholder="Buscar auditor principal..."
+                                formControlName="auditor"
+                                [matAutocomplete]="auto"
+                                required="true"
+                                readonly="true" 
+                            />
+
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"> </mat-autocomplete>
 
                             <mat-error *ngIf="reportFormGroup.controls['auditor'].hasError('required')">
                                 El auditor es requerido
@@ -76,7 +72,45 @@
                             <mat-error *ngIf="reportFormGroup.get('auditor')?.hasError('maxlength')">
                                 Máximo de 50 caracteres.
                             </mat-error>
+
+                            <button 
+                            mat-icon-button 
+                            matSuffix 
+                            type="button" 
+                             (click)="toggleAdditionalAuditorForm()"
+                            matTooltip="Agregar auditores"
+                        >
+                            <mat-icon>person_add</mat-icon> 
+                        </button>
                         </mat-form-field>
+
+                        <!--  Auditores adicionales -->
+                        @if (showAddAuditorForm) {
+                            <app-auditor-multi-select class="example-full-width"
+                                formControlName="additionalAuditors"
+                                label="Auditores adicionales"
+                                placeholder="Buscar auditores adicionales..."
+                                (auditorsChange)="onAdditionalAuditorsChange($event)">
+                            </app-auditor-multi-select>
+    
+                            <!-- Auditores adicionales seleccionados -->
+                            @if (selectedAdditionalAuditors.length > 0) {
+                            <div class="selected-auditors-summary">
+                                <h4>Auditores Adicionales Seleccionados ({{selectedAdditionalAuditors.length}}):</h4>
+                                <br>
+                                <div class="auditor-chips">
+                                    @for (auditor of selectedAdditionalAuditors; track auditor.id) {
+                                    <mat-chip class="auditor-chip p-y-20">
+                                        <mat-icon matChipAvatar>person</mat-icon>
+                                        {{auditor.name | titlecase}}
+                                        <!-- <span class="auditor-email-chip">{{auditor.email}}</span> -->
+                                        <br><span class="auditor-email-chip">{{auditor.email}}</span>
+                                    </mat-chip>
+                                    }
+                                </div>
+                            </div>
+                            }
+                        }
 
                     </div>
 

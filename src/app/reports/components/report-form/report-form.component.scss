@@ -41,3 +41,58 @@ mat-list-item:active, .active{
    cursor: pointer;
    background-color: var(--mdc-checkbox-unselected-hover-state-layer-color);
 }
+
+
+// Estilos para la sección de auditores adicionales
+.selected-auditors-summary {
+  // margin: 20px 0;
+  // padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.selected-auditors-summary h4 {
+  // margin: 0 0 15px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.auditor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.auditor-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 12px;
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 16px;
+  // max-width: 200px;
+  // width: auto;
+}
+
+.auditor-email-chip {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  // width: 100%;
+}
+
+@media (max-width: 768px) {
+  .auditor-chips {
+    flex-direction: column;
+  }
+  
+  .auditor-chip {
+    max-width: 100%;
+  }
+}

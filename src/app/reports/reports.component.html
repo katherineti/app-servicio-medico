@@ -1,11 +1,11 @@
 <app-header-title [title]="'Reportes'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
-    <mat-form-field appearance="outline" class="search m-l-10">
+    <mat-form-field appearance="outline" class="search m-t-20">
         <input matInput class="p-b-0" placeholder="Buscar por destinatario" [formControl]="searhFieldReceiver" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class=" m-l-10" style="width: 300px;">
+    <mat-form-field appearance="outline" class="m-l-10 m-t-20" style="width: 300px;">
         <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha de finalización" [formControl]="searhField_EndDate">
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>

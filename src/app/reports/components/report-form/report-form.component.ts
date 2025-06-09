@@ -163,7 +163,7 @@ export class ReportFormComponent {
       if (isExistingReport) {
         data.id = this.reportCreated_id
       }
-
+console.log("creando reporte  - paso 1 " , data)
       const reportCreated = await firstValueFrom(this.reportsService.create(data))
       this.reportCreated_id = reportCreated?.id
       this.hiddenButtonCreation = true
@@ -245,8 +245,9 @@ export class ReportFormComponent {
 
       if (result?.error) {
         toast.error(result.error)
-        this.disableButton = false
-        this.activeConclutions = false
+        this.disableButton = false;
+        this.activeConclutions = false;
+        this.showAddAuditorForm=  false;
         return
       }
 
@@ -255,6 +256,7 @@ export class ReportFormComponent {
     } catch (error: any) {
       this.disableButton = false
       this.activeConclutions = false
+      this.showAddAuditorForm=  false;
 
       console.error("Error al actualizar el reporte:", error)
       toast.error(error?.message || "Error al actualizar el reporte.")
@@ -266,16 +268,17 @@ export class ReportFormComponent {
     this.disableButton = false
 
     if (this.activeSection === "conclusions") {
-      this.selectedImages = []
-      this.selectedAdditionalAuditors = []
-      this.reportCreated_id = 0
-      toast.success("Reporte finalizado")
-      this.changeSection("title")
-      this.cancel()
-      this.activeConclutions = false
+      this.selectedImages = [];
+      this.selectedAdditionalAuditors = [];
+      this.reportCreated_id = 0;
+      toast.success("Reporte finalizado");
+      this.changeSection("title");
+      this.cancel();
+      this.activeConclutions = false;
+      this.showAddAuditorForm=  false;
     } else {
-      toast.success("Sección guardada y avanzando")
-      this.changeSection("conclusions")
+      toast.success("Sección guardada y avanzando");
+      this.changeSection("conclusions");
     }
   }
 

@@ -28,6 +28,7 @@ import { firstValueFrom } from 'rxjs';
     MaterialModule,
   ],
   templateUrl: './header.component.html',
+  styleUrls: ["./header.component.css"],
   encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent {

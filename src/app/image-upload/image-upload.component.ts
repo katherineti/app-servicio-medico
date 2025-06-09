@@ -23,6 +23,7 @@ export class ImageUploadComponent {
   @Input() maxImages = 10
   @Input() maxSizeInMB = 5
   @Input() images: ImageFile[] = []
+  @Input() show_uploadImageIcon = true
 
   @Output() imagesChange = new EventEmitter<ImageFile[]>()
 

@@ -1,128 +1,117 @@
-<!-- <h2 mat-dialog-title> -->
-    <div mat-dialog-title class="center-img">
-        <img
-            src="./assets/logo-ciip.png"
-            class="m-2"
-            alt="logo ciip"
-            width="150"
-        />
-    </div>
-<!-- </h2> -->
+<div mat-dialog-title class="center-img">
+    <img
+        src="./assets/logo-ciip.png"
+        class="m-2"
+        alt="logo ciip"
+        width="150"
+    />
+</div>
 
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer 
-    class="example-sidenav" 
-    mode="side" 
-    [opened]="isSidenavOpen"
-    [ngClass]="{'hide-on-mobile': true}">
+        class="example-sidenav" 
+        mode="side" 
+        [opened]="isSidenavOpen"
+        [ngClass]="{'hide-on-mobile': true}">
         <mat-list role="list">
-            <mat-list-item role="listitem" (click)="changeSection('title')" [class.active]="activeSection === 'title'">Título</mat-list-item>
-            <mat-list-item role="listitem" (click)="changeSection('summary')" [class.active]="activeSection === 'summary'">Resumen</mat-list-item>
-            <mat-list-item role="listitem" (click)="changeSection('conclusions')" [class.active]="activeSection === 'conclusions'">Conclusiones</mat-list-item>
+            <mat-list-item 
+                role="listitem" 
+                (click)="changeSection('title')" 
+                [class.active]="activeSection === 'title'">
+                Título
+            </mat-list-item>
+            <mat-list-item 
+                role="listitem" 
+                (click)="changeSection('summary')" 
+                [class.active]="activeSection === 'summary'">
+                Resumen
+            </mat-list-item>
+            <mat-list-item 
+                role="listitem" 
+                (click)="changeSection('conclusions')" 
+                [class.active]="activeSection === 'conclusions'">
+                Conclusiones
+            </mat-list-item>
         </mat-list>
     </mat-drawer>
+    
     <div class="example-sidenav-content">
-    @if (this.token) {
-        <div class="d-flex align-items-center">
-            <div class="right-bg-content p-10">
-                <form [formGroup]="reportFormGroup" #f="ngForm" >
-                    @if (activeSection === 'title') {
-                    <div class="row p-10" >
-                        <mat-form-field appearance="outline" class="example-full-width">
-                            <mat-label>Título</mat-label>
-                            <input
-                            matInput
-                            placeholder="Título"
-                            formControlName="title"
-                            required="true"
-                            type="text"
-                            />
-                            <mat-error *ngIf="reportFormGroup.controls['title'].hasError('required')">
-                                El título es requerido
-                            </mat-error>
-                            <mat-error *ngIf="reportFormGroup.get('title')?.hasError('maxlength')">
-                                Máximo de 50 caracteres.
-                            </mat-error>
-                        </mat-form-field>
+        @if (this.token) {
+            <div class="content-container">
+                <div class="scrollable-content">
+                    <form [formGroup]="reportFormGroup" #f="ngForm">
+                        
+                        @if (activeSection === 'title') {
+                        <div class="form-section">
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Título</mat-label>
+                                <input
+                                    matInput
+                                    placeholder="Título"
+                                    formControlName="title"
+                                    required="true"
+                                    type="text"
+                                />
+                                <mat-error *ngIf="reportFormGroup.controls['title'].hasError('required')">
+                                    El título es requerido
+                                </mat-error>
+                                <mat-error *ngIf="reportFormGroup.get('title')?.hasError('maxlength')">
+                                    Máximo de 50 caracteres.
+                                </mat-error>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="example-full-width ">
-                            <mat-label>Destinatario</mat-label>
-                            <input
-                            matInput
-                            placeholder="Destinatario"
-                            formControlName="receiver"
-                            required="true"
-                            type="text"
-                            />
-                            <mat-error *ngIf="reportFormGroup.controls['receiver'].hasError('required')">
-                                El destinatario es requerido
-                            </mat-error>
-                            <mat-error *ngIf="reportFormGroup.get('receiver')?.hasError('maxlength')">
-                                Máximo de 50 caracteres.
-                            </mat-error>
-                        </mat-form-field>
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Destinatario</mat-label>
+                                <input
+                                    matInput
+                                    placeholder="Destinatario"
+                                    formControlName="receiver"
+                                    required="true"
+                                    type="text"
+                                />
+                                <mat-error *ngIf="reportFormGroup.controls['receiver'].hasError('required')">
+                                    El destinatario es requerido
+                                </mat-error>
+                                <mat-error *ngIf="reportFormGroup.get('receiver')?.hasError('maxlength')">
+                                    Máximo de 50 caracteres.
+                                </mat-error>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="example-full-width ">
-                            <mat-label>Auditor</mat-label>
-                            <mat-select
-                            placeholder="Auditor"
-                            formControlName="auditor"
-                            required="true"
-                            readonly
-                            >
-                            <mat-option [value]="null">{{
-                                'Ninguno' | titlecase
-                            }}</mat-option>
-                            <mat-option [value]="this.token.sub">{{
-                                user_name | titlecase
-                            }}</mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="reportFormGroup.controls['auditor'].hasError('required')">
-                                El auditor es requerido
-                            </mat-error>
-                            <mat-error *ngIf="reportFormGroup.get('auditor')?.hasError('maxlength')">
-                                Máximo de 50 caracteres.
-                            </mat-error>
-                        </mat-form-field>
-
-                    </div>
-                        @if (this.edit) {
-                            <mat-dialog-actions align="end">
-                            <div class="row m-t-5">
-                                <div class="ml-auto">
-                                    <button
-                                    class=" bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="cancel()"
-                                    >
-                                    Cancelar
-                                    </button>
-                                    <button
-                                    class="m-r-10 bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="save();"
-                                    >
-                                    Siguiente <mat-icon>arrow_forward</mat-icon>
-                                    </button>
-        
-                                </div>
-                            </div>
-                            </mat-dialog-actions> 
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <mat-label>Auditor</mat-label>
+                                <mat-select
+                                    placeholder="Auditor"
+                                    formControlName="auditor"
+                                    required="true"
+                                    readonly
+                                >
+                                    <mat-option [value]="null">{{
+                                        'Ninguno' | titlecase
+                                    }}</mat-option>
+                                    <mat-option [value]="this.token.sub">{{
+                                        user_name | titlecase
+                                    }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="reportFormGroup.controls['auditor'].hasError('required')">
+                                    El auditor es requerido
+                                </mat-error>
+                                <mat-error *ngIf="reportFormGroup.get('auditor')?.hasError('maxlength')">
+                                    Máximo de 50 caracteres.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         }
-                    }
 
-                    @if (activeSection === 'summary') {
-                    <div>
-                        <div class="row p-10">
+                        @if (activeSection === 'summary') {
+                        <div class="form-section">
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Objetivo</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Objetivo"
-                                formControlName="summary_objective"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Objetivo"
+                                    formControlName="summary_objective"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['summary_objective'].hasError('required')">
                                     El objetivo es requerido
@@ -135,11 +124,11 @@
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Alcance</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Alcance"
-                                formControlName="summary_scope"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Alcance"
+                                    formControlName="summary_scope"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['summary_scope'].hasError('required')">
                                     El alcance es requerido
@@ -152,11 +141,11 @@
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Metodología</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Metodología"
-                                formControlName="summary_methodology"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Metodología"
+                                    formControlName="summary_methodology"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['summary_methodology'].hasError('required')">
                                     La metodología es requerida
@@ -169,11 +158,11 @@
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Conclusión y Observación</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Conclusión y Observación"
-                                formControlName="summary_conclusionAndObservation"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Conclusión y Observación"
+                                    formControlName="summary_conclusionAndObservation"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['summary_conclusionAndObservation'].hasError('required')">
                                     La conclusión y observación es requerida
@@ -183,51 +172,18 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                         @if (this.edit) {
-                             <mat-dialog-actions align="end">
-                                 <div class="row m-t-5">
-                                     <div class="ml-auto">
-                                         <button
-                                         class=" bg-error m-l-8"
-                                         mat-flat-button
-                                         (click)="changeSection('title')"
-                                         >
-                                         <mat-icon>arrow_back</mat-icon> Regresar
-                                         </button>
-     
-                                         <button
-                                         class=" bg-error m-l-8"
-                                         mat-flat-button
-                                         (click)="cancel()"
-                                         >
-                                         Cancelar
-                                         </button>
-                                         <button
-                                         class="m-r-10 bg-error m-l-8"
-                                         mat-flat-button
-                                         (click)="updateReport()"
-                                         >
-                                         Siguiente <mat-icon>arrow_forward</mat-icon>
-                                         </button>
-     
-                                     </div>
-                                 </div>
-                             </mat-dialog-actions> 
-                         }
-                    </div>
-                    }
+                        }
 
-                    @if (activeSection === 'conclusions') {
-                    <div>
-                        <div class="row p-10">
+                        @if (activeSection === 'conclusions') {
+                        <div class="form-section">
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Introducción</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Introducción"
-                                formControlName="introduction"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Introducción"
+                                    formControlName="introduction"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['introduction'].hasError('required')">
                                     La introducción es requerida
@@ -240,11 +196,11 @@
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Metodología Detallada</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Metodología Detallada"
-                                formControlName="detailed_methodology"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Metodología Detallada"
+                                    formControlName="detailed_methodology"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['detailed_methodology'].hasError('required')">
                                     La metodología es requerida
@@ -257,11 +213,11 @@
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Hallazgos</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Hallazgos"
-                                formControlName="findings"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Hallazgos"
+                                    formControlName="findings"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['findings'].hasError('required')">
                                     El hallazgo es requerido
@@ -270,14 +226,15 @@
                                     Máximo de 50 caracteres.
                                 </mat-error>
                             </mat-form-field>
+
                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Conclusiones</mat-label>
                                 <textarea
-                                matInput
-                                placeholder="Conclusiones"
-                                formControlName="conclusions"
-                                required="true"
-                                rows="3"
+                                    matInput
+                                    placeholder="Conclusiones"
+                                    formControlName="conclusions"
+                                    required="true"
+                                    rows="4"
                                 ></textarea>
                                 <mat-error *ngIf="reportFormGroup.controls['conclusions'].hasError('required')">
                                     La conclusión es requerida
@@ -287,49 +244,79 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <app-image-upload
-                                [images]="selectedImages"
-                                (imagesChange)="onImagesChange($event)"
-                                [maxImages]="10"
-                                [maxSizeInMB]="5">
-                            </app-image-upload>
-
-                        </div>
-                        @if (this.edit) {
-                            <mat-dialog-actions align="end">
-                            <div class="row m-t-5">
-                                <div class="ml-auto">
-                                    <button mat-button
-                                    class="m-r-10 bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="changeSection('summary')"
-                                    >
-                                    <mat-icon>arrow_back</mat-icon> Regresar
-                                    </button>
-                                    <button mat-button
-                                    color="primary"
-                                    mat-flat-button
-                                    (click)="updateReport()"
-                                    >
-                                    Guardar
-                                    </button>
-                                    <button mat-button
-                                    class=" bg-error m-l-8"
-                                    mat-flat-button
-                                    (click)="cancel()"
-                                    >
-                                    Cancelar
-                                    </button>
-                                </div>
+                            <div class="image-upload-container">
+                                @if((this.selectedReport.images!=null && !this.edit) || this.edit){
+                                    <app-image-upload
+                                        [images]="selectedImages"
+                                        (imagesChange)="onImagesChange($event)"
+                                        [maxImages]="10"
+                                        [maxSizeInMB]="5"
+                                        [show_uploadImageIcon]="!this.edit?false:true">
+                                    </app-image-upload>
+                                }
                             </div>
-                           </mat-dialog-actions>
+                        </div>
                         }
-                    </div>
-                    }
+                    </form>
+                </div>
 
-                </form>
+                <!-- Botones de acción fuera del área de scroll -->
+                @if (this.edit) {
+                <div class="action-buttons">
+                    <mat-dialog-actions align="end">
+                        <div class="d-flex justify-content-end gap-2">
+                            @if (activeSection === 'summary' || activeSection === 'conclusions') {
+                                <button
+                                    mat-flat-button
+                                    class="bg-error"
+                                    (click)="changeSection(activeSection === 'summary' ? 'title' : 'summary')"
+                                >
+                                    <mat-icon>arrow_back</mat-icon> Regresar
+                                </button>
+                            }
+
+                            <button
+                                mat-flat-button
+                                class="bg-error"
+                                (click)="cancel()"
+                            >
+                                Cancelar
+                            </button>
+
+                            @if (activeSection === 'title') {
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="save()"
+                                >
+                                    Siguiente <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            }
+
+                            @if (activeSection === 'summary') {
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="updateReport()"
+                                >
+                                    Siguiente <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            }
+
+                            @if (activeSection === 'conclusions') {
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="updateReport()"
+                                >
+                                    Guardar
+                                </button>
+                            }
+                        </div>
+                    </mat-dialog-actions>
+                </div>
+                }
             </div>
-        </div>
-    }
+        }
     </div>
 </mat-drawer-container>

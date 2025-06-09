@@ -92,7 +92,6 @@ export class ReportsComponent {
     data.actionEdit=false;
     const ref = this.dialog.open(EditReportComponent, {
       data: data || null,
-      // disableClose: true
     });
 
     ref.afterClosed().subscribe(() => {

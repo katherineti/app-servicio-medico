@@ -1,16 +1,19 @@
 <div class="image-upload-section">
   <div class="image-upload-header">
     <h3>Imágenes adjuntas</h3>
-    <button 
-      type="button" 
-      mat-mini-fab 
-      color="primary" 
-      (click)="openFileSelector()" 
-      [disabled]="images.length >= maxImages"
-      matTooltip="Añadir imágenes (máx. {{maxImages}}, {{maxSizeInMB}}MB c/u)"
-    >
-      <mat-icon>add_photo_alternate</mat-icon>
-    </button>
+    <!-- show_uploadImageIcon su valor cambia a false cuando esté en modo Ver  -->
+    @if (show_uploadImageIcon) {
+      <button 
+        type="button" 
+        mat-mini-fab 
+        color="primary" 
+        (click)="openFileSelector()" 
+        [disabled]="images.length >= maxImages"
+        matTooltip="Añadir imágenes (máx. {{maxImages}}, {{maxSizeInMB}}MB c/u)"
+      >
+        <mat-icon>add_photo_alternate</mat-icon>
+      </button>
+    }
   </div>
   
   <div class="image-preview-container" *ngIf="images.length > 0">
@@ -18,16 +21,18 @@
       <div class="image-preview">
         <img [src]="img.preview" alt="Vista previa">
       </div>
-      <button 
-        type="button" 
-        mat-icon-button 
-        color="warn" 
-        class="remove-image-btn"
-        (click)="removeImage(i)"
-        matTooltip="Eliminar imagen"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
+       @if (show_uploadImageIcon) {
+         <button 
+           type="button" 
+           mat-icon-button 
+           color="warn" 
+           class="remove-image-btn"
+           (click)="removeImage(i)"
+           matTooltip="Eliminar imagen"
+         >
+           <mat-icon>close</mat-icon>
+         </button>
+       }
     </div>
   </div>
   

@@ -24,25 +24,26 @@ const REPORT_STATUS_FINALIZADO = 1;
   styleUrl: './edit-report.component.scss'
 })
 export class EditReportComponent {
-  readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
+  token!: TokenAuth;
+  reportFormGroup!: FormGroup;
+  selectedReport!: IReport;
+  reportCreated_id?:number;
+  user_name = '';
+  activeSection: "title" | "summary" | "conclusions" = "title";
+  selectedImages: ImageFile[] = []
+  edit:boolean | undefined;
+  hiddenButtonCreation=false;
   showFiller = false;
   isSidenavOpen = true; // Establece en true para que el sidenav esté abierto al inicio
-  reportFormGroup!: FormGroup;
+  activeConclutions = false;
   disableButton: boolean = false;
+  
+  private API_URL = API_URL; 
+  private authService = inject(AuthService)
   private formBuilder = inject(FormBuilder);
   private reportsService = inject(ReportsService);
-  token!: TokenAuth;
-  authService = inject(AuthService)
-  user_name = '';
-  reportCreated_id?:number;
-  activeSection: "title" | "summary" | "conclusions" = "title";
-  hiddenButtonCreation=false;
-  selectedImages: ImageFile[] = []
- 
-  selectedReport!: IReport;
-  edit:boolean | undefined;
-  private API_URL = API_URL; 
   private sanitizer = inject(DomSanitizer);
+  readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: IReport){
     this.buildAddReportForm();

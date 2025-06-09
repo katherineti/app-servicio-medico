@@ -77,7 +77,7 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" class="example-full-width">
+<!--                             <mat-form-field appearance="outline" class="example-full-width">
                                 <mat-label>Auditor</mat-label>
                                 <mat-select
                                     placeholder="Auditor"
@@ -98,7 +98,71 @@
                                 <mat-error *ngIf="reportFormGroup.get('auditor')?.hasError('maxlength')">
                                     Máximo de 50 caracteres.
                                 </mat-error>
-                            </mat-form-field>
+                            </mat-form-field> -->
+                          <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Auditor principal</mat-label>
+                            
+                            <input type="text"
+                                matInput
+                                placeholder="Buscar auditor principal..."
+                                formControlName="auditor"
+                                [matAutocomplete]="auto"
+                                required="true"
+                                readonly="true" 
+                            />
+
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"> </mat-autocomplete>
+
+                            <mat-error *ngIf="reportFormGroup.controls['auditor'].hasError('required')">
+                                El auditor es requerido
+                            </mat-error>
+                            <mat-error *ngIf="reportFormGroup.get('auditor')?.hasError('maxlength')">
+                                Máximo de 50 caracteres.
+                            </mat-error>
+
+                            <button 
+                            mat-icon-button 
+                            matSuffix 
+                            type="button" 
+                             (click)="toggleAdditionalAuditorForm()"
+                            matTooltip="Agregar auditores"
+                        >
+                            <mat-icon>person_add</mat-icon> 
+                        </button>
+                        </mat-form-field>
+
+                        <!--  Auditores adicionales -->
+                        @if (showAddAuditorForm) {
+                            <app-auditor-multi-select class="example-full-width"
+                                formControlName="additionalAuditors"
+                                label="Auditores adicionales"
+                                placeholder="Buscar auditores adicionales..."
+                                [disabledFieldAdditionalAuditors]="!this.edit? true : false"
+                                (auditorsChange)="onAdditionalAuditorsChange($event)"
+                               >
+                            </app-auditor-multi-select>
+    
+                            <!-- Auditores adicionales seleccionados -->
+<!--                             @if (selectedAdditionalAuditors.length > 0) {
+                            <div class="selected-auditors-summary">
+                                <h4>Auditores Adicionales Seleccionados ({{selectedAdditionalAuditors.length}}):</h4>
+                                <br>
+                                <div class="auditor-chips">
+                                    @for (auditor of selectedAdditionalAuditors; track auditor.id) {
+                                    <mat-chip class="auditor-chip p-y-20">
+                                        <mat-icon matChipAvatar>person</mat-icon>
+                                        {{auditor.name | titlecase}}
+                                        <!-- <span class="auditor-email-chip">{{auditor.email}}</span> - ->
+                                        <br><span class="auditor-email-chip">{{auditor.email}}</span>
+                                    </mat-chip>
+                                    }
+                                </div>
+                            </div>
+                            }
+                            <br> <br> -->
+                        }
+
+
                         </div>
                         }
 

@@ -7,9 +7,9 @@ import type { MatChipInputEvent } from "@angular/material/chips"
 import { MaterialModule } from "../../../material/material.module"
 import { CommonModule } from "@angular/common"
 import { AuditoresService } from "../../services/auditores.service"
-import { TokenAuth } from "../../../authentication/models/token-auth.model"
+import type { TokenAuth } from "../../../authentication/models/token-auth.model"
 import { AuthService } from "../../../services/auth.service"
-import { Auditor } from "../../interfaces/reports.interface"
+import type { Auditor } from "../../interfaces/reports.interface"
 
 @Component({
   selector: "app-auditor-multi-select",
@@ -29,18 +29,18 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
   @Input() placeholder = "Buscar auditores..."
   @Input() required = false
   @Input() disabled = false
+  @Input() disabledFieldAdditionalAuditors = false
   @Output() auditorsChange = new EventEmitter<Auditor[]>()
 
-  
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  auditorCtrl = new FormControl("");
-  filteredAuditors: Observable<Auditor[]>;
-  selectedAuditors: Auditor[] = [];
-  
-  authService = inject(AuthService);
-  private auditoresService = inject(AuditoresService);
-  private token!: TokenAuth;
-  
+  separatorKeysCodes: number[] = [ENTER, COMMA]
+  auditorCtrl = new FormControl("")
+  filteredAuditors: Observable<Auditor[]>
+  selectedAuditors: Auditor[] = []
+
+  authService = inject(AuthService)
+  private auditoresService = inject(AuditoresService)
+  private token!: TokenAuth
+
   // Inicializar como array vacío - se llenará desde el servicio
   allAuditors: Auditor[] = []
 
@@ -54,56 +54,44 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
       startWith(null),
       map((auditor: string | null) => (auditor ? this._filter(auditor) : this.getAvailableAuditors())),
     )
+
+    if (this.disabledFieldAdditionalAuditors) {     this.auditorCtrl.disable()    } 
   }
 
   async ngOnInit(): Promise<void> {
-    this.token = this.authService.getTokenInfo(await this.authService.getPlainToken());
-    this.loadAuditors();
+    this.token = this.authService.getTokenInfo(await this.authService.getPlainToken())
+    this.loadAuditors()
   }
 
-  private loadAuditors(): void {
+  // Modificar loadAuditors para devolver una promesa
+  private loadAuditors(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.auditoresService.getAllActives().subscribe({
+        next: (data: any) => {
+          let auditors = data.list
 
-    this.auditoresService.getAllActives().subscribe({
-      next: (data: any) => {
-        let auditors = data.list;
-        
-        // Remueve el usuario en sesion del listado de auditores y admin
-        if (this.token && this.token.sub) {
-          auditors = auditors.filter((auditor: Auditor) => auditor.id !== this.token.sub)
-        }
-        
-        console.log("Auditores cargados:", auditors);
-        this.allAuditors = auditors;
+          // Remueve el usuario en sesion del listado de auditores y admin
+          if (this.token && this.token.sub) {
+            auditors = auditors.filter((auditor: Auditor) => auditor.id !== this.token.sub)
+          }
 
-        // Reinicializar filteredAuditors después de cargar los datos
-        this.initializeFilteredAuditors();
-      },
-      error: (error) => {
-        console.error("Error al cargar auditores:", error)
-        this.allAuditors = [] // Mantener array vacío en caso de error
-      },
+          console.log("Auditores cargados:", auditors)
+          this.allAuditors = auditors
+
+          // Reinicializar filteredAuditors después de cargar los datos
+          this.initializeFilteredAuditors()
+          resolve()
+        },
+        error: (error) => {
+          console.error("Error al cargar auditores:", error)
+          this.allAuditors = [] // Mantener array vacío en caso de error
+          resolve()
+        },
+      })
     })
   }
-/*   private loadAuditors(): void {
-    const params: any = {
-      name: "", 
-    }
 
-    this.auditoresService.getAllActives(params).subscribe({
-      next: (data: any) => {
-        console.log("Auditores cargados:", data)
-        this.allAuditors = data.list; 
-
-        // Reinicializar filteredAuditors después de cargar los datos
-        this.initializeFilteredAuditors()
-      },
-      error: (error) => {
-        console.error("Error al cargar auditores:", error)
-        this.allAuditors = [] // Mantener array vacío en caso de error
-      },
-    })
-  } */
-    // Método para reinicializar el observable de filtros
+  // Método para reinicializar el observable de filtros
   private initializeFilteredAuditors(): void {
     this.filteredAuditors = this.auditorCtrl.valueChanges.pipe(
       startWith(null),
@@ -111,10 +99,19 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
     )
   }
 
-  // ControlValueAccessor methods
+  // Modifica el método `writeValue` para manejar correctamente los valores preseleccionados:
   writeValue(value: number[]): void {
     if (value && Array.isArray(value)) {
-      this.selectedAuditors = this.allAuditors.filter((auditor) => value.includes(auditor.id))
+      // Si no hay auditores cargados aún, esperar a que se carguen
+      if (this.allAuditors.length === 0) {
+        this.loadAuditors().then(() => {
+          this.selectedAuditors = this.allAuditors.filter((auditor) => value.includes(auditor.id))
+          this.refreshFilteredAuditors()
+        })
+      } else {
+        this.selectedAuditors = this.allAuditors.filter((auditor) => value.includes(auditor.id))
+        this.refreshFilteredAuditors()
+      }
     } else {
       this.selectedAuditors = []
     }
@@ -129,6 +126,7 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
   }
 
   add(event: MatChipInputEvent): void {
+    console.log("event add ", event)
     const value = (event.value || "").trim()
 
     const foundAuditor = this.allAuditors.find(
@@ -152,7 +150,7 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
     // Forzar actualización del filtro para que el auditor eliminado vuelva a aparecer
     this.refreshFilteredAuditors()
   }
-    // Método para forzar la actualización del observable filteredAuditors
+  // Método para forzar la actualización del observable filteredAuditors
   private refreshFilteredAuditors(): void {
     // Reinicializar el observable para reflejar los cambios en selectedAuditors
     this.initializeFilteredAuditors()
@@ -174,7 +172,7 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
   }
 
   private _filter(value: any): Auditor[] {
-    console.log("value " , value)
+    console.log("value ", value)
     const filterValue = value.name.toLowerCase()
     return this.getAvailableAuditors().filter(
       (auditor) =>
@@ -191,5 +189,4 @@ export class AuditorMultiSelectComponent implements OnInit, ControlValueAccessor
   getSelectedAuditors(): Auditor[] {
     return this.selectedAuditors
   }
-
 }

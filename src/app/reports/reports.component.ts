@@ -99,8 +99,6 @@ export class ReportsComponent {
     });
   }
 
- 
-
   openDialogEdit(data?: any): void {
     data.actionEdit=true;
     const ref = this.dialog.open(EditReportComponent, {

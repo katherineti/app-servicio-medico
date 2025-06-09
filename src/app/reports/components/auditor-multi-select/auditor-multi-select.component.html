@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" class="example-full-width">
+<mat-form-field appearance="outline" class="example-full-width" [class.disabled-form-field]="disabledFieldAdditionalAuditors">
   <mat-label>{{label}}</mat-label>
   
   <mat-chip-grid #chipGrid [attr.aria-label]="label">
@@ -12,13 +12,17 @@
         <!-- <span class="auditor-email">{{auditor.email}}</span> -->
       </div>
       
-      <button matChipRemove [attr.aria-label]="'remove ' + auditor.name">
+      <button 
+      matChipRemove 
+      [attr.aria-label]="'remove ' + auditor.name"
+      [disabled]="disabledFieldAdditionalAuditors">
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip-row>
   </mat-chip-grid>
 
   <input
+    [disabled]="disabledFieldAdditionalAuditors"
     [placeholder]="placeholder"
     #auditorInput
     [formControl]="auditorCtrl"
@@ -32,7 +36,8 @@
     (optionSelected)="selected($event.option.value)"
     [displayWith]="null">
     
-    <mat-option 
+    <mat-option  
+      [disabled]="disabledFieldAdditionalAuditors"
       *ngFor="let auditor of filteredAuditors | async" 
       [value]="auditor"
       class="auditor-option">

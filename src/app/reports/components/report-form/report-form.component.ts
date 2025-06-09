@@ -10,7 +10,7 @@ import { type ImageFile, ImageUploadComponent } from "../../../image-upload/imag
 import type { Auditor, ICreateReport, IReport } from "../../interfaces/reports.interface"
 import { ReportsService } from "../../services/reports.service"
 import { AuditorMultiSelectComponent} from "../auditor-multi-select/auditor-multi-select.component"
-interface AuditorOption {
+export interface AuditorOption {
   value: any // El valor real (this.token.sub)
   displayText: string // El texto a mostrar como primera opción (Nombre del usuario activo)
 }

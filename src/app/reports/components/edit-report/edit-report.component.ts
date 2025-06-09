@@ -1,75 +1,95 @@
-import { Component, Inject, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
-import { toast } from 'ngx-sonner';
-import { MaterialModule } from '../../../material/material.module';
-import { ImageFile, ImageUploadComponent } from '../../../image-upload/image-upload.component';
-import { ReportsService } from '../../services/reports.service';
-import { AuthService } from '../../../services/auth.service';
-import { TokenAuth } from '../../../authentication/models/token-auth.model';
-import { ICreateReport, IReport } from '../../interfaces/reports.interface';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { EditMedicalSuppliesComponent } from '../../../edit-medical-supplies/edit-medical-supplies.component';
-import { DomSanitizer } from '@angular/platform-browser';
-import { API_URL } from '../../../../../environment';
+import { Component, inject, Inject } from "@angular/core"
+import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
+import { CommonModule, TitleCasePipe } from "@angular/common"
+import { firstValueFrom } from "rxjs"
+import { toast } from "ngx-sonner"
+import { MaterialModule } from "../../../material/material.module"
+import { ImageFile, ImageUploadComponent } from "../../../image-upload/image-upload.component"
+import { ReportsService } from "../../services/reports.service"
+import { AuthService } from "../../../services/auth.service"
+import { TokenAuth } from "../../../authentication/models/token-auth.model"
+import type { Auditor, ICreateReport, IReport } from "../../interfaces/reports.interface"
+import { MAT_DIALOG_DATA } from "@angular/material/dialog"
+import { DomSanitizer } from "@angular/platform-browser"
+import { API_URL } from "../../../../../environment"
+import type { AuditorOption } from "../report-form/report-form.component"
+import { AuditorMultiSelectComponent } from "../auditor-multi-select/auditor-multi-select.component"
+import { AuditoresService } from "../../services/auditores.service"
 
-const REPORT_STATUS_ENPROCESO = 2;
-const REPORT_STATUS_FINALIZADO = 1;
+const REPORT_STATUS_ENPROCESO = 2
+const REPORT_STATUS_FINALIZADO = 1
 
 @Component({
-  selector: 'app-edit-report',
-  imports: [CommonModule,MaterialModule, ReactiveFormsModule, ImageUploadComponent],
-  templateUrl: './edit-report.component.html',
-  styleUrl: './edit-report.component.scss'
+  selector: "app-edit-report",
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, ImageUploadComponent, AuditorMultiSelectComponent],
+  templateUrl: "./edit-report.component.html",
+  styleUrl: "./edit-report.component.scss",
 })
 export class EditReportComponent {
-  token!: TokenAuth;
-  reportFormGroup!: FormGroup;
-  selectedReport!: IReport;
-  reportCreated_id?:number;
-  user_name = '';
-  activeSection: "title" | "summary" | "conclusions" = "title";
+  reportFormGroup!: FormGroup
+  token!: TokenAuth
+  reportCreated_id?: number
+  user_name = ""
+  displayText = ""
+  activeSection: "title" | "summary" | "conclusions" = "title"
   selectedImages: ImageFile[] = []
-  edit:boolean | undefined;
-  hiddenButtonCreation=false;
-  showFiller = false;
-  isSidenavOpen = true; // Establece en true para que el sidenav esté abierto al inicio
-  activeConclutions = false;
-  disableButton: boolean = false;
+  selectedAdditionalAuditors: Auditor[] = []
+  showFiller = false
+  isSidenavOpen = true
+  disableButton = false
+  hiddenButtonCreation = false
+  activeConclutions = false
+  showNewFamilyMemberForm = false
+  showAddAuditorForm = false
+
+  selectedReport!: IReport
+  edit: boolean | undefined
   
-  private API_URL = API_URL; 
-  private authService = inject(AuthService)
+  private onChange = (value: any) => {}
+  private onTouched = () => {}
+  
+  private API_URL = API_URL
+  private titleCasePipe = new TitleCasePipe()
   private formBuilder = inject(FormBuilder);
   private reportsService = inject(ReportsService);
-  private sanitizer = inject(DomSanitizer);
-  readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
+  private authService = inject(AuthService);
+  private sanitizer= inject( DomSanitizer)
+  private auditoresService= inject(AuditoresService);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: IReport){
     this.buildAddReportForm();
     this.selectedImages = [];
     this.reportCreated_id = 0;
   }
-  
-  async ngOnInit(): Promise<void> {
-    this.token = this.authService.getTokenInfo(await this.authService.getPlainToken());
-    if (this.token.sub) {
-      this.user_name = this.token.name || this.token.email;
-      this.getAuditorInSesion();
-    }
-    this.updateValidators(); 
 
-    this.selectedReport = this.data;   console.log("selectedReport ", this.selectedReport );
-    this.edit = this.data.actionEdit; 
-    if (this.data) {
-      this.setForm();
+  async ngOnInit(): Promise<void> {
+    this.token = this.authService.getTokenInfo(await this.authService.getPlainToken())
+    if (this.token.sub) {
+      this.user_name = this.token.name || this.token.email
+      this.displayText = this.user_name
+      this.onOptionSelected({ value: this.token.sub, displayText: this.user_name })
     }
+    this.updateValidators()
+
+    this.selectedReport = this.data
+    console.log("selectedReport ", this.selectedReport)
+    this.edit = this.data.actionEdit
+    if (this.data) {
+      this.setForm()
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn
   }
 
   // Método para cambiar la sección activa
   changeSection(section: "title" | "summary" | "conclusions"): void {
-    this.activeSection = section;
-    this.updateValidators();
+    this.activeSection = section
+    this.updateValidators()
   }
 
   // Método para actualizar los validadores según la sección activa
@@ -79,6 +99,7 @@ export class EditReportComponent {
         title: [Validators.required, Validators.maxLength(50)],
         receiver: [Validators.required, Validators.maxLength(50)],
         auditor: [Validators.required, Validators.maxLength(50)],
+        additionalAuditors: [],
       },
       summary: {
         summary_objective: [Validators.required, Validators.maxLength(50)],
@@ -92,221 +113,311 @@ export class EditReportComponent {
         findings: [Validators.required, Validators.maxLength(50)],
         conclusions: [Validators.required, Validators.maxLength(50)],
       },
-    };
+    }
 
-    Object.keys(this.reportFormGroup.controls).forEach(controlName => {
-      const validators = validatorsBySection[this.activeSection]?.[controlName] || [Validators.maxLength(50)];
-      this.reportFormGroup.get(controlName)?.setValidators(validators);
-      this.reportFormGroup.get(controlName)?.updateValueAndValidity();
-    });
-  }
-  
-  getAuditorInSesion(): void {
-    this.reportFormGroup.get('auditor')?.setValue(this.token.sub);
+    Object.keys(this.reportFormGroup.controls).forEach((controlName) => {
+      const validators = validatorsBySection[this.activeSection]?.[controlName] || [Validators.maxLength(50)]
+      this.reportFormGroup.get(controlName)?.setValidators(validators)
+      this.reportFormGroup.get(controlName)?.updateValueAndValidity()
+    })
   }
 
   buildAddReportForm() {
     this.reportFormGroup = this.formBuilder.group({
-      title: ['', [Validators.maxLength(50)]],
-      receiver: ['', [Validators.maxLength(50)]],
-      auditor: ['', [Validators.maxLength(50)]],
-      summary_objective: ['', [Validators.maxLength(50)]],
-      summary_scope: ['', [Validators.maxLength(50)]],
-      summary_methodology: ['', [Validators.maxLength(50)]],
-      summary_conclusionAndObservation: ['', [Validators.maxLength(50)]],
-      introduction: ['', [Validators.maxLength(50)]],
-      detailed_methodology: ['', [Validators.maxLength(50)]],
-      findings: ['', [Validators.maxLength(50)]],
-      conclusions: ['', [Validators.maxLength(50)]],
+      title: ["", [Validators.maxLength(50)]],
+      receiver: ["", [Validators.maxLength(50)]],
+      auditor: ["", [Validators.maxLength(50)]],
+      additionalAuditors: [[]],
+      summary_objective: ["", [Validators.maxLength(50)]],
+      summary_scope: ["", [Validators.maxLength(50)]],
+      summary_methodology: ["", [Validators.maxLength(50)]],
+      summary_conclusionAndObservation: ["", [Validators.maxLength(50)]],
+      introduction: ["", [Validators.maxLength(50)]],
+      detailed_methodology: ["", [Validators.maxLength(50)]],
+      findings: ["", [Validators.maxLength(50)]],
+      conclusions: ["", [Validators.maxLength(50)]],
       images: [null],
-    });
+    })
   }
 
   setForm() {
-    if(!this.edit){
-      this.reportFormGroup.controls['title'].disable();
-      this.reportFormGroup.controls['receiver'].disable();
-      // this.reportFormGroup.controls['auditor'].disable();
-      this.reportFormGroup.controls['summary_objective'].disable();
-      this.reportFormGroup.controls['summary_scope'].disable();
-      this.reportFormGroup.controls['summary_methodology'].disable();
-      this.reportFormGroup.controls['summary_conclusionAndObservation'].disable();
+    if (!this.edit) {
+      this.reportFormGroup.controls["title"].disable()
+      this.reportFormGroup.controls["receiver"].disable()
+      this.reportFormGroup.controls["summary_objective"].disable()
+      this.reportFormGroup.controls["summary_scope"].disable()
+      this.reportFormGroup.controls["summary_methodology"].disable()
+      this.reportFormGroup.controls["summary_conclusionAndObservation"].disable()
 
-      this.reportFormGroup.controls['introduction'].disable();
-      this.reportFormGroup.controls['detailed_methodology'].disable();
-      this.reportFormGroup.controls['findings'].disable();
-      this.reportFormGroup.controls['conclusions'].disable();
-      // this.reportFormGroup.controls['images'].disable();
+      this.reportFormGroup.controls["introduction"].disable()
+      this.reportFormGroup.controls["detailed_methodology"].disable()
+      this.reportFormGroup.controls["findings"].disable()
+      this.reportFormGroup.controls["conclusions"].disable()
+      // this.reportFormGroup.controls["additionalAuditors"].disable()
     }
-    this.reportFormGroup.controls['auditor'].disable();
+    this.reportFormGroup.controls["auditor"].disable()
 
     this.reportFormGroup.patchValue({
       title: this.selectedReport?.title,
       receiver: this.selectedReport?.receiver,
-      auditor: this.selectedReport?.auditorId,
+      auditor: this.titleCasePipe.transform(this.displayText),
       summary_objective: this.selectedReport?.summary_objective,
       summary_scope: this.selectedReport?.summary_scope,
       summary_methodology: this.selectedReport?.summary_methodology,
       summary_conclusionAndObservation: this.selectedReport?.summary_conclusionAndObservation,
       introduction: this.selectedReport?.introduction,
-      detailed_methodology:this.selectedReport?.detailed_methodology,
+      detailed_methodology: this.selectedReport?.detailed_methodology,
       findings: this.selectedReport?.findings,
-      conclusions:this.selectedReport?.conclusions,
-      });
+      conclusions: this.selectedReport?.conclusions,
+    })
 
-      this.reportCreated_id = this.data?.id;
+    this.reportCreated_id = this.data?.id
 
-   // Handle images from the backend
+    // Cargar auditores adicionales preseleccionados
+    this.loadAdditionalAuditors()
+
+    // Handle images from the backend
     if (this.selectedReport.images && this.selectedReport.images.length > 0) {
-      this.selectedImages = this.selectedReport.images.map(imagePath => {
-        const fullUrl = this.normalizeUrl(this.API_URL, imagePath);
-        const safeUrl = this.sanitizer.bypassSecurityTrustUrl(fullUrl);
+      this.selectedImages = this.selectedReport.images.map((imagePath) => {
+        const fullUrl = this.normalizeUrl(this.API_URL, imagePath)
+        const safeUrl = this.sanitizer.bypassSecurityTrustUrl(fullUrl)
         return {
-          file: null, // No original File object from backend
+          file: null,
           preview: safeUrl,
-          isRemote: true, // Mark it as a remote image
-          remoteUrl: imagePath // Store the original backend path
-        } as unknown as ImageFile;
-      });
-      console.log("Images loaded from backend:", this.selectedImages);
+          isRemote: true,
+          remoteUrl: imagePath,
+        } as unknown as ImageFile
+      })
+      console.log("Images loaded from backend:", this.selectedImages)
     } else {
-      this.selectedImages = []; // Ensure it's empty if no images from DB
+      this.selectedImages = []
     }
   }
 
+  // Nuevo método para cargar auditores adicionales
+  private loadAdditionalAuditors(): void {
+    if (this.selectedReport?.additionalAuditorIds && this.selectedReport.additionalAuditorIds.length > 0) {
+      // Mostrar el formulario de auditores adicionales
+      this.showAddAuditorForm = true
+
+      // Obtener los auditores completos desde el servicio
+      this.auditoresService.getAllActives().subscribe({
+        next: (data: any) => {
+          const auditors = data.list
+
+          // Filtrar los auditores que están en additionalAuditorIds
+          this.selectedAdditionalAuditors = auditors.filter((auditor: Auditor) =>
+            this.selectedReport.additionalAuditorIds?.includes(auditor.id),
+          )
+
+          // Actualizar el formulario y emitir el cambio
+          this.reportFormGroup.get("additionalAuditors")?.setValue(this.selectedReport.additionalAuditorIds)
+          this.onAdditionalAuditorsChange(this.selectedAdditionalAuditors)
+
+          console.log("Auditores adicionales cargados:", this.selectedAdditionalAuditors)
+        },
+        error: (error) => {
+          console.error("Error al cargar auditores adicionales:", error)
+        },
+      })
+    }
+  }
+
+  // Nuevo método para manejar cambios en auditores adicionales
+  onAdditionalAuditorsChange(auditors: Auditor[]): void {
+    console.log("auditors ", auditors)
+    this.selectedAdditionalAuditors = auditors
+    const auditorIds = auditors.map((auditor) => auditor.id)
+    console.log("auditorIds ", auditorIds)
+
+    this.reportFormGroup.get("additionalAuditors")?.setValue(auditorIds)
+  }
   cancel() {
-    this.reportFormGroup.reset();
-    this.getAuditorInSesion();
+    this.reportFormGroup.reset()
+    // this.getAuditorInSesion();
+    this.selectedAdditionalAuditors = []
   }
 
   // Método para manejar cambios en las imágenes desde el componente hijo
   onImagesChange(images: ImageFile[]) {
-    this.selectedImages = images;
+    this.selectedImages = images
   }
 
   async save(): Promise<void> {
-    this.disableButton = true;
+    this.disableButton = true
+    this.activeConclutions = false
 
     if (this.activeSection === "title" && this.reportFormGroup.invalid) {
-      this.disableButton = false;
-      toast.error("Por favor complete todos los campos requeridos en la sección título");
-      return;
+      this.disableButton = false
+      toast.error("Por favor complete todos los campos requeridos en la sección título")
+      return
     }
 
     const data: ICreateReport = {
       title: this.reportFormGroup.value.title,
       receiver: this.reportFormGroup.value.receiver,
-      auditorId: this.reportFormGroup.value.auditor
-    };
+      // auditorId: this.reportFormGroup.value.auditor,
+      auditorId: this.token.sub,
+      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], // Incluir auditores adicionales
+    }
 
     try {
-      const isExistingReport = this.reportCreated_id !== undefined && this.reportCreated_id > 0;
+      const isExistingReport = this.reportCreated_id !== undefined && this.reportCreated_id > 0
       if (isExistingReport) {
-        data.id = this.reportCreated_id;
-        const reportCreated = await firstValueFrom(this.reportsService.create(data));
-        // this.reportCreated_id = reportCreated?.id;
-        this.hiddenButtonCreation = true;
-        this.disableButton = false;
-        toast.success('Guardado');
-        this.changeSection("summary");
-      }else{
-        toast.success('El id del reporte no existe');
+        data.id = this.reportCreated_id
       }
-
+      console.log("creando reporte  - paso 1 ", data)
+      const reportCreated = await firstValueFrom(this.reportsService.create(data))
+      this.reportCreated_id = reportCreated?.id
+      this.hiddenButtonCreation = true
+      this.disableButton = false
+      toast.success("Guardado")
+      this.changeSection("summary")
     } catch (error: any) {
-      this.disableButton = false;
-      console.error('Error al actualizar el título del reporte:', error);
-      toast.error(error?.message || 'Error al guardar el título del reporte.');
+      this.disableButton = false
+      console.error("Error al crear/actualizar el título del reporte:", error)
+      toast.error(error)
     }
   }
 
   async updateReport(): Promise<void> {
-    this.disableButton = true;
+    this.disableButton = true
 
     if (this.activeSection === "summary" && this.reportFormGroup.invalid) {
-      this.disableButton = false;
-      toast.error("Por favor complete todos los campos requeridos en la sección resumen");
-      return;
+      this.disableButton = false
+      toast.error("Por favor complete todos los campos requeridos en la sección resumen")
+      return
     }
 
     if (this.activeSection === "conclusions" && this.reportFormGroup.invalid) {
-      this.disableButton = false;
-      toast.error("Por favor complete todos los campos requeridos en la sección conclusiones");
-      return;
+      this.disableButton = false
+      toast.error("Por favor complete todos los campos requeridos en la sección conclusiones")
+      return
     }
 
     const reportData: IReport = {
       ...this.reportFormGroup.value,
-      auditorId: this.reportFormGroup.value.auditor,
-      statusId: this.activeSection === 'conclusions' ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
-    };
+      // auditorId: this.reportFormGroup.value.auditor,
+      auditorId: this.token.sub,
+      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], // Incluir auditores adicionales
+      statusId: this.activeSection === "conclusions" ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
+    }
 
     try {
-      let result: IReport | any;
+      let result: IReport | any
       if (this.selectedImages.length > 0 && this.reportCreated_id) {
-        const formData = new FormData();
+        const formData = new FormData()
         Object.keys(reportData).forEach((key) => {
-          formData.append(key, reportData[key as keyof IReport] as string);
-        });
-        this.selectedImages.forEach(img => {
-          formData.append('images', img.file);
-        });
-        result = await firstValueFrom(this.reportsService.updateWithImages(formData, this.reportCreated_id));
-          console.log("enviando data:");
-          formData.forEach((value, key) => {
-            console.log(key, value);
-          });
-
-      } else  {
+          const value = reportData[key as keyof IReport]
+          if (key === "additionalAuditorIds" && Array.isArray(value)) {
+            // Manejar array de IDs de auditores adicionales
+            value.forEach((id, index) => {
+              formData.append(`additionalAuditorIds[${index}]`, id.toString())
+            })
+          } else {
+            formData.append(key, value as string)
+          }
+        })
+        this.selectedImages.forEach((img) => {
+          formData.append("images", img.file)
+        })
+        result = await firstValueFrom(this.reportsService.updateWithImages(formData, this.reportCreated_id))
+        console.log("enviando data:")
+        this.activeConclutions = true
+        formData.forEach((value, key) => {
+          console.log(key, value)
+        })
+      } else {
         const dataToUpdate = {
           ...this.reportFormGroup.value,
-          auditorId: this.reportFormGroup.value.auditor,
-          statusId: this.activeSection === 'conclusions' ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
-        };
-        console.log("this.reportCreated_id " , this.reportCreated_id)
-        console.log("dataToUpdate " , dataToUpdate)
-        delete dataToUpdate.images;
-        result = await firstValueFrom(this.reportsService.update(dataToUpdate, this.reportCreated_id));
-        console.log("enviando data: ", dataToUpdate);
+          // auditorId: this.reportFormGroup.value.auditor,
+          auditorId: this.token.sub,
+          additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [],
+          statusId: this.activeSection === "conclusions" ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
+        }
+        console.log("this.reportCreated_id ", this.reportCreated_id)
+        console.log("dataToUpdate ", dataToUpdate)
+        delete dataToUpdate.images
+        result = await firstValueFrom(this.reportsService.update(dataToUpdate, this.reportCreated_id))
+        this.activeConclutions = true
+        console.log("enviando data: ", dataToUpdate)
       }
-      console.log("resultado update " , result)
-      this.reportCreated_id = result?.id;
-        console.log("this.reportCreated_id: ", this.reportCreated_id);
+      console.log("resultado update ", result)
+      this.reportCreated_id = result?.id
+      console.log("this.reportCreated_id: ", this.reportCreated_id)
 
       if (result?.error) {
-        toast.error(result.error);
-        this.disableButton = false;
-        return;
+        toast.error(result.error)
+        this.disableButton = false
+        this.activeConclutions = false
+        this.showAddAuditorForm = false
+        return
       }
 
-      this.handleSuccessResponse();
+      this.handleSuccessResponse()
     } catch (error: any) {
-      this.disableButton = false;
-      console.error('Error al actualizar el reporte:', error);
-      toast.error(error?.message || 'Error al actualizar el reporte.');
+      this.disableButton = false
+      this.activeConclutions = false
+      this.showAddAuditorForm = false
+
+      console.error("Error al actualizar el reporte:", error)
+      toast.error(error?.message || "Error al actualizar el reporte.")
     }
   }
 
   private handleSuccessResponse() {
-    this.hiddenButtonCreation = true;
-    this.disableButton = false;
-    
+    this.hiddenButtonCreation = true
+    this.disableButton = false
+
     if (this.activeSection === "conclusions") {
-      this.selectedImages = [];
-      this.reportCreated_id = 0; // Resetear el ID después de finalizar
-      toast.success("Reporte finalizado");
-      this.changeSection("title");
-      this.cancel();
+      this.selectedImages = []
+      this.selectedAdditionalAuditors = []
+      this.reportCreated_id = 0
+      toast.success("Reporte finalizado")
+      this.changeSection("title")
+      this.cancel()
+      this.activeConclutions = false
+      this.showAddAuditorForm = false
     } else {
-      toast.success("Sección guardada y avanzando");
-      this.changeSection("conclusions");
+      toast.success("Sección guardada y avanzando")
+      this.changeSection("conclusions")
     }
   }
 
-normalizeUrl(baseUrl: string, path: string): string {
-  const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  const cleanPath = path.startsWith('/') ? path : '/' + path;
+  normalizeUrl(baseUrl: string, path: string): string {
+    const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl
+    const cleanPath = path.startsWith("/") ? path : "/" + path
 
-  return cleanBaseUrl + cleanPath;
-}
+    return cleanBaseUrl + cleanPath
+  }
+
+  // Cuando se selecciona una opción-. Aqui se setea el valor del auditor principal
+  onOptionSelected(option: AuditorOption): void {
+    this.onChange(option.value)
+
+    // Pero mostramos el texto personalizado
+    this.reportFormGroup.patchValue({
+      auditor: this.titleCasePipe.transform(option.displayText),
+    })
+
+    this.onTouched()
+  }
+
+  // Función para mostrar el texto en el input cuando se selecciona una opción
+  displayFn(option: AuditorOption | string): any {
+    // Si es un objeto (nuestra opción), mostramos su displayText
+    if (option && typeof option === "object") {
+      return option
+      // return option.displayText
+    }
+    // Si es un string, lo devolvemos tal cual
+    return option as string
+  }
+
+  toggleAdditionalAuditorForm(): void {
+    this.showAddAuditorForm = !this.showAddAuditorForm
+    if (!this.showAddAuditorForm) {
+      this.reportFormGroup.patchValue({ additionalAuditors: "" })
+    }
+  }
 }

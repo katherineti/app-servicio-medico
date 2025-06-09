@@ -4,7 +4,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RolComponent } from './rol/rol.component';
 import { MedicalSuppliesComponent } from './medical-supplies/medical-supplies.component';
-import { MedicalSuppliesExpiredComponent } from './medical-supplies-expired/medical-supplies-expired.component';
+import { MedicalSuppliesExpiredComponent } from './medical-supplies/medical-supplies-expired/medical-supplies-expired.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './authentication/guards/auth.guard';

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { HeaderTitleComponent } from '../header-title/header-title.component';
+import { HeaderTitleComponent } from '../../header-title/header-title.component';
 import { MedicalSuppliesDatatableComponent } from '../medical-supplies-datatable/medical-supplies-datatable.component';
-import { MaterialModule } from '../material/material.module';
-import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
+import { MaterialModule } from '../../material/material.module';
+import { IProduct } from '../interfaces/medical-supplies.interface';
 
 @Component({
   selector: 'app-medical-supplies-expired',

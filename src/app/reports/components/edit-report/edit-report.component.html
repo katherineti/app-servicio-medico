@@ -126,7 +126,8 @@
                             type="button" 
                              (click)="toggleAdditionalAuditorForm()"
                             matTooltip="Agregar auditores"
-                        >
+                            [disabled]="!this.edit? true : false"
+                            >
                             <mat-icon>person_add</mat-icon> 
                         </button>
                         </mat-form-field>

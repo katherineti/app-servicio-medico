@@ -1,82 +1,64 @@
-import { Component, Inject, inject, signal } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
+import { Component, inject, signal } from '@angular/core';
+import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SwalService } from '../services/swal.service';
-import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
-import { MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { MatDialogRef } from '@angular/material/dialog';
+import { SwalService } from '../../../services/swal.service';
+import { Category, MedicalSuppliesService } from '../../services/medical-supplies.service';
+import { Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
-import { API_URL } from '../../../environment';
-import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
-import { AuthService } from '../services/auth.service';
+import { DateFormatService, MY_DATE_FORMATS } from '../../../services/date-format.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-edit-medical-supplies',
+  selector: 'app-create-medical-supplies',
+  templateUrl: './create-medical-supplies.component.html',
+  styleUrl: './create-medical-supplies.component.scss',
   imports: [CommonModule,MaterialModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './edit-medical-supplies.component.html',
-  styleUrl: './edit-medical-supplies.component.scss',
   providers: [
     { provide: DateAdapter, useClass: NativeDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'es-VE' }, // Configura el locale directamente aquí
   ],
 })
-
-export class EditMedicalSuppliesComponent {
-  readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
-  editProdFormGroup!: FormGroup;
+export class CreateMedicalSuppliesComponent {
+  createProdFormGroup!: FormGroup;
   role:string='';
   imageField?: File;
   disableButton: boolean = false;
-  selectedProduct!: IProduct;
 
   imgBase64 = signal<string | null>(null);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
+
   selectedFile: File | null = null;
 
-  API_URL= API_URL;
-  edit:boolean | undefined;
-  imageError = false;
+  categories: any[] = [];
 
   private authService = inject(AuthService);
+  private categoriesSubscription: Subscription | undefined;
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private dateFormatService= inject(DateFormatService);
 
   constructor( 
-      @Inject(MAT_DIALOG_DATA) 
-      public data: IProduct,
-      private readonly sanitizer: DomSanitizer,
+    public dialogRef: MatDialogRef<CreateMedicalSuppliesComponent>,
     ){
-    this.buildForm();
+    this.buildAddUserForm();
+    this.loadCategories();
+    this.createProdFormGroup.patchValue({
+      status: 1,
+      });
   }
 
-  async ngOnInit() {
+  async ngOnInit(){
     this.role = await this.authService.getRol();
-
-    this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct );
-    this.edit = this.data.actionEdit; 
-
-    if (this.data) {
-      this.setForm();
-    }
   }
 
-  get checkPropId() {
-    if (this.selectedProduct?.id !== null && this.selectedProduct?.id !== undefined) {
-      return true;
-    }
-    console.log("falta id")
-    return false;
-  }
-
-  buildForm() {
-    this.editProdFormGroup = this.formBuilder.group({
+  buildAddUserForm() {
+    this.createProdFormGroup = this.formBuilder.group({
       name: [
         '',
         [
@@ -129,7 +111,8 @@ export class EditMedicalSuppliesComponent {
       expirationDate: [
         '',
         [
-          Validators.required,
+          // Validators.required,
+          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -143,71 +126,18 @@ export class EditMedicalSuppliesComponent {
       ],
       url_image: [null],
     });
+
   }
 
-  setForm() {
-    if(!this.edit){
-      this.editProdFormGroup.controls['name'].disable();
-      this.editProdFormGroup.controls['description'].disable();
-      this.editProdFormGroup.controls['category'].disable();
-      this.editProdFormGroup.controls['type'].disable();
-      this.editProdFormGroup.controls['stock'].disable();
-      this.editProdFormGroup.controls['expirationDate'].disable();
-      this.editProdFormGroup.controls['status'].disable();
-    }
-
-    this.editProdFormGroup.controls['code'].disable();
-
-    const [year, month, day] = this.selectedProduct?.expirationDate.split('-');
-    const date = new Date(+year, +month - 1, +day); // Month is 0-indexe
-
-    this.editProdFormGroup.patchValue({
-      id: this.selectedProduct?.id,
-      name: this.selectedProduct?.name,
-      description: this.selectedProduct?.description,
-      category: this.selectedProduct?.categoryId,
-      type: this.selectedProduct?.type,
-      stock: this.selectedProduct?.stock,
-      code: this.selectedProduct?.code,
-      date_entry: this.selectedProduct?.createdAt,
-      url_image:this.selectedProduct?.url_image,
-      expirationDate: date,
-      status:this.selectedProduct?.statusId,
-      });
-
-      if (this.selectedProduct.url_image) {
-        this.imgBase64.set( API_URL+'uploads'+ this.selectedProduct?.url_image);
-      }
-  }
-
-  cancel() {
-    this.closeDialog();
-  }
-
-  closeDialog(): void | null {
-    this.dialogRef.close({ event: 'Cancel' });
-  }
-
-  save(){
-    if (this.checkPropId) {
-      // return this.updateProduct();
-      return this.guardarProducto();
-    }
-  }
-
-  removeImage(): void {
-    this.imgBase64.set(null)
-    this.editProdFormGroup.patchValue({
-      url_image: null,
-    })
-  }
-
+  /**
+   * Maneja la selección de archivos y convierte la imagen a base64
+   */
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (!input.files?.length) {
       this.selectedFile = null; // Resetear si no se selecciona archivo
-      this.editProdFormGroup.patchValue({ url_image: null });
+      this.createProdFormGroup.patchValue({ url_image: null });
       return;
     }
 
@@ -219,7 +149,7 @@ export class EditMedicalSuppliesComponent {
       this.errorMessage.set("Solo se permiten imágenes JPG o PNG");
       toast.error("Solo se permiten imágenes JPG o PNG");
       this.selectedFile = null;
-      this.editProdFormGroup.patchValue({ url_image: null });
+      this.createProdFormGroup.patchValue({ url_image: null });
       return;
     }
 
@@ -228,7 +158,7 @@ export class EditMedicalSuppliesComponent {
       this.errorMessage.set("La imagen no debe superar los 5MB");
       toast.error("La imagen no debe superar los 5MB");
       this.selectedFile = null;
-      this.editProdFormGroup.patchValue({ url_image: null });
+      this.createProdFormGroup.patchValue({ url_image: null });
       return;
     }
 
@@ -248,9 +178,33 @@ export class EditMedicalSuppliesComponent {
     };
     reader.readAsDataURL(file);
   }
+    /**
+   * Elimina la imagen seleccionada
+   */
+  removeImage(): void {
+    this.imgBase64.set(null)
+    this.createProdFormGroup.patchValue({
+      url_image: null,
+    })
+  }
 
-  guardarProducto(): void {console.log(this.editProdFormGroup.value)
-    if (this.editProdFormGroup.invalid ) {
+  cancel() {
+    this.closeDialog();
+  }
+
+  closeDialog(): void | null {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
+
+  save() {
+    if (this.createProdFormGroup) {
+      return this.guardarProducto();
+    }
+  }
+
+  guardarProducto(): void {console.log(this.createProdFormGroup.value)
+
+    if (this.createProdFormGroup.invalid ) {
       toast.error("Por favor, completa el formulario correctamente.");
       return;
     }
@@ -258,10 +212,10 @@ export class EditMedicalSuppliesComponent {
     this.isLoading.set(true);
     const formData = new FormData();
 
-    // Agregar los campos del formulario al FormData
-    Object.keys(this.editProdFormGroup.value).forEach(key => {
-      if (key !== 'url_image') { // No agregamos la cadena Base64 aquí
-        formData.append(key, this.editProdFormGroup.get(key)?.value);
+
+    Object.keys(this.createProdFormGroup.value).forEach(key => {
+      if (key !== 'url_image') { 
+        formData.append(key, this.createProdFormGroup.get(key)?.value);
       }
     });
 
@@ -269,18 +223,18 @@ export class EditMedicalSuppliesComponent {
     if (this.selectedFile) {
       formData.append('url_image', this.selectedFile, this.selectedFile.name);
     }
+
     for (const entry of formData.entries()) {
       console.log(`${entry[0]}: ${entry[1]}`);
     }
-    const id = this.selectedProduct.id;
 
      this.medicalSuppliesService
-      .updateProduct(id, formData)
+      .createProduct(formData)
       .subscribe({
         complete: () => {
-          toast.success('Producto editado.');
+          toast.success('Producto creado exitosamente');
           this.isLoading.set(false);
-          this.editProdFormGroup.reset();
+          this.createProdFormGroup.reset();
           this.imgBase64.set(null);
           this.selectedFile = null;
           this.closeDialog();
@@ -297,11 +251,18 @@ export class EditMedicalSuppliesComponent {
             toast.error('Error al crear el producto. Por favor, inténtalo de nuevo.');
           }
         }
-      });   
+      });
   }
 
-  handleImageError() {
-    this.imageError = true;
-    this.imgBase64.set( '../../assets/images/products/default_product_image.png');
+  loadCategories(): void {
+    this.categoriesSubscription = this.medicalSuppliesService.getCategories().subscribe(
+      (data: Category[]) => {
+        this.categories = data;
+      },
+      (error) => {
+        console.error('Error al cargar las categorías:', error);
+      }
+    );
   }
+
 }

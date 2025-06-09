@@ -79,7 +79,11 @@
                             Fecha de vencimiento
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                {{ element.expirationDate | date:'dd-MM-yyyy'}}
+                                @if (element.expirationDate) {
+                                     {{ element.expirationDate | date:'dd-MM-yyyy'}}
+                                }@else {
+                                    Vacío
+                                }
                             </mat-cell>
                         </ng-container>
 

@@ -1,25 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, signal } from '@angular/core';
-import { FeatherIconsModule } from '../feathericons/feathericons.module';
-import { MaterialModule } from '../material/material.module';
+import { FeatherIconsModule } from '../../feathericons/feathericons.module';
+import { MaterialModule } from '../../material/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { SwalService } from '../services/swal.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { RouterModule } from '@angular/router';
-import { EditMedicalSuppliesComponent } from '../edit-medical-supplies/edit-medical-supplies.component';
-import { CreateMedicalSuppliesComponent } from '../create-medical-supplies/create-medical-supplies.component';
-import { IGetAllProducts, IProduct, IProductPagination } from '../medical-supplies/interfaces/medical-supplies.interface';
-import { Category, MedicalSuppliesService } from '../medical-supplies/services/medical-supplies.service';
+import { EditMedicalSuppliesComponent } from '../components/edit-medical-supplies/edit-medical-supplies.component';
+import { CreateMedicalSuppliesComponent } from '../components/create-medical-supplies/create-medical-supplies.component';
+import { IGetAllProducts, IProduct, IProductPagination } from '../interfaces/medical-supplies.interface';
+import { Category, MedicalSuppliesService } from '../services/medical-supplies.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { API_URL } from '../../../environment';
+import { API_URL } from '../../../../environment';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
-import { AssignmentComponent } from '../assignment/assignment.component';
-import { AuthService } from '../services/auth.service';
+import { AssignmentComponent } from '../../assignment/assignment.component';
+import { AuthService } from '../../services/auth.service';
 //Formateo a fecha local en dd/mm/yyyy
-import { DateFormatService, MY_DATE_FORMATS } from '../services/date-format.service';
+import { DateFormatService, MY_DATE_FORMATS } from '../../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
@@ -57,7 +56,6 @@ export class MedicalSuppliesDatatableComponent {
   API_URL= API_URL;
   
   readonly dialog = inject(MatDialog);
-  private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);

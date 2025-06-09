@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
-import { MedicalSuppliesDatatableComponent } from '../medical-supplies-datatable/medical-supplies-datatable.component';
+import { MedicalSuppliesDatatableComponent } from './medical-supplies-datatable/medical-supplies-datatable.component';
 
 /**
 * @title pagination table medical supplies

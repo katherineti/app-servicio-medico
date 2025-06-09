@@ -108,9 +108,9 @@
                 formControlName="type"
                 required="true"
                 >
-                <mat-option value="Medicamentos">Medicamentos</mat-option>
-                <mat-option value="Uniformes">Uniformes</mat-option>
-                <mat-option value="Equipos odontologicos">Equipos Odontológicos</mat-option>
+                <mat-option [value]="1">Medicamentos</mat-option>
+                <mat-option [value]="2">Uniformes</mat-option>
+                <mat-option [value]="3">Equipos Odontológicos</mat-option>
                 </mat-select>
                 <mat-error *ngIf="createProdFormGroup.controls['type'].hasError('required') || createProdFormGroup.controls['type'].hasError('maxLength') ">
                     El tipo es requerido y como máximo puede tener 50 caracteres.
@@ -147,18 +147,49 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
-              <input matInput [matDatepicker]="expirationDate" placeholder="Fecha de vencimiento" formControlName="expirationDate" required="true">
-              <mat-hint>DD/MM/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
-              <mat-datepicker #expirationDate></mat-datepicker>
-
-              <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('required') || createProdFormGroup.controls['expirationDate'].hasError('maxLength') ">
-                  La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
-              </mat-error>
-          </mat-form-field>
+            @if ( createProdFormGroup.controls['type'].value!='' && createProdFormGroup.controls['type'].value != 2 && createProdFormGroup.controls['type'].value != 3) {
+              <mat-form-field appearance="outline" class="example-full-width">
+                 <input matInput [matDatepicker]="expirationDate" placeholder="Fecha de vencimiento" formControlName="expirationDate" required="false">
+                 <mat-hint>DD/MM/YYYY</mat-hint>
+                 <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
+                 <mat-datepicker #expirationDate></mat-datepicker>
+   
+                 <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('required') || createProdFormGroup.controls['expirationDate'].hasError('maxLength') ">
+                     La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
+                 </mat-error>
+              </mat-form-field>
+            }
 
           <mat-form-field appearance="outline" class="example-full-width">
+            <mat-select
+            placeholder="Estado"
+            formControlName="status"
+            required="true"
+            >
+            <mat-option [value]="1" selected>{{
+                'Disponible'
+            }}</mat-option>
+            <mat-option [value]="2">{{
+                'No Disponible'
+            }}</mat-option>
+            <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
+            @if (this.role === 'admin' || this.role === 'almacen') {
+              @if ( createProdFormGroup.controls['type'].value!='' && createProdFormGroup.controls['type'].value != 2 && createProdFormGroup.controls['type'].value != 3){
+                <mat-option [value]="3">{{
+                  'Próximo a vencerse'
+                }}</mat-option>
+                <mat-option [value]="4">{{
+                  'Caducado'
+                }}</mat-option>
+              }
+            }
+            </mat-select>
+
+            <mat-error *ngIf="createProdFormGroup.controls['status'].hasError('required')">
+                El estado es requerido.
+            </mat-error>
+        </mat-form-field>
+<!--    <mat-form-field appearance="outline" class="example-full-width">
             <mat-select
             placeholder="Estado"
             formControlName="status"
@@ -170,7 +201,6 @@
             <mat-option [value]="2">{{
                 'Inactivo'
             }}</mat-option>
-            <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
             @if (this.role === 'admin' || this.role === 'almacen') {
               <mat-option [value]="3">{{
                   'Próximo a vencerse'
@@ -184,7 +214,7 @@
             <mat-error *ngIf="createProdFormGroup.controls['status'].hasError('required')">
                 El estado es requerido.
             </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
               
           </div>
       

@@ -172,6 +172,6 @@ export class MedicalSuppliesDatatableComponent {
   }
 
     isSticky(buttonToggleGroup: MatButtonToggleGroup, id: string) {
-    return (buttonToggleGroup.value || []).indexOf(id) !== -1;
+      return (buttonToggleGroup.value || []).indexOf(id) !== -1;
   }
 }

@@ -1,3 +1,166 @@
 <app-header-title [title]="'Insumos Médicos Próximos a Vencer'" ></app-header-title>
-
 <!-- <app-medical-supplies-datatable [data]="this.PRODUCT_DATA_EXPIRED"></app-medical-supplies-datatable> -->
+<mat-toolbar style="background-color: white;">
+    <mat-form-field appearance="outline" class="search m-t-20">
+        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" /> 
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="m-t-20 m-l-10 search">
+        <input matInput class="p-b-0" placeholder="Buscar por categoría" [formControl]="searhCategoryField" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="m-t-20 m-l-10" style="width: 300px;">
+        <input matInput [matDatepicker]="expirationDate" placeholder="Buscar por fecha de expiración" [formControl]="searh_expirationDate">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
+        <mat-datepicker #expirationDate></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="m-l-10 m-r-10 p-t-5 margin-left-none" id="filter" style="margin-top: 2px !important;"
+    (click)="getAllProducts(this.pageIndex, this.pageSize)">
+        <i-feather name="search"></i-feather>
+    </button>
+
+</mat-toolbar>
+
+@if (this.role === 'admin' || this.role === 'almacen') {
+   <span class="example-spacer"></span>
+   <button mat-flat-button (click)="openDialogCreateSupplies()" style="padding: 0 35px;" class="m-l-20">
+       Agregar
+   </button>
+}
+
+<br>
+
+<mat-card class="">
+    <mat-card-content>
+        <div class="w-100" style="width: 100%; overflow-x: auto;">
+
+            <div class="m-l-auto">
+                @if(dataSource.length){
+                   <section class="example-container mat-elevation-z8" tabindex="0">
+                    <div class="table-responsive">
+                        <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical supplies expired">
+                        <ng-container matColumnDef="name" sticky>
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Nombre
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.name | titlecase}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="category">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                Categoría 
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.category | titlecase}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="stock">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Stock
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.stock }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="code">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Código
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.code }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="date_entry">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Fecha de ingreso
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.createdAt | date:'dd-MM-yyyy'}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="expirationDate">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Fecha de vencimiento
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                @if (element.expirationDate) {
+                                     {{ element.expirationDate | date:'dd-MM-yyyy'}}
+                                }@else {
+                                    Vacío
+                                }
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="image">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
+                            Foto
+                            </mat-header-cell>
+                            <mat-cell class="p-16 p-l-0" *matCellDef="let element">
+                                @if (element.url_image) {
+                                    <div class="d-flex align-items-center">
+                                      <img [src]="API_URL+'uploads'+element.url_image" alt="product" width="50" height="50" class="rounded-circle" />
+                                    </div>
+                                }@else {
+                                    Vacío
+                                }
+                            </mat-cell>
+                        </ng-container>
+                                            
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                            Estado
+                            </mat-header-cell>
+                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <mat-chip-set color="primary" >
+                                    @if(element.statusId===3){
+                                        <mat-chip>
+                                            Por caducar
+                                        </mat-chip>
+                                    } @else {
+                                        <mat-chip>
+                                            {{ element.status | titlecase}}
+                                        </mat-chip>
+                                    }
+                                </mat-chip-set>
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="action" aria-label="row actions" >
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                            Acción
+                            </mat-header-cell>
+                            <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeProduct(element)">
+                                    <i-feather name="eye"></i-feather>
+                                </button>
+
+                              @if (this.role === 'admin' || this.role === 'almacen') {
+                                <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)">
+                                    <i-feather name="edit" ></i-feather>
+                                </button>
+                             }
+                             @if (this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') {
+                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
+                                     <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
+                                 </button>
+                             }
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        </table>
+                        
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                        [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                        aria-describedby="table medical supplies expired"></mat-paginator>
+                    </div>
+                   </section>
+
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
+                }
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

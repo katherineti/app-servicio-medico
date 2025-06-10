@@ -159,7 +159,7 @@
                 </mat-error>
             </mat-form-field>
 
-             @if (showExpirationDate) {
+             @if ( editProdFormGroup.controls['type'].value!='' && editProdFormGroup.controls['type'].value != 2 && editProdFormGroup.controls['type'].value != 3)  {
                <mat-form-field appearance="outline" class="example-full-width">
                  <input matInput [matDatepicker]="expirationDate" placeholder="Fecha de vencimiento" formControlName="expirationDate" required="false">
                  <mat-hint>DD/MM/YYYY</mat-hint>

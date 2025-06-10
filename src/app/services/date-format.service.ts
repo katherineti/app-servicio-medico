@@ -27,6 +27,5 @@ export class DateFormatService {
     const timeZone = 'America/Caracas';
     const fechaLocalVenezuela = moment.utc(fechaUtc).tz(timeZone);
     return fechaLocalVenezuela.format('YYYY-MM-DD HH:mm:ss ZZ');
-    // return fechaLocalVenezuela.format('YYYY-MM-DD HH:mm:ss zzzz');
   }
 }

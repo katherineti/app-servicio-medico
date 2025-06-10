@@ -110,14 +110,14 @@
             </mat-form-field>
         
             <mat-form-field appearance="outline" class="example-full-width">
-                <mat-select
+                <mat-select (change)="setupTypeChangeDetection()"
                 placeholder="Tipo"
                 formControlName="type"
                 required="true"
                 >
-                <mat-option [value]="1">Medicamentos</mat-option>
-                <mat-option [value]="2">Uniformes</mat-option>
-                <mat-option [value]="3">Equipos Odontológicos</mat-option>
+                  <mat-option [value]="1">Medicamentos</mat-option>
+                  <mat-option [value]="2">Uniformes</mat-option>
+                  <mat-option [value]="3">Equipos Odontológicos</mat-option>
                 </mat-select>
 
                 <mat-error *ngIf="editProdFormGroup.controls['type'].hasError('required') || editProdFormGroup.controls['type'].hasError('maxLength') ">

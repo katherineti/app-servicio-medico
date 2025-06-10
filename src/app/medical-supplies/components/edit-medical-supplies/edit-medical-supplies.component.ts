@@ -6,12 +6,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
 import { IProduct } from '../../interfaces/medical-supplies.interface';
 import { MedicalSuppliesService } from '../../services/medical-supplies.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { toast } from 'ngx-sonner';
 import { API_URL } from '../../../../../environment';
-import { DateFormatService, MY_DATE_FORMATS } from '../../../services/date-format.service';
+import { MY_DATE_FORMATS } from '../../../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { AuthService } from '../../../services/auth.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-edit-medical-supplies',
@@ -28,31 +29,32 @@ import { AuthService } from '../../../services/auth.service';
 export class EditMedicalSuppliesComponent {
   readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
   editProdFormGroup!: FormGroup;
+  selectedProduct!: IProduct;
   role:string='';
   imageField?: File;
   disableButton: boolean = false;
-  selectedProduct!: IProduct;
 
   imgBase64 = signal<string | null>(null);
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   selectedFile: File | null = null;
 
-  API_URL= API_URL;
   edit:boolean | undefined;
   imageError = false;
   showExpirationDate = true;
-
+  
+  private destroy$ = new Subject<void>();
+  EXPIRING_PRODUCT = [3, 4]; 
+  
+  API_URL= API_URL;
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
-  private dateFormatService= inject(DateFormatService);
 
   constructor( 
       @Inject(MAT_DIALOG_DATA) 
-      public data: IProduct,
-      private readonly sanitizer: DomSanitizer,
+      public data: IProduct
     ){
     this.buildForm();
   }
@@ -66,6 +68,7 @@ export class EditMedicalSuppliesComponent {
 
     if (this.data) {
       this.setForm();
+      this.setupTypeChangeDetection();
     }
   }
 
@@ -185,6 +188,25 @@ export class EditMedicalSuppliesComponent {
       if (this.selectedProduct.url_image) {
         this.imgBase64.set( API_URL+'uploads'+ this.selectedProduct?.url_image);
       }
+
+      const isExpiringProduct = this.EXPIRING_PRODUCT.includes(this.selectedProduct?.statusId || -1);
+      if (this.selectedProduct?.type != 1 && isExpiringProduct ) {
+        this.editProdFormGroup.patchValue({
+          status: ''
+        });
+      }
+  }
+
+  setupTypeChangeDetection(): void {
+    this.editProdFormGroup.get('type')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((newTypeValue) => {
+        if (newTypeValue != 1 && newTypeValue != this.selectedProduct?.type) {
+          this.editProdFormGroup.patchValue({
+            status: ''
+          });
+        }
+      });
   }
 
   cancel() {
@@ -265,6 +287,13 @@ export class EditMedicalSuppliesComponent {
     this.isLoading.set(true);
     const formData = new FormData();
 
+    console.log("this.editProdFormGroup.value" ,this.editProdFormGroup.value);
+    if( this.editProdFormGroup.controls['type'].value != 1 ){
+      this.editProdFormGroup.patchValue({
+        expirationDate: null,
+      });
+    }
+
     // Agregar los campos del formulario al FormData
     Object.keys(this.editProdFormGroup.value).forEach(key => {
       if (key !== 'url_image') { // No agregamos la cadena Base64 aquí
@@ -311,4 +340,9 @@ export class EditMedicalSuppliesComponent {
     this.imageError = true;
     this.imgBase64.set( '../../assets/images/products/default_product_image.png');
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }  
 }

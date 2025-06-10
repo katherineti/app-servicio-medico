@@ -8,7 +8,7 @@ import { Category, MedicalSuppliesService } from '../../services/medical-supplie
 import { Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
-import { DateFormatService, MY_DATE_FORMATS } from '../../../services/date-format.service';
+import { MY_DATE_FORMATS } from '../../../services/date-format.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -41,7 +41,6 @@ export class CreateMedicalSuppliesComponent {
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
-  private dateFormatService= inject(DateFormatService);
 
   constructor( 
     public dialogRef: MatDialogRef<CreateMedicalSuppliesComponent>,
@@ -50,7 +49,7 @@ export class CreateMedicalSuppliesComponent {
     this.loadCategories();
     this.createProdFormGroup.patchValue({
       status: 1,
-      });
+    });
   }
 
   async ngOnInit(){

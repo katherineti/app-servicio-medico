@@ -54,7 +54,7 @@
                     </mat-error>
                     <!-- Comentado porque el campo empleado recibe un objeto -->
                     <!-- @if (AssignProductForm.controls['employee'].errors?.['maxLength']) {
-                        <mat-error>Máximo de 200 carácteres.</mat-error>
+                        <mat-error>Máximo de 200 caracteres.</mat-error>
                     } -->
                     <button 
                     mat-icon-button 
@@ -96,7 +96,7 @@
                         }
     
                         @if (employeeForm.controls['cedula'].errors?.['maxLength']) {
-                            <mat-error>Máximo de 10 carácteres</mat-error>
+                            <mat-error>Máximo de 10 caracteres</mat-error>
                         }
                         </mat-form-field>
                         <!-- Email del Empleado -->
@@ -209,7 +209,7 @@
                     <mat-form-field appearance="outline" class="example-full-width">
                         <input matInput placeholder="Cédula" formControlName="documentId">
                         @if (familyMemberForm.controls['documentId'].errors?.['maxLength'] && familyMemberForm.get('documentId')?.touched) {
-                        <mat-error>Máximo de 10 carácteres</mat-error>
+                        <mat-error>Máximo de 10 caracteres</mat-error>
                         }
                     </mat-form-field>
         

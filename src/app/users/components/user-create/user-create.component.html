@@ -16,7 +16,9 @@
               required="true"
               type="text"
               />
-              <!-- <mat-error>Error</mat-error> -->
+            <mat-error *ngIf="userFormGroup.controls['name'].hasError('required') || userFormGroup.controls['name'].hasError('maxLength') ">
+                El nombre es requerido y como máximo puede tener 200 caracteres.
+            </mat-error>
           </mat-form-field>
       
           <mat-form-field appearance="outline" class="example-full-width">
@@ -27,7 +29,12 @@
               required="true"
               type="email"
               />
-              <!-- <mat-error>Error</mat-error> -->
+            <mat-error *ngIf="userFormGroup.controls['email'].hasError('required') || userFormGroup.controls['email'].hasError('maxLength') ">
+                El email es requerido y como máximo puede tener 50 caracteres.
+            </mat-error>
+            <mat-error *ngIf="userFormGroup.controls['email'].hasError('email')">
+                Por favor, introduce un email válido.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="example-full-width">
@@ -38,6 +45,9 @@
               required="true"
               type="password"
               />
+            <mat-error *ngIf="userFormGroup.controls['password'].hasError('required') || userFormGroup.controls['password'].hasError('maxLength') ">
+                La contraseña es requerida y como máximo puede tener 30 caracteres.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="example-full-width">
@@ -59,6 +69,9 @@
                 'Auditor' | titlecase
             }}</mat-option>
             </mat-select>
+            <mat-error *ngIf="userFormGroup.controls['role'].hasError('required')">
+                El rol es requerido.
+            </mat-error>
         </mat-form-field>
 
 <!--           <mat-form-field appearance="outline" class="example-full-width">

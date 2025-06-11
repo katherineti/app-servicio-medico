@@ -1,11 +1,11 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SwalService } from '../services/swal.service';
-import { UsersService } from '../users/services/users.service';
-import { IUser } from '../users/interfaces/users.interface';
+import { SwalService } from '../../../services/swal.service';
+import { UsersService } from '../../services/users.service';
+import { IUser } from '../../interfaces/users.interface';
 
 @Component({
   selector: 'app-user-dialog',
@@ -55,22 +55,20 @@ export class UserDialogComponent implements OnInit {
 
   buildEditUserForm() {
     this.userFormGroup = this.formBuilder.group({
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          // Validators.pattern('/^[a-zA-ZÀ-ÿ\s]+$/')
+        ],
+      ],
       email: [
         '',
         [
           Validators.required, 
           Validators.email,
-          Validators.minLength(0), 
           Validators.maxLength(50),
-        ],
-      ],
-      name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(50),
-          // Validators.pattern('/^[a-zA-ZÀ-ÿ\s]+$/')
         ],
       ],
       isActive: [
@@ -81,7 +79,7 @@ export class UserDialogComponent implements OnInit {
           Validators.maxLength(20),
         ],
       ],
-      role: [''],
+      role: ['', [Validators.required]],
     });
   }
 

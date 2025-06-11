@@ -1,10 +1,10 @@
 import { Component, Inject, inject } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SwalService } from '../services/swal.service';
-import { UsersService } from '../users/services/users.service';
+import { SwalService } from '../../../services/swal.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-user-create',
@@ -36,8 +36,7 @@ export class UserCreateComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(50),
+          Validators.maxLength(200),
           // Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
         ],
       ],
@@ -46,20 +45,18 @@ export class UserCreateComponent {
       [
         Validators.required, 
         Validators.email,
-        Validators.minLength(0), 
         Validators.maxLength(50),
       ]],
       password: [
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(30),
           Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],
       ],
 
-      role: [""],
+      role: ["", [Validators.required]],
     });
 
   }

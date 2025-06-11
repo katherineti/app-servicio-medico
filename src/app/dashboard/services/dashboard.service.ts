@@ -55,4 +55,21 @@ export class DashboardService {
         `${this.tokenService.endPoint}dashboard/totalAssignments`
       );
     }
+
+    // Nuevos
+    totalAvailableProductsByType(): Observable<any> {
+      return this.http.get<any>(
+        `${this.tokenService.endPoint}dashboard/totalAvailableProductsByType`
+      );
+    }
+    totalOfProductAssignmentsByType(): Observable<any> {
+      return this.http.get<any>(
+        `${this.tokenService.endPoint}dashboard/totalOfProductAssignmentsByType`
+      );
+    }
+    expiredProductsCount(): Observable<any> {
+      return this.http.get<any>(
+        `${this.tokenService.endPoint}dashboard/expiredProductsCount`
+      );
+    }
 }

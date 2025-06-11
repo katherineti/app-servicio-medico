@@ -26,7 +26,10 @@ export class DashboardComponent {
   countAssignmentOfMonth:number = 0;
   formattedLocalDate!: string;
   role:string='';
-  
+  getAccumulatedProductsStockByType!: { sum_medicamentos: string, sum_uniformes: string, sum_equiposOdontologicos: string };
+  getAccumulatedAssignmentsByType!: { sumAsig_medicamentos: string, sumAsig_uniformes: string, sumAsig_equiposOdontologicos: string };
+  getExpiredProductsCount: any;
+
   public router = inject(Router)
   public dashboardService = inject(DashboardService)
   private authService = inject(AuthService);
@@ -46,7 +49,15 @@ export class DashboardComponent {
     if(this.role === 'almacen' || this.role === 'medico'){
       this.totalAllProducts();
     }
+    //nuevos : Número de productos disponibles por tipo, Número de asignaciones por tipo de producto
+    this.getAccumulatedProductsStockByType= { sum_medicamentos: '0', sum_uniformes: '0', sum_equiposOdontologicos: '0' }
+    if( this.role === 'admin' || this.role === 'almacen'){
+      this.totalAvailableProductsByType();
+      this.totalOfProductAssignmentsByType();
+    }
+
     this.totalAllAssignments();
+    this.expiredProductsCount();
   }
   
   navigate(route:string){
@@ -141,6 +152,44 @@ export class DashboardComponent {
       
       toast.error(e.error.message);
       console.error('Error al obtener la cantidad de asignaciones', e);
+    }
+  }
+
+  // Nuevos
+  async totalAvailableProductsByType(){
+    try {
+      let totalAvailableProductsByType:any = await firstValueFrom(
+        this.dashboardService.totalAvailableProductsByType()
+      );console.log(totalAvailableProductsByType)
+      this.getAccumulatedProductsStockByType = totalAvailableProductsByType;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener el número de productos disponibles por tipo de producto', e);
+    }
+  }
+  async totalOfProductAssignmentsByType(){
+    try {
+      let totalOfProductAssignmentsByType:any = await firstValueFrom(
+        this.dashboardService.totalOfProductAssignmentsByType()
+      );console.log(totalOfProductAssignmentsByType)
+      this.getAccumulatedAssignmentsByType = totalOfProductAssignmentsByType;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener el número de asignaciones por tipo de producto', e);
+    }
+  }
+  async expiredProductsCount(){
+    try {
+      let expiredProductsCount:any = await firstValueFrom(
+        this.dashboardService.expiredProductsCount()
+      );console.log("expiredProductsCount",expiredProductsCount)
+      this.getExpiredProductsCount = expiredProductsCount;
+    } catch (e: any) {
+      
+      toast.error(e.error.message);
+      console.error('Error al obtener el número de productos proximos a vencerse o caducados', e);
     }
   }
 

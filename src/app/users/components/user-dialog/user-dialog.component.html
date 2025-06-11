@@ -22,7 +22,7 @@
                 type="text"
                 />
             <mat-error *ngIf="userFormGroup.controls['name'].hasError('required') || userFormGroup.controls['name'].hasError('maxLength') ">
-                El nombre es requerido y como máximo puede tener 200 caracteres.
+                El nombre es requerido<span class="ocultar-en-movil-tablet m-l-3"> y como máximo puede tener 200 caracteres</span>.
             </mat-error>
             </mat-form-field>
         
@@ -35,7 +35,7 @@
                 type="email"
                 />
             <mat-error *ngIf="userFormGroup.controls['email'].hasError('required') || userFormGroup.controls['email'].hasError('maxLength') ">
-                El email es requerido y como máximo puede tener 50 caracteres.
+                El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
             </mat-error>
             <mat-error *ngIf="userFormGroup.controls['email'].hasError('email')">
                 Por favor, introduce un email válido.

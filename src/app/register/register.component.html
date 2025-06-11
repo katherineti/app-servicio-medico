@@ -10,12 +10,33 @@
             <form class="m-t-30" [formGroup]="registerFormGroup" #f="ngForm">
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Nombre</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput required="true" type="text" formControlName="name" />
+                <input
+                matInput
+                placeholder="Nombre"
+                formControlName="name"
+                required="true"
+                type="text"
+                />
+                <mat-error *ngIf="registerFormGroup.controls['name'].hasError('required') || registerFormGroup.controls['name'].hasError('maxLength') ">
+                    El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 200 caracteres</span>.
+                </mat-error>
               </mat-form-field>
               <!-- Email -->
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput required="true" type="email" formControlName="email" />
+                <input
+                matInput
+                placeholder="Email"
+                formControlName="email"
+                required="true"
+                type="email"
+                />
+                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('required') || registerFormGroup.controls['email'].hasError('maxLength') ">
+                    El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('email')">
+                    Por favor, introduce un email válido.
+                </mat-error>
               </mat-form-field>
               <!-- Usuario -->
               <!-- <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
@@ -25,14 +46,23 @@
               <!-- Contraseña -->
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput required="true" type="password" formControlName="password" />
+                  <input
+                  matInput
+                  placeholder="Contraseña"
+                  formControlName="password"
+                  required="true"
+                  type="password"
+                  />
+                <mat-error *ngIf="registerFormGroup.controls['password'].hasError('required') || registerFormGroup.controls['password'].hasError('maxLength') ">
+                    La contraseña es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 30 caracteres</span>.
+                </mat-error>
               </mat-form-field>
 
-              <mat-error *ngIf="typeError === 'campos'">Faltan campos requeridos</mat-error>
+              <!-- <mat-error *ngIf="typeError === 'campos'">Faltan campos requeridos</mat-error> -->
               <mat-error *ngIf="typeError === 'conflicto'">Nombre de usuario o correo electrónico ya existe.</mat-error>
-              <mat-error *ngIf="typeError === 'server'">El formato de los campos es incorrecto, por favor ingrese un valor valido</mat-error>
+              <!-- <mat-error *ngIf="typeError === 'server'">El formato de los campos es incorrecto, por favor ingrese un valor valido</mat-error> -->
   
-              <button class="w-100" (click)="register()" mat-flat-button color="primary">
+              <button class="w-100 m-t-10" (click)="register()" mat-flat-button color="primary">
                 Registrar
               </button>
             </form>

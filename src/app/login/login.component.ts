@@ -6,10 +6,11 @@ import { LoginResponse, SigInLogin } from '../authentication/models/login.respon
 import { firstValueFrom } from 'rxjs';
 import { SwalService } from '../services/swal.service';
 import { LoginService } from '../services/login.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule,RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [LoginService, SwalService]
@@ -23,12 +24,23 @@ export class LoginComponent {
   public loginService = inject(LoginService);
 
   constructor(){
-
     this.loginFormGroup = this.formBuilder.group({
-      email: [null, Validators.required],
-      password: [null, Validators.required],
-    });
-
+      email: [
+        '', 
+      [
+        Validators.required, 
+        Validators.email,
+        Validators.maxLength(50),
+      ]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(30),
+          Validators.pattern(/^[a-zA-Z0-9]*$/),
+        ],
+      ],
+    });;
   }
 
   async login() {

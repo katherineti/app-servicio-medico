@@ -37,14 +37,12 @@ export class RegisterComponent {
       email: ['', [
         Validators.required, 
         Validators.email,
-        Validators.minLength(0), 
         Validators.maxLength(50),
       ]],
       password: [
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(30),
           Validators.pattern(/^[a-zA-Z0-9]*$/),
         ],

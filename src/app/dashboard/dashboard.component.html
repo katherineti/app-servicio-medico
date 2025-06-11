@@ -35,7 +35,8 @@
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total de Insumos Médicos del Día</h5></mat-card-title>
+                <!-- <mat-card-title><h5>Total de Insumos Médicos del Día</h5></mat-card-title> -->
+                <mat-card-title><h5>Registros de Insumos Médicos (Hoy)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
                         <i-feather name="activity" class="icon-20 d-flex align-items-center color-white"></i-feather>
@@ -55,7 +56,8 @@
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total de Insumos Médicos del Mes</h5></mat-card-title>
+                <!-- <mat-card-title><h5>Total de Insumos Médicos del Mes</h5></mat-card-title> -->
+                <mat-card-title><h5>Registros de Insumos Médicos (Mes)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
                         <i-feather name="briefcase" class="icon-20 d-flex align-items-center color-white"></i-feather>
@@ -78,7 +80,8 @@
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total de Insumos Médicos</h5></mat-card-title>
+                <!-- <mat-card-title><h5>Total de Insumos Médicos</h5></mat-card-title> -->
+                <mat-card-title><h5>Registros de Insumos Médicos</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
                         <i-feather name="users" class="icon-20 d-flex align-items-center color-white"></i-feather>
@@ -95,7 +98,8 @@
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total de Salidas del Día</h5></mat-card-title>
+                <!-- <mat-card-title><h5>Total de Salidas del Día</h5></mat-card-title> -->
+                <mat-card-title><h5>Registros de Asignaciones (Hoy)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
                         <i-feather name="activity" class="icon-20 d-flex align-items-center color-white"></i-feather>
@@ -115,7 +119,8 @@
     <mat-card class="cardWithShadow overflow-hidden">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total de Salidas del Mes</h5></mat-card-title>
+                <!-- <mat-card-title><h5>Total de Salidas del Mes</h5></mat-card-title> -->
+                <mat-card-title><h5>Registros de Asignaciones (Mes)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
                         <i-feather name="briefcase" class="icon-20 d-flex align-items-center color-white"></i-feather>
@@ -216,10 +221,10 @@
 
 <!-- vencimiento de insumos -->
  @if(getExpiredProductsCount){
-      <mat-card class="cardWithShadow overflow-hidden">
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" (click)="navigate('/expired-medical-supplies')">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
-                  <mat-card-title><h5>Total Uniformes Asignados</h5></mat-card-title>
+                  <mat-card-title><h5>Insumos Médicos Próximos a Vencer</h5></mat-card-title>
                   <div class="m-l-auto">
                      <button mat-fab class="icon-48 bg-error ">
                          <i-feather name="alert-triangle" class="icon-20 d-flex align-items-center color-white"></i-feather>

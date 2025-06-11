@@ -17,9 +17,13 @@
                 required="true"
                 type="text"
                 />
-                <mat-error *ngIf="registerFormGroup.controls['name'].hasError('required') || registerFormGroup.controls['name'].hasError('maxLength') ">
-                    El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 200 caracteres</span>.
-                </mat-error>
+              <mat-error *ngIf="registerFormGroup.controls['name'].errors"> <ng-container *ngIf="registerFormGroup.controls['name'].hasError('required')">
+                      El nombre es requerido.
+                  </ng-container>
+                  <ng-container *ngIf="registerFormGroup.controls['name'].hasError('maxlength')">
+                      No puede tener más de 200 caracteres.
+                  </ng-container>
+              </mat-error>
               </mat-form-field>
               <!-- Email -->
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
@@ -31,12 +35,23 @@
                 required="true"
                 type="email"
                 />
-                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('required') || registerFormGroup.controls['email'].hasError('maxLength') ">
+                <!-- <mat-error *ngIf="registerFormGroup.controls['email'].hasError('required') || registerFormGroup.controls['email'].hasError('maxLength') ">
                     El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
                 <mat-error *ngIf="registerFormGroup.controls['email'].hasError('email')">
                     Por favor, introduce un email válido.
-                </mat-error>
+                </mat-error> -->
+              <mat-error *ngIf="registerFormGroup.controls['email'].errors"> <ng-container *ngIf="registerFormGroup.controls['email'].hasError('required')">
+                      El email es requerido.
+                  </ng-container>
+                  <ng-container *ngIf="registerFormGroup.controls['email'].hasError('email')">
+                      Por favor, introduce un email válido.
+                  </ng-container>
+                  <ng-container *ngIf="registerFormGroup.controls['email'].hasError('maxlength')">
+                      No puede tener más de 50 caracteres.
+                  </ng-container>
+              </mat-error>
+
               </mat-form-field>
               <!-- Usuario -->
               <!-- <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
@@ -53,9 +68,16 @@
                   required="true"
                   type="password"
                   />
-                <mat-error *ngIf="registerFormGroup.controls['password'].hasError('required') || registerFormGroup.controls['password'].hasError('maxLength') ">
+                <!-- <mat-error *ngIf="registerFormGroup.controls['password'].hasError('required') || registerFormGroup.controls['password'].hasError('maxLength') ">
                     La contraseña es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 30 caracteres</span>.
-                </mat-error>
+                </mat-error> -->
+              <mat-error *ngIf="registerFormGroup.controls['password'].errors"> <ng-container *ngIf="registerFormGroup.controls['password'].hasError('required')">
+                      El password es requerido.
+                  </ng-container>
+                  <ng-container *ngIf="registerFormGroup.controls['password'].hasError('maxlength')">
+                      No puede tener más de 30 caracteres.
+                  </ng-container>
+              </mat-error>
               </mat-form-field>
 
               <!-- <mat-error *ngIf="typeError === 'campos'">Faltan campos requeridos</mat-error> -->

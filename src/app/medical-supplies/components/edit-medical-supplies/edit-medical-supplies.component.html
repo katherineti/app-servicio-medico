@@ -71,7 +71,7 @@
                 type="text"
                 />
                 <mat-error *ngIf="editProdFormGroup.controls['name'].hasError('required') || editProdFormGroup.controls['name'].hasError('maxLength') ">
-                    El nombre es requerido y como máximo puede tener 50 caracteres.
+                    El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="example-full-width">
@@ -83,7 +83,7 @@
                 type="text"
                 />
                 <mat-error *ngIf="editProdFormGroup.controls['description'].hasError('required') || editProdFormGroup.controls['description'].hasError('maxLength') ">
-                    La descripción es requerida y como máximo puede tener 50 caracteres.
+                    La descripción es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
         
@@ -105,7 +105,7 @@
                 </mat-select>
 
                 <mat-error *ngIf="editProdFormGroup.controls['category'].hasError('required') || editProdFormGroup.controls['category'].hasError('maxLength') ">
-                    La categoría es requerida y como máximo puede tener 50 caracteres.
+                    La categoría es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
         
@@ -121,7 +121,7 @@
                 </mat-select>
 
                 <mat-error *ngIf="editProdFormGroup.controls['type'].hasError('required') || editProdFormGroup.controls['type'].hasError('maxLength') ">
-                    El tipo es requerido y como máximo puede tener 50 caracteres.
+                    El tipo es requerido.
                 </mat-error>
             </mat-form-field>
 
@@ -135,7 +135,7 @@
                 />
 
                 <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('required')">
-                    El stock es requerido y como máximo puede tener 3 caracteres.
+                    El stock es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 3 caracteres</span>.
                 </mat-error>
                 <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('maxLength')">
                     El stock como máximo puede tener 3 caracteres.
@@ -155,7 +155,7 @@
                 />
 
                 <mat-error *ngIf="editProdFormGroup.controls['code'].hasError('required') || editProdFormGroup.controls['code'].hasError('maxLength') ">
-                    El código es requerido y como máximo puede tener 50 caracteres.
+                    El código es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
 
@@ -167,7 +167,7 @@
                  <mat-datepicker #expirationDate></mat-datepicker>
    
                  <mat-error *ngIf="editProdFormGroup.controls['expirationDate'].hasError('required') || editProdFormGroup.controls['expirationDate'].hasError('maxLength') ">
-                     La fecha de vencimiento es requerida y como máximo puede tener 50 caracteres.
+                     La fecha de vencimiento es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                  </mat-error>
                </mat-form-field>
              }

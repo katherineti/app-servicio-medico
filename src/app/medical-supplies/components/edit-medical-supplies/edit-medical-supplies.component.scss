@@ -17,3 +17,16 @@
   .example-full-width {
     width: 100%;
   }
+  
+.ocultar-en-movil-tablet {
+  display: inline-block !important;
+
+  // Media query para tabletas 
+  @media (min-width: 600px) and (max-width: 991px) {
+    display: none !important;
+  }
+  // Media query para teléfonos 
+  @media (max-width: 599px) {
+    display: none !important;
+  }
+}

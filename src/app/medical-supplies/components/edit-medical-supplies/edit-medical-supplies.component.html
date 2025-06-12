@@ -86,8 +86,24 @@
                     La descripción es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
-        
-            <mat-form-field appearance="outline" class="example-full-width">
+
+            <mat-form-field appearance="outline" class="example-full-width"  *ngIf="categories.length > 0">
+                <mat-select
+                placeholder="Categoría"
+                formControlName="category"
+                required="true"
+                >
+                <mat-option [value]="category.id"  *ngFor="let category of categories">{{
+                    category.name | titlecase
+                }}</mat-option>
+
+                </mat-select>
+
+                <mat-error *ngIf="editProdFormGroup.controls['category'].hasError('required') || editProdFormGroup.controls['category'].hasError('maxLength') ">
+                    La categoría es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+                </mat-error>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
                 <mat-select
                 placeholder="Categoría"
                 formControlName="category"
@@ -107,7 +123,7 @@
                 <mat-error *ngIf="editProdFormGroup.controls['category'].hasError('required') || editProdFormGroup.controls['category'].hasError('maxLength') ">
                     La categoría es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field> -->
         
             <mat-form-field appearance="outline" class="example-full-width">
                 <mat-select (change)="setupTypeChangeDetection()"
@@ -186,7 +202,7 @@
               }}</mat-option>
               <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
               @if (this.role === 'admin' || this.role === 'almacen') {
-                @if ( editProdFormGroup.controls['type'].value!='' && editProdFormGroup.controls['type'].value != 2 && editProdFormGroup.controls['type'].value != 3){
+                @if ( editProdFormGroup.controls['type'].value!='' && editProdFormGroup.controls['type'].value === 1){
                   <mat-option [value]="3">{{
                       'Próximo a vencerse'
                   }}</mat-option>

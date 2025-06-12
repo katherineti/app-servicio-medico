@@ -23,7 +23,7 @@ import { AuthService } from '../../../services/auth.service';
   ],
 })
 export class CreateMedicalSuppliesComponent {
-  createProdFormGroup!: FormGroup;
+  createProdFormGroup!: FormGroup;           categories: any[] = [];  private categoriesSubscription: Subscription | undefined;
   role:string='';
   imageField?: File;
   disableButton: boolean = false;
@@ -34,13 +34,10 @@ export class CreateMedicalSuppliesComponent {
 
   selectedFile: File | null = null;
 
-  categories: any[] = [];
-
   // Signal para controlar la visibilidad de las opciones 3 y 4 del estado
   showExpirationStatusOptions = signal(false);
 
   private authService = inject(AuthService);
-  private categoriesSubscription: Subscription | undefined;
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
@@ -66,7 +63,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -74,7 +70,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -82,7 +77,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -90,7 +84,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -98,7 +91,6 @@ export class CreateMedicalSuppliesComponent {
         0,
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(3),
           Validators.max(100)
         ],
@@ -107,7 +99,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -115,7 +106,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           // Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -123,7 +113,6 @@ export class CreateMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],

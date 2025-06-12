@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
 import { IProduct } from '../../interfaces/medical-supplies.interface';
-import { MedicalSuppliesService } from '../../services/medical-supplies.service';
+import { Category, MedicalSuppliesService } from '../../services/medical-supplies.service';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { API_URL } from '../../../../../environment';
 import { MY_DATE_FORMATS } from '../../../services/date-format.service';
@@ -28,7 +29,7 @@ import { Subject } from 'rxjs';
 
 export class EditMedicalSuppliesComponent {
   readonly dialogRef = inject(MatDialogRef<EditMedicalSuppliesComponent>);
-  editProdFormGroup!: FormGroup;
+  editProdFormGroup!: FormGroup;           categories: any[] = [];  private categoriesSubscription: Subscription | undefined;
   selectedProduct!: IProduct;
   role:string='';
   imageField?: File;
@@ -41,10 +42,11 @@ export class EditMedicalSuppliesComponent {
 
   edit:boolean | undefined;
   imageError = false;
-  showExpirationDate = true;
   
   private destroy$ = new Subject<void>();
   EXPIRING_PRODUCT = [3, 4]; 
+  // Signal para controlar la visibilidad de las opciones 3 y 4 del estado
+  showExpirationStatusOptions = signal(false);
   
   API_URL= API_URL;
   private authService = inject(AuthService);
@@ -57,6 +59,7 @@ export class EditMedicalSuppliesComponent {
       public data: IProduct
     ){
     this.buildForm();
+    this.loadCategories();
   }
 
   async ngOnInit() {
@@ -64,12 +67,15 @@ export class EditMedicalSuppliesComponent {
 
     this.selectedProduct = this.data;   console.log("selectedProduct ", this.selectedProduct );
     this.edit = this.data.actionEdit; 
-    this.showExpirationDate= this.selectedProduct.expirationDate? true : false;
 
     if (this.data) {
       this.setForm();
-      this.setupTypeChangeDetection();
+      
+      if (this.edit){
+        this.setupTypeChangeDetection();
+      }
     }
+    this.subscribeToExpirationDateChanges(); // Suscribirse a los cambios de fecha aquí
   }
 
   get checkPropId() {
@@ -86,7 +92,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -94,7 +99,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -102,7 +106,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -110,7 +113,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -118,7 +120,6 @@ export class EditMedicalSuppliesComponent {
         0,
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(3),
           Validators.max(100)
         ],
@@ -127,7 +128,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -142,7 +142,6 @@ export class EditMedicalSuppliesComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(0),
           Validators.maxLength(50),
         ],
       ],
@@ -190,10 +189,11 @@ export class EditMedicalSuppliesComponent {
       }
 
       const isExpiringProduct = this.EXPIRING_PRODUCT.includes(this.selectedProduct?.statusId || -1);
-      if (this.selectedProduct?.type != 1 && isExpiringProduct ) {
+      if ( this.edit && this.selectedProduct?.type != 1 && isExpiringProduct ) {
         this.editProdFormGroup.patchValue({
           status: ''
         });
+        toast.info('El producto seleccionado de tipo Uniforme o Equipo odontológico no puede ser caducado. El estado se ha vaciado');
       }
   }
 
@@ -209,28 +209,82 @@ export class EditMedicalSuppliesComponent {
       });
   }
 
-  cancel() {
-    this.closeDialog();
+  /**
+   * Suscribe a los cambios en el campo de fecha de vencimiento
+   */
+  private subscribeToExpirationDateChanges(): void {
+    this.editProdFormGroup.get('expirationDate')?.valueChanges
+      .pipe(
+        debounceTime(300), // Espera 300ms después del último cambio para evitar cálculos excesivos
+        distinctUntilChanged() // Solo emite si el valor es diferente al anterior
+      )
+      .subscribe((date: Date | null) => {
+        this.checkExpirationStatus(date);
+      });
   }
+  /**
+   * Calcula los días restantes hasta la fecha de vencimiento y actualiza la visibilidad de las opciones de estado.
+   * @param expirationDate La fecha de vencimiento ingresada en el formulario.
+   */
+  private checkExpirationStatus(expirationDate: Date | null): void {
+    const statusControl = this.editProdFormGroup.get('status');
+    if (!statusControl) return;
 
-  closeDialog(): void | null {
-    this.dialogRef.close({ event: 'Cancel' });
-  }
-
-  save(){
-    if (this.checkPropId) {
-      // return this.updateProduct();
-      return this.guardarProducto();
+    if (!expirationDate) { // Si no hay fecha de vencimiento
+      this.showExpirationStatusOptions.set(false);// Esto oculta las opciones de "Próximo a vencerse" y "Caducado".
+      if (statusControl.value === 3 || statusControl.value === 4) {
+        statusControl.patchValue(1); // Restablecer a 'Disponible'
+      }
+      return;
     }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+    const expiration = new Date(expirationDate);
+    expiration.setHours(0, 0, 0, 0); // Normalizar a inicio del día
+
+    // Calcula la diferencia en milisegundos y luego en días
+    const diffTime = expiration.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // Lógica para mostrar las opciones 3 y 4:
+    // Solo se muestran si faltan 90 días o menos (o ya ha expirado).
+    this.showExpirationStatusOptions.set(diffDays <= 90);
+
+    // Lógica para cambiar el valor del campo 'status' automáticamente:
+    // Asegurarse de que el tipo de producto es relevante para la fecha de vencimiento
+    const productType = this.editProdFormGroup.get('type')?.value;
+    const isMedicalProduct = productType == 1 ; 
+
+    if (isMedicalProduct) {
+          if (diffDays <= 0) { // Si la fecha de vencimiento es hoy o ya pasó (0 días o menos)
+              // Solo cambiar si el rol es admin o almacen, y el status actual no es ya 4 (Caducado)
+              if ((this.role === 'admin' || this.role === 'almacen') && statusControl.value !== 4) {
+                  statusControl.patchValue(4); // Cambiar a 'Caducado'
+                  toast.info('El producto ha caducado o vence hoy. El estado se ha actualizado a "Caducado".');
+              }
+          } else if (diffDays <= 90) { // Si faltan 90 días o menos para expirar 
+              // Solo cambiar si el rol es admin o almacen, y el status actual no es 3 (Próximo a vencerse)
+              if ((this.role === 'admin' || this.role === 'almacen') && statusControl.value !== 3) {
+                  statusControl.patchValue(3); // Cambiar a 'Próximo a vencerse'
+                  toast.info('El producto está próximo a vencerse. El estado se ha actualizado a "Próximo a Vencerse".');
+              }
+          } else {
+              // Si el producto tiene más de 90 días para vencer y el estado fue cambiado automáticamente a 3 o 4,
+              // lo reiniciamos a 1 (Disponible) si el rol lo permite.
+              // Esto solo aplica si el usuario no lo cambió manualmente a 1 o 2.
+              if ((this.role === 'admin' || this.role === 'almacen') && (statusControl.value === 3 || statusControl.value === 4)) {
+                statusControl.patchValue(1); // Resetear a 'Disponible'
+                toast.info('El producto tiene más de 90 días para vencer. El estado se ha restablecido a "Disponible".');
+              }
+          }
+    }
+
   }
 
-  removeImage(): void {
-    this.imgBase64.set(null)
-    this.editProdFormGroup.patchValue({
-      url_image: null,
-    })
-  }
-
+  /**
+   * Maneja la selección de archivos y convierte la imagen a base64
+   */
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -276,6 +330,31 @@ export class EditMedicalSuppliesComponent {
       this.isLoading.set(false);
     };
     reader.readAsDataURL(file);
+  }
+  
+  /**
+   * Elimina la imagen seleccionada
+   */
+  removeImage(): void {
+    this.imgBase64.set(null)
+    this.editProdFormGroup.patchValue({
+      url_image: null,
+    })
+  }
+
+  cancel() {
+    this.closeDialog();
+  }
+
+  closeDialog(): void | null {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
+
+  save(){
+    if (this.checkPropId) {
+      // return this.updateProduct();
+      return this.guardarProducto();
+    }
   }
 
   guardarProducto(): void {console.log(this.editProdFormGroup.value)
@@ -334,6 +413,17 @@ export class EditMedicalSuppliesComponent {
           }
         }
       });   
+  }
+
+  loadCategories(): void {
+    this.categoriesSubscription = this.medicalSuppliesService.getCategories().subscribe(
+      (data: Category[]) => {
+        this.categories = data;
+      },
+      (error) => {
+        console.error('Error al cargar las categorías:', error);
+      }
+    );
   }
 
   handleImageError() {

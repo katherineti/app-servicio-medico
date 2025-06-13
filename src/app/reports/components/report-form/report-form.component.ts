@@ -111,7 +111,7 @@ export class ReportFormComponent {
       title: ["", [Validators.maxLength(50)]],
       receiver: ["", [Validators.maxLength(50)]],
       auditor: ["", [Validators.maxLength(50)]],
-      additionalAuditors: [[], []], // Nuevo campo para auditores adicionales
+      additionalAuditors: [[]], // Nuevo campo para auditores adicionales
       summary_objective: ["", [Validators.maxLength(50)]],
       summary_scope: ["", [Validators.maxLength(50)]],
       summary_methodology: ["", [Validators.maxLength(50)]],

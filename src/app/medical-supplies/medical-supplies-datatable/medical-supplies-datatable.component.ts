@@ -43,7 +43,7 @@ import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 export class MedicalSuppliesDatatableComponent {
   role:string='';
-  displayedColumns = ['name', 'stock', 'code','action'];
+  displayedColumns = ['name', 'provider', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
   @Input()
   data!: string;
   
@@ -64,9 +64,15 @@ export class MedicalSuppliesDatatableComponent {
 
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
-    this.displayedColumns = result.matches
-    ? [ 'name','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+      this.displayedColumns = result.matches
+        ? [ 'name','action']
+        : [ 'name', 'provider', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+
+      if ( this.role === 'almacen movil') {
+        this.displayedColumns = result.matches
+          ? [ 'name','action']
+          : [ 'name', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+      };
     });
 
     this.loadingCategorie.set(true);

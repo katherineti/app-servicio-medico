@@ -18,10 +18,11 @@ table {
 .mat-column-stock{
   flex: 0 0 100px;
 }
-.mat-column-date_entry, .mat-column-expirationDate{
+.mat-column-date_entry, .mat-column-expirationDate,
+.mat-column-providerId{
   flex: 0 0 190px;
 }
-.mat-column-status{
+.mat-column-status, .mat-column-category{
   flex: 0 0 140px;
 }
 .mat-column-action {

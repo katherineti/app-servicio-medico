@@ -5,11 +5,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
 import { Category, MedicalSuppliesService } from '../../services/medical-supplies.service';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, startWith, Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../../services/date-format.service';
 import { AuthService } from '../../../services/auth.service';
+import { ProvidersService } from '../../services/providers.service';
+import { Provider, ProvidersAll } from '../../interfaces/providers.interface';
 
 @Component({
   selector: 'app-create-medical-supplies',
@@ -37,33 +39,53 @@ export class CreateMedicalSuppliesComponent {
   // Signal para controlar la visibilidad de las opciones 3 y 4 del estado
   showExpirationStatusOptions = signal(false);
 
+  private _allProviders = new BehaviorSubject<Provider[]>([]);
+  providers: Observable<Provider[]> = this._allProviders.asObservable();
+  displayFn: (providerId: number | null) => string; 
+  filteredProviders!: Observable<Provider[]>; // Observable para proveedores filtrados
+  private providerSubscription: Subscription | undefined;
+  showAddProviderForm = false;
+  providerForm!: FormGroup;
+
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private medicalSuppliesService = inject(MedicalSuppliesService);
+  private providersService = inject(ProvidersService);
 
   constructor( 
     public dialogRef: MatDialogRef<CreateMedicalSuppliesComponent>,
     ){
-    this.buildAddUserForm();
+    this.buildProdForm();
     this.loadCategories();
     this.createProdFormGroup.patchValue({
       status: 1,
     });
+
+    // Esto asegura que 'this' dentro de displayFn siempre apunte a la instancia de CreateMedicalSuppliesComponent.
+    this.displayFn = this._displayProviderName.bind(this);
   }
 
-  async ngOnInit(){
+
+  async ngOnInit() {
     this.role = await this.authService.getRol();
-    this.subscribeToExpirationDateChanges(); // Suscribirse a los cambios de fecha aquí
+    this.subscribeToExpirationDateChanges();
+    this.loadProvidersAndSetupAutocomplete();
   }
 
-  buildAddUserForm() {
+  buildProdForm() {
     this.createProdFormGroup = this.formBuilder.group({
       name: [
         '',
         [
           Validators.required,
           Validators.maxLength(50),
+        ],
+      ],
+      providerId: [
+        null,
+        [
+          Validators.required,
         ],
       ],
       description: [
@@ -119,6 +141,12 @@ export class CreateMedicalSuppliesComponent {
       url_image: [null],
     });
 
+    this.providerForm = this.formBuilder.group({
+      name: ["", [Validators.required, Validators.maxLength(200)]],
+      cedula: ["", [Validators.required, Validators.maxLength(10)]],
+      email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
+      phone: ["", [Validators.required, Validators.maxLength(50)]],
+    });
   }
 
   /**
@@ -328,6 +356,88 @@ export class CreateMedicalSuppliesComponent {
         console.error('Error al cargar las categorías:', error);
       }
     );
+  }
+
+  // Métodos para el autocompletado de proveedores
+  loadProvidersAndSetupAutocomplete(): void {
+    this.providerSubscription = this.providersService.get().subscribe({
+      next: (data: ProvidersAll) => {
+        this._allProviders.next(data.list); // <-- Actualiza el BehaviorSubject con la lista de proveedores
+        console.log("providers cargados (via BehaviorSubject):", data.list);
+
+        // Corrección del error de TypeScript: Solo intenta acceder a data.list[0] si hay elementos.
+        console.log("Tipo del primer ID cargado:", data.list.length > 0 ? typeof data.list[0].id : 'N/A (array vacío)');
+
+        // Ahora, configuramos `filteredProviders` usando el BehaviorSubject
+        this.filteredProviders = this.createProdFormGroup.get('providerId')!.valueChanges.pipe(
+          startWith(''),
+          debounceTime(300),
+          map(value => {
+            const currentProviders = this._allProviders.getValue(); // Obtiene la última lista del BehaviorSubject
+            const filterValue = typeof value === 'string' ? value : value?.name; // 'value' puede ser string o el objeto Provider
+            return filterValue ? this._filterProviders(filterValue, currentProviders) : currentProviders.slice();
+          })
+        );
+      },
+      error: (error: any) => {
+        console.error('Error al cargar los proveedores:', error);
+        toast.error('Error al cargar los proveedores. Por favor, inténtalo de nuevo.');
+      },
+      complete: () => {
+        console.log('Carga de proveedores completada.');
+      }
+    });
+  }
+
+ private _displayProviderName(providerId: number | null): string {
+    console.log('--- _displayProviderName llamado ---');
+    console.log('providerId recibido:', providerId);
+    console.log('Tipo de providerId recibido:', typeof providerId);
+
+    if (!providerId) {
+      console.log('providerId es nulo o indefinido. Retornando cadena vacía.');
+      return '';
+    }
+
+    // Ya no debería ser undefined aquí si se enlazó correctamente
+    // y el BehaviorSubject se inicializó.
+    const currentProviders = this._allProviders.getValue(); // <-- AHORA SÍ DEBERÍA FUNCIONAR
+
+    if (!currentProviders || currentProviders.length === 0) {
+      console.log('this._allProviders.getValue() está vacío o no cargado aún. Retornando cadena vacía.');
+      return '';
+    }
+
+    console.log('Primer elemento en currentProviders:', currentProviders[0]);
+    console.log('Tipo de ID del primer proveedor en currentProviders:', typeof currentProviders[0].id);
+
+    const selectedProvider = currentProviders.find(provider => provider.id === Number(providerId));
+
+    console.log('Proveedor encontrado por _displayProviderName:', selectedProvider);
+
+    return selectedProvider ? selectedProvider.name : '';
+  }
+
+  // CAMBIO CLAVE: `_filterProviders` ahora toma la lista como argumento
+  private _filterProviders(value: string, providersList: Provider[]): Provider[] {
+    const filterValue = value.toLowerCase();
+    // providersList ya es el array que viene del BehaviorSubject, podría estar vacío.
+    return providersList.filter(provider => provider.name.toLowerCase().includes(filterValue));
+  }
+
+
+  toggleAddProviderForm(): void {
+    this.showAddProviderForm = !this.showAddProviderForm;
+
+    if (!this.showAddProviderForm) {
+      this.providerForm.reset();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.categoriesSubscription?.unsubscribe();
+    this.providerSubscription?.unsubscribe();
+    this._allProviders.complete(); // IMPORTANTE: Completar el BehaviorSubject al destruir
   }
 
 }

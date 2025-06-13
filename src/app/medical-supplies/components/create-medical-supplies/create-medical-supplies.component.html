@@ -65,19 +65,55 @@
                 matInput
                 placeholder="Nombre"
                 formControlName="name"
-                required="true"
+                [required]="true"
                 type="text"
                 />
                 <mat-error *ngIf="createProdFormGroup.controls['name'].hasError('required') || createProdFormGroup.controls['name'].hasError('maxLength') ">
                     El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Proveedor</mat-label>
+                
+                <input 
+                    type="text"
+                    matInput
+                    placeholder="Buscar proveedor"
+                    formControlName="providerId"
+                    [matAutocomplete]="auto"
+                    required
+                />
+                
+                <button 
+                mat-icon-button 
+                matSuffix 
+                type="button" 
+                (click)="toggleAddProviderForm()"
+                matTooltip="Agregar proveedores"
+                >
+                  <mat-icon>person_add</mat-icon> 
+                </button>
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider.id">
+                    {{ provider.name | titlecase}} </mat-option>
+                </mat-autocomplete>
+
+                <mat-error *ngIf="createProdFormGroup.controls['providerId'].hasError('required')">
+                    El proveedor es requerido
+                </mat-error>
+                <mat-error *ngIf="createProdFormGroup.get('providerId')?.hasError('maxlength')">
+                    Máximo de 50 caracteres.
+                </mat-error>
+            </mat-form-field>
+            
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
                 placeholder="Descripción"
                 formControlName="description"
-                required="true"
+                [required]="true"
                 type="text"
                 />
                 <mat-error *ngIf="createProdFormGroup.controls['description'].hasError('required') || createProdFormGroup.controls['description'].hasError('maxLength') ">

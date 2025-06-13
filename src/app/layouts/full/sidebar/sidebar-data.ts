@@ -11,9 +11,20 @@ export const navItemsAdmin: NavItem[] = [
   {
     displayName: 'Insumos Médicos',
     iconName: 'activity',
-    route: './medical-supplies',
-    external: true,
+    route: '',
     chipClass: 'bg-secondary text-white',
+    children: [
+      {
+        displayName: 'Inventario almacén',
+        iconName: 'file-text',
+        route: './medical-supplies'
+      },
+      {
+        displayName: 'Inventario móvil',
+        iconName: 'file-text',
+        route: '/'
+      },
+    ],
   },
   {
     displayName: 'Usuarios',

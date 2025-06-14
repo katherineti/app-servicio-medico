@@ -321,7 +321,7 @@ export class AssignmentComponent implements OnInit {
         );
         this.showNewEmployeeForm = false;
         this.employeeForm.reset();
-        toast.success("Empleado agregado correctamente.");
+        toast.success("Empleado guardado.");
       })
     }
   }

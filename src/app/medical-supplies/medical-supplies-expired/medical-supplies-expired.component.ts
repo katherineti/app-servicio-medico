@@ -69,9 +69,15 @@ export class MedicalSuppliesExpiredComponent {
 
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
-    this.displayedColumns = result.matches
-    ? [ 'name','action']
-    : [ 'name', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+      this.displayedColumns = result.matches
+        ? [ 'name','action']
+        : [ 'name', 'provider', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+
+      if ( this.role === 'almacen movil') {
+        this.displayedColumns = result.matches
+          ? [ 'name','action']
+          : [ 'name', 'category', 'stock', 'code', 'date_entry','expirationDate','image','status','action'];
+      };
     });
 
     this.loadingCategorie.set(true);

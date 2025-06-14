@@ -48,6 +48,13 @@
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                             {{ element.name | titlecase}}</mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="provider">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                            Proveedor
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                            {{ element.provider | titlecase}}</mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="category">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                                 Categoría 
@@ -67,7 +74,7 @@
                             Código
                             </mat-header-cell>
                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                            {{ element.code }}</mat-cell>
+                            {{ element.code | titlecase}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date_entry">
                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">

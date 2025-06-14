@@ -13,6 +13,7 @@ export interface IProduct {
   createdAt?: string;
   updatedAt?: string;
   expirationDate: string;
+  providerId: number;
 
   actionEdit?:boolean;
 }

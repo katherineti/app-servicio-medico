@@ -74,6 +74,118 @@
                     El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Proveedor</mat-label>
+                
+                <input 
+                    type="text"
+                    matInput
+                    placeholder="Buscar proveedor"
+                    formControlName="providerId"
+                    [matAutocomplete]="auto"
+                    required
+                />
+                
+                <button 
+                    mat-icon-button 
+                    matSuffix 
+                    type="button" 
+                    (click)="toggleAddProviderForm($event)"
+                    matTooltip="Agregar proveedores"
+                    tabindex="-1"
+                    *ngIf="this.edit"
+                >
+                  <mat-icon>person_add</mat-icon> 
+                </button>
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider.id">
+                    {{ provider.name | titlecase}} </mat-option>
+                </mat-autocomplete>
+
+                <mat-error *ngIf="editProdFormGroup.controls['providerId'].hasError('required')">
+                    El proveedor es requerido
+                </mat-error>
+                <mat-error *ngIf="editProdFormGroup.get('providerId')?.hasError('maxlength')">
+                    Máximo de 50 caracteres.
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Formulario para Agregar Nuevo Proveedor -->
+            @if (showAddProviderForm && this.edit) {
+                <mat-card class="nested-form-card">
+                  <mat-card-header>
+                      <mat-card-title>Datos del Proveedor</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <form [formGroup]="providerForm">
+                        <div class="form-row">
+                            <!-- Name del proveedor -->
+                            <mat-form-field appearance="outline" class="example-full-width">
+                              <input matInput placeholder="Nombre" formControlName="name" required>
+                              <mat-error *ngIf="providerForm.controls['name'].errors"> 
+                                  <ng-container *ngIf="providerForm.controls['name'].hasError('required')">
+                                      El nombre es requerido.
+                                  </ng-container>
+                                  <ng-container *ngIf="providerForm.controls['name'].hasError('maxlength')">
+                                      No puede tener más de 200 caracteres.
+                                  </ng-container>
+                              </mat-error>
+                            </mat-form-field>
+        
+                            <!-- Email del proveedor -->
+                            <mat-form-field appearance="outline" class="example-full-width">
+                              <input matInput placeholder="Email" formControlName="email" required>
+                              <mat-error *ngIf="providerForm.controls['email'].errors"> 
+                                  <ng-container *ngIf="providerForm.controls['email'].hasError('required')">
+                                      El email es requerido.
+                                  </ng-container>
+                                  <ng-container *ngIf="providerForm.controls['email'].hasError('email')">
+                                      Por favor, introduce un email válido.
+                                  </ng-container>
+                                  <ng-container *ngIf="providerForm.controls['email'].hasError('maxlength')">
+                                      No puede tener más de 100 caracteres.
+                                  </ng-container>
+                              </mat-error>
+                            </mat-form-field>
+
+                            <!-- Telefono del proveedor -->
+                            <mat-form-field appearance="outline" class="example-full-width">
+                              <input matInput placeholder="Teléfono" formControlName="phone" required>
+                              <mat-error *ngIf="providerForm.controls['phone'].errors"> 
+                                  <ng-container *ngIf="providerForm.controls['phone'].hasError('required')">
+                                      El teléfono es requerido.
+                                  </ng-container>
+                                  <ng-container *ngIf="providerForm.controls['phone'].hasError('maxlength')">
+                                      No puede tener más de 50 caracteres.
+                                  </ng-container>
+                              </mat-error>
+                            </mat-form-field>
+                        </div>
+                      </form>
+                  </mat-card-content>
+                  <mat-card-actions align="end">
+                      <button 
+                      type="button" 
+                      mat-button 
+                      (click)="cancelFormProvider()"
+                      >
+                      Cancelar
+                      </button>
+                      <button 
+                      type="button" 
+                      mat-raised-button 
+                      color="primary" 
+                      (click)="saveProvider()"
+                      [disabled]="providerForm.invalid"
+                      >
+                      Guardar Proveedor
+                      </button>
+                  </mat-card-actions>
+                </mat-card>
+            }
+            
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput

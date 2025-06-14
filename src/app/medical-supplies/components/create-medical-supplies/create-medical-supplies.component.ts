@@ -230,11 +230,11 @@ export class CreateMedicalSuppliesComponent {
 
   save() {
     if (this.createProdFormGroup) {
-      return this.guardarProducto()
+      return this.saveProduct()
     }
   }
 
-  guardarProducto(): void {
+  saveProduct(): void {
     console.log(this.createProdFormGroup.value)
 
     if (this.createProdFormGroup.invalid) {

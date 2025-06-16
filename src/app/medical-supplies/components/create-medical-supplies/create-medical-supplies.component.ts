@@ -513,6 +513,10 @@ export class CreateMedicalSuppliesComponent {
           toast.success(`Proveedor "${savedProvider.name}" guardado y seleccionado correctamente.`)
         },
         error: (error) => {
+          if(error==='El correo del proveedor ya existe.' || error==='El nombre del proveedor ya existe.'){
+            toast.error(error);
+            return
+          }
           console.error("Error completo al guardar el proveedor:", error)
           console.error("Error status:", error.status)
           console.error("Error message:", error.message)

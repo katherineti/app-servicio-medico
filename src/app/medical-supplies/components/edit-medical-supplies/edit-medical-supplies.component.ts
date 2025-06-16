@@ -519,6 +519,10 @@ export class EditMedicalSuppliesComponent {
           toast.success(`Proveedor "${savedProvider.name}" guardado y seleccionado correctamente.`)
         },
         error: (error) => {
+          if(error==='El correo del proveedor ya existe.' || error==='El nombre del proveedor ya existe.'){
+            toast.error(error);
+            return
+          }
           console.error("Error completo al guardar el proveedor:", error)
           toast.error("Error al guardar el proveedor. Por favor, inténtalo de nuevo.")
         },

@@ -1,13 +1,20 @@
+#register{
+    background-image: url('./../../assets/fondo.png'); 
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    background-attachment: fixed; 
+} 
+
 .mat-form-field-invalid {
     .mat-form-field-underline {
       border-color: red; 
     }
   
     .mat-form-field-subscript-wrapper {
-    
       color: red; 
     }
-  }
+}
 
 .ocultar-en-movil-tablet{
   display: inline-block !important;
@@ -19,5 +26,67 @@
   // Media query para teléfonos 
   @media (max-width: 599px) {
     display: none !important;
+  }
+}
+
+// Estilos para los requisitos de contraseña
+.password-requirements {
+  margin-top: 8px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+  transition: color 0.3s ease;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.valid {
+    color: #28a745;
+    
+    .requirement-icon {
+      color: #28a745;
+      font-weight: bold;
+    }
+  }
+
+  &.invalid {
+    color: #dc3545;
+    
+    .requirement-icon {
+      color: #dc3545;
+      font-weight: bold;
+    }
+  }
+}
+
+.requirement-icon {
+  margin-right: 8px;
+  font-size: 12px;
+  width: 16px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+// Estilos para el botón de mostrar/ocultar contraseña
+.mat-form-field .mat-icon-button {
+  width: 40px;
+  height: 40px;
+  
+  .mat-icon {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.54);
+    
+    &:hover {
+      color: rgba(0, 0, 0, 0.87);
+    }
   }
 }

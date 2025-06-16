@@ -6,7 +6,7 @@
             <div class="text-center">
               <a [routerLink]="['/dashboard']">
                 <!-- <img src="./assets/logo-ciip.png" class="align-middle m-2" alt="logo" width="200" /> -->
-                <img src="./../../../../assets/images/user.png" class="align-middle m-2" alt="logo" width="100" />
+                <img src="./../../../../assets/images/user.png" class="align-middle m-t-10" alt="logo" width="80" />
               </a>
             </div>
   
@@ -27,6 +27,7 @@
                     Por favor, introduce un email válido.
                 </mat-error>
               </mat-form-field>
+              
               <!-- password -->
               <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
               <mat-form-field appearance="outline" class="w-100" color="primary">
@@ -37,17 +38,20 @@
                   required="true"
                   type="password"
                   />
-                <mat-error *ngIf="loginFormGroup.controls['password'].hasError('required') || loginFormGroup.controls['password'].hasError('maxLength') ">
+                <mat-error *ngIf="loginFormGroup.controls['password'].hasError('required')">
                     La contraseña es requerida.
+                </mat-error>
+                <mat-error *ngIf="loginFormGroup.controls['password'].hasError('invalidPassword') || loginFormGroup.controls['password'].hasError('minlength') || loginFormGroup.controls['password'].hasError('maxlength')">
+                    Contraseña inválida.
                 </mat-error>
               </mat-form-field>
               
-              <button class="w-100 m-t-10" (click)="login()" mat-flat-button color="primary">
+              <button class="w-100 m-t-10" (click)="login()" mat-flat-button color="primary" [disabled]="!loginFormGroup.valid">
                 Iniciar sesión
               </button>
             </form>
 
-            <span class="d-block f-w-500 text-center m-t-24">¿Eres nuevo?
+            <span class="d-block f-w-500 text-center m-t-24 f-s-14">¿Eres nuevo?
               <a [routerLink]="['/register']" class="text-decoration-none text-primary f-w-500 f-s-14">
                 Regístrate</a>
             </span>
@@ -55,4 +59,4 @@
         </mat-card>
       </div>
     </div>
-  </div>
+</div>

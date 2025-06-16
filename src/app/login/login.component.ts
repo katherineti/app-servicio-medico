@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { LoginResponse, SigInLogin } from '../authentication/models/login.response.model';
 import { firstValueFrom } from 'rxjs';
 import { SwalService } from '../services/swal.service';
@@ -36,11 +36,54 @@ export class LoginComponent {
         '',
         [
           Validators.required,
-          Validators.maxLength(30),
-          Validators.pattern(/^[a-zA-Z0-9]*$/),
+          Validators.minLength(10),
+          Validators.maxLength(16),
+          this.passwordValidator
         ],
       ],
-    });;
+    });
+  }
+
+  // Validador personalizado para la contraseña
+  passwordValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    
+    if (!value) {
+      return null;
+    }
+
+    const errors: ValidationErrors = {};
+
+    // Verificar mayúscula
+    if (!/[A-Z]/.test(value)) {
+      errors['invalidPassword'] = true;
+    }
+
+    // Verificar número
+    if (!/[0-9]/.test(value)) {
+      errors['invalidPassword'] = true;
+    }
+
+    // Verificar carácter especial (. * - % /)
+    if (!/[.*\-\%\/]/.test(value)) {
+      errors['invalidPassword'] = true;
+    }
+
+    // Verificar que no tenga letras iguales consecutivas
+    for (let i = 0; i < value.length - 1; i++) {
+      const currentChar = value[i].toLowerCase();
+      const nextChar = value[i + 1].toLowerCase();
+      
+      // Solo verificar si ambos caracteres son letras
+      if (/[a-z]/.test(currentChar) && /[a-z]/.test(nextChar)) {
+        if (currentChar === nextChar) {
+          errors['invalidPassword'] = true;
+          break;
+        }
+      }
+    }
+
+    return Object.keys(errors).length ? errors : null;
   }
 
   async login() {

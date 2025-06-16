@@ -1,6 +1,6 @@
 import { NavItem } from './nav-item/nav-item';
 
-export const navItemsAdmin: NavItem[] = [
+export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role === 'auditor' )
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -76,7 +76,7 @@ export const navItemsAdmin: NavItem[] = [
     ],
   },
 ];
-export const navItems: NavItem[] = [
+export const navItems: NavItem[] = [ //almacen1 admin, medico
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -87,8 +87,49 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Insumos Médicos',
     iconName: 'activity',
+    route: '',
+    chipClass: 'bg-secondary text-white',
+    children: [
+      {
+        displayName: 'Inventario almacén',
+        iconName: 'file-text',
+        route: './medical-supplies'
+      },
+      {
+        displayName: 'Inventario móvil',
+        iconName: 'file-text',
+        route: '/'
+      }
+    ],
+  },
+/*   {
+    displayName: 'Insumos Médicos',
+    iconName: 'activity',
     route: './medical-supplies',
     external: true,
     chipClass: 'bg-secondary text-white',
+  } */
+];
+
+export const navItemsAlmacen2Movil: NavItem[] = [ //almacen2 movil
+  {
+    displayName: 'Dashboard',
+    iconName: 'grid',
+    route: './dashboard',
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  },
+  {
+    displayName: 'Insumos Médicos',
+    iconName: 'activity',
+    route: '',
+    chipClass: 'bg-secondary text-white',
+    children: [
+      {
+        displayName: 'Inventario móvil',
+        iconName: 'file-text',
+        route: '/'
+      }
+    ]
   }
 ];

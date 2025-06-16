@@ -30,6 +30,7 @@
 
 <br>
 
+<!-- Los productos caducados (status 4) no se listan aquí -->
 <mat-card class="">
     <mat-card-content>
         <div class="w-100" style="width: 100%; overflow-x: auto;">
@@ -142,7 +143,7 @@
                                     <i-feather name="edit" ></i-feather>
                                 </button>
                              }
-                             @if (this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') {
+                             @if ((this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') && element.statusId != 4 ) {
                                  <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
                                      <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
                                  </button>

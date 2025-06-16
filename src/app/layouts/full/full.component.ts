@@ -11,7 +11,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
-import { navItems, navItemsAdmin } from './sidebar/sidebar-data';
+import { navItems, navItemsAdmin, navItemsAlmacen2Movil } from './sidebar/sidebar-data';
 import { MaterialModule } from '../../material/material.module';
 import { FeatherIconsModule } from '../../feathericons/feathericons.module';
 import { AuthService } from '../../services/auth.service';
@@ -86,8 +86,10 @@ export class FullComponent implements OnInit {
     this.role = await this.authService.getRol();
     if( this.role === 'admin' || this.role === 'auditor' ){
       this.navItems = navItemsAdmin;
+    }else if(this.role === 'almacen movil'){
+      this.navItems = navItemsAlmacen2Movil;
     }else{
-      this.navItems = navItems;
+      this.navItems = navItems; //almacen1 admin, medico
     }
    }
 

@@ -60,6 +60,9 @@
                 <mat-option [value]="4">{{
                     'Auditor' | titlecase
                 }}</mat-option>
+                <mat-option [value]="5">{{
+                    'Almacén móvil' | titlecase
+                }}</mat-option>
                 </mat-select>
             <mat-error *ngIf="userFormGroup.controls['role'].hasError('required')">
                 El rol es requerido.

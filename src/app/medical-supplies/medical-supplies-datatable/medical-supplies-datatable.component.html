@@ -134,20 +134,23 @@
                             Acción
                             </mat-header-cell>
                             <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeProduct(element)">
+                                <button mat-icon-button aria-label="Ver" (click)="openDialogSeeProduct(element)" title="Ver producto">
                                     <i-feather name="eye"></i-feather>
                                 </button>
 
                               @if (this.role === 'admin' || this.role === 'almacen') {
-                                <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)">
+                                <button mat-icon-button aria-label="Editar" (click)="openDialogEditProduct(element)" title="Editar producto">
                                     <i-feather name="edit" ></i-feather>
                                 </button>
                              }
                              @if ((this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') && element.statusId != 4 ) {
-                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)">
+                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)" title="Asignar producto a un empleado">
                                      <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
                                  </button>
-                             }
+                                }
+                                <button mat-icon-button aria-label="Asignar" (click)="true" title="Mover a inventario móvil">
+                                    <i-feather name="package"></i-feather>
+                                </button>
                             </mat-cell>
                         </ng-container>
                     

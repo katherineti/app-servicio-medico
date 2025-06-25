@@ -1,62 +1,99 @@
-<div class="blank-layout-container justify-content-center align-items-center bg-light" id="login">
-    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-      <div class="col-lg-4 d-flex align-items-center">
-        <mat-card class="cardWithShadow boxed-auth">
-          <mat-card-content class="p-32">
-            <div class="text-center">
-              <a [routerLink]="['/dashboard']">
-                <!-- <img src="./assets/logo-ciip.png" class="align-middle m-2" alt="logo" width="200" /> -->
-                <img src="./../../../../assets/images/user.png" class="align-middle m-t-10" alt="logo" width="80" />
-              </a>
-            </div>
-  
-            <form class="m-t-30" [formGroup]="loginFormGroup" #f="ngForm">
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
+<div class="login-container">
+  <div class="row no-gutters h-100">
+    
+    <!-- Columna Izquierda - Imagen completa -->
+    <div class="col-xl-8 col-lg-7 col-md-6 d-none d-md-flex background-column">
+      <!-- La imagen de fondo se maneja en CSS -->
+    </div>
+
+    <!-- Columna Derecha - Formulario -->
+    <div class="col-xl-4 col-lg-5 col-md-6 col-12 form-column">
+      <div class="form-container">
+        <div class="form-content">
+          
+          <!-- Header -->
+          <div class="text-center header-section">
+            <h2 class="welcome-title">Bienvenido</h2>
+            <!-- <p class="welcome-subtitle">Inicia sesión en tu cuenta</p> -->
+          </div>
+
+          <!-- Formulario de Login -->
+          <form class="login-form" 
+                [formGroup]="loginFormGroup" 
+                #f="ngForm"
+                (ngSubmit)="login()"
+                novalidate>
+            
+            <!-- Campo Email -->
+            <div class="form-group">
               <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-label>Email</mat-label>
                 <input
-                matInput
-                placeholder="Email"
-                formControlName="email"
-                required="true"
-                type="email"
+                  matInput
+                  id="email"
+                  placeholder="Ingresa tu email"
+                  formControlName="email"
+                  required
+                  type="email"
+                  autocomplete="email"
+                  [disabled]="isLoading"
                 />
-                <mat-error *ngIf="loginFormGroup.controls['email'].hasError('required') || loginFormGroup.controls['email'].hasError('maxLength') ">
-                    El email es requerido.
+                <mat-error *ngIf="loginFormGroup.controls['email'].hasError('required') || loginFormGroup.controls['email'].hasError('maxLength')">
+                  El email es requerido.
                 </mat-error>
                 <mat-error *ngIf="loginFormGroup.controls['email'].hasError('email')">
-                    Por favor, introduce un email válido.
+                  Por favor, introduce un email válido.
                 </mat-error>
               </mat-form-field>
-              
-              <!-- password -->
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
+            </div>
+            
+            <!-- Campo Contraseña -->
+            <div class="form-group">
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input
+                <mat-label>Contraseña</mat-label>
+                <input
                   matInput
-                  placeholder="Contraseña"
+                  id="password"
+                  placeholder="Ingresa tu contraseña"
                   formControlName="password"
-                  required="true"
+                  required
                   type="password"
-                  />
+                  autocomplete="current-password"
+                  [disabled]="isLoading"
+                />
                 <mat-error *ngIf="loginFormGroup.controls['password'].hasError('required')">
-                    La contraseña es requerida.
+                  La contraseña es requerida.
                 </mat-error>
                 <mat-error *ngIf="loginFormGroup.controls['password'].hasError('invalidPassword') || loginFormGroup.controls['password'].hasError('minlength') || loginFormGroup.controls['password'].hasError('maxlength')">
-                    Contraseña inválida.
+                  Contraseña inválida.
                 </mat-error>
               </mat-form-field>
-              
-              <button class="w-100 m-t-10" (click)="login()" mat-flat-button color="primary" [disabled]="!loginFormGroup.valid">
-                Iniciar sesión
-              </button>
-            </form>
+            </div>
+            
+            <!-- Botón de Login -->
+            <button 
+              type="submit"
+              class="login-button" 
+              [class.loading]="isLoading"
+              mat-flat-button 
+              color="primary" 
+              [disabled]="!loginFormGroup.valid || isLoading">
+              <span *ngIf="!isLoading">Iniciar sesión</span>
+              <span *ngIf="isLoading">Iniciando...</span>
+            </button>
+          </form>
 
-            <span class="d-block f-w-500 text-center m-t-24 f-s-14">¿Eres nuevo?
-              <a [routerLink]="['/register']" class="text-decoration-none text-primary f-w-500 f-s-14">
-                Regístrate</a>
-            </span>
-          </mat-card-content>
-        </mat-card>
+          <!-- Link de Registro -->
+          <div class="register-link">
+            <span>¿Eres nuevo?</span>
+            <a [routerLink]="['/register']" class="register-anchor">
+              Regístrate
+            </a>
+          </div>
+
+        </div>
       </div>
     </div>
+
+  </div>
 </div>

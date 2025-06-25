@@ -1,89 +1,108 @@
-<div class="blank-layout-container justify-content-center align-items-center bg-light" id="register">
-    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-      <div class="col-lg-4 d-flex align-items-center">
-        <mat-card class="cardWithShadow boxed-auth">
-          <mat-card-content class="p-32">
-            <!-- <div class="text-center">
-                <img src="./../../../../assets/images/user.png" class="align-middle" alt="logo" width="70" />
-            </div> -->
-  
-            <form class="m-t-30" [formGroup]="registerFormGroup" #f="ngForm">
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Nombre</mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input
-                matInput
-                placeholder="Nombre"
-                formControlName="name"
-                required="true"
-                type="text"
-                />
-              <mat-error *ngIf="registerFormGroup.controls['name'].errors"> 
-                <ng-container *ngIf="registerFormGroup.controls['name'].hasError('required')">
-                  El nombre es requerido.
-                </ng-container>
-                <ng-container *ngIf="registerFormGroup.controls['name'].hasError('maxlength')">
-                  No puede tener más de 50 caracteres.
-                </ng-container>
-              </mat-error>
-              </mat-form-field>
+<div class="register-container">
+  <div class="row no-gutters h-100">
 
-              <!-- Email -->
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input
-                matInput
-                placeholder="Email"
-                formControlName="email"
-                required="true"
-                type="email"
-                />
-              <mat-error *ngIf="registerFormGroup.controls['email'].errors"> 
-                <ng-container *ngIf="registerFormGroup.controls['email'].hasError('required')">
-                  El email es requerido.
-                </ng-container>
-                <ng-container *ngIf="registerFormGroup.controls['email'].hasError('email')">
-                  Por favor, introduce un email válido.
-                </ng-container>
-                <ng-container *ngIf="registerFormGroup.controls['email'].hasError('maxlength')">
-                  No puede tener más de 50 caracteres.
-                </ng-container>
-              </mat-error>
-              </mat-form-field>
+    <div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-flex background-column">
+      </div>
 
-              <!-- Contraseña -->
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
+    <div class="col-xl-4 col-lg-5 col-md-5 col-12 form-column">
+      <div class="form-container">
+        <div class="form-content">
+
+          <div class="text-center header-section">
+            <h2 class="welcome-title">Crea tu cuenta</h2>
+            </div>
+
+          <form class="register-form"
+                [formGroup]="registerFormGroup"
+                #f="ngForm"
+                (ngSubmit)="register()"
+                novalidate>
+            <div class="form-group">
               <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input
+                <mat-label>Nombre</mat-label>
+                <input
                   matInput
-                  placeholder="Contraseña"
-                  formControlName="password"
-                  required="true"
-                  [type]="hidePassword ? 'password' : 'text'"
-                  />
-                  <button 
-                    mat-icon-button 
-                    matSuffix 
-                    (click)="togglePasswordVisibility()" 
-                    [attr.aria-label]="'Hide password'" 
-                    [attr.aria-pressed]="hidePassword"
-                    type="button">
-                    <mat-icon>{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
-                  </button>
+                  placeholder="Ingresa tu nombre"
+                  formControlName="name"
+                  required
+                  type="text"
+                  [disabled]="isLoading"
+                />
+                <mat-error *ngIf="registerFormGroup.controls['name'].hasError('required')">
+                  El nombre es requerido.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['name'].hasError('maxlength')">
+                  El nombre no puede exceder los 50 caracteres.
+                </mat-error>
               </mat-form-field>
+            </div>
 
-              <!-- Requisitos de contraseña siempre visibles -->
-              <div class="password-requirements m-t-8">
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  placeholder="Ingresa tu email"
+                  formControlName="email"
+                  required
+                  type="email"
+                  autocomplete="email"
+                  [disabled]="isLoading"
+                />
+                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('required')">
+                  El email es requerido.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('email')">
+                  Por favor, introduce un email válido.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['email'].hasError('maxlength')">
+                  El email no puede exceder los 50 caracteres.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-label>Contraseña</mat-label>
+                <input
+                  matInput
+                  placeholder="Ingresa tu contraseña"
+                  formControlName="password"
+                  required
+                  [type]="hidePassword ? 'password' : 'text'"
+                  autocomplete="new-password"
+                  (input)="onPasswordChange()"
+                  [disabled]="isLoading"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Ocultar contraseña'"
+                  [attr.aria-pressed]="hidePassword"
+                  type="button"
+                >
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="registerFormGroup.controls['password'].hasError('required')">
+                  La contraseña es requerida.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['password'].hasError('minlength')">
+                  La contraseña debe tener al menos 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['password'].hasError('maxlength')">
+                  La contraseña no puede exceder los 16 caracteres.
+                </mat-error>
+                </mat-form-field>
+
+              <div class="password-requirements">
                 <div class="requirement-item" [ngClass]="{'valid': hasMinLength, 'invalid': !hasMinLength}">
                   <span class="requirement-icon">{{hasMinLength ? '✓' : '✗'}}</span>
-                  Al menos 10 caracteres
-                </div>
-                <div class="requirement-item" [ngClass]="{'valid': hasMaxLength, 'invalid': !hasMaxLength}">
-                  <span class="requirement-icon">{{hasMaxLength ? '✓' : '✗'}}</span>
-                  Máximo 16 caracteres
+                  10-16 caracteres
                 </div>
                 <div class="requirement-item" [ngClass]="{'valid': hasUppercase, 'invalid': !hasUppercase}">
                   <span class="requirement-icon">{{hasUppercase ? '✓' : '✗'}}</span>
-                  Al menos una letra mayúscula
+                  Al menos una mayúscula
                 </div>
                 <div class="requirement-item" [ngClass]="{'valid': hasNumber, 'invalid': !hasNumber}">
                   <span class="requirement-icon">{{hasNumber ? '✓' : '✗'}}</span>
@@ -98,20 +117,32 @@
                   Sin letras iguales consecutivas
                 </div>
               </div>
+            </div>
 
-              <mat-error *ngIf="typeError === 'conflicto'">Nombre de usuario o correo electrónico ya existe.</mat-error>
-  
-              <button class="w-100 m-t-10" (click)="register()" mat-flat-button color="primary" [disabled]="!registerFormGroup.valid">
-                Registrar
-              </button>
-            </form>
+            <mat-error *ngIf="typeError === 'conflicto'">Nombre de usuario o correo electrónico ya existe.</mat-error>
 
-            <span class="d-block f-w-500 text-center m-t-24 f-s-14">¿Ya tienes una cuenta?
-              <a [routerLink]="['/login']" class="text-decoration-none text-primary f-w-500 f-s-14">
-                Entra aquí</a>
-            </span>
-          </mat-card-content>
-        </mat-card>
+            <button
+              type="submit"
+              class="register-button"
+              [class.loading]="isLoading"
+              mat-flat-button
+              color="primary"
+              [disabled]="!registerFormGroup.valid || isLoading">
+              <span *ngIf="!isLoading">Registrar</span>
+              <span *ngIf="isLoading">Registrando...</span>
+            </button>
+          </form>
+
+          <div class="login-link">
+            <span>¿Ya tienes una cuenta?</span>
+            <a [routerLink]="['/login']" class="login-anchor">
+              Entra aquí
+            </a>
+          </div>
+
+        </div>
       </div>
     </div>
+
+  </div>
 </div>

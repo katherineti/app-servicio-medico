@@ -216,10 +216,54 @@ body {
   
   .cursor_pointer{
     cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &.generating {
+      opacity: 0.7;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        box-shadow: 0px 1px 22px -12px #607D8B;
+      }
+    }
   }
 
+// Estilos para el texto de reporte
+.report-text {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1976d2;
+  background-color: rgba(25, 118, 210, 0.1);
+  padding: 6px 12px;
+  border-radius: 15px;
+  border: 1px solid rgba(25, 118, 210, 0.2);
+  transition: all 0.3s ease;
+  
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
 // mat-card { width: 380px !important; display: inline-block; margin-top: 0px; height: 200px; }
-mat-card { width: 100% !important; display: inline-block; margin-top: 0px; height: 200px; }
+mat-card { 
+  width: 100% !important; 
+  display: inline-block; 
+  margin-top: 0px; 
+  height: 220px; // Aumentado para acomodar el texto de reporte
+  position: relative; // Para posicionar el texto de reporte
+}
+
 // mat-card { width: 25% !important; display: inline-block; margin-top: 0px; }
 .cards-container {
     display: grid;
@@ -227,6 +271,7 @@ mat-card { width: 100% !important; display: inline-block; margin-top: 0px; heigh
     gap: 20px;
     justify-content: center;
 }
+
 .card {
     background-color: #ffffff; 
     border-radius: 8px;

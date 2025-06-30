@@ -1,17 +1,9 @@
-<!-- <mat-card class="cardWithShadow">
-    <mat-card-content>
-        <mat-card-title>Número Total de Usuarios Activos</mat-card-title>
-        <div class="row m-t-24">
-            <div class="col-7">
-                <h4 class="f-s-24">5</h4>
-            </div>
-        </div>
-    </mat-card-content>
-</mat-card> -->
-
 @if (role === 'admin' || role === 'auditor') {
     <!-- cantidad de usuario -->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+              (click)="generatePdf(null)"
+              [class.generating]="generatingReport">
+              <!-- (click)="generateReport('Total Usuarios', countUsers, 'users')" -->
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Total Usuarios</h5></mat-card-title>
@@ -22,20 +14,21 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countUsers}}</h4>
-            <!-- <div class="d-flex align-items-center m-t-32">
-                <div class="d-flex align-items-center">
-                     <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-accent d-flex"></mat-icon>
-                     <div class="m-l-12 f-s-14">2025</div>
-                </div>
-            </div> -->
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
 
     <!-- cantidad de insumos al dia-->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+              (click)="generateReport('Registros de Insumos Médicos (Hoy)', countProductsOfTheDay, 'products_day')"
+              [class.generating]="generatingReport">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Insumos Médicos del Día</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Insumos Médicos (Hoy)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
@@ -50,13 +43,19 @@
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(), null) }}</div>
                 </div>
             </div>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
+
     <!-- cantidad de insumos mes-->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Insumos Médicos del Mes</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Insumos Médicos (Mes)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
@@ -71,16 +70,21 @@
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
                 </div>
             </div>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
 }
 
 @if (this.role === 'almacen' || this.role === 'medico') {
     <!-- cantidad total de productos -->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Insumos Médicos</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Insumos Médicos</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
@@ -89,16 +93,21 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countAllProducts}}</h4>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
 }
 
 @if (this.role === 'admin' || this.role === 'almacen' || role === 'auditor') {
     <!-- cantidad de asignaciones de productos realizadas en el dia-->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Salidas del Día</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Asignaciones (Hoy)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
@@ -113,13 +122,19 @@
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(), null) }}</div>
                 </div>
             </div>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
+
     <!-- cantidad de asignaciones de productos realizadas en el mes-->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Salidas del Mes</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Asignaciones (Mes)</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48  ">
@@ -134,16 +149,21 @@
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
                 </div>
             </div>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
 }
 
 @if (this.role === 'medico') {
     <!-- cantidad total de asignaciones -->
-    <mat-card class="cardWithShadow overflow-hidden">
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
-                <!-- <mat-card-title><h5>Total de Asignaciones</h5></mat-card-title> -->
                 <mat-card-title><h5>Registros de Asignaciones</h5></mat-card-title>
                 <div class="m-l-auto">
                     <button mat-fab class="icon-48 bg-primary ">
@@ -152,22 +172,18 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countAllAssignments}}</h4>
+            
+            <!-- Texto de imprimir reporte -->
+            <div class="report-text">
+                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <span *ngIf="generatingReport">⏳ Generando...</span>
+            </div>
         </mat-card-content>
     </mat-card>
 }
 
-<!-- Dashboard nuevos -->
-<!--     <mat-card class="cardWithShadow overflow-hidden">
-        <mat-card-content class="p-b-0">
-            <div class="d-flex align-items-center m-b-8">
-                <mat-card-title><h5>Total Uniformes </h5></mat-card-title>
-            </div>
-            Disponibles <h6 class="f-s-24 m-b-6">{{0}}</h6>
-            Asignados <h6 class="f-s-24 m-b-6">{{0}}</h6>
-        </mat-card-content>
-    </mat-card> -->
 @if((this.role === 'admin' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
-        <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
                     <mat-card-title><h5>Total Medicamentos Disponibles</h5></mat-card-title>
@@ -178,9 +194,16 @@
                     </div>
                 </div>
                 <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_medicamentos}}</h4>
+                
+                <!-- Texto de imprimir reporte -->
+                <div class="report-text">
+                    <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                    <span *ngIf="generatingReport">⏳ Generando...</span>
+                </div>
             </mat-card-content>
         </mat-card>
-        <mat-card class="cardWithShadow overflow-hidden">
+
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
                     <mat-card-title><h5>Total Medicamentos Asignados</h5></mat-card-title>
@@ -191,10 +214,16 @@
                     </div>
                 </div>
                 <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_medicamentos }}</h4>
+                
+                <!-- Texto de imprimir reporte -->
+                <div class="report-text">
+                    <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                    <span *ngIf="generatingReport">⏳ Generando...</span>
+                </div>
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="cardWithShadow overflow-hidden">
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
            <mat-card-content class="p-b-0">
                <div class="d-flex align-items-center m-b-8">
                    <mat-card-title><h5>Total Uniformes Disponibles</h5></mat-card-title>
@@ -205,9 +234,16 @@
                     </div>
                </div>
                <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_uniformes}}</h4>
+               
+               <!-- Texto de imprimir reporte -->
+               <div class="report-text">
+                   <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                   <span *ngIf="generatingReport">⏳ Generando...</span>
+               </div>
            </mat-card-content>
        </mat-card> 
-       <mat-card class="cardWithShadow overflow-hidden">
+
+       <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                   <mat-card-title><h5>Total Uniformes Asignados</h5></mat-card-title>
@@ -218,10 +254,16 @@
                     </div>
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_uniformes}}</h4>
+              
+              <!-- Texto de imprimir reporte -->
+              <div class="report-text">
+                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                  <span *ngIf="generatingReport">⏳ Generando...</span>
+              </div>
           </mat-card-content>
       </mat-card> 
 
-      <mat-card class="cardWithShadow overflow-hidden">
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Total Equipos Odontológicos Disponibles</h5></mat-card-title>
@@ -232,9 +274,16 @@
                 </div>
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_equiposOdontologicos}}</h4>
+              
+              <!-- Texto de imprimir reporte -->
+              <div class="report-text">
+                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                  <span *ngIf="generatingReport">⏳ Generando...</span>
+              </div>
           </mat-card-content>
       </mat-card>
-      <mat-card class="cardWithShadow overflow-hidden">
+
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                   <mat-card-title><h5>Total Equipos Odontológicos Asignados</h5></mat-card-title>
@@ -245,14 +294,19 @@
                 </div>
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_equiposOdontologicos}}</h4>
+              
+              <!-- Texto de imprimir reporte -->
+              <div class="report-text">
+                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                  <span *ngIf="generatingReport">⏳ Generando...</span>
+              </div>
           </mat-card-content>
       </mat-card>
-    }
-<!-- Dashboard nuevos -->
+}
 
 <!-- vencimiento de insumos -->
- @if(getExpiredProductsCount){
-      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" (click)="navigate('/expired-medical-supplies')">
+@if(getExpiredProductsCount){
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                   <mat-card-title><h5>Insumos Médicos Próximos a Vencer</h5></mat-card-title>
@@ -263,29 +317,12 @@
                  </div>
               </div>
               <h4 class="f-s-24 m-b-6">{{getExpiredProductsCount}}</h4>
+              
+              <!-- Texto de imprimir reporte -->
+              <div class="report-text">
+                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                  <span *ngIf="generatingReport">⏳ Generando...</span>
+              </div>
           </mat-card-content>
       </mat-card> 
- }
-
-<!--       <mat-card class="cardWithShadow overflow-hidden cursor_pointer" (click)="navigate('/expired-medical-supplies')">
-         <mat-card-content class="p-b-0">
-             <div class="d-flex align-items-center m-b-8">
-                 <mat-card-title><h5>Insumos Médicos Próximos a Vencer</h5></mat-card-title>
-                 <br>
-     
-                 <div class="m-l-auto">
-                     <button mat-fab class="icon-48 bg-error ">
-                         <i-feather name="alert-triangle" class="icon-20 d-flex align-items-center color-white"></i-feather>
-                     </button>
-                 </div>
-             </div>
-             <h4 class="f-s-24 m-b-6">{{getExpiredProductsCount}}</h4>
-             <div class="d-flex align-items-center m-t-32">
-                 <div class="d-flex align-items-center">
-                     <i-feather name="calendar" class="text-error d-flex"></i-feather>
-                      <div class="m-l-12 f-s-14">En 0 días</div>
-                 </div>
-             </div>
-     
-         </mat-card-content>
-     </mat-card> -->
+}

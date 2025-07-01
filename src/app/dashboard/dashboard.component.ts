@@ -277,36 +277,41 @@ export class DashboardComponent {
    * Genera y descarga el PDF del reporte
    * @param element Reporte para el que se generará el PDF
    */
-  generatePdf(element: IReport): void {
+  // generatePdf(element: IReport): void {
+  generatePdf(): void {
+     let element! : any;
+
+     element = {
+      additionalAuditorIds: [16, 13],
+      auditor: "a mi nombre",
+      auditorId: 4,
+      code: "O475a7e9aa-b126-4f83-a1ac-c9b7dee7d8b6.4.2025",
+      conclusions: "d",
+      detailed_methodology: "d",
+      endDate: new Date("2025-06-08 19:38:39 -0400"),
+      findings: "d",
+      id: 4,
+      idDuplicate: null,
+      images: ['/uploads/reports/Id 4/report-1749425919381-345499483-1-mandala.jpg', '/uploads/reports/Id 4/report-1749425919387-325340306-mandala.png', '/uploads/reports/Id 4/report-1749425919387-6672292…2622768_854260286819999_6447723401831025285_n.jpg', '/uploads/reports/Id 4/report-1749425919399-8837722…-tecnologia-impulsa-el-desarrollo-y-viceversa.jpg', '/uploads/reports/Id 4/report-1749425919401-2020545…5715485_296208562543640_9157808412213043412_n.jpg', '/uploads/reports/Id 4/report-1749425919402-974399550-5f361ce5cc3c107c008029e631e05c36.jpg', '/uploads/reports/Id 4/report-1749425919402-4663315…953190_1128356091619115_7251787043438431084_n.jpg', '/uploads/reports/Id 4/report-1749425919403-226057615-frases-viajeras-15.jpg', '/uploads/reports/Id 4/report-1749425919404-7771959…ras-frases-de-montana-que-celebran-la-amistad.jpg', '/uploads/reports/Id 4/report-1749425919405-185077049-frases-cortas.jpg'],
+      introduction: "d",
+      receiver: "d",
+      startDate: new Date("2025-06-08 19:38:04 -0400"),
+      // status: "Finalizado",
+      statusId: 1,
+      summary_conclusionAndObservation: "d",
+      summary_methodology: "d",
+      summary_objective: "d",
+      summary_scope: "d",
+      title: "D",
+      }
+
+  //  let element: IReport = {};
+
     if (!element.id || this.isGeneratingPdf) {
       return;
     }
     console.log("generar pdf")
-/*    let objeto : IReport = {
-  // forEach(arg0: (value: any, key: any) => void): unknown
-    id?: number
-    code?: string
-    title: string
-    receiver: string
-    auditorId: number
-    auditor: string
-    additionalAuditorIds?: number[] // Nueva propiedad para auditores adicionales
-    statusId?: number
-    startDate?: Date
-    endDate?: Date
-    idDuplicate?: number | null
-    updatedAt?: Date
-    summary_objective: string
-    summary_scope: string
-    summary_methodology: string
-    summary_conclusionAndObservation: string
-    introduction?: string
-    detailed_methodology?: string
-    findings?: string
-    conclusions?: string
-    images?: string[]
-    actionEdit?: boolean
-  } */
+
     
     this.isGeneratingPdf = true;
     
@@ -345,6 +350,13 @@ export class DashboardComponent {
         
         console.error('Error al generar el PDF:', err);
       }
-    });
+    }); 
+  }
+
+  async estadisticas(){
+      const estadisticasusuarios: any = await firstValueFrom(
+        this.dashboardService.estadisticasusuarios(),
+      )
+      console.log("*estadisticasusuarios " , estadisticasusuarios)
   }
 }

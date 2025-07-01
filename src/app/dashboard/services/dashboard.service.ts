@@ -146,4 +146,71 @@ export class DashboardService {
         });
     });
   }
+
+    /**
+   * Genera y descarga un PDF para un reporte de auditoría
+   * @param id ID del reporte
+   * @returns Observable que completa cuando la descarga inicia
+   */
+  generateDashboardReport(id: number,body:any): Observable<void> {
+    // Configuración para recibir una respuesta blob (archivo binario)
+    const options = {
+      responseType: 'blob' as 'blob',
+      observe: 'response' as const
+    };
+    
+    return new Observable<void>(observer => {
+      this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/${id}`, body,options)
+        .subscribe({
+          next: (response: HttpResponse<Blob>) => {
+            if (response.body) {
+              // Crear un objeto URL para el blob
+              const blob = new Blob([response.body], { type: 'application/pdf' });
+              const url = window.URL.createObjectURL(blob);
+              
+              // Extraer el nombre del archivo del header Content-Disposition si está disponible
+              let filename = `reporte-auditoria-${id}.pdf`;
+              const contentDisposition = response.headers.get('Content-Disposition');
+              if (contentDisposition) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches != null && matches[1]) {
+                  filename = matches[1].replace(/['"]/g, '');
+                }
+              }
+              
+              // Crear un elemento <a> para descargar el archivo
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = filename;
+              
+              // Añadir al DOM, hacer clic y luego eliminar
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              
+              // Liberar el objeto URL
+              setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+              }, 100);
+              
+              observer.next();
+              observer.complete();
+            } else {
+              observer.error('La respuesta no contiene datos');
+            }
+          },
+          error: (err) => {
+            console.error('Error al generar el PDF:', err);
+            observer.error(err);
+          }
+        });
+    });
+  }
+
+    estadisticasusuarios(): Observable<any> {
+      return this.http.get<any>(
+        `${this.tokenService.endPoint}dashboard-reports/estadisticas`
+      );
+    }
 }

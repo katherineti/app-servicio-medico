@@ -1,7 +1,7 @@
 @if (role === 'admin' || role === 'auditor') {
     <!-- cantidad de usuario -->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
-              (click)="generatePdf(null)"
+              (click)="generatePdf()"
               [class.generating]="generatingReport">
               <!-- (click)="generateReport('Total Usuarios', countUsers, 'users')" -->
         <mat-card-content class="p-b-0">
@@ -24,9 +24,12 @@
     </mat-card>
 
     <!-- cantidad de insumos al dia-->
-    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+    <!-- <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generateReport('Registros de Insumos Médicos (Hoy)', countProductsOfTheDay, 'products_day')"
-              [class.generating]="generatingReport">
+              [class.generating]="generatingReport"> -->
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+    (click)="estadisticas()"
+     >
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Registros de Insumos Médicos (Hoy)</h5></mat-card-title>

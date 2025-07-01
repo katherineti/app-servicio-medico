@@ -170,7 +170,7 @@ export class ReportsComponent {
    * Genera y descarga el PDF del reporte
    * @param element Reporte para el que se generará el PDF
    */
-  generatePdf(element: IReport): void {
+  generatePdf(element: IReport): void {console.group("element" , element)
     if (!element.id || this.isGeneratingPdf) {
       return;
     }

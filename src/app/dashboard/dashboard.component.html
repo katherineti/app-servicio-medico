@@ -24,7 +24,9 @@
     </mat-card>
 
     <!-- cantidad de insumos al dia-->
-    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+               (click)="generatePdfMedicalSupplies_Today()"
+              [class.generating]="generatingReport">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Registros de Insumos Médicos (Hoy)</h5></mat-card-title>

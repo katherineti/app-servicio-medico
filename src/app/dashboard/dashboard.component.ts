@@ -283,7 +283,8 @@ export class DashboardComponent {
     });
     
     // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    this.dashboardService.generateDashboardReport(element.id, element).subscribe({
+    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
+    this.dashboardService.generateDashboardReport().subscribe({
       next: () => {
         // Cerrar el indicador de carga
         loadingToast.dismiss();

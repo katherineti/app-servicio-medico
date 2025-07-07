@@ -139,7 +139,8 @@ export class DashboardService {
    * @param id ID del reporte
    * @returns Observable que completa cuando la descarga inicia
    */
-  generateDashboardReport(id: number,body:any): Observable<void> {
+  // generateDashboardReport(id: number,body:any): Observable<void> {
+  generateDashboardReport(): Observable<void> {
     // Configuración para recibir una respuesta blob (archivo binario)
     const options = {
       responseType: 'blob' as 'blob',
@@ -147,7 +148,8 @@ export class DashboardService {
     };
     
     return new Observable<void>(observer => {
-      this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/${id}`, body,options)
+      // this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/${id}`, body,options)
+      this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf`, null, options)
         .subscribe({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {

@@ -78,52 +78,13 @@ export class DashboardComponent {
 
     this.totalAllAssignments()
     this.expiredProductsCount()
+
+    // this.estadisticas();
   }
 
   navigate(route: string) {
     this.router.navigate([route])
   }
-
-  // Función simplificada para generar reportes NO
-/*   async generateReport(title: string, value: any, type: string) {
-    // Prevenir múltiples clics
-    if (this.generatingReport) {
-      return
-    }
-
-    this.generatingReport = true
-    try {
-      // Preparar los datos para enviar al backend
-      const reportData = {
-        title: title,
-        value: value,
-        type: type,
-        date: new Date().toISOString(),
-        role: this.role,
-        // Datos adicionales que el backend puede necesitar
-        additionalInfo: {
-          currentDate: this.formatearFecha(this.getLocalDate(), null),
-          currentMonth: this.formatearFecha(this.getLocalDate(), "mes"),
-          userRole: this.role,
-        },
-      }
-      console.log("this.generatingReport " , this.generatingReport)
-      console.log("reportData" , reportData)
-
-      // Llamada al backend
-      // const response = await firstValueFrom(this.dashboardService.generateDashboardReport(reportData))
-
-      // El backend devuelve el PDF como blob
-      // this.downloadPDF(response, `reporte-${this.sanitizeFileName(title)}-${new Date().getTime()}.pdf`)
-
-      toast.success("Reporte generado exitosamente")
-    } catch (error: any) {
-      console.error("Error al generar el reporte:", error)
-      toast.error("Error al generar el reporte: " + (error.error?.message || "Error desconocido"))
-    } finally {
-      this.generatingReport = false
-    }
-  } */
 
   // Función para descargar el PDF
   private downloadPDF(blob: Blob, filename: string) {
@@ -280,6 +241,7 @@ export class DashboardComponent {
   // generatePdf(element: IReport): void {
   generatePdf(): void {
      let element! : any;
+     //  let element: IReport = {};
 
      element = {
       additionalAuditorIds: [16, 13],
@@ -305,8 +267,6 @@ export class DashboardComponent {
       title: "D",
       }
 
-  //  let element: IReport = {};
-
     if (!element.id || this.isGeneratingPdf) {
       return;
     }
@@ -322,7 +282,8 @@ export class DashboardComponent {
       verticalPosition: 'bottom'
     });
     
-    this.dashboardService.generateReportPdf(element.id, element).subscribe({
+    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
+    this.dashboardService.generateDashboardReport(element.id, element).subscribe({
       next: () => {
         // Cerrar el indicador de carga
         loadingToast.dismiss();
@@ -353,10 +314,4 @@ export class DashboardComponent {
     }); 
   }
 
-  async estadisticas(){
-      const estadisticasusuarios: any = await firstValueFrom(
-        this.dashboardService.estadisticasusuarios(),
-      )
-      console.log("*estadisticasusuarios " , estadisticasusuarios)
-  }
 }

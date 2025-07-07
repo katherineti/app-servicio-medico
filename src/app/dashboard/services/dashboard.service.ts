@@ -73,20 +73,7 @@ export class DashboardService {
       );
     }
 
-      // Método simplificado para generar reportes - solo envía datos al backend
-/*     generateDashboardReport(reportData: any): Observable<Blob> {
-      const headers = new HttpHeaders({
-        "Content-Type": "application/json",
-      })
-
-      return this.http.post(`${this.tokenService.endPoint}dashboard-reports/generate-report`, reportData, {
-        headers: headers,
-        responseType: "blob", // Importante: el backend devuelve el PDF como blob
-      })
-    } */
-
-
-  /**
+    /**
    * Genera y descarga un PDF para un reporte de auditoría
    * @param id ID del reporte
    * @returns Observable que completa cuando la descarga inicia
@@ -208,9 +195,4 @@ export class DashboardService {
     });
   }
 
-    estadisticasusuarios(): Observable<any> {
-      return this.http.get<any>(
-        `${this.tokenService.endPoint}dashboard-reports/estadisticas`
-      );
-    }
 }

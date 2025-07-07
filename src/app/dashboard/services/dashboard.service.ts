@@ -151,20 +151,30 @@ export class DashboardService {
         .subscribe({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {
+              // Extraer el nombre del archivo del header Content-Disposition si está disponible
+              let filename: string | null = null; 
+              
+              const contentDisposition = response.headers.get('Content-Disposition');
+              console.log("reporte-estadistico-de-usuarios",contentDisposition)
+              if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches != null && matches[1]) { // Si la regex encuentra el nombre (que sí lo hace)
+                  filename = matches[1].replace(/['"]/g, ''); // Asigna el nombre extraído
+                }
+              }
+              
+              if (!filename) {
+                // El nombre de archivo se asigna aqui
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = (today.getMonth() + 1).toString().padStart(2, '0');
+                let day = today.getDate().toString().padStart(2, '0');
+                filename = `reporte-estadistico-de-usuarios-${year}-${month}-${day}.pdf`;
+              }
               // Crear un objeto URL para el blob
               const blob = new Blob([response.body], { type: 'application/pdf' });
               const url = window.URL.createObjectURL(blob);
-              
-              // Extraer el nombre del archivo del header Content-Disposition si está disponible
-              let filename = `reporte-auditoria-${id}.pdf`;
-              const contentDisposition = response.headers.get('Content-Disposition');
-              if (contentDisposition) {
-                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                const matches = filenameRegex.exec(contentDisposition);
-                if (matches != null && matches[1]) {
-                  filename = matches[1].replace(/['"]/g, '');
-                }
-              }
               
               // Crear un elemento <a> para descargar el archivo
               const link = document.createElement('a');

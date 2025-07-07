@@ -316,16 +316,14 @@ export class DashboardComponent {
   }
 
   /**2
-   * Genera y descarga el PDF del reporte de usuarios
-   * 
+   * Genera y descarga el PDF del reporte de inventario almacen (dia o mes)
    */
-  // generatePdf(element: IReport): void {
-  generatePdfMedicalSupplies_Today(): void {
+  generatePdfMedicalSupplies_Today(reportTodayOrMonth:string): void {
 
     if ( this.isGeneratingPdf) {
       return;
     }
-    console.log("generar pdf de registros de insumos medicos (hoy)")
+    console.log(`generar pdf de registros de insumos medicos (${reportTodayOrMonth})`)
 
     this.isGeneratingPdf = true;
     
@@ -337,8 +335,7 @@ export class DashboardComponent {
     });
     
     // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
-    this.dashboardService.pdfMedicalSupplies_Today().subscribe({
+    this.dashboardService.pdfRegistryMedicalSupplies(reportTodayOrMonth).subscribe({
       next: () => {
         // Cerrar el indicador de carga
         loadingToast.dismiss();
@@ -357,14 +354,14 @@ export class DashboardComponent {
         this.isGeneratingPdf = false;
         
         // Mostrar mensaje de error
-        this.snackBar.open(`Error al generar el PDF de registros de insumos medicos (hoy): ${err.message || 'Error desconocido'}`, 'Cerrar', {
+        this.snackBar.open(`Error al generar el PDF de registros de insumos medicos (${reportTodayOrMonth}): ${err.message || 'Error desconocido'}`, 'Cerrar', {
           duration: 5000,
           horizontalPosition: 'end',
           verticalPosition: 'top',
           panelClass: ['error-snackbar']
         });
         
-        console.error('Error al generar el PDF de registros de insumos medicos (hoy):', err);
+        console.error(`Error al generar el PDF de registros de insumos medicos (${reportTodayOrMonth}):`, err);
       }
     }); 
   }

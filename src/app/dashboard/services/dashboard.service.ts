@@ -205,16 +205,23 @@ export class DashboardService {
         });
     });
   }
-  pdfMedicalSupplies_Today(): Observable<void> {
+  pdfRegistryMedicalSupplies(reportTodayOrMonth:string): Observable<void> {
     // Configuración para recibir una respuesta blob (archivo binario)
     const options = {
       responseType: 'blob' as 'blob',
       observe: 'response' as const
     };
     
+    
     return new Observable<void>(observer => {
+
       // this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/${id}`, body,options)
-      this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/medicalSuppliesToday`, null, options)
+      let endpointReport = 'medicalSuppliesToday'
+      if(reportTodayOrMonth==='mes'){
+        endpointReport = 'medicalSuppliesMonth'
+      }
+      // this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/medicalSuppliesToday`, null, options)
+      this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/${endpointReport}`, null, options)
         .subscribe({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {
@@ -222,7 +229,7 @@ export class DashboardService {
               let filename: string | null = null; 
               
               const contentDisposition = response.headers.get('Content-Disposition');
-              console.log("reporte estadistico de insumos medicos hoy",contentDisposition)
+              // console.log("reporte estadistico de insumos medicos ",contentDisposition)
               if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
                 const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 const matches = filenameRegex.exec(contentDisposition);
@@ -238,6 +245,9 @@ export class DashboardService {
                 let month = (today.getMonth() + 1).toString().padStart(2, '0');
                 let day = today.getDate().toString().padStart(2, '0');
                 filename = `reporte-estadistico-insumos-medicos(Hoy)-${year}-${month}-${day}.pdf`;
+                if(reportTodayOrMonth==='mes'){
+                   filename = `reporte-estadistico-insumos-medicos(Mes)-${year}-${month}-${day}.pdf`;
+                }
               }
               // Crear un objeto URL para el blob
               const blob = new Blob([response.body], { type: 'application/pdf' });

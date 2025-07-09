@@ -415,5 +415,55 @@ export class DashboardComponent {
       }
     }); 
   }
+  /**
+   * Genera y descarga el PDF del reporte de  insumos medicos disponibles
+   */
+  pdfMedicalSuppliesAvailables(): void {
+
+    if ( this.isGeneratingPdf) {
+      return;
+    }
+    console.log(`generar pdf de  insumos medicos disponibles )`)
+
+    this.isGeneratingPdf = true;
+    
+    // Mostrar indicador de carga
+    const loadingToast = this.snackBar.open('Generando PDF...', '', {
+      duration: undefined,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+    
+    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
+    this.dashboardService.pdfMedicalSuppliesAvailables().subscribe({
+      next: () => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de éxito
+        this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      },
+      error: (err) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de error
+        this.snackBar.open(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados : ${err.message || 'Error desconocido'}`, 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+        
+        console.error(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados :`, err);
+      }
+    }); 
+  }
 
 }

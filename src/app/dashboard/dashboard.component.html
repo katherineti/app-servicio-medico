@@ -190,7 +190,9 @@
 
 @if((this.role === 'admin' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
     <!--6 Total Medicamentos Disponibles -->
-        <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer"
+              (click)="pdfMedicalSuppliesAvailables()"
+              [class.generating]="generatingReport">
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
                     <mat-card-title><h5>Total Medicamentos Disponibles</h5></mat-card-title>

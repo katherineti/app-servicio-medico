@@ -235,7 +235,7 @@ export class DashboardComponent {
   }
 
   /**1
-   * Genera y descarga el PDF del reporte de usuarios
+   * Genera y descarga el PDF del reporte de registro de usuarios
    * @param element Reporte para el que se generará el PDF
    */
   // generatePdf(element: IReport): void {
@@ -316,7 +316,7 @@ export class DashboardComponent {
   }
 
   /**2
-   * Genera y descarga el PDF del reporte de inventario almacen (dia o mes)
+   * Genera y descarga el PDF del reporte de l registro de inventario almacen (dia o mes)
    */
   generatePdfMedicalSupplies_Today(reportTodayOrMonth:string): void {
 
@@ -362,6 +362,56 @@ export class DashboardComponent {
         });
         
         console.error(`Error al generar el PDF de registros de insumos medicos (${reportTodayOrMonth}):`, err);
+      }
+    }); 
+  }
+  /**card 4,5
+   * Genera y descarga el PDF del reporte de asignaciones de insumos medicos a empleados o a los familiares de empleados (dia o mes)
+   */
+  pdfRegistryAssignmentsMedicalSupplies_MonthOrToday(reportTodayOrMonth:string): void {
+
+    if ( this.isGeneratingPdf) {
+      return;
+    }
+    console.log(`generar pdf de registros de asignacion de insumos medicos a empleados o a sus familaires (${reportTodayOrMonth})`)
+
+    this.isGeneratingPdf = true;
+    
+    // Mostrar indicador de carga
+    const loadingToast = this.snackBar.open('Generando PDF...', '', {
+      duration: undefined,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+    
+    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
+    this.dashboardService.pdfRegistryAssignmentsMedicalSupplies_MonthOrToday(reportTodayOrMonth).subscribe({
+      next: () => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de éxito
+        this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      },
+      error: (err) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de error
+        this.snackBar.open(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados (${reportTodayOrMonth}): ${err.message || 'Error desconocido'}`, 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+        
+        console.error(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados (${reportTodayOrMonth}):`, err);
       }
     }); 
   }

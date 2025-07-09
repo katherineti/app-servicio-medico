@@ -1,5 +1,5 @@
 @if (role === 'admin' || role === 'auditor') {
-    <!-- cantidad de usuario -->
+    <!--1 cantidad de usuario -->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generatePdf()"
               [class.generating]="generatingReport">
@@ -23,7 +23,7 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- cantidad de insumos al dia-->
+    <!--2 cantidad de insumos al dia-->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generatePdfMedicalSupplies_Today('hoy')"
               [class.generating]="generatingReport">
@@ -52,7 +52,7 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- cantidad de insumos mes-->
+    <!--3 cantidad de insumos mes-->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generatePdfMedicalSupplies_Today('mes')"
               [class.generating]="generatingReport">
@@ -106,8 +106,10 @@
 }
 
 @if (this.role === 'admin' || this.role === 'almacen' || role === 'auditor') {
-    <!-- cantidad de asignaciones de productos realizadas en el dia-->
-    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+    <!--4 cantidad de asignaciones de productos realizadas en el dia-->
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+              (click)="pdfRegistryAssignmentsMedicalSupplies_MonthOrToday('hoy')"
+              [class.generating]="generatingReport">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Registros de Asignaciones (Hoy)</h5></mat-card-title>
@@ -133,8 +135,10 @@
         </mat-card-content>
     </mat-card>
 
-    <!-- cantidad de asignaciones de productos realizadas en el mes-->
-    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+    <!--5 cantidad de asignaciones de productos realizadas en el mes-->
+    <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+              (click)="pdfRegistryAssignmentsMedicalSupplies_MonthOrToday('mes')"
+              [class.generating]="generatingReport">
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Registros de Asignaciones (Mes)</h5></mat-card-title>
@@ -185,6 +189,7 @@
 }
 
 @if((this.role === 'admin' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
+    <!--6 Total Medicamentos Disponibles -->
         <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
@@ -204,7 +209,7 @@
                 </div>
             </mat-card-content>
         </mat-card>
-
+<!-- 7 Total Medicamentos Asignados-->
         <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
@@ -224,7 +229,7 @@
                 </div>
             </mat-card-content>
         </mat-card>
-
+<!-- 8 Total Uniformes Disponibles-->
         <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
            <mat-card-content class="p-b-0">
                <div class="d-flex align-items-center m-b-8">
@@ -244,7 +249,7 @@
                </div>
            </mat-card-content>
        </mat-card> 
-
+<!-- 9 Total Uniformes Asignados -->
        <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
@@ -264,7 +269,7 @@
               </div>
           </mat-card-content>
       </mat-card> 
-
+<!-- 10 Total Equipos Odontológicos Disponibles-->
       <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
@@ -284,7 +289,7 @@
               </div>
           </mat-card-content>
       </mat-card>
-
+<!-- 11  Total Equipos Odontológicos Asignados-->
       <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">

@@ -219,7 +219,7 @@ console.log("creando reporte  - paso 1 " , data)
           formData.append("images", img.file)
         })
         result = await firstValueFrom(this.reportsService.updateWithImages(formData, this.reportCreated_id))
-        console.log("enviando data:")
+        console.log("-Enviando data con imagenes:")
         this.activeConclutions = true
         formData.forEach((value, key) => {
           console.log(key, value)

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -138,7 +138,6 @@ export class DashboardService {
    * Genera y descarga un PDF para un reporte en el Dashboard
    * @returns Observable que completa cuando la descarga inicia
    */
-  // generateDashboardReport(id: number,body:any): Observable<void> {
   generateDashboardReport_Users(): Observable<void> {
     // Configuración para recibir una respuesta blob (archivo binario)
     const options = {
@@ -157,10 +156,10 @@ export class DashboardService {
               
               const contentDisposition = response.headers.get('Content-Disposition');
               console.log("reporte-estadistico-de-usuarios",contentDisposition)
-              if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
+              if (contentDisposition) { // Si el header existe 
                 const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 const matches = filenameRegex.exec(contentDisposition);
-                if (matches != null && matches[1]) { // Si la regex encuentra el nombre (que sí lo hace)
+                if (matches != null && matches[1]) { // Si la regex encuentra el nombre 
                   filename = matches[1].replace(/['"]/g, ''); // Asigna el nombre extraído
                 }
               }
@@ -229,10 +228,10 @@ export class DashboardService {
               
               const contentDisposition = response.headers.get('Content-Disposition');
 
-              if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
+              if (contentDisposition) { // Si el header existe 
                 const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 const matches = filenameRegex.exec(contentDisposition);
-                if (matches != null && matches[1]) { // Si la regex encuentra el nombre (que sí lo hace)
+                if (matches != null && matches[1]) { // Si la regex encuentra el nombre
                   filename = matches[1].replace(/['"]/g, ''); // Asigna el nombre extraído
                 }
               }
@@ -304,10 +303,10 @@ export class DashboardService {
               
               const contentDisposition = response.headers.get('Content-Disposition');
 
-              if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
+              if (contentDisposition) { // Si el header existe 
                 const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 const matches = filenameRegex.exec(contentDisposition);
-                if (matches != null && matches[1]) { // Si la regex encuentra el nombre (que sí lo hace)
+                if (matches != null && matches[1]) { // Si la regex encuentra el nombre 
                   filename = matches[1].replace(/['"]/g, ''); // Asigna el nombre extraído
                 }
               }
@@ -356,7 +355,7 @@ export class DashboardService {
     });
   }
 
-  pdfMedicalSuppliesAvailables(): Observable<void> {
+  pdfMedicalSuppliesAvailables(supplyType:number): Observable<void> {
     // Configuración para recibir una respuesta blob (archivo binario)
     const options = {
       responseType: 'blob' as 'blob',
@@ -365,13 +364,7 @@ export class DashboardService {
     
     return new Observable<void>(observer => {
 
-      // let endpointReport = 'assignments-day'
-      // if(reportTodayOrMonth==='mes'){
-      //   endpointReport = 'assignments-month'
-      // }
-      // this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/${endpointReport}`, null, options)
-
-      this.http.post(`${this.tokenService.endPoint}dashboard-reports/generate/1`, null, options)
+      this.http.post(`${this.tokenService.endPoint}dashboard-reports/generate/${supplyType}`, null, options)
         .subscribe({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {
@@ -380,10 +373,10 @@ export class DashboardService {
               
               const contentDisposition = response.headers.get('Content-Disposition');
 
-              if (contentDisposition) { // Si el header existe (que sí existe según tu captura)
+              if (contentDisposition) { // Si el header existe 
                 const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 const matches = filenameRegex.exec(contentDisposition);
-                if (matches != null && matches[1]) { // Si la regex encuentra el nombre (que sí lo hace)
+                if (matches != null && matches[1]) { // Si la regex encuentra el nombre 
                   filename = matches[1].replace(/['"]/g, ''); // Asigna el nombre extraído
                 }
               }
@@ -394,10 +387,16 @@ export class DashboardService {
                 let year = today.getFullYear();
                 let month = (today.getMonth() + 1).toString().padStart(2, '0');
                 let day = today.getDate().toString().padStart(2, '0');
-                filename = `reporte-estadistico-medicamentos-disponibles-${year}-${month}-${day}.pdf`;
-                // if(reportTodayOrMonth==='mes'){
-                //    filename = `reporte-estadistico-medicamentos-disponibles(Mes)-${year}-${month}.pdf`;
-                // }
+
+                if(supplyType===1){
+                  filename = `reporte-estadistico-medicamentos-disponibles-${year}-${month}-${day}.pdf`;
+
+                }else if(supplyType===2){
+                  filename = `reporte-estadistico-uniformes-disponibles-${year}-${month}-${day}.pdf`;
+
+                }else {
+                  filename = `reporte-estadistico-equiposodontologicos-disponibles-${year}-${month}-${day}.pdf`;
+                }
               }
               // Crear un objeto URL para el blob
               const blob = new Blob([response.body], { type: 'application/pdf' });

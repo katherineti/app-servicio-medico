@@ -418,12 +418,12 @@ export class DashboardComponent {
   /**
    * Genera y descarga el PDF del reporte de  insumos medicos disponibles
    */
-  pdfMedicalSuppliesAvailables(): void {
+  pdfMedicalSuppliesAvailables(supplyType:number): void {
 
     if ( this.isGeneratingPdf) {
       return;
     }
-    console.log(`generar pdf de  insumos medicos disponibles )`)
+    console.log(`generar pdf de  insumos medicos disponibles`)
 
     this.isGeneratingPdf = true;
     
@@ -434,8 +434,7 @@ export class DashboardComponent {
       verticalPosition: 'bottom'
     });
     
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    this.dashboardService.pdfMedicalSuppliesAvailables().subscribe({
+    this.dashboardService.pdfMedicalSuppliesAvailables(supplyType).subscribe({
       next: () => {
         // Cerrar el indicador de carga
         loadingToast.dismiss();
@@ -454,14 +453,14 @@ export class DashboardComponent {
         this.isGeneratingPdf = false;
         
         // Mostrar mensaje de error
-        this.snackBar.open(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados : ${err.message || 'Error desconocido'}`, 'Cerrar', {
+        this.snackBar.open(`Error al generar el PDF de insumos medicos disponibles : ${err.message || 'Error desconocido'}`, 'Cerrar', {
           duration: 5000,
           horizontalPosition: 'end',
           verticalPosition: 'top',
           panelClass: ['error-snackbar']
         });
         
-        console.error(`Error al generar el PDF de registros de asignaciones de insumos medicos a empleados :`, err);
+        console.error(`Error al generar el PDF de insumos medicos disponibles:`, err);
       }
     }); 
   }

@@ -191,7 +191,7 @@
 @if((this.role === 'admin' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
     <!--6 Total Medicamentos Disponibles -->
         <mat-card class="cardWithShadow overflow-hidden cursor_pointer"
-              (click)="pdfMedicalSuppliesAvailables()"
+              (click)="pdfMedicalSuppliesAvailables(1)"
               [class.generating]="generatingReport">
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
@@ -232,7 +232,9 @@
             </mat-card-content>
         </mat-card>
 <!-- 8 Total Uniformes Disponibles-->
-        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+                      (click)="pdfMedicalSuppliesAvailables(2)"
+                      [class.generating]="generatingReport">
            <mat-card-content class="p-b-0">
                <div class="d-flex align-items-center m-b-8">
                    <mat-card-title><h5>Total Uniformes Disponibles</h5></mat-card-title>
@@ -272,7 +274,9 @@
           </mat-card-content>
       </mat-card> 
 <!-- 10 Total Equipos Odontológicos Disponibles-->
-      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+                (click)="pdfMedicalSuppliesAvailables(3)"
+                [class.generating]="generatingReport">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Total Equipos Odontológicos Disponibles</h5></mat-card-title>

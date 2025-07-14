@@ -3,7 +3,6 @@
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generatePdf()"
               [class.generating]="generatingReport">
-              <!-- (click)="generateReport('Total Usuarios', countUsers, 'users')" -->
         <mat-card-content class="p-b-0">
             <div class="d-flex align-items-center m-b-8">
                 <mat-card-title><h5>Total Usuarios</h5></mat-card-title>
@@ -15,11 +14,12 @@
             </div>
             <h4 class="f-s-24 m-b-6">{{countUsers}}</h4>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 
@@ -37,18 +37,19 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countProductsOfTheDay}}</h4>
-            <div class="d-flex align-items-center m-t-32">
+            <div class="d-flex align-items-center m-t-32" class="ocultar-en-movil-tablet">
                 <div class="d-flex align-items-center">
                      <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-accent d-flex"></mat-icon>
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(), null) }}</div>
                 </div>
             </div>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 
@@ -66,18 +67,19 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countProductsOfMonth}}</h4>
-            <div class="d-flex align-items-center m-t-32">
+            <div class="d-flex align-items-center m-t-32" class="ocultar-en-movil-tablet">
                 <div class="d-flex align-items-center">
                      <mat-icon fontIcon="radio_button_checked" aria-label="2025" aria-hidden="false" class="text-accent d-flex"></mat-icon>
                      <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),'mes') }}</div>
                 </div>
             </div>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 }
@@ -96,11 +98,12 @@
             </div>
             <h4 class="f-s-24 m-b-6">{{countAllProducts}}</h4>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 }
@@ -127,11 +130,12 @@
                 </div>
             </div>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 
@@ -156,11 +160,12 @@
                 </div>
             </div>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 }
@@ -179,11 +184,12 @@
             </div>
             <h4 class="f-s-24 m-b-6">{{countAllAssignments}}</h4>
             
-            <!-- Texto de imprimir reporte -->
-            <div class="report-text">
-                <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+            <!-- Botón de imprimir reporte mejorado -->
+            <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                <span *ngIf="!generatingReport">Imprimir Reporte</span>
                 <span *ngIf="generatingReport">⏳ Generando...</span>
-            </div>
+            </button>
         </mat-card-content>
     </mat-card>
 }
@@ -204,11 +210,12 @@
                 </div>
                 <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_medicamentos}}</h4>
                 
-                <!-- Texto de imprimir reporte -->
-                <div class="report-text">
-                    <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <!-- Botón de imprimir reporte mejorado -->
+                <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                    <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                    <span *ngIf="!generatingReport">Imprimir Reporte</span>
                     <span *ngIf="generatingReport">⏳ Generando...</span>
-                </div>
+                </button>
             </mat-card-content>
         </mat-card>
 <!-- 7 Total Medicamentos Asignados-->
@@ -226,11 +233,12 @@
                 </div>
                 <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_medicamentos }}</h4>
                 
-                <!-- Texto de imprimir reporte -->
-                <div class="report-text">
-                    <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+                <!-- Botón de imprimir reporte mejorado -->
+                <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                    <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                    <span *ngIf="!generatingReport">Imprimir Reporte</span>
                     <span *ngIf="generatingReport">⏳ Generando...</span>
-                </div>
+                </button>
             </mat-card-content>
         </mat-card>
 <!-- 8 Total Uniformes Disponibles-->
@@ -248,11 +256,12 @@
                </div>
                <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_uniformes}}</h4>
                
-               <!-- Texto de imprimir reporte -->
-               <div class="report-text">
-                   <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+               <!-- Botón de imprimir reporte mejorado -->
+               <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                   <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                   <span *ngIf="!generatingReport">Imprimir Reporte</span>
                    <span *ngIf="generatingReport">⏳ Generando...</span>
-               </div>
+               </button>
            </mat-card-content>
        </mat-card> 
 <!-- 9 Total Uniformes Asignados -->
@@ -270,11 +279,12 @@
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_uniformes}}</h4>
               
-              <!-- Texto de imprimir reporte -->
-              <div class="report-text">
-                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+              <!-- Botón de imprimir reporte mejorado -->
+              <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                  <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                  <span *ngIf="!generatingReport">Imprimir Reporte</span>
                   <span *ngIf="generatingReport">⏳ Generando...</span>
-              </div>
+              </button>
           </mat-card-content>
       </mat-card> 
 <!-- 10 Total Equipos Odontológicos Disponibles-->
@@ -292,11 +302,12 @@
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedProductsStockByType.sum_equiposOdontologicos}}</h4>
               
-              <!-- Texto de imprimir reporte -->
-              <div class="report-text">
-                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+              <!-- Botón de imprimir reporte mejorado -->
+              <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                  <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                  <span *ngIf="!generatingReport">Imprimir Reporte</span>
                   <span *ngIf="generatingReport">⏳ Generando...</span>
-              </div>
+              </button>
           </mat-card-content>
       </mat-card>
 <!-- 11  Total Equipos Odontológicos Asignados-->
@@ -314,11 +325,12 @@
               </div>
               <h4 class="f-s-24 m-b-6">{{getAccumulatedAssignmentsByType.sumAsig_equiposOdontologicos}}</h4>
               
-              <!-- Texto de imprimir reporte -->
-              <div class="report-text">
-                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+              <!-- Botón de imprimir reporte mejorado -->
+              <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                  <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                  <span *ngIf="!generatingReport">Imprimir Reporte</span>
                   <span *ngIf="generatingReport">⏳ Generando...</span>
-              </div>
+              </button>
           </mat-card-content>
       </mat-card>
 }
@@ -337,11 +349,12 @@
               </div>
               <h4 class="f-s-24 m-b-6">{{getExpiredProductsCount}}</h4>
               
-              <!-- Texto de imprimir reporte -->
-              <div class="report-text">
-                  <span *ngIf="!generatingReport">📄 Imprimir Reporte</span>
+              <!-- Botón de imprimir reporte mejorado -->
+              <button mat-stroked-button class="report-button" [disabled]="generatingReport">
+                  <mat-icon *ngIf="!generatingReport" fontIcon="download"></mat-icon>
+                  <span *ngIf="!generatingReport">Imprimir Reporte</span>
                   <span *ngIf="generatingReport">⏳ Generando...</span>
-              </div>
+              </button>
           </mat-card-content>
       </mat-card> 
 }

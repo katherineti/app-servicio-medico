@@ -234,28 +234,47 @@ body {
     }
   }
 
-// Estilos para el texto de reporte
-.report-text {
+// Estilos para el botón de reporte
+.report-button {
   position: absolute;
   bottom: 15px;
   right: 20px;
   font-size: 12px;
   font-weight: 500;
-  color: #1976d2;
-  background-color: rgba(25, 118, 210, 0.1);
+  color: #1976d2; // Color del texto
+  background-color: rgba(25, 118, 210, 0.1); // Fondo semitransparente
   padding: 6px 12px;
   border-radius: 15px;
-  border: 1px solid rgba(25, 118, 210, 0.2);
+  border: 1px solid rgba(25, 118, 210, 0.2); // Borde sutil
   transition: all 0.3s ease;
-  
-  span {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  min-width: unset; // Override default Material min-width
+  line-height: unset; // Override default Material line-height
+  height: unset; // Override default Material height
+
+  display: flex;
+  align-items: center;
+  gap: 4px; // Espacio entre el ícono y el texto
+
+  .mat-icon {
+    font-size: 16px; // Tamaño del ícono
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: rgba(25, 118, 210, 0.2); // Fondo más oscuro al pasar el ratón
+  }
+
+  &[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: rgba(25, 118, 210, 0.05); // Fondo más claro cuando está deshabilitado
+    color: rgba(25, 118, 210, 0.5); // Texto más claro cuando está deshabilitado
+    border-color: rgba(25, 118, 210, 0.1);
   }
 }
 
-// mat-card { width: 380px !important; display: inline-block; margin-top: 0px; height: 200px; }
+
 mat-card { 
   width: 100% !important; 
   display: inline-block; 

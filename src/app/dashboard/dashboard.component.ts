@@ -415,6 +415,56 @@ export class DashboardComponent {
       }
     }); 
   }
+      /**
+       * Genera y descarga el PDF del reporte de asignaciones de medicamentos,uniformes,odontologico a empleados o a los familiares de empleados (mes)
+       */
+      pdfStockAssignmentsBySupplyType_Month(supplyType:number): void {
+
+        if ( this.isGeneratingPdf) {
+          return;
+        }
+
+        this.isGeneratingPdf = true;
+        
+        // Mostrar indicador de carga
+        const loadingToast = this.snackBar.open('Generando PDF...', '', {
+          duration: undefined,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        });
+        
+        this.dashboardService.pdfStockAssignmentsBySupplyType_Month(supplyType).subscribe({
+          next: () => {
+            // Cerrar el indicador de carga
+            loadingToast.dismiss();
+            this.isGeneratingPdf = false;
+            
+            // Mostrar mensaje de éxito
+            this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+              duration: 3000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top'
+            });
+          },
+          error: (err) => {
+            // Cerrar el indicador de carga
+            loadingToast.dismiss();
+            this.isGeneratingPdf = false;
+            
+            // Mostrar mensaje de error
+            this.snackBar.open(`Error al generar el PDF de registros de asignaciones de insumos medicos(${supplyType}) a empleados: ${err.message || 'Error desconocido'}`, 'Cerrar', {
+              duration: 5000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              panelClass: ['error-snackbar']
+            });
+            
+            console.error(`Error al generar el PDF de registros de asignaciones de insumos medicos(${supplyType}) a empleados:`, err);
+          }
+        }); 
+      }
+
+
   /**
    * Genera y descarga el PDF del reporte de  insumos medicos disponibles
    */

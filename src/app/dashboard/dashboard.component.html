@@ -212,7 +212,9 @@
             </mat-card-content>
         </mat-card>
 <!-- 7 Total Medicamentos Asignados-->
-        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" >
+        <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
+                  (click)="pdfStockAssignmentsBySupplyType_Month(1)"
+                  [class.generating]="generatingReport">
             <mat-card-content class="p-b-0">
                 <div class="d-flex align-items-center m-b-8">
                     <mat-card-title><h5>Total Medicamentos Asignados</h5></mat-card-title>
@@ -254,7 +256,9 @@
            </mat-card-content>
        </mat-card> 
 <!-- 9 Total Uniformes Asignados -->
-       <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
+       <mat-card class="cardWithShadow overflow-hidden cursor_pointer"
+                         (click)="pdfStockAssignmentsBySupplyType_Month(2)"
+                         [class.generating]="generatingReport">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                   <mat-card-title><h5>Total Uniformes Asignados</h5></mat-card-title>
@@ -296,7 +300,9 @@
           </mat-card-content>
       </mat-card>
 <!-- 11  Total Equipos Odontológicos Asignados-->
-      <mat-card class="cardWithShadow overflow-hidden cursor_pointer">
+      <mat-card class="cardWithShadow overflow-hidden cursor_pointer"
+                (click)="pdfStockAssignmentsBySupplyType_Month(3)"
+                [class.generating]="generatingReport">
           <mat-card-content class="p-b-0">
               <div class="d-flex align-items-center m-b-8">
                   <mat-card-title><h5>Total Equipos Odontológicos Asignados</h5></mat-card-title>

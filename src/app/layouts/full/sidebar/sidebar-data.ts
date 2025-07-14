@@ -19,11 +19,11 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
         iconName: 'file-text',
         route: './medical-supplies'
       },
-      {
+/*       {
         displayName: 'Inventario móvil',
         iconName: 'file-text',
         route: '/'
-      },
+      }, */
     ],
   },
   {
@@ -95,11 +95,11 @@ export const navItems: NavItem[] = [ //almacen1 admin, medico
         iconName: 'file-text',
         route: './medical-supplies'
       },
-      {
+/*       {
         displayName: 'Inventario móvil',
         iconName: 'file-text',
         route: '/'
-      }
+      } */
     ],
   },
 /*   {
@@ -125,11 +125,11 @@ export const navItemsAlmacen2Movil: NavItem[] = [ //almacen2 movil
     route: '',
     chipClass: 'bg-secondary text-white',
     children: [
-      {
+/*       {
         displayName: 'Inventario móvil',
         iconName: 'file-text',
         route: '/'
-      }
+      } */
     ]
   }
 ];

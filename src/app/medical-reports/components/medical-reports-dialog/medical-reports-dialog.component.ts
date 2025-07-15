@@ -125,8 +125,8 @@ export class MedicalReportsDialogComponent implements OnInit {
     const { name, role, isActive } = this.formGroup.value;
     const id = this.selected_medicalReport.id;
 
-    this.medicalReportsService
-      .updateUser(
+/*     this.medicalReportsService
+      .update(
         id, 
         {
           name, 
@@ -146,7 +146,7 @@ export class MedicalReportsDialogComponent implements OnInit {
           this.disableButton = false;
           this.swalService.error('Error', error);
         },
-      });
+      }); */
   }
 
   getRolesActives() {

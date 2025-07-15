@@ -4,4 +4,5 @@ export interface SignUpRegisterAdmin{
     password: string;
     // role: string;
     role: number;
+    cedula: string;//nuevo
 }

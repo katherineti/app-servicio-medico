@@ -12,17 +12,31 @@ export interface IUser{
   [key: string]: any;
 }
 
-export interface IGetAllUsers {
-  name?: string;
+export interface IMedicalReports {
+    id: string;
+    patientId: any,
+    doctorId: any,
+    description: string,
+    insurance: string,
+    apsCenter: string,
+    mppsCM: string,
+    isActivate: boolean,
+    createdAt: any
+}
+
+export interface IGetAllMedicalreports {
+  doctorCedula?: number;
+  patientCedula?: number;
+  createdAt?: any;
   page: number;
   take: number;
 }
 
-export interface IUserPagination {
+export interface IMedicalReportPagination {
   total: number;
   page: number;
-  list: IUser[];
+  list: IMedicalReports[];
 }
 
 export interface ICreateUserDTO
-  extends Omit<IUser, 'id' | 'createdAt' | 'updatedAt' > {}
+  extends Omit<IMedicalReports, 'id' | 'createdAt' | 'updatedAt' > {}

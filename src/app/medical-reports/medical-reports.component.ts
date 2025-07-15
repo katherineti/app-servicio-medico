@@ -14,7 +14,7 @@ import { MedicalReportsCreateComponent } from './components/medical-reports-crea
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MedicalReportsService } from './services/medical-reports.service';
-import { IGetAllUsers, IUser, IUserPagination } from './interfaces/medical-reports.interface';
+import { IGetAllMedicalreports, IUser, IMedicalReportPagination, IMedicalReports } from './interfaces/medical-reports.interface';
 import { AuthService } from '../services/auth.service';
 
 /**
@@ -36,7 +36,8 @@ providers:[MedicalReportsService]
 })
 export class MedicalReportsComponent {
   role:string='';
-  displayedColumns = [ 'name','rol','email','isActive','action'];
+  // displayedColumns = [ 'name','rol','email','isActive','action'];
+  displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt'];
   dataSource: any = new MatTableDataSource<IUser>();
   searhField = new FormControl();
   pageSize: number = 5;
@@ -52,10 +53,10 @@ export class MedicalReportsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'action']
-    : [ 'name', 'rol', 'email', 'isActive','action'];
+    ? [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt']
+    : [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt'];
     });
-    
+
     this.dataSource['length'] = 0;
     this.getAllMedicalReport(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
@@ -86,7 +87,7 @@ export class MedicalReportsComponent {
     });
   }
 
-  openEditMedicalReport(data?: any): void {
+/*   openEditMedicalReport(data?: any): void {
     data.actionEdit=true;
     const ref = this.dialog.open(MedicalReportsDialogComponent, {
       data: data || null,
@@ -96,7 +97,7 @@ export class MedicalReportsComponent {
     ref.afterClosed().subscribe(() => {
       this.getAllMedicalReport(this.pageIndex, this.pageSize);
     });
-  }
+  } */
 
   openDialogCreate(data?: any): void {
     const ref = this.dialog.open(MedicalReportsCreateComponent, {
@@ -109,7 +110,7 @@ export class MedicalReportsComponent {
     });
   }
 
-  async deleteMedicalReport(data: any) {
+/*   async deleteMedicalReport(data: any) {
     const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
       'eliminar registro'
     );
@@ -123,18 +124,21 @@ export class MedicalReportsComponent {
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
+      /* cancel * /
     }
-  }
+  } */
 
   getAllMedicalReport(page: number, take: number) {
-    const parms: IGetAllUsers = {
+    const parms: IGetAllMedicalreports = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
-      name: this.searchValue ? this.searchValue.trim() : null,
+      doctorCedula: this.searchValue ? this.searchValue.trim() : null,
+      patientCedula: this.searchValue ? this.searchValue.trim() : null,
+      createdAt: this.searchValue ? this.searchValue.trim() : null,
     };
-    this.medicalReportsService.getUsers(parms).subscribe((data: IUserPagination) => {
-      this.dataSource = new MatTableDataSource<IUser>(data.list);
+    this.medicalReportsService.getAll(parms).subscribe((data: IMedicalReportPagination) => {
+      // this.dataSource = new MatTableDataSource<IUser>(data.list);
+      this.dataSource = new MatTableDataSource<IMedicalReports>(data.list);
       this.dataSource.length = data.total;
     });
   }

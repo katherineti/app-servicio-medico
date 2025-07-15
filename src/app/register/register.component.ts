@@ -150,7 +150,8 @@ export class RegisterComponent {
       name: this.registerFormGroup.value.name,
       email: this.registerFormGroup.value.email,
       password: this.registerFormGroup.value.password,
-      role: this.ADMINISTRADOR
+      role: this.ADMINISTRADOR,
+      cedula:'V-'
     };
 
     try {

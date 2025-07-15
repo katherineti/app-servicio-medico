@@ -27,23 +27,60 @@
                 @if (dataSource.length) {
                  <section class="example-container mat-elevation-z8" tabindex="0">
                      <div class="table-responsive">
-                         <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
-                         <ng-container matColumnDef="name" sticky>
+                         <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical reports">
+                         <ng-container matColumnDef="doctorName" sticky>
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                             Nombre
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                 element.name | titlecase
-                             }}</mat-cell>
-                         </ng-container>
-                         <ng-container matColumnDef="email">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                             Email
+                             Médico
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                             {{ element.email }}</mat-cell>
+                                {{
+                                    element.doctorName | titlecase
+                                }}
+                                @if (element.doctorCedula !='V-') {
+                                    <br>{{
+                                        element.doctorCedula | titlecase
+                                    }}
+                                }
+                             </mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="isActive">
+                         <ng-container matColumnDef="patientName">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Paciente
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{ element.patientName | titlecase}}
+                                @if (element.doctorCedula !='V-') {
+                                    <br>{{
+                                        element.patientCedula | titlecase
+                                    }}
+                                }
+                            </mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="apsCenter">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Centro APS
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                             {{ element.apsCenter | titlecase}}
+                            </mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="insurance">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Aseguradora
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                             {{ element.insurance | titlecase}}
+                            </mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="createdAt">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Fecha
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                             {{ element.createdAt | date:'dd-MM-yyyy'}}
+                            </mat-cell>
+                         </ng-container>
+<!--                          <ng-container matColumnDef="isActive">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                                  Estado
                              </mat-header-cell>
@@ -54,35 +91,34 @@
                                      Inactivo
                                    }
                              </mat-cell>
-                         </ng-container>
-                         <ng-container matColumnDef="rol">
+                         </ng-container> -->
+<!--                          <ng-container matColumnDef="rol">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Rol
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
                                  element.role | titlecase
                              }}</mat-cell>
-                         </ng-container>
+                         </ng-container> -->
                      
-                         <ng-container matColumnDef="action" >
+<!--                          <ng-container matColumnDef="action" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
                              Acción
                              </mat-header-cell>
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+
                                  <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
                                      <i-feather name="eye"></i-feather>
                                  </button>
  
-                                 @if (this.role === 'admin') {
-                                     <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
-                                         <i-feather name="edit" class="big fill-red icon-18"></i-feather>
-                                     </button>
-                                     <button mat-icon-button aria-label="Eliminar" (click)="deleteMedicalReport(element)">
-                                         <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                     </button>
-                                 }
+                                <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
+                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+                                </button>
+                                <button mat-icon-button aria-label="Eliminar" (click)="deleteMedicalReport(element)">
+                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                </button>
                              </mat-cell>
-                         </ng-container>
+                         </ng-container> -->
                      
                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

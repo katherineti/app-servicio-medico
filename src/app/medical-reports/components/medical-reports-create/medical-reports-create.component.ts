@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
-import { PatientsService } from '../../services/patients.service';
+import { MedicalReportsService } from '../../services/medical-reports.service';
 
 @Component({
-  selector: 'app-patients-create',
+  selector: 'app-medical-reports-create',
   imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
-  templateUrl: './patients-create.component.html',
-  styleUrl: './patients-create.component.scss'
+  templateUrl: './medical-reports-create.component.html',
+  styleUrl: './medical-reports-create.component.scss'
 })
-export class PatientsCreateComponent {
-  userFormGroup!: FormGroup;
+export class MedicalReportsCreateComponent {
+  formGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
   disableButton: boolean = false;
@@ -21,17 +21,17 @@ export class PatientsCreateComponent {
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
-  private patientsService = inject(PatientsService);
+  private medicalReportsService = inject(MedicalReportsService);
 
   constructor( 
-    public dialogRef: MatDialogRef<PatientsCreateComponent>,
+    public dialogRef: MatDialogRef<MedicalReportsCreateComponent>,
     ){
     this.buildAddUserForm();
     this.getRolesActives();
   }
 
   buildAddUserForm() {
-    this.userFormGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       name: [
         '',
         [
@@ -69,23 +69,23 @@ export class PatientsCreateComponent {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  saveUser() {
-    if (this.userFormGroup) {
-      return this.createUser();
+  save() {
+    if (this.formGroup) {
+      return this.create();
     }
   }
 
-  private createUser() {
+  private create() {
     this.swalService.loading();
     this.disableButton = true;
 
-    if (this.userFormGroup.invalid) {
+    if (this.formGroup.invalid) {
       this.swalService.closeload();
       this.disableButton = false;
       return;
     }
-    const { ...params } = this.userFormGroup.value;
-    this.patientsService
+    const { ...params } = this.formGroup.value;
+    this.medicalReportsService
       .createUser({
         ...params,
       })
@@ -105,7 +105,7 @@ export class PatientsCreateComponent {
   }
 
   getRolesActives() {
-    this.patientsService.getRolesActives().subscribe((data: any) => {
+    this.medicalReportsService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
     });
   }

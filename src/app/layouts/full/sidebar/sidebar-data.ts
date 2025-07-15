@@ -85,12 +85,12 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
   {
     displayName: 'Informes médicos',
     iconName: 'grid',
-    route: './dashboard',
+    route: './medical-reports',
     external: true,
     chipClass: 'bg-secondary text-white',
   },
 ];
-export const navItems: NavItem[] = [ //almacen1 admin, medico
+export const navItems: NavItem[] = [ //almacen1 admin //, medico
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -124,7 +124,7 @@ export const navItems: NavItem[] = [ //almacen1 admin, medico
     chipClass: 'bg-secondary text-white',
   } */
 ];
-export const navItemsMedico: NavItem[] = [ //almacen1 admin, medico
+export const navItemsMedico: NavItem[] = [ //medico
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -157,17 +157,17 @@ export const navItemsMedico: NavItem[] = [ //almacen1 admin, medico
     external: true,
     chipClass: 'bg-secondary text-white',
   } */
-   {
+  {
     displayName: 'Pacientes',
     iconName: 'grid',
-    route: './dashboard',
+    route: './patients',
     external: true,
     chipClass: 'bg-secondary text-white',
   },
   {
     displayName: 'Informes médicos',
     iconName: 'grid',
-    route: './dashboard',
+    route: './medical-reports',
     external: true,
     chipClass: 'bg-secondary text-white',
   },

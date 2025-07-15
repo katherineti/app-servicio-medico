@@ -1,0 +1,159 @@
+<h2 mat-dialog-title>
+    @if (!this.edit) {
+        Ver informe médico {{this.selected_medicalReport.name | titlecase}}
+    }@else {
+        Editar informe médico 
+    }
+  </h2>
+
+<mat-dialog-content class="mat-typography">
+    <div class="d-flex align-items-center">
+    <div class="right-bg-content p-10">
+
+        <form [formGroup]="formGroup" #f="ngForm">
+
+          <div class="row p-10">
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Nombre"
+                formControlName="name"
+                required="true"
+                type="text"
+                />
+            <mat-error *ngIf="formGroup.controls['name'].hasError('required') || formGroup.controls['name'].hasError('maxLength') ">
+                El nombre es requerido<span class="ocultar-en-movil-tablet m-l-3"> y como máximo puede tener 200 caracteres</span>.
+            </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <input
+                matInput
+                placeholder="Email"
+                formControlName="email"
+                required="true"
+                type="email"
+                />
+            <mat-error *ngIf="formGroup.controls['email'].hasError('required') || formGroup.controls['email'].hasError('maxLength') ">
+                El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+            </mat-error>
+            <mat-error *ngIf="formGroup.controls['email'].hasError('email')">
+                Por favor, introduce un email válido.
+            </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Roles"
+                formControlName="role"
+                required="true"
+                >
+                <mat-option [value]="1">{{
+                    'Administrador' | titlecase
+                }}</mat-option>
+                <mat-option [value]="2">{{
+                    'Almacén' | titlecase
+                }}</mat-option>
+                <mat-option [value]="3">{{
+                    'Médico' | titlecase
+                }}</mat-option>
+                <mat-option [value]="4">{{
+                    'Auditor' | titlecase
+                }}</mat-option>
+                <mat-option [value]="5">{{
+                    'Almacén móvil' | titlecase
+                }}</mat-option>
+                </mat-select>
+            <mat-error *ngIf="formGroup.controls['role'].hasError('required')">
+                El rol es requerido.
+            </mat-error>
+            </mat-form-field>
+        
+<!--             <mat-form-field appearance="outline" class="example-full-width">
+              <mat-select
+              placeholder="Roles"
+              formControlName="role"
+              required="true"
+              >
+              <mat-option value="null">
+                  Ninguno
+              </mat-option>
+              @for (item of listRolesActives; track item) {
+                  <mat-option [value]="item.id">{{
+                      item.name | titlecase
+                  }}</mat-option>
+              }
+              </mat-select>
+           </mat-form-field> -->
+<!--             <mat-form-field appearance="outline" class="example-full-width">
+                <mat-select
+                placeholder="Roles"
+                formControlName="role"
+                required="true"
+                >
+                <mat-option value="admin">{{
+                    'Administrador' | titlecase
+                }}</mat-option>
+                <mat-option value="almacen">{{
+                    'Almacén' | titlecase
+                }}</mat-option>
+                <mat-option value="medico">{{
+                    'Médico' | titlecase
+                }}</mat-option>
+                <mat-option value="auditor">{{
+                    'Auditor' | titlecase
+                }}</mat-option>
+                </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-select
+              placeholder="Estado"
+              formControlName="isActive"
+              required="true"
+              >
+                <mat-option [value]="true">{{
+                    'Activo' | titlecase
+                }}</mat-option>
+                <mat-option [value]="false">{{
+                    'Inactivo' | titlecase
+                }}</mat-option>
+
+              </mat-select>
+            <mat-error *ngIf="formGroup.controls['isActive'].hasError('required')">
+                El estado es requerido.
+            </mat-error>
+          </mat-form-field>
+          </div>
+      
+          <div class="row">
+              <div class="ml-auto">
+                @if (this.edit) {
+                  <button
+                  color="primary"
+                  mat-flat-button
+                  [disabled]="formGroup.invalid && disableButton"
+                  (click)="save()"
+                  >
+                  Guardar
+                  </button>
+                }
+                  <button
+                  class="m-r-10 bg-error m-l-8"
+                  mat-flat-button
+                  (click)="cancel()"
+                  >
+                  @if (!this.edit){
+                    Cerrar
+                  }@else {
+                    Cancelar
+                  }
+                  </button>
+              </div>
+          </div>
+          
+        </form>
+        
+    </div>
+    </div>
+  </mat-dialog-content>

@@ -4,23 +4,23 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
-import { PatientsService } from '../../services/patients.service';
-import { IUser } from '../../interfaces/patients.interface';
+import { MedicalReportsService } from '../../services/medical-reports.service';
+import { IUser } from '../../interfaces/medical-reports.interface';
 
 @Component({
-  selector: 'app-patients-dialog',
+  selector: 'app-medical-reports-dialog',
   imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
-  templateUrl: './patients-dialog.component.html',
-  styleUrl: './patients-dialog.component.scss',
-  providers: [PatientsService]
+  templateUrl: './medical-reports-dialog.component.html',
+  styleUrl: './medical-reports-dialog.component.scss',
+  providers: [MedicalReportsService]
 })
 
-export class PatientsDialogComponent implements OnInit {
-  readonly dialogRef = inject(MatDialogRef<PatientsDialogComponent>);
-  userFormGroup!: FormGroup;
+export class MedicalReportsDialogComponent implements OnInit {
+  readonly dialogRef = inject(MatDialogRef<MedicalReportsDialogComponent>);
+  formGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
-  selectedUser!: IUser;
+  selected_medicalReport!: IUser;
   disableButton: boolean = false;
   typeError = '';
   edit:boolean | undefined;
@@ -28,7 +28,7 @@ export class PatientsDialogComponent implements OnInit {
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
-  private patientsService = inject(PatientsService);
+  private medicalReportsService = inject(MedicalReportsService);
 
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: IUser){
@@ -38,7 +38,7 @@ export class PatientsDialogComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.selectedUser = this.data;
+    this.selected_medicalReport = this.data;
     this.edit = this.data.actionEdit;
     if (this.data) {
       this.setForm();
@@ -46,7 +46,7 @@ export class PatientsDialogComponent implements OnInit {
   }
 
   get checkPropId() {
-    if (this.selectedUser?.id !== null && this.selectedUser?.id !== undefined) {
+    if (this.selected_medicalReport?.id !== null && this.selected_medicalReport?.id !== undefined) {
       return true;
     }
     console.log("Falta id")
@@ -54,7 +54,7 @@ export class PatientsDialogComponent implements OnInit {
   }
 
   buildEditUserForm() {
-    this.userFormGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       name: [
         '',
         [
@@ -85,18 +85,18 @@ export class PatientsDialogComponent implements OnInit {
 
   setForm() {
     if(!this.edit){
-      this.userFormGroup.controls['name'].disable();
-      this.userFormGroup.controls['isActive'].disable();
-      this.userFormGroup.controls['role'].disable();
+      this.formGroup.controls['name'].disable();
+      this.formGroup.controls['isActive'].disable();
+      this.formGroup.controls['role'].disable();
     }
 
-    this.userFormGroup.controls['email'].disable();
+    this.formGroup.controls['email'].disable();
 
-      this.userFormGroup.patchValue({
-        name: this.selectedUser?.name,
-        email: this.selectedUser?.email,
-        isActive: this.selectedUser?.isActivate,
-        role: this.selectedUser?.roleId,
+      this.formGroup.patchValue({
+        name: this.selected_medicalReport?.name,
+        email: this.selected_medicalReport?.email,
+        isActive: this.selected_medicalReport?.isActivate,
+        role: this.selected_medicalReport?.roleId,
       });
   }
 
@@ -108,24 +108,24 @@ export class PatientsDialogComponent implements OnInit {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  saveUser() {
+  save() {
     if (this.checkPropId) {
-      return this.updateUser();
+      return this.update();
     }
   }
 
-  private updateUser() {
+  private update() {
     this.swalService.loading();
     this.disableButton = true;
-    if (this.userFormGroup.invalid) {
+    if (this.formGroup.invalid) {
       this.swalService.closeload();
       this.disableButton = false;
       return;
     }
-    const { name, role, isActive } = this.userFormGroup.value;
-    const id = this.selectedUser.id;
+    const { name, role, isActive } = this.formGroup.value;
+    const id = this.selected_medicalReport.id;
 
-    this.patientsService
+    this.medicalReportsService
       .updateUser(
         id, 
         {
@@ -150,7 +150,7 @@ export class PatientsDialogComponent implements OnInit {
   }
 
   getRolesActives() {
-    this.patientsService.getRolesActives().subscribe((data: any) => {
+    this.medicalReportsService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
     });
   }

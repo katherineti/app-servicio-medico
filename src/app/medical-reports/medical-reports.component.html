@@ -1,4 +1,4 @@
-<app-header-title [title]="'Pacientes'" ></app-header-title>
+<app-header-title [title]="'Informes Médicos'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
     <mat-form-field appearance="outline" class="search m-t-20">
@@ -6,7 +6,7 @@
     </mat-form-field>
     
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
-    (click)="getAllPatients(this.pageIndex, this.pageSize)">
+    (click)="getAllMedicalReport(this.pageIndex, this.pageSize)">
         <i-feather name="search"></i-feather>
     </button>
 
@@ -74,10 +74,10 @@
                                  </button>
  
                                  @if (this.role === 'admin') {
-                                     <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
+                                     <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
                                          <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                      </button>
-                                     <button mat-icon-button aria-label="Eliminar" (click)="deletePatients(element)">
+                                     <button mat-icon-button aria-label="Eliminar" (click)="deleteMedicalReport(element)">
                                          <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
                                      </button>
                                  }
@@ -90,7 +90,7 @@
      
                          <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
                          [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
-                         aria-describedby="table patients"></mat-paginator>
+                         aria-describedby="table medical reports"></mat-paginator>
                      </div>
                  </section>
                 }@else {

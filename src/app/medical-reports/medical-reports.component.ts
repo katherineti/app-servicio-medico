@@ -7,23 +7,23 @@ import { MaterialModule } from '../material/material.module';
 import { FeatherIconsModule } from '../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { PatientsDialogComponent } from './components/patients-dialog/patients-dialog.component';
+import { MedicalReportsDialogComponent } from './components/medical-reports-dialog/medical-reports-dialog.component';
 import { SwalService} from '../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { PatientsCreateComponent } from './components/patients-create/patients-create.component';
+import { MedicalReportsCreateComponent } from './components/medical-reports-create/medical-reports-create.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { PatientsService } from './services/patients.service';
-import { IGetAllUsers, IUser, IUserPagination } from './interfaces/patients.interface';
+import { MedicalReportsService } from './services/medical-reports.service';
+import { IGetAllUsers, IUser, IUserPagination } from './interfaces/medical-reports.interface';
 import { AuthService } from '../services/auth.service';
 
 /**
-* @title pagination table patients
+* @title pagination table medical reports
 */
 @Component({
-selector: 'app-patients',
-templateUrl: './patients.component.html',
-styleUrl: './patients.component.scss',
+selector: 'app-medical-reports',
+templateUrl: './medical-reports.component.html',
+styleUrl: './medical-reports.component.scss',
 imports: [
   CommonModule,
   FeatherIconsModule,
@@ -32,9 +32,9 @@ imports: [
   HeaderTitleComponent,
   ReactiveFormsModule 
 ],
-providers:[PatientsService]
+providers:[MedicalReportsService]
 })
-export class PatientsComponent {
+export class MedicalReportsComponent {
   role:string='';
   displayedColumns = [ 'name','rol','email','isActive','action'];
   dataSource: any = new MatTableDataSource<IUser>();
@@ -43,7 +43,7 @@ export class PatientsComponent {
   pageIndex = 0;
 
   private swalService = inject(SwalService);
-  private patientsService = inject(PatientsService);
+  private medicalReportsService = inject(MedicalReportsService);
   public dialog = inject(MatDialog);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -57,7 +57,7 @@ export class PatientsComponent {
     });
     
     this.dataSource['length'] = 0;
-    this.getAllPatients(this.pageIndex, this.pageSize);
+    this.getAllMedicalReport(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
 
@@ -76,50 +76,50 @@ export class PatientsComponent {
 
   openDialogSee(data?: any): void {
     data.actionEdit=false;
-    const ref = this.dialog.open(PatientsDialogComponent, {
+    const ref = this.dialog.open(MedicalReportsDialogComponent, {
       data: data || null,
       disableClose: true
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllPatients(this.pageIndex, this.pageSize);
+      this.getAllMedicalReport(this.pageIndex, this.pageSize);
     });
   }
 
-  openDialogEdit(data?: any): void {
+  openEditMedicalReport(data?: any): void {
     data.actionEdit=true;
-    const ref = this.dialog.open(PatientsDialogComponent, {
+    const ref = this.dialog.open(MedicalReportsDialogComponent, {
       data: data || null,
       disableClose: true
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllPatients(this.pageIndex, this.pageSize);
+      this.getAllMedicalReport(this.pageIndex, this.pageSize);
     });
   }
 
   openDialogCreate(data?: any): void {
-    const ref = this.dialog.open(PatientsCreateComponent, {
+    const ref = this.dialog.open(MedicalReportsCreateComponent, {
       data: data || null,
       disableClose: true
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllPatients(this.pageIndex, this.pageSize);
+      this.getAllMedicalReport(this.pageIndex, this.pageSize);
     });
   }
 
-  async deletePatients(data: any) {
+  async deleteMedicalReport(data: any) {
     const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
       'eliminar registro'
     );
     if (deleteAlert.isConfirmed) {
-      this.patientsService.deleteUser(data.id).subscribe((element) => {
+      this.medicalReportsService.deleteUser(data.id).subscribe((element) => {
         if (element) {
-          this.getAllPatients(this.pageIndex, this.pageSize);
+          this.getAllMedicalReport(this.pageIndex, this.pageSize);
           this.swalService.success();
         } else {
-          this.swalService.error('Error', 'Error al eliminar el informe médico.');
+          this.swalService.error('Error', 'Error al eliminar usuario.');
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
@@ -127,18 +127,18 @@ export class PatientsComponent {
     }
   }
 
-  getAllPatients(page: number, take: number) {
+  getAllMedicalReport(page: number, take: number) {
     const parms: IGetAllUsers = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
       name: this.searchValue ? this.searchValue.trim() : null,
     };
-    this.patientsService.getUsers(parms).subscribe((data: IUserPagination) => {
+    this.medicalReportsService.getUsers(parms).subscribe((data: IUserPagination) => {
       this.dataSource = new MatTableDataSource<IUser>(data.list);
       this.dataSource.length = data.total;
     });
   }
   handlePageEvent(event: PageEvent) {
-    this.getAllPatients(event.pageIndex, event.pageSize);
+    this.getAllMedicalReport(event.pageIndex, event.pageSize);
   }
 }

@@ -12,6 +12,7 @@ import { LogsComponent } from './logs/logs.component';
 import { ReportFormComponent } from './reports/components/report-form/report-form.component';
 import { ReportsComponent } from './reports/reports.component';
 import { PatientsComponent } from './patients/patients.component';
+import { MedicalReportsComponent } from './medical-reports/medical-reports.component';
 
 export const routes: Routes = [
     {
@@ -53,12 +54,16 @@ export const routes: Routes = [
             component: ReportFormComponent,
           },
           {
-            path: 'reports',
+            path: 'reports',//de auditoria
             component: ReportsComponent,
           },
           {
             path: 'patients',
             component: PatientsComponent,
+          },
+          {
+            path: 'medical-reports',//informes medicos
+            component: MedicalReportsComponent,
           },
         ],
     },

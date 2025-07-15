@@ -1,0 +1,158 @@
+import { Component, Inject, inject, OnInit } from '@angular/core';
+import { MaterialModule } from '../../../material/material.module';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SwalService } from '../../../services/swal.service';
+import { PatientsService } from '../../services/patients.service';
+import { IUser } from '../../interfaces/patients.interface';
+
+@Component({
+  selector: 'app-user-dialog',
+  imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
+  templateUrl: './patients-dialog.component.html',
+  styleUrl: './patients-dialog.component.scss',
+  providers: [PatientsService]
+})
+
+export class PatientsDialogComponent implements OnInit {
+  readonly dialogRef = inject(MatDialogRef<PatientsDialogComponent>);
+  userFormGroup!: FormGroup;
+  imageField?: File;
+  imgBase64?: any;
+  selectedUser!: IUser;
+  disableButton: boolean = false;
+  typeError = '';
+  edit:boolean | undefined;
+  listRolesActives!: {id:number,name:string}[];
+
+  private formBuilder = inject(FormBuilder);
+  private swalService = inject(SwalService);
+  private patientsService = inject(PatientsService);
+
+  constructor( 
+    @Inject(MAT_DIALOG_DATA) public data: IUser){
+    this.buildEditUserForm();
+    this.getRolesActives();
+  }
+
+  async ngOnInit() {
+
+    this.selectedUser = this.data;
+    this.edit = this.data.actionEdit;
+    if (this.data) {
+      this.setForm();
+    }
+  }
+
+  get checkPropId() {
+    if (this.selectedUser?.id !== null && this.selectedUser?.id !== undefined) {
+      return true;
+    }
+    console.log("Falta id")
+    return false;
+  }
+
+  buildEditUserForm() {
+    this.userFormGroup = this.formBuilder.group({
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          // Validators.pattern('/^[a-zA-ZÀ-ÿ\s]+$/')
+        ],
+      ],
+      email: [
+        '',
+        [
+          Validators.required, 
+          Validators.email,
+          Validators.maxLength(50),
+        ],
+      ],
+      isActive: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(20),
+        ],
+      ],
+      role: ['', [Validators.required]],
+    });
+  }
+
+  setForm() {
+    if(!this.edit){
+      this.userFormGroup.controls['name'].disable();
+      this.userFormGroup.controls['isActive'].disable();
+      this.userFormGroup.controls['role'].disable();
+    }
+
+    this.userFormGroup.controls['email'].disable();
+
+      this.userFormGroup.patchValue({
+        name: this.selectedUser?.name,
+        email: this.selectedUser?.email,
+        isActive: this.selectedUser?.isActivate,
+        role: this.selectedUser?.roleId,
+      });
+  }
+
+  cancel() {
+    this.closeDialog();
+  }
+
+  closeDialog(): void | null {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
+
+  saveUser() {
+    if (this.checkPropId) {
+      return this.updateUser();
+    }
+  }
+
+  private updateUser() {
+    this.swalService.loading();
+    this.disableButton = true;
+    if (this.userFormGroup.invalid) {
+      this.swalService.closeload();
+      this.disableButton = false;
+      return;
+    }
+    const { name, role, isActive } = this.userFormGroup.value;
+    const id = this.selectedUser.id;
+
+    this.patientsService
+      .updateUser(
+        id, 
+        {
+          name, 
+          role,
+          isActivate: isActive,
+        })
+      .subscribe({
+        next: () => {
+          this.swalService.closeload();
+          this.swalService.success();
+          this.disableButton = false;
+          this.closeDialog();
+        },
+        error: (error) => {
+          console.log("Error ", error)
+          this.swalService.closeload();
+          this.disableButton = false;
+          this.swalService.error('Error', error);
+        },
+      });
+  }
+
+  getRolesActives() {
+    this.patientsService.getRolesActives().subscribe((data: any) => {
+      this.listRolesActives = data;
+    });
+  }
+
+}

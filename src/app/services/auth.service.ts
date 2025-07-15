@@ -30,8 +30,7 @@ export class AuthService {
   sessionExpiredGracePeriod$ = this.sessionExpiredGracePeriodSubject.asObservable()
 
   constructor( readonly swalService: SwalService) {
-
-      this.startSessionMonitor()
+      this.startSessionMonitor();
   }
 
   // Nuevo método síncrono para obtener el token en texto plano de localStorage

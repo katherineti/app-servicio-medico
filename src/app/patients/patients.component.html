@@ -1,0 +1,104 @@
+<app-header-title [title]="'Pacientes'" ></app-header-title>
+<mat-toolbar style="background-color: white;">
+
+    <mat-form-field appearance="outline" class="search m-t-20">
+        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+    </mat-form-field>
+    
+    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
+    (click)="getAllUser(this.pageIndex, this.pageSize)">
+        <i-feather name="search"></i-feather>
+    </button>
+
+</mat-toolbar>
+
+@if (this.role === 'admin') {
+    <span class="example-spacer"></span>
+    <button mat-flat-button color="secondary-fixed" (click)="openDialogCreateUser()" style="padding: 0 35px;" class="m-l-20">
+        Agregar
+    </button>
+}
+<br>
+<mat-card class="">
+    <mat-card-content>
+        <!-- <div class="d-flex w-100"> -->
+        <div class="w-100">
+            <div class="m-l-auto">
+                @if (dataSource.length) {
+                 <section class="example-container mat-elevation-z8" tabindex="0">
+                     <div class="table-responsive">
+                         <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla users">
+                         <ng-container matColumnDef="name" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Nombre
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.name | titlecase
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="email">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Email
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                             {{ element.email }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="isActive">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                 Estado
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                 @if (element.isActivate===true) {
+                                     Activo
+                                 }@else {
+                                     Inactivo
+                                   }
+                             </mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="rol">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Rol
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.role | titlecase
+                             }}</mat-cell>
+                         </ng-container>
+                     
+                         <ng-container matColumnDef="action" >
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                             Acción
+                             </mat-header-cell>
+                             <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
+                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSeeUser(element)">
+                                     <i-feather name="eye"></i-feather>
+                                 </button>
+ 
+                                 @if (this.role === 'admin') {
+                                     <button mat-icon-button aria-label="Editar" (click)="openDialogEditUser(element)">
+                                         <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+                                     </button>
+                                     <button mat-icon-button aria-label="Eliminar" (click)="deleteUser(element)">
+                                         <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                     </button>
+                                 }
+                             </mat-cell>
+                         </ng-container>
+                     
+                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                         </table>
+     
+                         <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
+                         [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
+                         aria-describedby="table users"></mat-paginator>
+                     </div>
+                 </section>
+                }@else {
+                    <div [style.textAlign]="'center'">
+                        <p>No hay datos.</p>
+                      </div>
+                }
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

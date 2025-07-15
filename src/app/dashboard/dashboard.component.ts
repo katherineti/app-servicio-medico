@@ -189,7 +189,6 @@ export class DashboardComponent {
       const totalAvailableProductsByType: any = await firstValueFrom(
         this.dashboardService.totalAvailableProductsByType(),
       )
-      console.log(totalAvailableProductsByType)
       this.getAccumulatedProductsStockByType = totalAvailableProductsByType
     } catch (e: any) {
       toast.error(e.error.message)
@@ -202,7 +201,6 @@ export class DashboardComponent {
       const totalOfProductAssignmentsByType: any = await firstValueFrom(
         this.dashboardService.totalOfProductAssignmentsByType(),
       )
-      console.log(totalOfProductAssignmentsByType)
       this.getAccumulatedAssignmentsByType = totalOfProductAssignmentsByType
     } catch (e: any) {
       toast.error(e.error.message)
@@ -213,7 +211,6 @@ export class DashboardComponent {
   async expiredProductsCount() {
     try {
       const expiredProductsCount: any = await firstValueFrom(this.dashboardService.expiredProductsCount())
-      console.log("expiredProductsCount", expiredProductsCount)
       this.getExpiredProductsCount = expiredProductsCount
     } catch (e: any) {
       toast.error(e.error.message)
@@ -270,8 +267,6 @@ export class DashboardComponent {
     if (!element.id || this.isGeneratingPdf) {
       return;
     }
-    console.log("generar pdf")
-
     
     this.isGeneratingPdf = true;
     
@@ -473,7 +468,7 @@ export class DashboardComponent {
     if ( this.isGeneratingPdf) {
       return;
     }
-    console.log(`generar pdf de  insumos medicos disponibles`)
+    console.log(`generar pdf de insumos medicos disponibles`)
 
     this.isGeneratingPdf = true;
     

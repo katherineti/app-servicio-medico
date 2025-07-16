@@ -125,6 +125,7 @@ export class MedicalReportsComponent {
    * @param medicalReport El informe médico para el cual se creará la receta.
    */
   navigateToCreateMedicalPrescription(medicalReport: IMedicalReports): void {
+    console.log("seleccionado ", medicalReport)
     this.router.navigate(["/medical-prescriptions/create", medicalReport.id])
   }
 

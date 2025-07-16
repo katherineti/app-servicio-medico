@@ -17,6 +17,7 @@ import { MedicalReportsService } from './services/medical-reports.service';
 import { IGetAllMedicalreports, IUser, IMedicalReportPagination, IMedicalReports } from './interfaces/medical-reports.interface';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /**
 * @title pagination table medical reports
@@ -37,7 +38,6 @@ providers:[MedicalReportsService]
 })
 export class MedicalReportsComponent {
   role:string='';
-  // displayedColumns = [ 'name','rol','email','isActive','action'];
   displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt','action'];
   dataSource: any = new MatTableDataSource<IUser>();
   searhMedico = new FormControl();
@@ -45,6 +45,7 @@ export class MedicalReportsComponent {
   searhDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
+  isGeneratingPdf = false;
 
   private swalService = inject(SwalService);
   private medicalReportsService = inject(MedicalReportsService);
@@ -53,6 +54,8 @@ export class MedicalReportsComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
   private router = inject(Router)
+  private snackBar = inject(MatSnackBar);
+
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
@@ -182,5 +185,80 @@ export class MedicalReportsComponent {
   }
   handlePageEvent(event: PageEvent) {
     this.getAllMedicalReport(event.pageIndex, event.pageSize);
+  }
+
+  // PDF
+  generatePdf(element:any): void {
+    //  let element! : any;
+     //  let element: IReport = {};
+
+/*      element = {
+      additionalAuditorIds: [16, 13],
+      auditor: "a mi nombre",
+      auditorId: 4,
+      code: "O475a7e9aa-b126-4f83-a1ac-c9b7dee7d8b6.4.2025",
+      conclusions: "d",
+      detailed_methodology: "d",
+      endDate: new Date("2025-06-08 19:38:39 -0400"),
+      findings: "d",
+      id: 4,
+      idDuplicate: null,
+      images: ['/uploads/reports/Id 4/report-1749425919381-345499483-1-mandala.jpg', '/uploads/reports/Id 4/report-1749425919387-325340306-mandala.png', '/uploads/reports/Id 4/report-1749425919387-6672292…2622768_854260286819999_6447723401831025285_n.jpg', '/uploads/reports/Id 4/report-1749425919399-8837722…-tecnologia-impulsa-el-desarrollo-y-viceversa.jpg', '/uploads/reports/Id 4/report-1749425919401-2020545…5715485_296208562543640_9157808412213043412_n.jpg', '/uploads/reports/Id 4/report-1749425919402-974399550-5f361ce5cc3c107c008029e631e05c36.jpg', '/uploads/reports/Id 4/report-1749425919402-4663315…953190_1128356091619115_7251787043438431084_n.jpg', '/uploads/reports/Id 4/report-1749425919403-226057615-frases-viajeras-15.jpg', '/uploads/reports/Id 4/report-1749425919404-7771959…ras-frases-de-montana-que-celebran-la-amistad.jpg', '/uploads/reports/Id 4/report-1749425919405-185077049-frases-cortas.jpg'],
+      introduction: "d",
+      receiver: "d",
+      startDate: new Date("2025-06-08 19:38:04 -0400"),
+      // status: "Finalizado",
+      statusId: 1,
+      summary_conclusionAndObservation: "d",
+      summary_methodology: "d",
+      summary_objective: "d",
+      summary_scope: "d",
+      title: "D",
+      } */
+
+    if (!element.id || this.isGeneratingPdf) {
+      return;
+    }
+    
+    this.isGeneratingPdf = true;
+    
+    // Mostrar indicador de carga
+    const loadingToast = this.snackBar.open('Generando PDF...', '', {
+      duration: undefined,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+    
+    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
+    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
+    this.medicalReportsService.generatePDFMedicalReport(element.id).subscribe({
+      next: () => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de éxito
+        this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+      },
+      error: (err) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss();
+        this.isGeneratingPdf = false;
+        
+        // Mostrar mensaje de error
+        this.snackBar.open(`Error al generar el PDF: ${err.message || 'Error desconocido'}`, 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+        
+        console.error('Error al generar el PDF:', err);
+      }
+    }); 
   }
 }

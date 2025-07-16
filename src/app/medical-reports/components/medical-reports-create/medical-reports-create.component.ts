@@ -86,7 +86,7 @@ export class MedicalReportsCreateComponent {
     }
     const { ...params } = this.formGroup.value;
     this.medicalReportsService
-      .createUser({
+      .create({
         ...params,
       })
       .subscribe({

@@ -13,6 +13,7 @@ import { ReportFormComponent } from './reports/components/report-form/report-for
 import { ReportsComponent } from './reports/reports.component';
 import { PatientsComponent } from './patients/patients.component';
 import { MedicalReportsComponent } from './medical-reports/medical-reports.component';
+import { MedicalReportCreateComponent } from './medical-reports/components/medical-report-create/medical-report-create.component';
 
 export const routes: Routes = [
     {
@@ -64,6 +65,10 @@ export const routes: Routes = [
           {
             path: 'medical-reports',//informes medicos
             component: MedicalReportsComponent,
+          },
+          {
+            path: 'create-medical-reports',//informes medicos
+            component: MedicalReportCreateComponent,
           },
         ],
     },

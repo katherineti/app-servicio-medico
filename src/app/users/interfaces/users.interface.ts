@@ -9,6 +9,8 @@ export interface IUser{
   createdAt?: Date;
   updatedAt?: Date;
   actionEdit?:boolean;
+
+  cedula?:string;
   [key: string]: any;
 }
 

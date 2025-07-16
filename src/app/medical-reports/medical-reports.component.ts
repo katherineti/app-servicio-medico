@@ -16,6 +16,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MedicalReportsService } from './services/medical-reports.service';
 import { IGetAllMedicalreports, IUser, IMedicalReportPagination, IMedicalReports } from './interfaces/medical-reports.interface';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 /**
 * @title pagination table medical reports
@@ -51,7 +52,7 @@ export class MedicalReportsComponent {
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
-
+  private router = inject(Router)
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
@@ -66,6 +67,13 @@ export class MedicalReportsComponent {
 
   async ngOnInit(){
     this.role = await this.authService.getRol();
+  }
+
+  /**
+   * Navega a la página de creación de informes médicos.
+   */
+  navigateToAddReport(): void {
+    this.router.navigate(["/create-medical-reports"])
   }
 
   get SearhMedico() {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
-import { ICreateUserDTO, IGetAllMedicalreports, IUser, IMedicalReportPagination } from '../interfaces/medical-reports.interface';
+import { IGetAllMedicalreports, IUser, IMedicalReportPagination, ICreateDTO } from '../interfaces/medical-reports.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +20,9 @@ export class MedicalReportsService {
     );
   }
 
-  createUser(dto: ICreateUserDTO) {
+  create(dto: ICreateDTO) {
     return this.http.post<IUser>(
-      `${this.tokenService.endPoint}medical-reports/createAccount`,
+      `${this.tokenService.endPoint}medical-reports/create`,
       dto
     );
   }

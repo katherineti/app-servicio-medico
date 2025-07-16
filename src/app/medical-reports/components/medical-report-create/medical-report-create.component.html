@@ -1,0 +1,263 @@
+<div class="container-fluid">
+<mat-card class="create-report-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>description</mat-icon>
+      Crear Informe Médico
+    </mat-card-title>
+    <mat-card-subtitle>
+      <br>Complete todos los campos requeridos para generar el informe
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="medicalReportForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Información General -->
+      <div class="form-section">
+        <h3 class="section-title">Información General</h3>
+        
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Fecha de Elaboración</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="elaborationDate" required readonly>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" disabled></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="medicalReportForm.get('elaborationDate')?.hasError('required')">
+              La fecha de elaboración es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Centro APS</mat-label>
+            <input matInput formControlName="apsCenter" required>
+            <mat-error *ngIf="medicalReportForm.get('apsCenter')?.hasError('required')">
+              El centro APS es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Aseguradora</mat-label>
+            <input matInput formControlName="insurance" required>
+            <mat-error *ngIf="medicalReportForm.get('insurance')?.hasError('required')">
+              La aseguradora es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Selección de Paciente y Doctor -->
+      <div class="form-section">
+        <h3 class="section-title">Paciente y Doctor</h3>
+        
+        <div class="form-row">
+          <!-- Campo de Paciente con Autocomplete -->
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Buscar Paciente</mat-label>
+            <input 
+              type="text"
+              placeholder="Escriba cédula o nombre del paciente"
+              matInput 
+              formControlName="patientSearch"
+              [matAutocomplete]="patientAuto">
+            
+            <!-- Botón para limpiar selección -->
+            <button 
+              matSuffix 
+              mat-icon-button 
+              aria-label="Limpiar"
+              type="button"
+              *ngIf="medicalReportForm.get('patientSearch')?.value"
+              (click)="clearPatientSelection()">
+              <mat-icon>close</mat-icon>
+            </button>
+
+            <!-- Autocomplete -->
+            <mat-autocomplete 
+              #patientAuto="matAutocomplete" 
+              [displayWith]="displayPatientFn"
+              (optionSelected)="onPatientSelected($event.option.value)">
+              
+              <mat-option disabled *ngIf="isLoadingPatients">
+                <mat-icon>hourglass_empty</mat-icon>
+                Cargando pacientes...
+              </mat-option>
+
+              <mat-option 
+                *ngFor="let patient of filteredPatients | async" 
+                [value]="patient"
+                class="patient-option">
+                <div class="patient-info">
+                  <div class="patient-name">
+                    <mat-icon>person</mat-icon>
+                    {{patient.name | titlecase}}
+                  </div>
+                  @if (patient.cedula !='V-') {
+                    <div class="patient-details">
+                      <span class="patient-cedula">{{patient.cedula}}</span>
+                    </div>
+                  }
+                </div>
+              </mat-option>
+
+              <mat-option 
+                *ngIf="(filteredPatients | async)?.length === 0 && !isLoadingPatients" 
+                disabled>
+                <mat-icon>search_off</mat-icon>
+                No se encontraron pacientes
+              </mat-option>
+            </mat-autocomplete>
+
+            <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+            <mat-error *ngIf="medicalReportForm.get('patientId')?.hasError('required')">
+              Debe seleccionar un paciente
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Campo de Doctor con Autocomplete -->
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Buscar Doctor</mat-label>
+            <input 
+              type="text"
+              placeholder="Escriba cédula o nombre del doctor"
+              matInput 
+              formControlName="doctorSearch"
+              [matAutocomplete]="doctorAuto">
+            
+            <!-- Botón para limpiar selección -->
+            <button 
+              matSuffix 
+              mat-icon-button 
+              aria-label="Limpiar"
+              type="button"
+              *ngIf="medicalReportForm.get('doctorSearch')?.value"
+              (click)="clearDoctorSelection()">
+              <mat-icon>close</mat-icon>
+            </button>
+
+            <!-- Autocomplete -->
+            <mat-autocomplete 
+              #doctorAuto="matAutocomplete" 
+              [displayWith]="displayDoctorFn"
+              (optionSelected)="onDoctorSelected($event.option.value)">
+              
+              <mat-option disabled *ngIf="isLoadingDoctors">
+                <mat-icon>hourglass_empty</mat-icon>
+                Cargando doctores...
+              </mat-option>
+
+              <mat-option 
+                *ngFor="let doctor of filteredDoctors | async" 
+                [value]="doctor"
+                class="doctor-option">
+                <div class="doctor-info">
+                  <div class="doctor-name">
+                    <mat-icon>person</mat-icon>
+                    {{doctor.name | titlecase}}
+                  </div>
+<!--                   <div class="doctor-details">
+                    <span class="doctor-cedula">{{doctor.cedula}}</span>
+                  </div> -->
+                  @if (doctor.cedula !='V-') {
+                  <div class="doctor-details">
+                    <span class="doctor-cedula">{{doctor.cedula}}</span>
+                  </div>
+                  }
+                </div>
+              </mat-option>
+
+              <mat-option 
+                *ngIf="(filteredDoctors | async)?.length === 0 && !isLoadingDoctors" 
+                disabled>
+                <mat-icon>search_off</mat-icon>
+                No se encontraron doctores
+              </mat-option>
+            </mat-autocomplete>
+
+            <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+            <mat-error *ngIf="medicalReportForm.get('doctorId')?.hasError('required')">
+              Debe seleccionar un doctor
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>M.P.P.S - C.M</mat-label>
+            <input
+              matInput
+              formControlName="mppsCM"
+              required
+              type="text"
+            />
+            <mat-error *ngIf="medicalReportForm.get('mppsCM')?.hasError('required')">
+              El campo M.P.P.S - C.M es requerido
+            </mat-error>
+            <mat-error *ngIf="medicalReportForm.get('mppsCM')?.hasError('maxlength')">
+              El campo M.P.P.S - C.M no puede exceder 50 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Informe -->
+      <div class="form-section">
+        <h3 class="section-title">Informe Médico</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción del Informe</mat-label>
+          <textarea 
+            matInput 
+            formControlName="report" 
+            rows="10" 
+            placeholder="Escriba aquí el informe médico detallado..."
+            required>
+          </textarea>
+          <mat-hint>
+            Mínimo 50 caracteres, máximo 700
+          </mat-hint>
+          <mat-error *ngIf="medicalReportForm.get('report')?.hasError('required')">
+            El informe es requerido
+          </mat-error>
+          <mat-error *ngIf="medicalReportForm.get('report')?.hasError('minlength')">
+            El informe debe tener al menos 50 caracteres
+          </mat-error>
+          <mat-error *ngIf="medicalReportForm.get('report')?.hasError('maxlength')">
+            El informe no puede exceder 2000 caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="medicalReportForm.invalid || isSubmitting">
+          <mat-icon>save</mat-icon>
+          {{isSubmitting ? 'Guardando...' : 'Crear Informe'}}
+        </button>
+
+<!--         <button 
+          mat-stroked-button 
+          type="button"
+          (click)="onPreview()"
+          [disabled]="medicalReportForm.invalid">
+          <mat-icon>preview</mat-icon>
+          Vista Previa
+        </button> -->
+
+        <button 
+          mat-button 
+          type="button"
+          (click)="onCancel()">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+</div>

@@ -38,5 +38,6 @@ export interface IMedicalReportPagination {
   list: IMedicalReports[];
 }
 
-export interface ICreateUserDTO
-  extends Omit<IMedicalReports, 'id' | 'createdAt' | 'updatedAt' > {}
+export interface ICreateDTO
+  extends Omit<IMedicalReports, 'id' | 'createdAt' | 'isActivate' > {}
+  // extends Omit<IMedicalReports, 'id' | 'createdAt' | 'updatedAt' > {}

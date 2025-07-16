@@ -92,6 +92,10 @@
           </div>
 
         </div>
+        <button class="floating-button" (click)="openModal()">
+          Ver desarrolladores
+        </button>
+        <app-modal-links *ngIf="isModalOpen" (close)="closeModal()"></app-modal-links>
       </div>
     </div>
 

@@ -1,0 +1,11 @@
+<div class="modal-overlay" (click)="close.emit()"></div>
+<div class="modal-content">
+  <div class="grid">
+    <div class="grid-item" *ngFor="let item of links; index as i">
+      <img [src]="item.img" alt="imagen" />
+      <h4>{{ item.name }}</h4>      
+      <a *ngIf="i !== 3" [routerLink]="[item.link]" target="_blank">Ir a página</a>
+    </div>
+  </div>
+  <button (click)="close.emit()">Cerrar</button>
+</div>

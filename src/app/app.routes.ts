@@ -11,6 +11,7 @@ import { AuthGuard } from './authentication/guards/auth.guard';
 import { LogsComponent } from './logs/logs.component';
 import { ReportFormComponent } from './reports/components/report-form/report-form.component';
 import { ReportsComponent } from './reports/reports.component';
+import { PaginaJaComponent } from './pagina-ja/pagina-ja.component';
 
 export const routes: Routes = [
     {
@@ -54,6 +55,10 @@ export const routes: Routes = [
           {
             path: 'reports',
             component: ReportsComponent,
+          },
+          {
+            path: 'pagina-ja',
+            component: PaginaJaComponent,
           },
         ],
     },

@@ -17,7 +17,7 @@ export class PatientsCreateComponent {
   imageField?: File;
   imgBase64?: any;
   disableButton: boolean = false;
-  listRolesActives!: {id:number,name:string}[];
+  // listRolesActives!: {id:number,name:string}[];
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -27,7 +27,7 @@ export class PatientsCreateComponent {
     public dialogRef: MatDialogRef<PatientsCreateComponent>,
     ){
     this.buildAddUserForm();
-    this.getRolesActives();
+    // this.getRolesActives();
   }
 
   buildAddUserForm() {
@@ -85,7 +85,7 @@ export class PatientsCreateComponent {
       return;
     }
     const { ...params } = this.userFormGroup.value;
-    this.patientsService
+/*     this.patientsService
       .createUser({
         ...params,
       })
@@ -101,12 +101,12 @@ export class PatientsCreateComponent {
           this.closeDialog();
           this.disableButton = false;
         },
-      });
+      }); */
   }
 
-  getRolesActives() {
+/*   getRolesActives() {
     this.patientsService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
     });
-  }
+  } */
 }

@@ -2,7 +2,7 @@
 <mat-toolbar style="background-color: white;">
 
     <mat-form-field appearance="outline" class="search m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+        <input matInput class="p-b-0" placeholder="Buscar por cédula" [formControl]="searhField" />
     </mat-form-field>
     
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
@@ -12,13 +12,13 @@
 
 </mat-toolbar>
 
-@if (this.role === 'admin') {
+<!-- @if (this.role === 'admin') {
     <span class="example-spacer"></span>
     <button mat-flat-button color="secondary-fixed" (click)="openDialogCreate()" style="padding: 0 35px;" class="m-l-20">
         Agregar
     </button>
 }
-<br>
+<br> -->
 <mat-card class="">
     <mat-card-content>
         <!-- <div class="d-flex w-100"> -->
@@ -36,6 +36,62 @@
                                  element.name | titlecase
                              }}</mat-cell>
                          </ng-container>
+                         <ng-container matColumnDef="cedula" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Cédula
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.cedula | titlecase
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="birthdate" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Fecha de Nacimiento
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.birthdate | date:'dd-MM-yyyy'
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="age" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Edad
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.age
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="gender" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Género
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.gender | titlecase
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="civilStatus" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Estado Civil
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.civilStatus | titlecase
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="children" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Hijos
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.children
+                             }}</mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="phone" sticky>
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                             Teléfono
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
+                                 element.phone
+                             }}</mat-cell>
+                         </ng-container>
                          <ng-container matColumnDef="email">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Email
@@ -43,27 +99,14 @@
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                              {{ element.email }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="isActive">
+                         <ng-container matColumnDef="createdAt">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                 Estado
+                             Fecha
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                 @if (element.isActivate===true) {
-                                     Activo
-                                 }@else {
-                                     Inactivo
-                                   }
-                             </mat-cell>
+                             {{ element.createdAt | date:'dd-MM-yyyy'}}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="rol">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                             Rol
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                 element.role | titlecase
-                             }}</mat-cell>
-                         </ng-container>
-                     
+
                          <ng-container matColumnDef="action" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
                              Acción
@@ -73,14 +116,14 @@
                                      <i-feather name="eye"></i-feather>
                                  </button>
  
-                                 @if (this.role === 'admin') {
+<!--                                  @if (this.role === 'admin') {
                                      <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
                                          <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                      </button>
                                      <button mat-icon-button aria-label="Eliminar" (click)="deletePatients(element)">
                                          <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
                                      </button>
-                                 }
+                                 } -->
                              </mat-cell>
                          </ng-container>
                      

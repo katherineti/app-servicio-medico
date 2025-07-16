@@ -2,8 +2,16 @@
 <mat-toolbar style="background-color: white;">
 
     <mat-form-field appearance="outline" class="search m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+        <input matInput class="p-b-0" placeholder="Buscar por cédula doctor" [formControl]="searhMedico" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline" class="search m-t-20">
+        <input matInput class="p-b-0" placeholder="Buscar por cédula paciente" [formControl]="searhPatient" />
+    </mat-form-field>
+
+<!--     <mat-form-field appearance="outline" class="search m-t-20">
+        <input matInput class="p-b-0" placeholder="Buscar por fecha" [formControl]="searhDate" />
+    </mat-form-field> -->
     
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
     (click)="getAllMedicalReport(this.pageIndex, this.pageSize)">
@@ -12,12 +20,12 @@
 
 </mat-toolbar>
 
-@if (this.role === 'admin') {
+<!-- @if (this.role === 'admin') {
     <span class="example-spacer"></span>
     <button mat-flat-button color="secondary-fixed" (click)="openDialogCreate()" style="padding: 0 35px;" class="m-l-20">
         Agregar
     </button>
-}
+} -->
 <br>
 <mat-card class="">
     <mat-card-content>
@@ -49,7 +57,7 @@
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                                 {{ element.patientName | titlecase}}
-                                @if (element.doctorCedula !='V-') {
+                                @if (element.patientCedula !='V-') {
                                     <br>{{
                                         element.patientCedula | titlecase
                                     }}

@@ -24,7 +24,7 @@ export class PatientsDialogComponent implements OnInit {
   disableButton: boolean = false;
   typeError = '';
   edit:boolean | undefined;
-  listRolesActives!: {id:number,name:string}[];
+  // listRolesActives!: {id:number,name:string}[];
 
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
@@ -33,7 +33,7 @@ export class PatientsDialogComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: IUser){
     this.buildEditUserForm();
-    this.getRolesActives();
+    // this.getRolesActives();
   }
 
   async ngOnInit() {
@@ -125,7 +125,7 @@ export class PatientsDialogComponent implements OnInit {
     const { name, role, isActive } = this.userFormGroup.value;
     const id = this.selectedUser.id;
 
-    this.patientsService
+/*     this.patientsService
       .updateUser(
         id, 
         {
@@ -146,13 +146,13 @@ export class PatientsDialogComponent implements OnInit {
           this.disableButton = false;
           this.swalService.error('Error', error);
         },
-      });
+      }); */
   }
 
-  getRolesActives() {
+/*   getRolesActives() {
     this.patientsService.getRolesActives().subscribe((data: any) => {
       this.listRolesActives = data;
     });
-  }
+  } */
 
 }

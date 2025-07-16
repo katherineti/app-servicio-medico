@@ -14,7 +14,7 @@ import { PatientsCreateComponent } from './components/patients-create/patients-c
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PatientsService } from './services/patients.service';
-import { IGetAllUsers, IUser, IUserPagination } from './interfaces/patients.interface';
+import { IGetAllPatients, IPatient, IPagination } from './interfaces/patients.interface';
 import { AuthService } from '../services/auth.service';
 
 /**
@@ -36,8 +36,9 @@ providers:[PatientsService]
 })
 export class PatientsComponent {
   role:string='';
-  displayedColumns = [ 'name','rol','email','isActive','action'];
-  dataSource: any = new MatTableDataSource<IUser>();
+  // displayedColumns = [ 'name','rol','email','isActive','action'];
+  displayedColumns = [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ];
+  dataSource: any = new MatTableDataSource<IPatient>();
   searhField = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
@@ -52,8 +53,8 @@ export class PatientsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'action']
-    : [ 'name', 'rol', 'email', 'isActive','action'];
+    ? [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ]
+    : [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ];
     });
     
     this.dataSource['length'] = 0;
@@ -113,7 +114,7 @@ export class PatientsComponent {
     const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
       'eliminar registro'
     );
-    if (deleteAlert.isConfirmed) {
+/*     if (deleteAlert.isConfirmed) {
       this.patientsService.deleteUser(data.id).subscribe((element) => {
         if (element) {
           this.getAllPatients(this.pageIndex, this.pageSize);
@@ -123,18 +124,18 @@ export class PatientsComponent {
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
-    }
+      /* cancel * /
+    } */
   }
 
   getAllPatients(page: number, take: number) {
-    const parms: IGetAllUsers = {
-      page: page + 1, //page del paginador inicia en 0
+    const parms: IGetAllPatients = {
+      page: page + 1,
       take: take,
-      name: this.searchValue ? this.searchValue.trim() : null,
+      patientCedula: this.searchValue ? this.searchValue.trim() : null,
     };
-    this.patientsService.getUsers(parms).subscribe((data: IUserPagination) => {
-      this.dataSource = new MatTableDataSource<IUser>(data.list);
+    this.patientsService.getAll(parms).subscribe((data: IPagination) => {
+      this.dataSource = new MatTableDataSource<IPatient>(data.list);
       this.dataSource.length = data.total;
     });
   }

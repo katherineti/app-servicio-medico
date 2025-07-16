@@ -39,7 +39,9 @@ export class MedicalReportsComponent {
   // displayedColumns = [ 'name','rol','email','isActive','action'];
   displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt'];
   dataSource: any = new MatTableDataSource<IUser>();
-  searhField = new FormControl();
+  searhMedico = new FormControl();
+  searhPatient = new FormControl();
+  searhDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
 
@@ -66,8 +68,16 @@ export class MedicalReportsComponent {
     this.role = await this.authService.getRol();
   }
 
-  get searchValue() {
-    return this.searhField.value;
+  get SearhMedico() {
+    return this.searhMedico.value;
+  }
+
+  get SearchPatient() {
+    return this.searhPatient.value;
+  }
+
+  get SearhDate() {
+    return this.searhDate.value;
   }
 
   applyFilter(event: Event) {
@@ -132,9 +142,9 @@ export class MedicalReportsComponent {
     const parms: IGetAllMedicalreports = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
-      doctorCedula: this.searchValue ? this.searchValue.trim() : null,
-      patientCedula: this.searchValue ? this.searchValue.trim() : null,
-      createdAt: this.searchValue ? this.searchValue.trim() : null,
+      doctorCedula: this.SearhMedico ? this.SearhMedico.trim() : null,
+      patientCedula: this.SearchPatient ? this.SearchPatient.trim() : null,
+      createdAt: this.SearhDate ? this.SearhDate.trim() : null,
     };
     this.medicalReportsService.getAll(parms).subscribe((data: IMedicalReportPagination) => {
       // this.dataSource = new MatTableDataSource<IUser>(data.list);

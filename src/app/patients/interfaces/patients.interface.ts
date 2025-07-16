@@ -11,18 +11,32 @@ export interface IUser{
   actionEdit?:boolean;
   [key: string]: any;
 }
+export interface IPatient{
+    id: string;
+    name: string,
+    birthdate:any,
+    age: number,
+    cedula: string,
+    email: string,
+    phone: string,
+    gender: string,
+    civilStatus: string,
+    children: number,
+    createdAt: Date,
+    updatedAt: Date
+}
 
-export interface IGetAllUsers {
-  name?: string;
+export interface IGetAllPatients {
+  patientCedula?: string;
   page: number;
   take: number;
 }
 
-export interface IUserPagination {
+export interface IPagination {
   total: number;
   page: number;
-  list: IUser[];
+  list: IPatient[];
 }
 
-export interface ICreateUserDTO
-  extends Omit<IUser, 'id' | 'createdAt' | 'updatedAt' > {}
+export interface ICreatePatientDTO
+  extends Omit<IPatient, 'id' | 'createdAt' | 'updatedAt' > {}

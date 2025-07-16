@@ -15,13 +15,15 @@ import { firstValueFrom } from "rxjs"
 import { SwalService } from "../services/swal.service"
 import { LoginService } from "../services/login.service"
 import { CommonModule } from "@angular/common"
+import { ModalLinksComponent } from '../modal-links/modal-links.component';
 
 @Component({
   selector: "app-login",
-  imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, ModalLinksComponent],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
   providers: [LoginService, SwalService],
+  
 })
 export class LoginComponent {
   public loginFormGroup: FormGroup
@@ -109,5 +111,15 @@ export class LoginComponent {
     } finally {
       this.isLoading = false // ✅ Desactivar estado de carga
     }
+  }
+
+  isModalOpen = false;
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
   }
 }

@@ -15,6 +15,7 @@ import { PatientsComponent } from './patients/patients.component';
 import { MedicalReportsComponent } from './medical-reports/medical-reports.component';
 import { MedicalReportCreateComponent } from './medical-reports/components/medical-report-create/medical-report-create.component';
 import { MedicalPrescriptionCreateComponent } from './medical-reports/page/medical-prescription-create.component';
+import { PaginaJaComponent } from './pagina-ja/pagina-ja.component';
 
 export const routes: Routes = [
     {
@@ -75,6 +76,10 @@ export const routes: Routes = [
             path: "medical-prescriptions/create/:reportId", // Ruta para crear recipes
             component: MedicalPrescriptionCreateComponent,
           },
+          {
+            path: 'pagina-ja',
+            component: PaginaJaComponent,
+          }
         ],
     },
     {

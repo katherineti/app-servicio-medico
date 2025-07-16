@@ -69,13 +69,16 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       place: ["", [Validators.required, Validators.maxLength(100)]],
       emissionDate: [{ value: new Date(), disabled: true }, [Validators.required]],
       expirationDate: ["", [Validators.required]],
-      recipeContent: ["", [Validators.required, Validators.minLength(50), Validators.maxLength(2000)]],
+      // recipeContent: ["", [Validators.required, Validators.minLength(50), Validators.maxLength(2000)]],
+      // recipeContent: ["", [Validators.required, Validators.minLength(50), Validators.maxLength(700)]],
+      recipeContent: ["", [Validators.required, Validators.maxLength(700)]],
       doctorId: ["", [Validators.required]],
       doctorSearch: [""], // Nuevo control para la búsqueda de doctor
-      mppsNumber: ["", [Validators.required, Validators.maxLength(50)]],
+      // mppsNumber: ["", [Validators.required, Validators.maxLength(50)]],
+      mppsNumber: ["", [Validators.required, Validators.maxLength(100)]],
       patientId: ["", [Validators.required]],
       patientSearch: [""], // Nuevo control para la búsqueda de paciente
-      indications: ["", [Validators.maxLength(2000)]],
+      indications: ["", [Validators.maxLength(700)]],
     })
   }
 
@@ -247,21 +250,27 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.prescriptionForm.valid) {
-      this.isSubmitting = true
+      this.isSubmitting = true;
+
+      const fechaConTiempo: string = this.prescriptionForm.value.expirationDate.toISOString();
+      const partesFecha: string[] = fechaConTiempo.split('T');
+      const soloFecha: string = partesFecha[0];
+
+      console.log(soloFecha); // Esto imprimirá: "2023-10-26"
 
       const formData: ICreateMedicalPrescriptionDTO = {
         place: this.prescriptionForm.value.place,
         // emissionDate: this.prescriptionForm.value.emissionDate.toISOString(),
-        expirationDate: this.prescriptionForm.value.expirationDate.toISOString(),
         recipeContent: this.prescriptionForm.value.recipeContent,
         doctorId: this.prescriptionForm.value.doctorId,
-        mppsNumber: this.prescriptionForm.value.mppsNumber,
+        mpps: this.prescriptionForm.value.mppsNumber,
         patientId: this.prescriptionForm.value.patientId,
         indications: this.prescriptionForm.value.indications,
         medicalReportId: this.medicalReportId || undefined,
+        expirationDate: this.prescriptionForm.value.expirationDate? soloFecha : '',
       }
 
-      console.log("Datos de la receta a enviar:", formData)
+      console.log("Datos del recipe a enviar:", formData)
 
       // Descomenta y usa tu servicio cuando esté listo:
       this.medicalPrescriptionService.createMedicalPrescription(formData).subscribe({
@@ -271,7 +280,7 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
           this.router.navigate(["/medical-reports"])
         },
         error: (error) => {
-          this.showError("Error al crear la receta")
+          this.showError("Error al crear el recipe")
           this.isSubmitting = false
         },
       })
@@ -286,7 +295,7 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       const selectedPatient = this.patients.find((p) => p.id === formData.patientId)
       const selectedDoctor = this.doctors.find((d) => d.id === formData.doctorId)
 
-      console.log("Vista previa de la receta:", {
+      console.log("Vista previa del recipe:", {
         ...formData,
         patientInfo: selectedPatient,
         doctorInfo: selectedDoctor,

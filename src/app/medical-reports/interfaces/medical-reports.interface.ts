@@ -50,7 +50,7 @@ export interface ICreateMedicalPrescriptionDTO {
   expirationDate: string
   recipeContent: string
   doctorId: string
-  mppsNumber: string
+  mpps: string
   patientId: string
   indications?: string // Opcional
   medicalReportId?: string // Opcional, para vincular con un informe existente

@@ -3,10 +3,10 @@
     <mat-card-header>
       <mat-card-title>
         <mat-icon>receipt_long</mat-icon>
-        Crear Recipe Médica
+        Crear Recipe Médico
       </mat-card-title>
       <mat-card-subtitle>
-        <br>Complete los campos para generar la receta.
+        <br>Complete los campos para generar el recipe.
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -119,7 +119,8 @@
 
             <mat-form-field appearance="outline" class="half-width">
               <mat-label>M.P.P.S</mat-label>
-              <input matInput formControlName="mppsNumber" required maxlength="50">
+              <!-- <input matInput formControlName="mppsNumber" required maxlength="50"> -->
+              <input matInput formControlName="mppsNumber" required maxlength="100">
               <mat-error *ngIf="prescriptionForm.get('mppsNumber')?.hasError('required')">
                 El M.P.P.S es requerido
               </mat-error>
@@ -191,22 +192,25 @@
           </div>
         </div>
 
-        <!-- Contenido de la Recipe -->
+        <!-- Contenido del Recipe -->
         <div class="form-section">
-          <h3 class="section-title">Contenido de la Recipe</h3>
+          <h3 class="section-title">Contenido de Recipe</h3>
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Recipe</mat-label>
             <textarea matInput formControlName="recipeContent" rows="10" required
-              placeholder="Escriba aquí el contenido de la receta (medicamentos, dosis, etc.)."></textarea>
-            <mat-hint>Mínimo 50 caracteres, máximo 2000</mat-hint>
+              placeholder="Escriba aquí el contenido del recipe (medicamentos, dosis, etc.)."></textarea>
+            <!-- <mat-hint>Mínimo 50 caracteres, máximo 2000</mat-hint> -->
+            <!-- <mat-hint>Mínimo 50 caracteres, máximo 700</mat-hint> -->
+            <mat-hint>Máximo 700 caracteres</mat-hint>
             <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('required')">
               El contenido del recipe es requerido
             </mat-error>
-            <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('minlength')">
+<!--             <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('minlength')">
               El recipe debe tener al menos 50 caracteres
-            </mat-error>
+            </mat-error> -->
             <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('maxlength')">
-              El recipe no puede exceder 2000 caracteres
+              <!-- El recipe no puede exceder 2000 caracteres -->
+              El recipe no puede exceder 700 caracteres
             </mat-error>
           </mat-form-field>
         </div>
@@ -218,9 +222,10 @@
             <mat-label>Indicaciones</mat-label>
             <textarea matInput formControlName="indications" rows="5"
               placeholder="Instrucciones adicionales para el paciente."></textarea>
-            <mat-hint>Máximo 2000 caracteres</mat-hint>
+            <!-- <mat-hint>Máximo 2000 caracteres</mat-hint> -->
+            <mat-hint>Máximo 700 caracteres</mat-hint>
             <mat-error *ngIf="prescriptionForm.get('indications')?.hasError('maxlength')">
-              Las indicaciones no pueden exceder 2000 caracteres
+              Las indicaciones no pueden exceder 700 caracteres
             </mat-error>
           </mat-form-field>
         </div>

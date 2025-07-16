@@ -210,7 +210,7 @@ export class AuthService {
           // El token no ha expirado
           this.clearGracePeriod() // Limpia cualquier período de gracia si el token se volvió válido (ej. después de una extensión)
 
-          if (await this.isTokenAboutToExpire(2)) {
+          if (await this.isTokenAboutToExpire(1)) {
             // 2 minutos antes de la expiración real, muestra la advertencia "expirará pronto"
             this.sessionAboutToExpireSubject.next()
           }

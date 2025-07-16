@@ -41,3 +41,17 @@ export interface IMedicalReportPagination {
 export interface ICreateDTO
   extends Omit<IMedicalReports, 'id' | 'createdAt' | 'isActivate' > {}
   // extends Omit<IMedicalReports, 'id' | 'createdAt' | 'updatedAt' > {}
+
+
+// Nueva interfaz para la creación de recetas médicas
+export interface ICreateMedicalPrescriptionDTO {
+  place: string
+  emissionDate?: string
+  expirationDate: string
+  recipeContent: string
+  doctorId: string
+  mppsNumber: string
+  patientId: string
+  indications?: string // Opcional
+  medicalReportId?: string // Opcional, para vincular con un informe existente
+}

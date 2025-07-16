@@ -1,0 +1,248 @@
+<div class="container-fluid">
+  <mat-card class="create-prescription-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>receipt_long</mat-icon>
+        Crear Recipe Médica
+      </mat-card-title>
+      <mat-card-subtitle>
+        <br>Complete los campos para generar la receta.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="prescriptionForm" (ngSubmit)="onSubmit()">
+        <!-- Información General de la Recipe -->
+        <div class="form-section">
+          <h3 class="section-title">Datos del Recipe</h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Lugar</mat-label>
+              <input matInput formControlName="place" required maxlength="100">
+              <mat-error *ngIf="prescriptionForm.get('place')?.hasError('required')">
+                El lugar es requerido
+              </mat-error>
+              <mat-error *ngIf="prescriptionForm.get('place')?.hasError('maxlength')">
+                Máximo 100 caracteres
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Fecha de emisión</mat-label>
+              <input matInput [matDatepicker]="emissionPicker" formControlName="emissionDate" required readonly>
+              <mat-datepicker-toggle matIconSuffix [for]="emissionPicker" disabled></mat-datepicker-toggle>
+              <mat-datepicker #emissionPicker></mat-datepicker>
+              <mat-error *ngIf="prescriptionForm.get('emissionDate')?.hasError('required')">
+                La fecha de emisión es requerida
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Fecha de expiración</mat-label>
+              <input matInput [matDatepicker]="expirationPicker" formControlName="expirationDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="expirationPicker"></mat-datepicker-toggle>
+              <mat-datepicker #expirationPicker></mat-datepicker>
+              <mat-error *ngIf="prescriptionForm.get('expirationDate')?.hasError('required')">
+                La fecha de expiración es requerida
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Selección de Médico y Paciente -->
+        <div class="form-section">
+          <h3 class="section-title">Médico y Paciente</h3>
+          <div class="form-row">
+            <!-- Campo de Doctor con Autocomplete -->
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Buscar doctor</mat-label>
+              <input
+                type="text"
+                placeholder="Escriba cédula o nombre del doctor"
+                matInput
+                formControlName="doctorSearch"
+                [matAutocomplete]="doctorAuto">
+
+              <!-- Botón para limpiar selección -->
+              <button
+                matSuffix
+                mat-icon-button
+                aria-label="Limpiar"
+                type="button"
+                *ngIf="prescriptionForm.get('doctorSearch')?.value"
+                (click)="clearDoctorSelection()">
+                <mat-icon>close</mat-icon>
+              </button>
+
+              <!-- Autocomplete -->
+              <mat-autocomplete
+                #doctorAuto="matAutocomplete"
+                [displayWith]="displayDoctorFn"
+                (optionSelected)="onDoctorSelected($event.option.value)">
+
+                <mat-option disabled *ngIf="isLoadingDoctors">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  Cargando doctores...
+                </mat-option>
+
+                <mat-option
+                  *ngFor="let doctor of filteredDoctors | async"
+                  [value]="doctor"
+                  class="doctor-option">
+                  <div class="doctor-info">
+                    <div class="doctor-name">
+                      <mat-icon>person</mat-icon>
+                      {{capitalizeWords(doctor.name)}}
+                    </div>
+                    <div class="doctor-details">
+                      <span class="doctor-cedula" *ngIf="doctor.cedula && doctor.cedula !== 'V-'">{{doctor.cedula}}</span>
+                      <!-- <span class="doctor-email" *ngIf="doctor.email">{{doctor.email}}</span> -->
+                    </div>
+                  </div>
+                </mat-option>
+
+                <mat-option
+                  *ngIf="(filteredDoctors | async)?.length === 0 && !isLoadingDoctors"
+                  disabled>
+                  <mat-icon>search_off</mat-icon>
+                  No se encontraron doctores
+                </mat-option>
+              </mat-autocomplete>
+
+              <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+              <mat-error *ngIf="prescriptionForm.get('doctorId')?.hasError('required')">
+                Debe seleccionar un doctor
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>M.P.P.S</mat-label>
+              <input matInput formControlName="mppsNumber" required maxlength="50">
+              <mat-error *ngIf="prescriptionForm.get('mppsNumber')?.hasError('required')">
+                El M.P.P.S es requerido
+              </mat-error>
+              <mat-error *ngIf="prescriptionForm.get('mppsNumber')?.hasError('maxlength')">
+                Máximo 50 caracteres
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Campo de Paciente con Autocomplete -->
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Buscar paciente</mat-label>
+              <input
+                type="text"
+                placeholder="Escriba cédula o nombre del paciente"
+                matInput
+                formControlName="patientSearch"
+                [matAutocomplete]="patientAuto">
+
+              <!-- Botón para limpiar selección -->
+              <button
+                matSuffix
+                mat-icon-button
+                aria-label="Limpiar"
+                type="button"
+                *ngIf="prescriptionForm.get('patientSearch')?.value"
+                (click)="clearPatientSelection()">
+                <mat-icon>close</mat-icon>
+              </button>
+
+              <!-- Autocomplete -->
+              <mat-autocomplete
+                #patientAuto="matAutocomplete"
+                [displayWith]="displayPatientFn"
+                (optionSelected)="onPatientSelected($event.option.value)">
+
+                <mat-option disabled *ngIf="isLoadingPatients">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  Cargando pacientes...
+                </mat-option>
+
+                <mat-option
+                  *ngFor="let patient of filteredPatients | async"
+                  [value]="patient"
+                  class="patient-option">
+                  <div class="patient-info">
+                    <div class="patient-name">
+                      <mat-icon>person</mat-icon>
+                      {{capitalizeWords(patient.name)}}
+                    </div>
+                    <div class="patient-details">
+                      <span class="patient-cedula" *ngIf="patient.cedula && patient.cedula !== 'V-'">{{patient.cedula}}</span>
+                    </div>
+                  </div>
+                </mat-option>
+
+                <mat-option
+                  *ngIf="(filteredPatients | async)?.length === 0 && !isLoadingPatients"
+                  disabled>
+                  <mat-icon>search_off</mat-icon>
+                  No se encontraron pacientes
+                </mat-option>
+              </mat-autocomplete>
+
+              <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+              <mat-error *ngIf="prescriptionForm.get('patientId')?.hasError('required')">
+                Debe seleccionar un paciente
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Contenido de la Recipe -->
+        <div class="form-section">
+          <h3 class="section-title">Contenido de la Recipe</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Recipe</mat-label>
+            <textarea matInput formControlName="recipeContent" rows="10" required
+              placeholder="Escriba aquí el contenido de la receta (medicamentos, dosis, etc.)."></textarea>
+            <mat-hint>Mínimo 50 caracteres, máximo 2000</mat-hint>
+            <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('required')">
+              El contenido del recipe es requerido
+            </mat-error>
+            <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('minlength')">
+              El recipe debe tener al menos 50 caracteres
+            </mat-error>
+            <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('maxlength')">
+              El recipe no puede exceder 2000 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Indicaciones Adicionales (Nueva Sección) -->
+        <div class="form-section">
+          <h3 class="section-title">Indicaciones Adicionales</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Indicaciones</mat-label>
+            <textarea matInput formControlName="indications" rows="5"
+              placeholder="Instrucciones adicionales para el paciente."></textarea>
+            <mat-hint>Máximo 2000 caracteres</mat-hint>
+            <mat-error *ngIf="prescriptionForm.get('indications')?.hasError('maxlength')">
+              Las indicaciones no pueden exceder 2000 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="prescriptionForm.invalid || isSubmitting">
+            <mat-icon>save</mat-icon>
+            {{ isSubmitting ? 'Guardando...' : 'Crear Recipe' }}
+          </button>
+
+<!--           <button mat-stroked-button type="button" (click)="onPreview()" [disabled]="prescriptionForm.invalid">
+            <mat-icon>preview</mat-icon>
+            Vista Previa PDF
+          </button> -->
+
+          <button mat-button type="button" (click)="onCancel()">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

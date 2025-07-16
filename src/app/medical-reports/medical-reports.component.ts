@@ -38,7 +38,7 @@ providers:[MedicalReportsService]
 export class MedicalReportsComponent {
   role:string='';
   // displayedColumns = [ 'name','rol','email','isActive','action'];
-  displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt'];
+  displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt','action'];
   dataSource: any = new MatTableDataSource<IUser>();
   searhMedico = new FormControl();
   searhPatient = new FormControl();
@@ -56,8 +56,8 @@ export class MedicalReportsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt']
-    : [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt'];
+    ? [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action']
+    : [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action'];
     });
 
     this.dataSource['length'] = 0;
@@ -103,6 +103,26 @@ export class MedicalReportsComponent {
     ref.afterClosed().subscribe(() => {
       this.getAllMedicalReport(this.pageIndex, this.pageSize);
     });
+  }
+  openDialogCreateMedicalPrescription(data?: any): void {
+    console.log("seleccionado",data)
+    data.actionEdit=false;
+    const ref = this.dialog.open(MedicalReportsDialogComponent, {
+      data: data || null,
+      disableClose: true
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllMedicalReport(this.pageIndex, this.pageSize);
+    });
+  }
+
+   /**
+   * Navega a la página de creación de recetas médicas, pasando el ID del informe.
+   * @param medicalReport El informe médico para el cual se creará la receta.
+   */
+  navigateToCreateMedicalPrescription(medicalReport: IMedicalReports): void {
+    this.router.navigate(["/medical-prescriptions/create", medicalReport.id])
   }
 
 /*   openEditMedicalReport(data?: any): void {

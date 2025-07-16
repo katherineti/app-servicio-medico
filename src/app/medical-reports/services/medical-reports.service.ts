@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
-import { IGetAllMedicalreports, IUser, IMedicalReportPagination, ICreateDTO } from '../interfaces/medical-reports.interface';
+import { IGetAllMedicalreports, IUser, IMedicalReportPagination, ICreateDTO, IMedicalReports } from '../interfaces/medical-reports.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -49,4 +49,9 @@ export class MedicalReportsService {
       `${this.tokenService.endPoint}roles/getRolesActives`
     );
   }  
+
+  // Método para obtener un informe médico por ID (necesario para precargar datos en la receta)
+  getMedicalReportById(id: string): Observable<IMedicalReports> {
+    return this.http.get<IMedicalReports>(`${this.tokenService.endPoint}medical-reports/${id}`)
+  }
 }

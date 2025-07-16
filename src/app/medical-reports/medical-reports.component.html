@@ -115,24 +115,31 @@
                              }}</mat-cell>
                          </ng-container> -->
                      
-<!--                          <ng-container matColumnDef="action" >
+                          <ng-container matColumnDef="action" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
                              Acción
                              </mat-header-cell>
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
 
-                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
+<!--                                  <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
                                      <i-feather name="eye"></i-feather>
+                                 </button> -->
+
+<!--                                  <button mat-icon-button aria-label="Crear recipe" (click)="openDialogCreateMedicalPrescription(element)">
+                                     <i-feather name="file-text"></i-feather>
+                                 </button> -->
+                                  <button mat-icon-button aria-label="Crear recipe" (click)="navigateToCreateMedicalPrescription(element)">
+                                     <i-feather name="file-text"></i-feather>
                                  </button>
  
-                                <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
+  <!--                               <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
                                     <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                 </button>
                                 <button mat-icon-button aria-label="Eliminar" (click)="deleteMedicalReport(element)">
                                     <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                </button>
+                                </button> -->
                              </mat-cell>
-                         </ng-container> -->
+                         </ng-container> 
                      
                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

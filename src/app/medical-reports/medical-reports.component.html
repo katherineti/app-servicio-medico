@@ -128,6 +128,10 @@
 <!--                                  <button mat-icon-button aria-label="Crear recipe" (click)="openDialogCreateMedicalPrescription(element)">
                                      <i-feather name="file-text"></i-feather>
                                  </button> -->
+                                  <!-- <button mat-icon-button aria-label="Imprimir" (click)="generatePdf(element)" [disabled]="isGeneratingPdf"> -->
+                                  <button mat-icon-button aria-label="Imprimir" title="Imprimir informe médico"  (click)="true" >
+                                     <i-feather name="Printer"></i-feather>
+                                  </button> 
                                   <button mat-icon-button aria-label="Crear recipe" title="Crear recipe" (click)="navigateToCreateMedicalPrescription(element)">
                                      <i-feather name="file-text"></i-feather>
                                  </button>

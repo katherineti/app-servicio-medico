@@ -33,8 +33,19 @@ export class RegisterComponent {
     this.registerFormGroup = this.formBuilder.group({
       name: ['', [
         Validators.required, 
-        Validators.minLength(0), // Puedes quitar minLength(0) si no es necesario
         Validators.maxLength(50),
+      ]],
+/*       cedula: ['', [
+        Validators.required, 
+        Validators.maxLength(10),
+      ]], */
+      // Nuevo control para el tipo de cédula (V o E)
+      cedulaType: ['V', [Validators.required]], // Valor por defecto 'V'
+      // Control para el número de cédula, solo números
+      cedulaNumber: ['', [
+        Validators.required,
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]+$/) // Solo números
       ]],
       email: ['', [
         Validators.required, 
@@ -146,12 +157,17 @@ export class RegisterComponent {
     this.isLoading = true; // ✅ Activar estado de carga al iniciar el registro
     localStorage.removeItem('token'); 
 
+    // Combina el tipo de cédula y el número
+    const fullCedula = `${this.registerFormGroup.value.cedulaType}-${this.registerFormGroup.value.cedulaNumber}`;
+
     const register: SignUpRegisterAdmin = {
       name: this.registerFormGroup.value.name,
       email: this.registerFormGroup.value.email,
       password: this.registerFormGroup.value.password,
       role: this.ADMINISTRADOR,
-      cedula:'V-'
+      // cedula:'V-'
+      // cedula: this.registerFormGroup.value.cedula,
+      cedula: fullCedula,
     };
 
     try {
@@ -162,15 +178,18 @@ export class RegisterComponent {
     } catch (error: any) {
       this.typeError = ''; // Resetear el tipo de error
       this.conflictDetected = false; // Resetear la detección de conflicto
+        console.log("error:",error)
+        this.swalService.error('Error de Registro', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'); // Notificación de error general
 
-      if (error.status === 409 || error === 'El correo ya existe.') { // Código de estado para conflicto (ej. usuario/email existente)
+      // if (error.status === 409 || error === 'El correo ya existe.') { // Código de estado para conflicto (ej. usuario/email existente)
+/*       if ((error && error.status === 409) || error === 'El correo ya existe.') { // Código de estado para conflicto (ej. usuario/email existente)
         this.typeError = 'conflicto';
         this.conflictDetected = true;
         this.swalService.error('Error de Registro', 'Nombre de usuario o correo electrónico ya existe.'); // Notificación de error específico
       } else {
         console.log("error:",error)
         this.swalService.error('Error de Registro', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'); // Notificación de error general
-      }
+      } */
       console.error('Error durante el registro:', error);
     } finally {
       this.isLoading = false; // ✅ Desactivar estado de carga al finalizar (éxito o error)

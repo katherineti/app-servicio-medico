@@ -37,6 +37,41 @@
               </mat-form-field>
             </div>
 
+            <!-- Nuevo grupo para Cédula con select y input -->
+            <div class="form-group" style="display: flex; gap: 8px;">
+              <mat-form-field appearance="outline" color="primary" style="width: 30%;">
+                <!-- <mat-label>Tipo</mat-label> -->
+                <mat-select formControlName="cedulaType" required [disabled]="isLoading">
+                  <mat-option value="V">V</mat-option>
+                  <mat-option value="E">E</mat-option>
+                </mat-select>
+                <mat-error *ngIf="registerFormGroup.controls['cedulaType'].hasError('required')">
+                  Tipo requerido.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" color="primary" style="flex-grow: 1;">
+                <mat-label>Cédula</mat-label>
+                <input
+                  matInput
+                  placeholder="Ingresa tu cédula"
+                  formControlName="cedulaNumber"
+                  required
+                  type="text"
+                  [disabled]="isLoading"
+                />
+                <mat-error *ngIf="registerFormGroup.controls['cedulaNumber'].hasError('required')">
+                  La cédula es requerida.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['cedulaNumber'].hasError('maxlength')">
+                  La cédula no puede exceder los 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="registerFormGroup.controls['cedulaNumber'].hasError('pattern')">
+                  La cédula debe contener solo números.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
             <div class="form-group">
               <mat-form-field appearance="outline" class="w-100" color="primary">
                 <mat-label>Email</mat-label>

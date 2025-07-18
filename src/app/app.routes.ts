@@ -76,10 +76,10 @@ export const routes: Routes = [
             path: "medical-prescriptions/create/:reportId", // Ruta para crear recipes
             component: MedicalPrescriptionCreateComponent,
           },
-          {
-            path: 'pagina-ja',
-            component: PaginaJaComponent,
-          }
+          // {
+          //   path: 'pagina-ja',
+          //   component: PaginaJaComponent,
+          // }
         ],
     },
     {
@@ -90,4 +90,9 @@ export const routes: Routes = [
       path: 'register',
       component: RegisterComponent
     },
+
+    {
+      path: 'pagina-ja',
+      component: PaginaJaComponent,
+    }
 ];

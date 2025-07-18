@@ -4,7 +4,9 @@
     <div class="grid-item" *ngFor="let item of links; index as i">
       <img [src]="item.img" alt="imagen" />
       <h4>{{ item.name }}</h4>      
-      <a *ngIf="i !== 3" [routerLink]="[item.link]" target="_blank">Ir a página</a>
+      <!-- <a *ngIf="i !== 3" [routerLink]="[item.link]" target="_blank">Ir a página</a> -->
+      <a *ngIf="item.isInternal" (click)="sendHiddenParameterViaService(item)">Ir a página</a>
+      <a *ngIf="!item.isInternal && item.link" [href]="item.link" target="_blank">Ir a página</a>
     </div>
   </div>
   <button (click)="close.emit()">Cerrar</button>

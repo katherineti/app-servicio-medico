@@ -1,19 +1,8 @@
-<!-- <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Descarga de Documento</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-</head>
-<body> -->
-  <div class="container">
-    <img src="assets/devs/ja.png" alt="Foto perfil" class="profile-image" />
-    <h1>Jesus Arellano</h1><br>
-    <a href="assets/devs/cv_ja.pdf" download class="download-button">
-      Descargar PDF
-    </a>
-  </div>
-<!-- </body>
-</html> -->
+<div class="container">
+  <img [src]="this.datosDelServicio.img" alt="Foto perfil" class="profile-image" />
+  <h1>{{ this.datosDelServicio.name }}</h1><br>
+  <a [href]="datosDelServicio.pdf" download class="download-button">
+    Descargar PDF
+  </a>
+</div>

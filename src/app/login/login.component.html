@@ -57,10 +57,21 @@
                   placeholder="Ingresa tu contraseña"
                   formControlName="password"
                   required
-                  type="password"
-                  autocomplete="current-password"
+                  [type]="hidePassword ? 'password' : 'text'"
+                  autocomplete="new-password"
                   [disabled]="isLoading"
                 />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Ocultar contraseña'"
+                  [attr.aria-pressed]="hidePassword"
+                  type="button"
+                >
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+
                 <mat-error *ngIf="loginFormGroup.controls['password'].hasError('required')">
                   La contraseña es requerida.
                 </mat-error>

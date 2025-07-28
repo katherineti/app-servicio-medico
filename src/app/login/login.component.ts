@@ -27,6 +27,7 @@ import { ModalLinksComponent } from '../modal-links/modal-links.component';
 })
 export class LoginComponent {
   public loginFormGroup: FormGroup
+  public hidePassword = true; // Nueva propiedad para controlar la visibilidad de la contraseña
   public isLoading = false // ✅ Agregada la propiedad isLoading
 
   private formBuilder = inject(FormBuilder)

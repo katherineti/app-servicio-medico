@@ -32,7 +32,7 @@ export class SharedDataService {
   // Método para actualizar y persistir los datos
   setDatos(nuevosDatos: DatosPersistentes) {
     this._datos.next(nuevosDatos);
-    localStorage.setItem(this.claveAlmacenamiento, JSON.stringify(nuevosDatos)); // Persistir
+    // localStorage.setItem(this.claveAlmacenamiento, JSON.stringify(nuevosDatos)); // Persistir
     // sessionStorage.setItem(this.claveAlmacenamiento, JSON.stringify(nuevosDatos)); // Persistir
   }
 

@@ -217,6 +217,8 @@ export class DashboardService {
       let endpointReport = 'medicalSuppliesToday'
       if(reportTodayOrMonth==='mes'){
         endpointReport = 'medicalSuppliesMonth'
+      } else if(reportTodayOrMonth==='todos'){
+        endpointReport = 'medicalSupplies/all'
       }
 
       this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/${endpointReport}`, null, options)

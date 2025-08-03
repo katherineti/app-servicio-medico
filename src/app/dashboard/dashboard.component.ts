@@ -222,13 +222,14 @@ export class DashboardComponent {
     return new Date()
   }
 
-  formatearFecha(fecha: Date, mes: string | null = null): string {
+  formatearFecha(fecha: Date, mes: string | null = null, anio_: string | null = null): string {
     const dia = fecha.getDate()
     const mesCompleto = new Intl.DateTimeFormat("es", { month: "long" }).format(fecha)
     const mesInicialMayuscula = mesCompleto.charAt(0).toUpperCase() + mesCompleto.slice(1)
-    const año = fecha.getFullYear()
-    if (mes) return `${mesInicialMayuscula} de ${año}`
-    return `${dia} de ${mesInicialMayuscula} de ${año}`
+    const anio = fecha.getFullYear()
+    if (mes) return `${mesInicialMayuscula} de ${anio}`
+    if (anio_) return `${anio}`
+    return `${dia} de ${mesInicialMayuscula} de ${anio}`
   }
 
   /**1
@@ -313,7 +314,7 @@ export class DashboardComponent {
   /**2
    * Genera y descarga el PDF del reporte de l registro de inventario almacen (dia o mes)
    */
-  generatePdfMedicalSupplies_Today(reportTodayOrMonth:string): void {
+  generatePdfRegistryMedicalSupplies(reportTodayOrMonth:string): void {
 
     if ( this.isGeneratingPdf) {
       return;

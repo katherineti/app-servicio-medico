@@ -287,11 +287,9 @@ export class AssignmentComponent implements OnInit {
         name,
         cedula: documentId,
       }; 
-      console.log("newFamilyMember " , newFamilyMember);
       this.assignmentService.addFamilyMember(newFamilyMember).subscribe(savedMember => {
         this.listFamily.push(savedMember);
         console.log(" listFamily ", this.listFamily);
-        console.log(" id del familiar  ", savedMember.familyId);
         this.AssignProductForm.get("family")?.setValue(savedMember.familyId);
         this.showNewFamilyMemberForm = false;
         this.familyMemberForm.reset();

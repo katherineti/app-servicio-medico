@@ -20,12 +20,4 @@ export class LogsService {
     );
   }
 
-  // createUser(dto: ICreateUserDTO) {
-  //   console.log("dto create" , dto)
-  //   return this.http.post<IUser>(
-  //     `${this.tokenService.endPoint}users/createAccount`,
-  //     dto
-  //   );
-  // }
- 
 }

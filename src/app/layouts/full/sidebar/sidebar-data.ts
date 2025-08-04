@@ -58,7 +58,7 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
   //   navCap: 'Auth',
   // },
   {
-    displayName: 'Reportes',
+    displayName: 'Reportes auditoría',
     iconName: 'file-text',
     route: './reports',
     chipClass: 'bg-secondary text-white',

@@ -369,7 +369,7 @@ export class DashboardComponent {
     if ( this.isGeneratingPdf) {
       return;
     }
-    console.log(`generar pdf de registros de asignacion de insumos medicos a empleados o a sus familaires (${reportTodayOrMonth})`)
+    console.log(`Generar pdf de registros de asignacion de insumos medicos a empleados o a sus familiares (${reportTodayOrMonth})`)
 
     this.isGeneratingPdf = true;
     

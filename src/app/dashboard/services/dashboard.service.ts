@@ -286,14 +286,19 @@ export class DashboardService {
     // Configuración para recibir una respuesta blob (archivo binario)
     const options = {
       responseType: 'blob' as 'blob',
-      observe: 'response' as const
+      observe: 'response' as const,
+      reportType: ''
     };
     
     return new Observable<void>(observer => {
 
       let endpointReport = 'assignments-day'
+
       if(reportTodayOrMonth==='mes'){
         endpointReport = 'assignments-month'
+      }
+      if(reportTodayOrMonth==='anio'){
+        endpointReport = 'assignments-year';
       }
 
       this.http.post(`${this.tokenService.endPoint}dashboard-reports/pdf/register/${endpointReport}`, null, options)
@@ -319,9 +324,12 @@ export class DashboardService {
                 let year = today.getFullYear();
                 let month = (today.getMonth() + 1).toString().padStart(2, '0');
                 let day = today.getDate().toString().padStart(2, '0');
-                filename = `reporte-estadistico-registro-asignaciones-${year}-${month}-${day}.pdf`;
+                filename = `reporte-estadistico-de-registros-asignaciones-a-emopelados-${year}-${month}-${day}.pdf`;
                 if(reportTodayOrMonth==='mes'){
-                   filename = `reporte-estadistico-registro-asignaciones(Mes)-${year}-${month}.pdf`;
+                   filename = `reporte-estadistico-de-registros-asignaciones-a-empleados-${year}-${month}.pdf`;
+                }
+                if(reportTodayOrMonth==='anio'){
+                   filename = `reporte-estadistico-de-registros-asignaciones-a-empleados-${year}.pdf`;
                 }
               }
               // Crear un objeto URL para el blob

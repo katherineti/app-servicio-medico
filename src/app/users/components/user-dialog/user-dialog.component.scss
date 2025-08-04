@@ -30,3 +30,14 @@
     display: none !important;
   }
 }
+
+  .form-group {
+  margin: 0 0 0 0; // Espacio entre campos de formulario
+  padding: 0;
+  position: relative;
+  width: 100%;
+  
+  mat-form-field {
+    width: 100%;
+  }
+}

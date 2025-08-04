@@ -30,3 +30,66 @@
     display: none !important;
   }
 }
+
+.row-cedula {
+  display: flex;
+  gap: 8px; /* Espacio entre los campos */
+  width: 100%;
+}
+
+.cedula-tipo {
+  // width: 70px; /* Ancho fijo para el tipo de cédula */
+  width: 90px; /* Ancho fijo para el tipo de cédula */
+  color: black;
+}
+
+.cedula-numero {
+  flex-grow: 1; /* Hace que este campo ocupe el resto del espacio */
+}
+
+.password-requirements {
+  margin-top: -0.5rem; // Ajuste para acercar a la contraseña
+  margin-bottom: 1rem; // Espacio antes del botón
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+  font-size: 0.85rem; // Tamaño de fuente para los requisitos
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px; // Espacio entre ítems de requisito
+  font-size: 0.85rem; // Consistencia con el padre
+  transition: color 0.3s ease;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .requirement-icon {
+    margin-right: 6px;
+    font-weight: bold;
+    font-size: 1.1em; // Icono ligeramente más grande que el texto
+  }
+
+  &.valid {
+    color: #28a745; // Verde para requisitos cumplidos
+  }
+
+  &.invalid {
+    color: #dc3545; // Rojo para requisitos no cumplidos
+  }
+
+  .form-group {
+  margin: 0 0 1rem 0; // Espacio entre campos de formulario
+  padding: 0;
+  position: relative;
+  width: 100%;
+  
+  mat-form-field {
+    width: 100%;
+  }
+}
+}

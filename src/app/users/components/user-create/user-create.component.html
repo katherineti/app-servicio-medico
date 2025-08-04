@@ -8,47 +8,178 @@
         <form [formGroup]="userFormGroup" #f="ngForm">
 
           <div class="row p-10">
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Nombre</mat-label>
               <input
-              matInput
-              placeholder="Nombre"
-              formControlName="name"
-              required="true"
-              type="text"
+                matInput
+                placeholder="Ingresa tu nombre"
+                formControlName="name"
+                required
+                type="text"
               />
-            <mat-error *ngIf="userFormGroup.controls['name'].hasError('required') || userFormGroup.controls['name'].hasError('maxLength') ">
+                <mat-error *ngIf="userFormGroup.controls['name'].hasError('required')">
+                  El nombre es requerido.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['name'].hasError('maxlength')">
+                  El nombre no puede exceder los 50 caracteres.
+                </mat-error>
+<!--             <mat-error *ngIf="userFormGroup.controls['name'].hasError('required') || userFormGroup.controls['name'].hasError('maxLength') ">
                 El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5">y como máximo puede tener 200 caracteres</span>.
-            </mat-error>
+            </mat-error> -->
           </mat-form-field>
+
+          <!-- <div class="form-group row-cedula" style="display: flex; gap: 8px;"> -->
+          <div class="form-group row-cedula" >
+            <mat-form-field appearance="outline" color="primary" class="cedula-tipo">
+            <!-- <mat-label>Tipo</mat-label> -->
+            <mat-select formControlName="cedulaType" required>
+            <!-- <mat-select formControlName="cedulaType" required [disabled]="isLoading"> -->
+                <mat-option value="V">V</mat-option>
+                <mat-option value="E">E</mat-option>
+            </mat-select>
+            <mat-error *ngIf="userFormGroup.controls['cedulaType'].hasError('required')">
+                Tipo requerido.
+            </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" color="primary" class="cedula-numero">
+                <mat-label>Cédula</mat-label>
+                <input
+                    matInput
+                    placeholder="Ingresa tu cédula"
+                    formControlName="cedulaNumber"
+                    required
+                    type="text"
+                    />
+                    <!-- [disabled]="isLoading" -->
+                <mat-error *ngIf="userFormGroup.controls['cedulaNumber'].hasError('required')">
+                    La cédula es requerida.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['cedulaNumber'].hasError('maxlength')">
+                    La cédula no puede exceder los 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['cedulaNumber'].hasError('pattern')">
+                    La cédula debe contener solo números.
+                </mat-error>
+            </mat-form-field>
+          </div>
       
-          <mat-form-field appearance="outline" class="example-full-width">
-              <input
-              matInput
-              placeholder="Email"
-              formControlName="email"
-              required="true"
-              type="email"
-              />
-            <mat-error *ngIf="userFormGroup.controls['email'].hasError('required') || userFormGroup.controls['email'].hasError('maxLength') ">
+         <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Email</mat-label>
+            <input
+                matInput
+                placeholder="Ingresa tu email"
+                formControlName="email"
+                required
+                type="email"
+                autocomplete="email"
+            />
+                <mat-error *ngIf="userFormGroup.controls['email'].hasError('required')">
+                  El email es requerido.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['email'].hasError('email')">
+                  Por favor, introduce un email válido.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['email'].hasError('maxlength')">
+                  El email no puede exceder los 50 caracteres.
+                </mat-error>
+<!--             <mat-error *ngIf="userFormGroup.controls['email'].hasError('required') || userFormGroup.controls['email'].hasError('maxLength') ">
                 El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
             </mat-error>
             <mat-error *ngIf="userFormGroup.controls['email'].hasError('email')">
                 Por favor, introduce un email válido.
-            </mat-error>
+            </mat-error> -->
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="example-full-width">
-              <input
-              matInput
-              placeholder="Contraseña"
-              formControlName="password"
-              required="true"
-              type="password"
-              />
-            <mat-error *ngIf="userFormGroup.controls['password'].hasError('required') || userFormGroup.controls['password'].hasError('maxLength') ">
+            <!-- <div class="form-group"> -->
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <mat-label>Contraseña</mat-label>
+                <input
+                  matInput
+                  placeholder="Ingresa tu contraseña"
+                  formControlName="password"
+                  required
+                  [type]="hidePassword ? 'password' : 'text'"
+                  autocomplete="new-password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Ocultar contraseña'"
+                  [attr.aria-pressed]="hidePassword"
+                  type="button"
+                >
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('required')">
+                  La contraseña es requerida.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('minlength')">
+                  La contraseña debe tener al menos 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('maxlength')">
+                  La contraseña no puede exceder los 16 caracteres.
+                </mat-error>
+                </mat-form-field>
+
+              <div class="password-requirements">
+                <div class="requirement-item" [ngClass]="{'valid': hasMinLength, 'invalid': !hasMinLength}">
+                  <span class="requirement-icon">{{hasMinLength ? '✓' : '✗'}}</span>
+                  10-16 caracteres
+                </div>
+                <div class="requirement-item" [ngClass]="{'valid': hasUppercase, 'invalid': !hasUppercase}">
+                  <span class="requirement-icon">{{hasUppercase ? '✓' : '✗'}}</span>
+                  Al menos una mayúscula
+                </div>
+                <div class="requirement-item" [ngClass]="{'valid': hasNumber, 'invalid': !hasNumber}">
+                  <span class="requirement-icon">{{hasNumber ? '✓' : '✗'}}</span>
+                  Al menos un número
+                </div>
+                <div class="requirement-item" [ngClass]="{'valid': hasSpecialChar, 'invalid': !hasSpecialChar}">
+                  <span class="requirement-icon">{{hasSpecialChar ? '✓' : '✗'}}</span>
+                  Al menos uno de estos caracteres: . * - % /
+                </div>
+                <div class="requirement-item" [ngClass]="{'valid': hasNoConsecutiveLetters, 'invalid': !hasNoConsecutiveLetters}">
+                  <span class="requirement-icon">{{hasNoConsecutiveLetters ? '✓' : '✗'}}</span>
+                  Sin letras iguales consecutivas
+                </div>
+              </div>
+            <!-- </div> -->
+
+<!--           <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Contraseña</mat-label>
+                <input
+                    matInput
+                    placeholder="Ingresa tu contraseña"
+                    formControlName="password"
+                    required
+                    [type]="hidePassword ? 'password' : 'text'"
+                    autocomplete="new-password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Ocultar contraseña'"
+                  [attr.aria-pressed]="hidePassword"
+                  type="button"
+                >
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+            <!-- <mat-error *ngIf="userFormGroup.controls['password'].hasError('required') || userFormGroup.controls['password'].hasError('maxLength') ">
                 La contraseña es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 30 caracteres</span>.
-            </mat-error>
-          </mat-form-field>
+            </mat-error> - ->
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('required')">
+                  La contraseña es requerida.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('minlength')">
+                  La contraseña debe tener al menos 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="userFormGroup.controls['password'].hasError('maxlength')">
+                  La contraseña no puede exceder los 16 caracteres.
+                </mat-error>
+          </mat-form-field> -->
 
           <mat-form-field appearance="outline" class="example-full-width">
             <mat-select

@@ -77,14 +77,14 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
   },
   {
     displayName: 'Pacientes',
-    iconName: 'grid',
+    iconName: 'users',
     route: './patients',
     external: true,
     chipClass: 'bg-secondary text-white',
   },
   {
     displayName: 'Informes médicos',
-    iconName: 'grid',
+    iconName: 'folder-plus',
     route: './medical-reports',
     external: true,
     chipClass: 'bg-secondary text-white',
@@ -159,14 +159,14 @@ export const navItemsMedico: NavItem[] = [ //medico
   } */
   {
     displayName: 'Pacientes',
-    iconName: 'grid',
+    iconName: 'users',
     route: './patients',
     external: true,
     chipClass: 'bg-secondary text-white',
   },
   {
     displayName: 'Informes médicos',
-    iconName: 'grid',
+    iconName: 'folder-plus',
     route: './medical-reports',
     external: true,
     chipClass: 'bg-secondary text-white',

@@ -170,7 +170,8 @@ export class DashboardService {
                 let year = today.getFullYear();
                 let month = (today.getMonth() + 1).toString().padStart(2, '0');
                 let day = today.getDate().toString().padStart(2, '0');
-                filename = `reporte-estadistico-de-usuarios-${year}-${month}-${day}.pdf`;
+                // filename = `reporte-estadistico-de-usuarios-${year}-${month}-${day}.pdf`;
+                filename = `reporte-estadistico-de-usuarios-${year}.pdf`;
               }
               // Crear un objeto URL para el blob
               const blob = new Blob([response.body], { type: 'application/pdf' });

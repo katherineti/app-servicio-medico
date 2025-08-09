@@ -13,6 +13,12 @@
                 </div>
             </div>
             <h4 class="f-s-24 m-b-6">{{countUsers}}</h4>
+            <div class="d-flex align-items-center m-t-32" class="ocultar-en-movil-tablet">
+                <div class="d-flex align-items-center">
+                     <mat-icon fontIcon="calendar_month" aria-label="2025" aria-hidden="false" class="text-accent d-flex"></mat-icon>
+                     <div class="m-l-12 f-s-14">{{ formatearFecha(getLocalDate(),null,'anio') }}</div>
+                </div>
+            </div>
             
             <!-- Botón de imprimir reporte mejorado -->
             <button mat-stroked-button class="report-button" [disabled]="generatingReport">

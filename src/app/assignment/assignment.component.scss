@@ -1,3 +1,147 @@
 .example-full-width {
  width: 100% !important;
 }
+
+// estilos para el toggle de tipo de asignacion
+.example-full-width {
+  width: 100% !important;
+}
+
+// Estilos para el grupo de botones de alternancia
+// 3
+// Contenedor para el grupo de botones de alternancia
+.assignment-type-selection {
+  margin-bottom: 20px; // Espacio debajo del grupo para separar de otros campos
+  padding: 0 10px; // Pequeño padding horizontal para que no esté pegado a los bordes del modal
+  width: 100%; // Asegura que ocupe todo el ancho disponible
+  box-sizing: border-box; // Incluye padding en el ancho total
+}
+
+// Estilos para el grupo de botones de alternancia
+mat-button-toggle-group {
+  display: flex; // Habilita Flexbox
+  flex-wrap: wrap; // Permite que los botones se envuelvan a la siguiente línea
+  justify-content: center; // Centra los botones horizontalmente si no llenan todo el ancho
+  gap: 8px; // Espacio entre los botones (horizontal y vertical)
+  width: 100%; // Ocupa todo el ancho disponible
+  border-radius: 8px; // Bordes ligeramente redondeados para el grupo
+  overflow: hidden; // Asegura que los bordes redondeados se apliquen correctamente
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // Sombra sutil para darle profundidad
+}
+
+// Estilos para cada botón individual dentro del grupo
+mat-button-toggle {
+  flex: 1 1 calc(50% - 4px); // Intenta que cada botón ocupe el 50% del ancho, restando la mitad del gap
+  min-width: 140px; // Ancho mínimo para cada botón, ajustado para tu modal
+  max-width: 50%; // Asegura que no se estiren demasiado en pantallas muy grandes
+  border-radius: 8px; // Bordes redondeados para cada botón
+  background-color: #f8f8f8; // Fondo ligeramente gris por defecto
+  color: #555; // Color de texto por defecto
+  transition: all 0.2s ease-in-out; // Transición suave para cambios de estilo
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); // Sombra sutil para reemplazar el borde
+
+  // Estilos al pasar el ratón por encima (hover)
+  &:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Sombra más pronunciada en hover
+    transform: translateY(-2px); // Pequeño efecto de "levantamiento"
+  }
+
+  // Estilos para el botón seleccionado
+  &.mat-button-toggle-checked {
+    background-color: #e3f2fd; // Un azul muy claro para el fondo
+    border: 1px solid #2196f3; // Borde azul más oscuro, ahora solo para el seleccionado
+    color: #1976d2; // Texto/icono azul más oscuro
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2); // Sombra azulada
+    transform: translateY(0); // Asegura que no se "levante" si ya está seleccionado
+  }
+
+  // Estilos para el contenido interno del botón (icono y texto)
+  .mat-button-toggle-button {
+    padding: 12px 16px; // Ajusta el padding interno
+    display: flex;
+    flex-direction: row; // Icono y texto en fila
+    align-items: center; // Centra verticalmente
+    justify-content: center; // Centra horizontalmente
+    gap: 8px; // Espacio entre el icono y el texto
+    height: 100%; // Asegura que el botón ocupe toda la altura disponible
+  }
+
+  // Media query para pantallas muy pequeñas (móviles)
+  @media (max-width: 599px) {
+    flex: 1 1 100%; // Cada botón ocupa el 100% del ancho, apilándose
+    max-width: 100%; // Asegura que no haya límites de ancho
+    margin-bottom: 8px; // Añade un pequeño margen entre botones apilados
+    &:last-child {
+      margin-bottom: 0; // No añadir margen al último botón
+    }
+  }
+}
+
+// Si tienes la clase 'ocultar-en-movil-tablet' para otros elementos,
+// asegúrate de que no interfiera con los button-toggles si no es intencional.
+.ocultar-en-movil-tablet {
+  display: inline-block !important;
+
+  // Media query para tabletas 
+  @media (min-width: 600px) and (max-width: 991px) {
+    display: none !important;
+  }
+  // Media query para teléfonos 
+  @media (max-width: 599px) {
+    display: none !important;
+  }
+}
+
+/*
+// 1
+ mat-button-toggle-group {
+  display: flex; // Asegura que use flexbox
+  flex-wrap: wrap; // Permite que los botones se envuelvan a la siguiente línea
+  width: 100%; // Ocupa todo el ancho disponible
+
+  // Estilos para cada botón individual dentro del grupo
+  mat-button-toggle {
+    flex-grow: 1; // Permite que los botones crezcan para llenar el espacio
+    flex-basis: 0; // Permite que los botones se reduzcan si es necesario
+    min-width: 150px; // Un ancho mínimo para evitar que se hagan demasiado pequeños en desktop
+    
+    // En pantallas más grandes, distribuye el espacio equitativamente
+    @media (min-width: 768px) {
+      flex-basis: 50%; // Cada botón ocupa la mitad del ancho en pantallas medianas/grandes
+    }
+
+    // En pantallas muy pequeñas (móviles), cada botón ocupa el 100% del ancho
+    @media (max-width: 599px) {
+      flex-basis: 100%; // Cada botón ocupa el ancho completo
+      margin-bottom: 8px; // Añade un pequeño margen entre botones apilados
+      &:last-child {
+        margin-bottom: 0; // No añadir margen al último botón
+      }
+    }
+
+    // Ajustes de padding si los iconos o texto son muy grandes
+    .mat-button-toggle-button {
+      padding: 12px 16px; // Ajusta el padding interno si es necesario
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px; // Espacio entre el icono y el texto
+    }
+  }
+}
+
+// Si tienes la clase 'ocultar-en-movil-tablet' para otros elementos,
+// asegúrate de que no interfiera con los button-toggles si no es intencional.
+.ocultar-en-movil-tablet {
+  display: inline-block !important;
+
+  // Media query para tabletas 
+  @media (min-width: 600px) and (max-width: 991px) {
+    display: none !important;
+  }
+  // Media query para teléfonos 
+  @media (max-width: 599px) {
+    display: none !important;
+  }
+} */

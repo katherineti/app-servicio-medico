@@ -144,7 +144,8 @@
                                 </button>
                              }
                              @if ((this.role === 'admin' || this.role === 'almacen' || this.role === 'medico') && element.statusId != 4 ) {
-                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)" title="Asignar producto a un empleado">
+                                 <!-- <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)" title="Asignar producto a un empleado"> -->
+                                 <button mat-icon-button aria-label="Asignar" (click)="assignProductToWorker(element)" title="Asignar producto">
                                      <i-feather name="share-2" (click)="assignProductToWorker(element)"></i-feather>
                                  </button>
                                 }

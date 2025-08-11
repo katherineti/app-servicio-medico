@@ -43,4 +43,10 @@ export class AssignmentService {
   addEmployee(newEmployee: ICretateEmployee): Observable<IEmployee> {
     return this.http.post<any>(`${this.tokenService.endPoint}${this.controller}/addEmployee`, newEmployee);
   }
+
+  getDoctors(id:number=3): Observable<any> {
+    return this.http.get<any>(
+      `${this.tokenService.endPoint}users/getAllByRol/${id}` 
+    );
+  }
 }

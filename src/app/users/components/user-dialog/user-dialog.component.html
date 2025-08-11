@@ -93,24 +93,27 @@
                 formControlName="role"
                 required="true"
                 >
-                    <mat-option [value]="1">{{
-                        'Administrador' 
+                <mat-option [value]="1">{{
+                    'Administrador'
+                }}</mat-option>
+                <mat-option [value]="7">{{
+                    'Administrador2'
+                }}</mat-option>
+                <mat-option [value]="2">{{
+                    'Almacén' 
+                }}</mat-option>
+                    <mat-option [value]="5">{{
+                        'Almacén móvil' | titlecase
                     }}</mat-option>
-                    <mat-option [value]="2">{{
-                        'Almacén' 
-                    }}</mat-option>
-                        <mat-option [value]="5">{{
-                            'Almacén móvil' | titlecase
-                        }}</mat-option>
-                    <mat-option [value]="3">{{
-                        'Médico' 
-                    }}</mat-option>
-                    <mat-option [value]="4">{{
-                        'Auditor' 
-                    }}</mat-option>
-                    <mat-option [value]="6">{{
-                        'Enfermero(a)' 
-                    }}</mat-option>
+                <mat-option [value]="3">{{
+                    'Médico' 
+                }}</mat-option>
+                <mat-option [value]="4">{{
+                    'Auditor'
+                }}</mat-option>
+                <mat-option [value]="6">{{
+                    'Enfermero(a)' 
+                }}</mat-option>
                 </mat-select>
             <mat-error *ngIf="userFormGroup.controls['role'].hasError('required')">
                 El rol es requerido.

@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>
      @if(this.role === "admin"){
-         Asignar producto a un empleado / almacén móvil 
+         <!-- Asignar producto a un empleado / almacén móvil  -->
+         ¿A quién asignarás el insumo médico? 
      }@else {
          Asignar producto a un empleado
      }
@@ -13,7 +14,7 @@
             <div class="row p-10">
         
             @if(this.role === "admin"){ 
-                <span class="m-l-10 m-b-4">¿A quién asignarás el insumo médico? </span><br> 
+                <!-- <span class="m-l-10 m-b-4">¿A quién asignarás el insumo médico? </span><br>  -->
                 <div class="assignment-type-selection">
                 <mat-button-toggle-group 
                     [formControl]="recipientControl"

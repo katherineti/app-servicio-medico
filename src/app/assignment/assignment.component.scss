@@ -2,146 +2,194 @@
  width: 100% !important;
 }
 
-// estilos para el toggle de tipo de asignacion
-.example-full-width {
-  width: 100% !important;
-}
 
-// Estilos para el grupo de botones de alternancia
-// 3
-// Contenedor para el grupo de botones de alternancia
 .assignment-type-selection {
-  margin-bottom: 20px; // Espacio debajo del grupo para separar de otros campos
-  padding: 0 10px; // Pequeño padding horizontal para que no esté pegado a los bordes del modal
-  width: 100%; // Asegura que ocupe todo el ancho disponible
-  box-sizing: border-box; // Incluye padding en el ancho total
+  margin-bottom: 24px;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  // Question label styling
+  .assignment-question {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    text-align: left;
+    line-height: 1.4;
+  }
 }
 
-// Estilos para el grupo de botones de alternancia
 mat-button-toggle-group {
-  display: flex; // Habilita Flexbox
-  flex-wrap: wrap; // Permite que los botones se envuelvan a la siguiente línea
-  justify-content: center; // Centra los botones horizontalmente si no llenan todo el ancho
-  gap: 8px; // Espacio entre los botones (horizontal y vertical)
-  width: 100%; // Ocupa todo el ancho disponible
-  border-radius: 8px; // Bordes ligeramente redondeados para el grupo
-  overflow: hidden; // Asegura que los bordes redondeados se apliquen correctamente
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); // Sombra sutil para darle profundidad
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: visible; // Allow shadows to show
+  background: transparent;
+  border: none;
+  
+  // Remove default Material Design styling
+  &.mat-button-toggle-group {
+    box-shadow: none;
+    border: none;
+  }
 }
 
-// Estilos para cada botón individual dentro del grupo
 mat-button-toggle {
-  flex: 1 1 calc(50% - 4px); // Intenta que cada botón ocupe el 50% del ancho, restando la mitad del gap
-  min-width: 140px; // Ancho mínimo para cada botón, ajustado para tu modal
-  max-width: 50%; // Asegura que no se estiren demasiado en pantallas muy grandes
-  border-radius: 8px; // Bordes redondeados para cada botón
-  background-color: #f8f8f8; // Fondo ligeramente gris por defecto
-  color: #555; // Color de texto por defecto
-  transition: all 0.2s ease-in-out; // Transición suave para cambios de estilo
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); // Sombra sutil para reemplazar el borde
+  flex: 1 1 calc(50% - 6px);
+  min-width: 160px;
+  max-width: 50%;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  color: #6b7280;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
 
-  // Estilos al pasar el ratón por encima (hover)
-  &:hover {
-    background-color: #f0f0f0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Sombra más pronunciada en hover
-    transform: translateY(-2px); // Pequeño efecto de "levantamiento"
+  // Remove default Material Design styling
+  &.mat-button-toggle {
+    border: 2px solid #e5e7eb;
   }
 
-  // Estilos para el botón seleccionado
+  // Enhanced hover state
+  &:hover:not(.mat-button-toggle-checked) {
+    background: #f8fafc;
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+    color: #4b5563;
+  }
+
   &.mat-button-toggle-checked {
-    background-color: #e3f2fd; // Un azul muy claro para el fondo
-    border: 1px solid #2196f3; // Borde azul más oscuro, ahora solo para el seleccionado
-    color: #1976d2; // Texto/icono azul más oscuro
-    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2); // Sombra azulada
-    transform: translateY(0); // Asegura que no se "levante" si ya está seleccionado
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25);
+    transform: translateY(-2px);
+
+    // Icon styling for selected state
+    mat-icon {
+      color: #ffffff;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    // Subtle inner glow effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
   }
 
-  // Estilos para el contenido interno del botón (icono y texto)
   .mat-button-toggle-button {
-    padding: 12px 16px; // Ajusta el padding interno
+    padding: 16px 20px;
     display: flex;
-    flex-direction: row; // Icono y texto en fila
-    align-items: center; // Centra verticalmente
-    justify-content: center; // Centra horizontalmente
-    gap: 8px; // Espacio entre el icono y el texto
-    height: 100%; // Asegura que el botón ocupe toda la altura disponible
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    min-height: 56px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.025em;
+    border: none;
+    background: transparent;
+
+    // Icon styling
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      transition: all 0.3s ease;
+    }
+
+    // Text styling
+    .mat-button-toggle-label-content {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
-  // Media query para pantallas muy pequeñas (móviles)
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
   @media (max-width: 599px) {
-    flex: 1 1 100%; // Cada botón ocupa el 100% del ancho, apilándose
-    max-width: 100%; // Asegura que no haya límites de ancho
-    margin-bottom: 8px; // Añade un pequeño margen entre botones apilados
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-bottom: 12px;
+    min-width: unset;
+
     &:last-child {
-      margin-bottom: 0; // No añadir margen al último botón
-    }
-  }
-}
-
-// Si tienes la clase 'ocultar-en-movil-tablet' para otros elementos,
-// asegúrate de que no interfiera con los button-toggles si no es intencional.
-.ocultar-en-movil-tablet {
-  display: inline-block !important;
-
-  // Media query para tabletas 
-  @media (min-width: 600px) and (max-width: 991px) {
-    display: none !important;
-  }
-  // Media query para teléfonos 
-  @media (max-width: 599px) {
-    display: none !important;
-  }
-}
-
-/*
-// 1
- mat-button-toggle-group {
-  display: flex; // Asegura que use flexbox
-  flex-wrap: wrap; // Permite que los botones se envuelvan a la siguiente línea
-  width: 100%; // Ocupa todo el ancho disponible
-
-  // Estilos para cada botón individual dentro del grupo
-  mat-button-toggle {
-    flex-grow: 1; // Permite que los botones crezcan para llenar el espacio
-    flex-basis: 0; // Permite que los botones se reduzcan si es necesario
-    min-width: 150px; // Un ancho mínimo para evitar que se hagan demasiado pequeños en desktop
-    
-    // En pantallas más grandes, distribuye el espacio equitativamente
-    @media (min-width: 768px) {
-      flex-basis: 50%; // Cada botón ocupa la mitad del ancho en pantallas medianas/grandes
+      margin-bottom: 0;
     }
 
-    // En pantallas muy pequeñas (móviles), cada botón ocupa el 100% del ancho
-    @media (max-width: 599px) {
-      flex-basis: 100%; // Cada botón ocupa el ancho completo
-      margin-bottom: 8px; // Añade un pequeño margen entre botones apilados
-      &:last-child {
-        margin-bottom: 0; // No añadir margen al último botón
+    .mat-button-toggle-button {
+      padding: 14px 16px;
+      min-height: 52px;
+      font-size: 14px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
       }
     }
+  }
 
-    // Ajustes de padding si los iconos o texto son muy grandes
+  @media (min-width: 600px) and (max-width: 991px) {
+    min-width: 140px;
+    
     .mat-button-toggle-button {
-      padding: 12px 16px; // Ajusta el padding interno si es necesario
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px; // Espacio entre el icono y el texto
+      padding: 14px 18px;
+      font-size: 13px;
     }
   }
 }
 
-// Si tienes la clase 'ocultar-en-movil-tablet' para otros elementos,
-// asegúrate de que no interfiera con los button-toggles si no es intencional.
-.ocultar-en-movil-tablet {
-  display: inline-block !important;
+@media (prefers-color-scheme: dark) {
+  .assignment-type-selection .assignment-question {
+    color: #f9fafb;
+  }
 
-  // Media query para tabletas 
-  @media (min-width: 600px) and (max-width: 991px) {
-    display: none !important;
+  mat-button-toggle {
+    background: #1f2937;
+    border-color: #374151;
+    color: #d1d5db;
+
+    &:hover:not(.mat-button-toggle-checked) {
+      background: #111827;
+      border-color: #4b5563;
+      color: #f3f4f6;
+    }
+
+    &.mat-button-toggle-checked {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      border-color: #2563eb;
+      color: #ffffff;
+    }
   }
-  // Media query para teléfonos 
-  @media (max-width: 599px) {
-    display: none !important;
-  }
-} */
+}
+
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after{
+  color: white;
+}

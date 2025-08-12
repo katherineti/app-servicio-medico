@@ -8,32 +8,35 @@
 
 <mat-dialog-content class="mat-typography">
     <div class="d-flex align-items-center">
-    <div class="right-bg-content p-10">
+    <div class="right-bg-content p-10 p-t-0">
         <form [formGroup]="AssignProductForm" #f="ngForm">
-          <div class="row p-10">
-            <div class="assignment-type-selection">
-                A quién asignarás el insumo médico?:
-              <mat-button-toggle-group
-                [formControl]="recipientControl"
-                aria-label="Seleccionar tipo de asignación"
-                name="recipient"
-                class="example-full-width"
-                >
-                <!-- [formControl]="AssignProductForm.get('recipient')" -->
-                <mat-button-toggle value="employee">
-                  <mat-icon>person</mat-icon>
-                  <span>Asignar a Empleado</span>
-                </mat-button-toggle>
-
-                @if(this.role === "admin"){
-                    <mat-button-toggle value="mobile-warehouse">
-                       <mat-icon>medication</mat-icon>
-                      <span>Enviar a Almacén Móvil</span>
+            <div class="row p-10">
+        
+            @if(this.role === "admin"){ 
+                <span class="m-l-10 m-b-4">¿A quién asignarás el insumo médico? </span><br> 
+                <div class="assignment-type-selection">
+                <mat-button-toggle-group 
+                    [formControl]="recipientControl"
+                    aria-label="Seleccionar tipo de asignación"
+                    name="recipient"
+                    class="example-full-width"
+                    >
+                    <!-- [formControl]="AssignProductForm.get('recipient')" -->
+                    <mat-button-toggle value="employee">
+                    <mat-icon>person</mat-icon>
+                    <span>Asignar a Empleado</span>
                     </mat-button-toggle>
-                }
 
-              </mat-button-toggle-group>
-            </div>
+                    @if(this.role === "admin"){
+                        <mat-button-toggle value="mobile-warehouse">
+                        <mat-icon>medication</mat-icon>
+                        <span>Enviar a Almacén Móvil</span>
+                        </mat-button-toggle>
+                    }
+
+                </mat-button-toggle-group>
+                </div>
+        }
 
             <mat-form-field appearance="outline" class="example-full-width">
                 <input

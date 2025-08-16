@@ -92,9 +92,14 @@ export class FullComponent implements OnInit {
       this.navItems = navItems; //almacen1 admin, medico
     }
    } */
+
+    /*
+    rol admin: administrador principal para la gerencia de tecnologia
+    rol admin RRHH: administrador secundario para la gerencia de Recursos Humanos
+    */
   async ngOnInit(): Promise<void> {
     this.role = await this.authService.getRol();
-    if( this.role === 'admin' || this.role === 'auditor' ){
+    if( this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'auditor' ){
       this.navItems = navItemsAdmin;
     }else if(this.role === 'almacen movil'){
       this.navItems = navItemsAlmacen2Movil;

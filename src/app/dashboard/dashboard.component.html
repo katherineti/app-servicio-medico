@@ -1,4 +1,4 @@
-@if (role === 'admin' || role === 'auditor') {
+@if (role === 'admin' || this.role === 'admin RRHH' || role === 'auditor') {
     <!--1 cantidad de usuario -->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="generatePdf()"
@@ -123,7 +123,7 @@
     </mat-card>
 }
 
-@if (this.role === 'admin' || this.role === 'almacen' || role === 'auditor') {
+@if (this.role === 'admin' || this.role === 'admin RRHH'  || this.role === 'almacen' || role === 'auditor') {
     <!--4 cantidad de asignaciones de productos realizadas en el dia-->
     <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
               (click)="pdfRegistryAssignmentsMedicalSupplies_MonthOrToday('hoy')"
@@ -217,7 +217,7 @@
     </mat-card>
 }
 
-@if((this.role === 'admin' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
+@if((this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'almacen') && getAccumulatedProductsStockByType && getAccumulatedAssignmentsByType){
     <!--6 Total Medicamentos Disponibles -->
         <mat-card class="cardWithShadow overflow-hidden cursor_pointer"
               (click)="pdfMedicalSuppliesAvailables(1)"

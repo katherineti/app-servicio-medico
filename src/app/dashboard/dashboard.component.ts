@@ -9,6 +9,7 @@ import { CommonModule } from "@angular/common"
 import { AuthService } from "../services/auth.service"
 import { IReport } from "../reports/interfaces/reports.interface"
 import { MatSnackBar } from "@angular/material/snack-bar"
+import { TokenService } from "../services/Token.service"
 
 @Component({
   selector: "app-dashboard",
@@ -49,16 +50,17 @@ export class DashboardComponent {
   private authService = inject(AuthService)
   private snackBar = inject(MatSnackBar);
   // private reportsService = inject(ReportsService);
+  private readonly tokenService = inject(TokenService);
 
   async ngOnInit() {
     this.role = await this.authService.getRol()
 
-    if (this.role === "admin" || this.role === "auditor") {
+    if (this.role === "admin" || this.role === 'admin RRHH' || this.role === "auditor") {
       this.totalUsers()
       this.totalProductsOfTheDay()
       this.totalProductsOfMonth()
     }
-    if (this.role === "admin" || this.role === "almacen" || this.role === "auditor") {
+    if (this.role === "admin" || this.role === 'admin RRHH' || this.role === "almacen" || this.role === "auditor") {
       this.totalAssignmentOfTheDay()
       this.totalAssignmentOfMonth()
     }
@@ -71,7 +73,7 @@ export class DashboardComponent {
       sum_uniformes: "0",
       sum_equiposOdontologicos: "0",
     }
-    if (this.role === "admin" || this.role === "almacen") {
+    if (this.role === "admin" || this.role === 'admin RRHH' || this.role === "almacen") {
       this.totalAvailableProductsByType()
       this.totalOfProductAssignmentsByType()
     }
@@ -86,32 +88,11 @@ export class DashboardComponent {
     this.router.navigate([route])
   }
 
-  // Función para descargar el PDF
-  private downloadPDF(blob: Blob, filename: string) {
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.href = url
-    link.download = filename
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
-  }
-
-  // Función para limpiar el nombre del archivo
-  private sanitizeFileName(filename: string): string {
-    return filename
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "")
-  }
-
   // Métodos existentes del dashboard...
   async totalUsers() {
     try {
-      const users: { count: number } = await firstValueFrom(this.dashboardService.totalUsers())
-      this.countUsers = users.count
+      const users: { count: number } = await firstValueFrom(this.dashboardService.totalUsers());
+      this.countUsers = users.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de usuarios", e)
@@ -120,10 +101,8 @@ export class DashboardComponent {
 
   async totalProductsOfTheDay() {
     try {
-      const totalProductsOfTheDay: { count: number } = await firstValueFrom(
-        this.dashboardService.totalProductsOfTheDay(),
-      )
-      this.countProductsOfTheDay = totalProductsOfTheDay.count
+      const totalProductsOfTheDay: { count: number } = await firstValueFrom(this.dashboardService.totalProductsOfTheDay());
+      this.countProductsOfTheDay = totalProductsOfTheDay.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de productos del día", e)
@@ -132,8 +111,8 @@ export class DashboardComponent {
 
   async totalProductsOfMonth() {
     try {
-      const totalProductsOfMonth: { count: number } = await firstValueFrom(this.dashboardService.totalProductsOfMonth())
-      this.countProductsOfMonth = totalProductsOfMonth.count
+      const totalProductsOfMonth: { count: number } = await firstValueFrom(this.dashboardService.totalProductsOfMonth());
+      this.countProductsOfMonth = totalProductsOfMonth.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de productos del mes", e)
@@ -142,10 +121,8 @@ export class DashboardComponent {
 
   async totalAssignmentOfTheDay() {
     try {
-      const totalAssignmentOfTheDay: { count: number } = await firstValueFrom(
-        this.dashboardService.totalAssignmentOfTheDay(),
-      )
-      this.countAssignmentOfTheDay = totalAssignmentOfTheDay.count
+      const totalAssignmentOfTheDay: { count: number } = await firstValueFrom(this.dashboardService.totalAssignmentOfTheDay());
+      this.countAssignmentOfTheDay = totalAssignmentOfTheDay.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de asignaciones del día", e)
@@ -154,10 +131,8 @@ export class DashboardComponent {
 
   async totalAssignmentOfMonth() {
     try {
-      const totalAssignmentOfMonth: { count: number } = await firstValueFrom(
-        this.dashboardService.totalAssignmentOfMonth(),
-      )
-      this.countAssignmentOfMonth = totalAssignmentOfMonth.count
+      const totalAssignmentOfMonth: { count: number } = await firstValueFrom(this.dashboardService.totalAssignmentOfMonth());
+      this.countAssignmentOfMonth = totalAssignmentOfMonth.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de asignaciones del mes", e)
@@ -166,8 +141,8 @@ export class DashboardComponent {
 
   async totalAllProducts() {
     try {
-      const totalAllProducts: { count: number } = await firstValueFrom(this.dashboardService.totalAllProducts())
-      this.countAllProducts = totalAllProducts.count
+      const totalAllProducts: { count: number } = await firstValueFrom(this.dashboardService.totalAllProducts());
+      this.countAllProducts = totalAllProducts.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de productos", e)
@@ -176,8 +151,8 @@ export class DashboardComponent {
 
   async totalAllAssignments() {
     try {
-      const totalAllAssignment: { count: number } = await firstValueFrom(this.dashboardService.totalAllAssignments())
-      this.countAllAssignments = totalAllAssignment.count
+      const totalAllAssignment: { count: number } = await firstValueFrom(this.dashboardService.totalAllAssignments());
+      this.countAllAssignments = totalAllAssignment.count;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener la cantidad de asignaciones", e)
@@ -186,10 +161,8 @@ export class DashboardComponent {
 
   async totalAvailableProductsByType() {
     try {
-      const totalAvailableProductsByType: any = await firstValueFrom(
-        this.dashboardService.totalAvailableProductsByType(),
-      )
-      this.getAccumulatedProductsStockByType = totalAvailableProductsByType
+      const totalAvailableProductsByType: any = await firstValueFrom(this.dashboardService.totalAvailableProductsByType());
+      this.getAccumulatedProductsStockByType = totalAvailableProductsByType;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener el número de productos disponibles por tipo de producto", e)
@@ -198,10 +171,8 @@ export class DashboardComponent {
 
   async totalOfProductAssignmentsByType() {
     try {
-      const totalOfProductAssignmentsByType: any = await firstValueFrom(
-        this.dashboardService.totalOfProductAssignmentsByType(),
-      )
-      this.getAccumulatedAssignmentsByType = totalOfProductAssignmentsByType
+      const totalOfProductAssignmentsByType: any = await firstValueFrom(this.dashboardService.totalOfProductAssignmentsByType());
+      this.getAccumulatedAssignmentsByType = totalOfProductAssignmentsByType;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener el número de asignaciones por tipo de producto", e)
@@ -210,8 +181,8 @@ export class DashboardComponent {
 
   async expiredProductsCount() {
     try {
-      const expiredProductsCount: any = await firstValueFrom(this.dashboardService.expiredProductsCount())
-      this.getExpiredProductsCount = expiredProductsCount
+      const expiredProductsCount: any = await firstValueFrom(this.dashboardService.expiredProductsCount());
+      this.getExpiredProductsCount = expiredProductsCount;
     } catch (e: any) {
       toast.error(e.error.message)
       console.error("Error al obtener el número de productos proximos a vencerse o caducados", e)
@@ -238,34 +209,7 @@ export class DashboardComponent {
    */
   // generatePdf(element: IReport): void {
   generatePdf(): void {
-     let element! : any;
-     //  let element: IReport = {};
-
-     element = {
-      additionalAuditorIds: [16, 13],
-      auditor: "a mi nombre",
-      auditorId: 4,
-      code: "O475a7e9aa-b126-4f83-a1ac-c9b7dee7d8b6.4.2025",
-      conclusions: "d",
-      detailed_methodology: "d",
-      endDate: new Date("2025-06-08 19:38:39 -0400"),
-      findings: "d",
-      id: 4,
-      idDuplicate: null,
-      images: ['/uploads/reports/Id 4/report-1749425919381-345499483-1-mandala.jpg', '/uploads/reports/Id 4/report-1749425919387-325340306-mandala.png', '/uploads/reports/Id 4/report-1749425919387-6672292…2622768_854260286819999_6447723401831025285_n.jpg', '/uploads/reports/Id 4/report-1749425919399-8837722…-tecnologia-impulsa-el-desarrollo-y-viceversa.jpg', '/uploads/reports/Id 4/report-1749425919401-2020545…5715485_296208562543640_9157808412213043412_n.jpg', '/uploads/reports/Id 4/report-1749425919402-974399550-5f361ce5cc3c107c008029e631e05c36.jpg', '/uploads/reports/Id 4/report-1749425919402-4663315…953190_1128356091619115_7251787043438431084_n.jpg', '/uploads/reports/Id 4/report-1749425919403-226057615-frases-viajeras-15.jpg', '/uploads/reports/Id 4/report-1749425919404-7771959…ras-frases-de-montana-que-celebran-la-amistad.jpg', '/uploads/reports/Id 4/report-1749425919405-185077049-frases-cortas.jpg'],
-      introduction: "d",
-      receiver: "d",
-      startDate: new Date("2025-06-08 19:38:04 -0400"),
-      // status: "Finalizado",
-      statusId: 1,
-      summary_conclusionAndObservation: "d",
-      summary_methodology: "d",
-      summary_objective: "d",
-      summary_scope: "d",
-      title: "D",
-      }
-
-    if (!element.id || this.isGeneratingPdf) {
+    if (this.isGeneratingPdf) {
       return;
     }
     
@@ -278,8 +222,6 @@ export class DashboardComponent {
       verticalPosition: 'bottom'
     });
     
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
     this.dashboardService.generateDashboardReport_Users().subscribe({
       next: () => {
         // Cerrar el indicador de carga
@@ -316,7 +258,7 @@ export class DashboardComponent {
    */
   generatePdfRegistryMedicalSupplies(reportTodayOrMonth:string): void {
 
-    if ( this.isGeneratingPdf) {
+    if (this.isGeneratingPdf) {
       return;
     }
     console.log(`generar pdf de registros de insumos medicos (${reportTodayOrMonth})`)
@@ -330,7 +272,6 @@ export class DashboardComponent {
       verticalPosition: 'bottom'
     });
     
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
     this.dashboardService.pdfRegistryMedicalSupplies(reportTodayOrMonth).subscribe({
       next: () => {
         // Cerrar el indicador de carga
@@ -366,7 +307,7 @@ export class DashboardComponent {
    */
   pdfRegistryAssignmentsMedicalSupplies_MonthOrToday(reportTodayOrMonth:string): void {
 
-    if ( this.isGeneratingPdf) {
+    if (this.isGeneratingPdf) {
       return;
     }
     console.log(`Generar pdf de registros de asignacion de insumos medicos a empleados o a sus familiares (${reportTodayOrMonth})`)
@@ -380,7 +321,6 @@ export class DashboardComponent {
       verticalPosition: 'bottom'
     });
     
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
     this.dashboardService.pdfRegistryAssignmentsMedicalSupplies_MonthOrToday(reportTodayOrMonth).subscribe({
       next: () => {
         // Cerrar el indicador de carga
@@ -416,7 +356,7 @@ export class DashboardComponent {
        */
       pdfStockAssignmentsBySupplyType_Month(supplyType:number): void {
 
-        if ( this.isGeneratingPdf) {
+        if (this.isGeneratingPdf) {
           return;
         }
 
@@ -466,7 +406,7 @@ export class DashboardComponent {
    */
   pdfMedicalSuppliesAvailables(supplyType:number): void {
 
-    if ( this.isGeneratingPdf) {
+    if (this.isGeneratingPdf) {
       return;
     }
     console.log(`generar pdf de insumos medicos disponibles`)

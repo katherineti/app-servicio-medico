@@ -21,7 +21,6 @@ export class RolesService {
   }
 
   create(dto: ICreateRoleDTO) {
-    console.log("create role:" , dto)
     return this.http.post<IRole>(
       `${this.tokenService.endPoint}roles/create`,
       dto
@@ -29,7 +28,6 @@ export class RolesService {
   }
 
   update(id: number, dto: IUpdateRole) {
-    console.log("dto update" , dto)
     return this.http.put<any>(
       `${this.tokenService.endPoint}roles/${id}`,
       dto

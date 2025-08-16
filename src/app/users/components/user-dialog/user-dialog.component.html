@@ -93,27 +93,27 @@
                 formControlName="role"
                 required="true"
                 >
-                <mat-option [value]="1">{{
-                    'Administrador'
-                }}</mat-option>
-                <mat-option [value]="7">{{
-                    'Administrador2'
-                }}</mat-option>
-                <mat-option [value]="2">{{
-                    'Almacén' 
-                }}</mat-option>
-                    <mat-option [value]="5">{{
-                        'Almacén móvil' | titlecase
-                    }}</mat-option>
-                <mat-option [value]="3">{{
-                    'Médico' 
-                }}</mat-option>
-                <mat-option [value]="4">{{
-                    'Auditor'
-                }}</mat-option>
-                <mat-option [value]="6">{{
-                    'Enfermero(a)' 
-                }}</mat-option>
+                  <mat-option [value]="1">{{
+                      'Administrador'
+                  }}</mat-option>
+                  <mat-option [value]="7">{{
+                      'Administrador RRHH'
+                  }}</mat-option>
+                  <mat-option [value]="2">{{
+                      'Almacén' 
+                  }}</mat-option>
+                  <mat-option [value]="5">{{
+                      'Almacén móvil' | titlecase
+                  }}</mat-option>
+                  <mat-option [value]="3">{{
+                      'Médico' 
+                  }}</mat-option>
+                  <mat-option [value]="4">{{
+                      'Auditor'
+                  }}</mat-option>
+                  <mat-option [value]="6">{{
+                      'Enfermero(a)' 
+                  }}</mat-option>
                 </mat-select>
             <mat-error *ngIf="userFormGroup.controls['role'].hasError('required')">
                 El rol es requerido.
@@ -136,26 +136,6 @@
               }
               </mat-select>
            </mat-form-field> -->
-<!--             <mat-form-field appearance="outline" class="example-full-width">
-                <mat-select
-                placeholder="Roles"
-                formControlName="role"
-                required="true"
-                >
-                <mat-option value="admin">{{
-                    'Administrador' | titlecase
-                }}</mat-option>
-                <mat-option value="almacen">{{
-                    'Almacén' | titlecase
-                }}</mat-option>
-                <mat-option value="medico">{{
-                    'Médico' | titlecase
-                }}</mat-option>
-                <mat-option value="auditor">{{
-                    'Auditor' | titlecase
-                }}</mat-option>
-                </mat-select>
-            </mat-form-field> -->
 
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Estado</mat-label>

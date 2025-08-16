@@ -57,19 +57,25 @@
             required="true"
             >
             <mat-option [value]="1">{{
-                'Administrador' | titlecase
+                'Administrador'
+            }}</mat-option>
+            <mat-option [value]="7">{{
+                'Administrador RRHH'
             }}</mat-option>
             <mat-option [value]="2">{{
-                'Almacén' | titlecase
-            }}</mat-option>
-            <mat-option [value]="3">{{
-                'Médico' | titlecase
-            }}</mat-option>
-            <mat-option [value]="4">{{
-                'Auditor' | titlecase
+                'Almacén'
             }}</mat-option>
             <mat-option [value]="5">{{
                 'Almacén móvil' | titlecase
+            }}</mat-option>
+            <mat-option [value]="3">{{
+                'Médico'
+            }}</mat-option>
+            <mat-option [value]="4">{{
+                'Auditor'
+            }}</mat-option>
+            <mat-option [value]="6">{{
+                'Enfermero(a)'
             }}</mat-option>
             </mat-select>
             <mat-error *ngIf="formGroup.controls['role'].hasError('required')">

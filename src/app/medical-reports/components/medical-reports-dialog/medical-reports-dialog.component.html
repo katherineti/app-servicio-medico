@@ -51,8 +51,14 @@
                 <mat-option [value]="1">{{
                     'Administrador' | titlecase
                 }}</mat-option>
+                <mat-option [value]="7">{{
+                    'Administrador RRHH' | titlecase
+                }}</mat-option>
                 <mat-option [value]="2">{{
                     'Almacén' | titlecase
+                }}</mat-option>
+                <mat-option [value]="5">{{
+                    'Almacén móvil' | titlecase
                 }}</mat-option>
                 <mat-option [value]="3">{{
                     'Médico' | titlecase
@@ -60,8 +66,8 @@
                 <mat-option [value]="4">{{
                     'Auditor' | titlecase
                 }}</mat-option>
-                <mat-option [value]="5">{{
-                    'Almacén móvil' | titlecase
+                <mat-option [value]="6">{{
+                    'Enfermero(a)'
                 }}</mat-option>
                 </mat-select>
             <mat-error *ngIf="formGroup.controls['role'].hasError('required')">

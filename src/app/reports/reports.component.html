@@ -1,4 +1,4 @@
-<app-header-title [title]="'Reportes'" ></app-header-title>
+<app-header-title [title]="'Reportes de Auditoría'" ></app-header-title>
 <mat-toolbar style="background-color: white;">
 
     <mat-form-field appearance="outline" class="search m-t-20">
@@ -17,7 +17,7 @@
         <i-feather name="search"></i-feather>
     </button>
 
-    <!-- @if (this.role === 'admin') {
+    <!-- @if (this.role === "admin" || this.role === "admin RRHH" ) {
         <span class="example-spacer"></span>
         <button mat-flat-button (click)="true" >
         <!-- <button mat-flat-button (click)="openDialogCreateUser()" > - ->
@@ -95,7 +95,7 @@
                                             <i-feather name="Printer"></i-feather>
                                         </button> 
                                     <!-- } -->
-                                    @if (this.role === 'admin') {
+                                    @if (this.role === "admin" || this.role === "admin RRHH" ) {
                                         @if(element.code.charAt(0) === 'D'){
                                             <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
                                                <i-feather name="edit" class="big fill-red icon-18"></i-feather>

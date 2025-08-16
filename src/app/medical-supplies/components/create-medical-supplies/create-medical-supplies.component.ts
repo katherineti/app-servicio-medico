@@ -142,18 +142,18 @@ export class CreateMedicalSuppliesComponent {
 
     if (isMedicalProduct) {
       if (diffDays <= 0) {
-        if ((this.role === "admin" || this.role === "almacen") && statusControl.value !== 4) {
+        if ((this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") && statusControl.value !== 4) {
           statusControl.patchValue(4)
           toast.info('El producto ha caducado o vence hoy. El estado se ha actualizado a "Caducado".')
         }
       } else if (diffDays <= 90) {
-        if ((this.role === "admin" || this.role === "almacen") && statusControl.value !== 3) {
+        if ((this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") && statusControl.value !== 3) {
           statusControl.patchValue(3)
           toast.info('El producto está próximo a vencerse. El estado se ha actualizado a "Próximo a Vencerse".')
         }
       } else {
         if (
-          (this.role === "admin" || this.role === "almacen") &&
+          (this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") &&
           (statusControl.value === 3 || statusControl.value === 4)
         ) {
           statusControl.patchValue(1)

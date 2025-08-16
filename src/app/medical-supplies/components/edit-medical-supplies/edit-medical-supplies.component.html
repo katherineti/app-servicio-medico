@@ -313,7 +313,7 @@
                   'No Disponible'
               }}</mat-option>
               <!-- Las opciones de actualizar a 'Próximo a vencerse' o 'caducado' son para admin y almacen -->
-              @if (this.role === 'admin' || this.role === 'almacen') {
+              @if (this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'almacen') {
                 @if ( editProdFormGroup.controls['type'].value!='' && editProdFormGroup.controls['type'].value === 1){
                   <mat-option [value]="3">{{
                       'Próximo a vencerse'

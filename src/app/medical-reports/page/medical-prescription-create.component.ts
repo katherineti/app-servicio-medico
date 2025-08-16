@@ -97,7 +97,7 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
     const loadDoctors$ = this.usersService.getUsers({ page: 1, take: 200, name: "" }).pipe(
       map((response) => {
         this.doctors = response.list.filter(
-          (user) => (user.role?.toLowerCase() === "médico" || user.role?.toLowerCase() === "admin") && user.isActivate,
+          (user) => (user.role?.toLowerCase() === "médico" || user.role?.toLowerCase() === "admin" || user.role?.toLowerCase() === "admin RRHH") && user.isActivate,
         )
         this.isLoadingDoctors = false
       }),

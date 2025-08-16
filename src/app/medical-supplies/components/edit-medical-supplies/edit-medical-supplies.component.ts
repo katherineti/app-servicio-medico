@@ -275,14 +275,14 @@ export class EditMedicalSuppliesComponent {
       if (diffDays <= 0) {
         // Si la fecha de vencimiento es hoy o ya pasó (0 días o menos)
         // Solo cambiar si el rol es admin o almacen, y el status actual no es ya 4 (Caducado)
-        if ((this.role === "admin" || this.role === "almacen") && statusControl.value !== 4) {
+        if ((this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") && statusControl.value !== 4) {
           statusControl.patchValue(4) // Cambiar a 'Caducado'
           toast.info('El producto ha caducado o vence hoy. El estado se ha actualizado a "Caducado".')
         }
       } else if (diffDays <= 90) {
         // Si faltan 90 días o menos para expirar
         // Solo cambiar si el rol es admin o almacen, y el status actual no es 3 (Próximo a vencerse)
-        if ((this.role === "admin" || this.role === "almacen") && statusControl.value !== 3) {
+        if ((this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") && statusControl.value !== 3) {
           statusControl.patchValue(3) // Cambiar a 'Próximo a vencerse'
           toast.info('El producto está próximo a vencerse. El estado se ha actualizado a "Próximo a Vencerse".')
         }
@@ -291,7 +291,7 @@ export class EditMedicalSuppliesComponent {
         // lo reiniciamos a 1 (Disponible) si el rol lo permite.
         // Esto solo aplica si el usuario no lo cambió manualmente a 1 o 2.
         if (
-          (this.role === "admin" || this.role === "almacen") &&
+          (this.role === "admin" || this.role === "admin RRHH" || this.role === "almacen") &&
           (statusControl.value === 3 || statusControl.value === 4)
         ) {
           statusControl.patchValue(1) // Resetear a 'Disponible'

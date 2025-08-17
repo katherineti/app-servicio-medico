@@ -1,5 +1,5 @@
 table {
-    width: 100%;
+  width: 100%;
 }
 .example-spacer {
 flex: 1 1 auto;
@@ -23,6 +23,18 @@ th.mat-column-action, td.mat-column-action {
 }
 .mat-mdc-table-sticky-border-elem-left {
   border-right: 1px solid #e0e0e0;
+}
+.mat-column-birthdate {
+  flex: 0 0 190px;
+}
+ .mat-column-createdAt, .mat-column-cedula, .mat-column-gender {
+  flex: 0 0 130px;
+}
+.mat-column-phone, .mat-column-civilStatus {
+  flex: 0 0 150px;
+}
+.mat-column-email {
+  flex: 0 0 190px;
 }
 //phone
 @media only screen and (max-width: 767px) {

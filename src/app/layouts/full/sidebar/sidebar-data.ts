@@ -90,7 +90,7 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
     chipClass: 'bg-secondary text-white',
   },
 ];
-export const navItems: NavItem[] = [ //almacen1 admin //, medico
+export const navItems: NavItem[] = [ //almacen1 admin 
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -124,7 +124,7 @@ export const navItems: NavItem[] = [ //almacen1 admin //, medico
     chipClass: 'bg-secondary text-white',
   } */
 ];
-export const navItemsMedico: NavItem[] = [ //medico
+export const navItemsMedico: NavItem[] = [ //medico y enfermero(a)
   {
     displayName: 'Dashboard',
     iconName: 'grid',

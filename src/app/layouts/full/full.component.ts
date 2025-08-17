@@ -103,10 +103,10 @@ export class FullComponent implements OnInit {
       this.navItems = navItemsAdmin;
     }else if(this.role === 'almacen movil'){
       this.navItems = navItemsAlmacen2Movil;
-    }else if(this.role === 'medico'){
+    }else if(this.role === 'medico' || this.role === 'enfermero(a)'){
       this.navItems = navItemsMedico;
     }else{
-      this.navItems = navItems; //almacen1 admin, medico
+      this.navItems = navItems; //almacen1 admin
     }
    }
 

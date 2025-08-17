@@ -19,10 +19,10 @@
     </button>
 }
 <br> -->
-<mat-card class="">
+<mat-card >
     <mat-card-content>
         <!-- <div class="d-flex w-100"> -->
-        <div class="w-100">
+        <div class="w-100" style="width: 100%; overflow-x: auto;">
             <div class="m-l-auto">
                 @if (dataSource.length) {
                  <section class="example-container mat-elevation-z8" tabindex="0">
@@ -36,7 +36,7 @@
                                  element.name | titlecase
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="cedula" sticky>
+                         <ng-container matColumnDef="cedula" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Cédula
                              </mat-header-cell>
@@ -44,7 +44,7 @@
                                  element.cedula | titlecase
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="birthdate" sticky>
+                         <ng-container matColumnDef="birthdate" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Fecha de Nacimiento
                              </mat-header-cell>
@@ -52,7 +52,7 @@
                                  element.birthdate | date:'dd-MM-yyyy'
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="age" sticky>
+                         <ng-container matColumnDef="age" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Edad
                              </mat-header-cell>
@@ -60,23 +60,41 @@
                                  element.age
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="gender" sticky>
+                         <ng-container matColumnDef="gender" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Género
                              </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                 element.gender | titlecase
-                             }}</mat-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                <!-- {{ element.gender | titlecase }} -->
+                                @if(element.gender === 'F'){
+                                    Femenino
+                                } 
+                                @if(element.gender === 'M'){
+                                    Masculino
+                                } 
+                            </mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="civilStatus" sticky>
+                         <ng-container matColumnDef="civilStatus" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Estado Civil
                              </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                 element.civilStatus | titlecase
-                             }}</mat-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                <!-- {{ element.civilStatus | titlecase }} -->
+                                @if(element.civilStatus === 'S'){
+                                    Soltero(a)
+                                }
+                                @if(element.civilStatus === 'C'){
+                                    Casado/a
+                                }
+                                @if(element.civilStatus === 'V'){
+                                    Viudo/a
+                                }
+                                @if(element.civilStatus === 'D'){
+                                    Divorciado/a
+                                }
+                             </mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="children" sticky>
+                         <ng-container matColumnDef="children" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Hijos
                              </mat-header-cell>
@@ -84,7 +102,7 @@
                                  element.children
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="phone" sticky>
+                         <ng-container matColumnDef="phone" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Teléfono
                              </mat-header-cell>

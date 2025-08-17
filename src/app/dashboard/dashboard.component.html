@@ -395,7 +395,7 @@
 }
 
 <!-- vencimiento de insumos -->
-@if(getExpiredProductsCount){
+@if(getExpiredProductsCount && this.role != 'enfermero(a)' ){
       <mat-card class="cardWithShadow overflow-hidden cursor_pointer" 
       (click)="navigate('/expired-medical-supplies')">
           <mat-card-content class="p-b-0">

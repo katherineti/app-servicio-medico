@@ -14,8 +14,9 @@ import { ReportsComponent } from './reports/reports.component';
 import { PatientsComponent } from './patients/patients.component';
 import { MedicalReportsComponent } from './medical-reports/medical-reports.component';
 import { MedicalReportCreateComponent } from './medical-reports/components/medical-report-create/medical-report-create.component';
-import { MedicalPrescriptionCreateComponent } from './medical-reports/page/medical-prescription-create.component';
+import { MedicalPrescriptionCreateComponent } from './medical-reports/page/medical-prescription-create/medical-prescription-create.component';
 import { PaginaJaComponent } from './pagina-ja/pagina-ja.component';
+import { ListMedicalPrescriptionsComponent } from './medical-reports/page/list-medical-prescriptions/list-medical-prescriptions.component';
 
 export const routes: Routes = [
     {
@@ -75,6 +76,10 @@ export const routes: Routes = [
           {
             path: "medical-prescriptions/create/:reportId", // Ruta para crear recipes
             component: MedicalPrescriptionCreateComponent,
+          },
+          {
+            path: "medical-prescriptions/:reportId", // Ruta para listar recipes por informe medico
+            component: ListMedicalPrescriptionsComponent,
           },
           // {
           //   path: 'pagina-ja',

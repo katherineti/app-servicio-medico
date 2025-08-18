@@ -1,5 +1,6 @@
-<app-header-title [title]="'Informes Médicos'" ></app-header-title>
-<mat-toolbar style="background-color: white;">
+<!-- <p>list-medical-prescriptions works!</p> -->
+<app-header-title [title]="'Recipes Médicos'" ></app-header-title>
+<!-- <mat-toolbar style="background-color: white;">
 
     <mat-form-field appearance="outline" class="search m-t-20">
         <input matInput class="p-b-0" placeholder="Buscar por cédula doctor" [formControl]="searhMedico" />
@@ -8,31 +9,21 @@
     <mat-form-field appearance="outline" class="search m-t-20 m-l-10 ">
         <input matInput class="p-b-0" placeholder="Buscar por cédula paciente" [formControl]="searhPatient" />
     </mat-form-field>
-
-<!--     <mat-form-field appearance="outline" class="search m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por fecha" [formControl]="searhDate" />
-    </mat-form-field> -->
-    
+   
     <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
-    (click)="getAllMedicalReport(this.pageIndex, this.pageSize)">
+    (click)="getAllMedicalPrescriptions(this.pageIndex, this.pageSize)">
         <i-feather name="search"></i-feather>
     </button>
 
-</mat-toolbar>
+</mat-toolbar> -->
 
-<!-- @if (this.role === 'admin' || this.role === 'admin RRHH') {
-    <span class="example-spacer"></span>
-    <button mat-flat-button color="secondary-fixed" (click)="openDialogCreate()" style="padding: 0 35px;" class="m-l-20">
-        Agregar
-    </button>
-}  -->
-
+<!-- 
 @if (this.role != 'enfermero(a)' ){
     <span class="example-spacer"></span>
     <button mat-flat-button color="secondary-fixed" (click)="navigateToAddReport()" style="padding: 0 35px;" class="m-l-20">
         Agregar
     </button>
-}
+} -->
 
 <br>
 <mat-card class="">
@@ -72,7 +63,26 @@
                                 }
                             </mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="apsCenter">
+      <!--                    <ng-container matColumnDef="mpps">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              MPPS
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{ element.mpps | titlecase}}
+                            </mat-cell>
+                         </ng-container> -->
+                         <ng-container matColumnDef="recipeContent">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Recipe
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                {{element.recipeContent | titlecase | slice:0:45 }}
+                                @if (element.recipeContent.length > 50) {
+                                    ...
+                                }
+                            </mat-cell>
+                         </ng-container>
+<!--                          <ng-container matColumnDef="apsCenter">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                               Centro APS
                              </mat-header-cell>
@@ -87,13 +97,21 @@
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                              {{ element.insurance | titlecase}}
                             </mat-cell>
-                         </ng-container>
+                         </ng-container> -->
                          <ng-container matColumnDef="createdAt">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                              Fecha
+                              Fecha de prescripción
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                              {{ element.createdAt | date:'dd-MM-yyyy'}}
+                            </mat-cell>
+                         </ng-container>
+                         <ng-container matColumnDef="expirationDate">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                              Fecha de expiración
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                             {{ element.expirationDate | date:'dd-MM-yyyy'}}
                             </mat-cell>
                          </ng-container>
 <!--                          <ng-container matColumnDef="isActive">
@@ -123,32 +141,18 @@
                              </mat-header-cell>
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
 
-<!--                                  <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
-                                     <i-feather name="eye"></i-feather>
-                                 </button> -->
-
-<!--                                  <button mat-icon-button aria-label="Crear recipe" (click)="openDialogCreateMedicalPrescription(element)">
-                                     <i-feather name="file-text"></i-feather>
-                                 </button> -->
-                                  <!-- <button mat-icon-button aria-label="Imprimir" (click)="generatePdf(element)" [disabled]="isGeneratingPdf"> -->
-                                  <button mat-icon-button aria-label="Imprimir" title="Imprimir informe médico"  (click)="generatePdf(element)" >
-                                     <i-feather name="Printer"></i-feather>
-                                  </button> 
-                                  <button mat-icon-button aria-label="Crear recipe" title="Crear recipe" (click)="navigateToCreateMedicalPrescription(element)">
-                                     <!-- <i-feather name="file-text"></i-feather> -->
-                                     <i-feather name="file-plus"></i-feather>
-                                  </button>
-                                  <button mat-icon-button aria-label="Ver recipes" title="Ver recipes" (click)="navigateToListMedicalPrescription(element)">
-                                     <!-- <i-feather name="file-text"></i-feather> -->
-                                     <i-feather name="file-text"></i-feather>
-                                  </button>
- 
-  <!--                               <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
-                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
+<!--                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
+                                    <i-feather name="eye"></i-feather>
                                 </button>
-                                <button mat-icon-button aria-label="Eliminar" (click)="deleteMedicalReport(element)">
-                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                <button mat-icon-button title="Editar" (click)="true">
+                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                 </button> -->
+                                <button mat-icon-button title="Imprimir" title="Imprimir" (click)="true" >
+                                    <i-feather name="Printer"></i-feather>
+                                </button>  
+                                <button mat-icon-button title="Eliminar" (click)="true">
+                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                </button>
                              </mat-cell>
                          </ng-container> 
                      

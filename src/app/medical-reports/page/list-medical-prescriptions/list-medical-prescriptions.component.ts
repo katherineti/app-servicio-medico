@@ -1,31 +1,44 @@
+/*import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-list-medical-prescriptions',
+  imports: [],
+  templateUrl: './list-medical-prescriptions.component.html',
+  styleUrl: './list-medical-prescriptions.component.scss'
+})
+export class ListMedicalPrescriptionsComponent {
+
+}
+*/
 import { Component, inject } from '@angular/core';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
-import { FeatherIconsModule } from '../feathericons/feathericons.module';
+import { MaterialModule } from '../../../material/material.module';
+import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { MedicalReportsDialogComponent } from './components/medical-reports-dialog/medical-reports-dialog.component';
-import { SwalService} from '../services/swal.service';
+import { MedicalReportsDialogComponent } from './../../components/medical-reports-dialog/medical-reports-dialog.component';
+import { SwalService} from '../../../services/swal.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { MedicalReportsCreateComponent } from './components/medical-reports-create/medical-reports-create.component';
-import { HeaderTitleComponent } from '../header-title/header-title.component';
+import { MedicalReportsCreateComponent } from './../../components/medical-reports-create/medical-reports-create.component';
+import { HeaderTitleComponent } from '../../../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MedicalReportsService } from './services/medical-reports.service';
-import { IGetAllMedicalreports, IUser, IMedicalReportPagination, IMedicalReports } from './interfaces/medical-reports.interface';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { MedicalReportsService } from './../../services/medical-reports.service';
+import { ISearchMedicalPrescription, IUser, IMedicalReportPagination, IMedicalReports, IMedicalPrescriptioPagination, IMedicalPrescriptios } from './../../interfaces/medical-reports.interface';
+import { AuthService } from '../../../services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MedicalPrescriptionService } from '../../services/medical-prescription.service';
 
 /**
 * @title pagination table medical reports
 */
 @Component({
-selector: 'app-medical-reports',
-templateUrl: './medical-reports.component.html',
-styleUrl: './medical-reports.component.scss',
+  selector: 'app-list-medical-prescriptions',
+  templateUrl: './list-medical-prescriptions.component.html',
+  styleUrl: './list-medical-prescriptions.component.scss',
 imports: [
   CommonModule,
   FeatherIconsModule,
@@ -36,8 +49,9 @@ imports: [
 ],
 providers:[MedicalReportsService]
 })
-export class MedicalReportsComponent {
-  role:string='';
+export class ListMedicalPrescriptionsComponent {
+  medicalReportId: string | null = null
+  role:string= '';
   displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt','action'];
   dataSource: any = new MatTableDataSource<IUser>();
   searhMedico = new FormControl();
@@ -48,6 +62,7 @@ export class MedicalReportsComponent {
   isGeneratingPdf = false;
 
   private swalService = inject(SwalService);
+  private medicalPrescriptionService = inject(MedicalPrescriptionService)
   private medicalReportsService = inject(MedicalReportsService);
   public dialog = inject(MatDialog);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
@@ -55,20 +70,30 @@ export class MedicalReportsComponent {
   private authService = inject(AuthService);
   private router = inject(Router)
   private snackBar = inject(MatSnackBar);
+  private activatedRoute = inject(ActivatedRoute)
 
   constructor() {
-    this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+/*     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
     ? [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action']
     : [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action'];
+    }); */
+    this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+    this.displayedColumns = result.matches
+    // ? [ 'doctorName', 'patientName', 'mpps', 'recipeContent', 'createdAt', 'expirationDate', 'action']
+    ? [ 'doctorName', 'patientName', 'recipeContent', 'createdAt', 'expirationDate', 'action']
+    : [ 'doctorName', 'patientName', 'recipeContent', 'createdAt', 'expirationDate', 'action'];
     });
 
     this.dataSource['length'] = 0;
-    this.getAllMedicalReport(this.pageIndex, this.pageSize);
+    this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
 
   async ngOnInit(){
+    this.medicalReportId = this.activatedRoute.snapshot.paramMap.get("reportId");
+    console.log("Parametro medical Report Id:  " , this.medicalReportId )
+
     this.role = await this.authService.getRol();
   }
 
@@ -104,7 +129,7 @@ export class MedicalReportsComponent {
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllMedicalReport(this.pageIndex, this.pageSize);
+      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     });
   }
   openDialogCreateMedicalPrescription(data?: any): void {
@@ -116,7 +141,7 @@ export class MedicalReportsComponent {
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllMedicalReport(this.pageIndex, this.pageSize);
+      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     });
   }
 
@@ -125,17 +150,8 @@ export class MedicalReportsComponent {
    * @param medicalReport El informe médico para el cual se creará la receta.
    */
   navigateToCreateMedicalPrescription(medicalReport: IMedicalReports): void {
-    console.log("informe medico seleccionado: ", medicalReport)
+    console.log("seleccionado ", medicalReport)
     this.router.navigate(["/medical-prescriptions/create", medicalReport.id])
-  }
-
-  /**
-   * Navega a la página del listado de recipes médicos, pasando el ID del informe.
-   * @param medicalReport El informe médico para el cual se creará la receta.
-   */
-  navigateToListMedicalPrescription(medicalReport: IMedicalReports): void {
-    console.log("informe medico seleccionado: ", medicalReport)
-    this.router.navigate(["/medical-prescriptions", medicalReport.id]) 
   }
 
 /*   openEditMedicalReport(data?: any): void {
@@ -146,7 +162,7 @@ export class MedicalReportsComponent {
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllMedicalReport(this.pageIndex, this.pageSize);
+      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     });
   } */
 
@@ -157,7 +173,7 @@ export class MedicalReportsComponent {
     });
 
     ref.afterClosed().subscribe(() => {
-      this.getAllMedicalReport(this.pageIndex, this.pageSize);
+      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     });
   }
 
@@ -168,7 +184,7 @@ export class MedicalReportsComponent {
     if (deleteAlert.isConfirmed) {
       this.medicalReportsService.deleteUser(data.id).subscribe((element) => {
         if (element) {
-          this.getAllMedicalReport(this.pageIndex, this.pageSize);
+          this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
           this.swalService.success();
         } else {
           this.swalService.error('Error', 'Error al eliminar usuario.');
@@ -179,22 +195,21 @@ export class MedicalReportsComponent {
     }
   } */
 
-  getAllMedicalReport(page: number, take: number) {
-    const parms: IGetAllMedicalreports = {
+  getAllMedicalPrescriptions(page: number, take: number) {
+    const parms: ISearchMedicalPrescription = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
-      doctorCedula: this.SearhMedico ? this.SearhMedico.trim() : null,
-      patientCedula: this.SearchPatient ? this.SearchPatient.trim() : null,
-      createdAt: this.SearhDate ? this.SearhDate.trim() : null,
+      medicalReportId: "7"
     };
-    this.medicalReportsService.getAll(parms).subscribe((data: IMedicalReportPagination) => {
+    this.medicalPrescriptionService.getAllMedicalPrescription(parms).subscribe((data: IMedicalPrescriptioPagination) => {
       // this.dataSource = new MatTableDataSource<IUser>(data.list);
-      this.dataSource = new MatTableDataSource<IMedicalReports>(data.list);
+      console.log("data recibida " , data)
+      this.dataSource = new MatTableDataSource<IMedicalPrescriptios>(data.list);
       this.dataSource.length = data.total;
     });
   }
   handlePageEvent(event: PageEvent) {
-    this.getAllMedicalReport(event.pageIndex, event.pageSize);
+    this.getAllMedicalPrescriptions(event.pageIndex, event.pageSize);
   }
 
   // PDF

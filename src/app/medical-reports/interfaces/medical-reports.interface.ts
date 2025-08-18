@@ -55,3 +55,33 @@ export interface ICreateMedicalPrescriptionDTO {
   indications?: string // Opcional
   medicalReportId?: string // Opcional, para vincular con un informe existente
 }
+
+export interface ISearchMedicalPrescription{//GetAll
+  page: number;
+  take: number;
+  medicalReportId: string;
+}
+
+export interface IMedicalPrescriptioPagination {
+  total: number;
+  page: number;
+  list: IMedicalPrescriptios[];
+}
+
+export interface IMedicalPrescriptios{
+  id: number;
+  medicalReportId: number;
+  place: string;
+  recipeContent: string;
+  doctorId: number;
+  doctorName: string;
+  doctorCedula: string;
+  mpps: string;
+  patientId: number;
+  patientName: string;
+  patientCedula: string;
+  indications: string;
+  expirationDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}

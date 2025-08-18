@@ -3,20 +3,20 @@ import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@a
 import { ActivatedRoute, Router } from "@angular/router" // Importar ActivatedRoute
 import { CommonModule } from "@angular/common"
 
-import { MaterialModule } from "../../material/material.module"
-import { FeatherIconsModule } from "../../feathericons/feathericons.module"
+import { MaterialModule } from "../../../material/material.module"
+import { FeatherIconsModule } from "../../../feathericons/feathericons.module"
 import { MatSnackBar } from "@angular/material/snack-bar"
 // import { capitalizeWords } from "../../../utils/string-utils"
-import { MedicalReportsService } from "../services/medical-reports.service"
-import { PatientsService } from "../../patients/services/patients.service"
-import { UsersService } from "../../users/services/users.service"
-import type { IPatient } from "../../patients/interfaces/patients.interface"
-import type { IUser } from "../../users/interfaces/users.interface"
-import type { ICreateMedicalPrescriptionDTO, IMedicalReports } from "../interfaces/medical-reports.interface"
+import { MedicalReportsService } from "../../services/medical-reports.service"
+import { PatientsService } from "../../../patients/services/patients.service"
+import { UsersService } from "../../../users/services/users.service"
+import type { IPatient } from "../../../patients/interfaces/patients.interface"
+import type { IUser } from "../../../users/interfaces/users.interface"
+import type { ICreateMedicalPrescriptionDTO, IMedicalReports } from "../../interfaces/medical-reports.interface"
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from "@angular/material/core"
-import { MY_DATE_FORMATS } from "../../services/date-format.service"
-import { MedicalPrescriptionService } from "../services/medical-prescription.service"
-import { capitalizeWords } from "../../utils/string-utils"
+import { MY_DATE_FORMATS } from "../../../services/date-format.service"
+import { MedicalPrescriptionService } from "../../services/medical-prescription.service"
+import { capitalizeWords } from "../../../utils/string-utils"
 import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoin } from "rxjs" // Importar forkJoin
 
 @Component({

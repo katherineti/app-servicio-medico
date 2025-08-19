@@ -135,13 +135,13 @@
                                      <i-feather name="Printer"></i-feather>
                                   </button> 
                                   <button mat-icon-button aria-label="Crear recipe" title="Crear recipe" (click)="navigateToCreateMedicalPrescription(element)">
-                                     <!-- <i-feather name="file-text"></i-feather> -->
                                      <i-feather name="file-plus"></i-feather>
                                   </button>
-                                  <button mat-icon-button aria-label="Ver recipes" title="Ver recipes" (click)="navigateToListMedicalPrescription(element)">
-                                     <!-- <i-feather name="file-text"></i-feather> -->
-                                     <i-feather name="file-text"></i-feather>
-                                  </button>
+                                  <!-- @if(element.countMedicalPrescriptions){ -->
+                                      <button mat-icon-button aria-label="Ver recipes" title="Ver recipes" (click)="navigateToListMedicalPrescription(element)" [disabled]="element.countMedicalPrescriptions===0">
+                                         <i-feather name="file-text"></i-feather>
+                                      </button>
+                                  <!-- } -->
  
   <!--                               <button mat-icon-button aria-label="Editar" (click)="openEditMedicalReport(element)">
                                     <i-feather name="edit" class="big fill-red icon-18"></i-feather>

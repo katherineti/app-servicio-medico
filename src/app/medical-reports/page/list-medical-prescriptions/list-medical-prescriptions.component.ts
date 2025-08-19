@@ -1,15 +1,3 @@
-/*import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-list-medical-prescriptions',
-  imports: [],
-  templateUrl: './list-medical-prescriptions.component.html',
-  styleUrl: './list-medical-prescriptions.component.scss'
-})
-export class ListMedicalPrescriptionsComponent {
-
-}
-*/
 import { Component, inject } from '@angular/core';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,19 +9,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicalReportsDialogComponent } from './../../components/medical-reports-dialog/medical-reports-dialog.component';
 import { SwalService} from '../../../services/swal.service';
-import Swal, { SweetAlertResult } from 'sweetalert2';
 import { MedicalReportsCreateComponent } from './../../components/medical-reports-create/medical-reports-create.component';
 import { HeaderTitleComponent } from '../../../header-title/header-title.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MedicalReportsService } from './../../services/medical-reports.service';
-import { ISearchMedicalPrescription, IUser, IMedicalReportPagination, IMedicalReports, IMedicalPrescriptioPagination, IMedicalPrescriptios } from './../../interfaces/medical-reports.interface';
+import { ISearchMedicalPrescription, IUser, IMedicalReports, IMedicalPrescriptioPagination, IMedicalPrescriptios } from './../../interfaces/medical-reports.interface';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MedicalPrescriptionService } from '../../services/medical-prescription.service';
 
 /**
-* @title pagination table medical reports
+* @title pagination table medical prescriptions: Recipes
 */
 @Component({
   selector: 'app-list-medical-prescriptions',
@@ -54,16 +41,14 @@ export class ListMedicalPrescriptionsComponent {
   role:string= '';
   displayedColumns = [ 'doctorName','patientName','apsCenter','insurance','createdAt','action'];
   dataSource: any = new MatTableDataSource<IUser>();
-  searhMedico = new FormControl();
+/*   searhMedico = new FormControl();
   searhPatient = new FormControl();
-  searhDate = new FormControl();
+  searhDate = new FormControl(); */
   pageSize: number = 5;
   pageIndex = 0;
   isGeneratingPdf = false;
 
-  private swalService = inject(SwalService);
   private medicalPrescriptionService = inject(MedicalPrescriptionService)
-  private medicalReportsService = inject(MedicalReportsService);
   public dialog = inject(MatDialog);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -73,38 +58,26 @@ export class ListMedicalPrescriptionsComponent {
   private activatedRoute = inject(ActivatedRoute)
 
   constructor() {
-/*     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
-    this.displayedColumns = result.matches
-    ? [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action']
-    : [ 'doctorName', 'patientName','apsCenter','insurance', 'createdAt','action'];
-    }); */
+
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    // ? [ 'doctorName', 'patientName', 'mpps', 'recipeContent', 'createdAt', 'expirationDate', 'action']
     ? [ 'doctorName', 'patientName', 'recipeContent', 'createdAt', 'expirationDate', 'action']
     : [ 'doctorName', 'patientName', 'recipeContent', 'createdAt', 'expirationDate', 'action'];
     });
 
     this.dataSource['length'] = 0;
-    this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
-
+  
   async ngOnInit(){
     this.medicalReportId = this.activatedRoute.snapshot.paramMap.get("reportId");
-    console.log("Parametro medical Report Id:  " , this.medicalReportId )
+    this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
+    console.log("Parametro medical Report Id:  " , this.medicalReportId, typeof this.medicalReportId )
 
     this.role = await this.authService.getRol();
   }
 
-  /**
-   * Navega a la página de creación de informes médicos.
-   */
-  navigateToAddReport(): void {
-    this.router.navigate(["/create-medical-reports"])
-  }
-
-  get SearhMedico() {
+/*   get SearhMedico() {
     return this.searhMedico.value;
   }
 
@@ -114,24 +87,8 @@ export class ListMedicalPrescriptionsComponent {
 
   get SearhDate() {
     return this.searhDate.value;
-  }
+  } */
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  openDialogSee(data?: any): void {
-    data.actionEdit=false;
-    const ref = this.dialog.open(MedicalReportsDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
-    });
-  }
   openDialogCreateMedicalPrescription(data?: any): void {
     console.log("seleccionado",data)
     data.actionEdit=false;
@@ -154,18 +111,6 @@ export class ListMedicalPrescriptionsComponent {
     this.router.navigate(["/medical-prescriptions/create", medicalReport.id])
   }
 
-/*   openEditMedicalReport(data?: any): void {
-    data.actionEdit=true;
-    const ref = this.dialog.open(MedicalReportsDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
-    });
-  } */
-
   openDialogCreate(data?: any): void {
     const ref = this.dialog.open(MedicalReportsCreateComponent, {
       data: data || null,
@@ -177,33 +122,13 @@ export class ListMedicalPrescriptionsComponent {
     });
   }
 
-/*   async deleteMedicalReport(data: any) {
-    const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
-      'eliminar registro'
-    );
-    if (deleteAlert.isConfirmed) {
-      this.medicalReportsService.deleteUser(data.id).subscribe((element) => {
-        if (element) {
-          this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
-          this.swalService.success();
-        } else {
-          this.swalService.error('Error', 'Error al eliminar usuario.');
-        }
-      });
-    } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel * /
-    }
-  } */
-
   getAllMedicalPrescriptions(page: number, take: number) {
     const parms: ISearchMedicalPrescription = {
       page: page + 1, //page del paginador inicia en 0
       take: take,
-      medicalReportId: "7"
+      medicalReportId: Number(this.medicalReportId)
     };
     this.medicalPrescriptionService.getAllMedicalPrescription(parms).subscribe((data: IMedicalPrescriptioPagination) => {
-      // this.dataSource = new MatTableDataSource<IUser>(data.list);
-      console.log("data recibida " , data)
       this.dataSource = new MatTableDataSource<IMedicalPrescriptios>(data.list);
       this.dataSource.length = data.total;
     });
@@ -213,77 +138,115 @@ export class ListMedicalPrescriptionsComponent {
   }
 
   // PDF
-  generatePdf(element:any): void {
-    //  let element! : any;
-     //  let element: IReport = {};
-
-/*      element = {
-      additionalAuditorIds: [16, 13],
-      auditor: "a mi nombre",
-      auditorId: 4,
-      code: "O475a7e9aa-b126-4f83-a1ac-c9b7dee7d8b6.4.2025",
-      conclusions: "d",
-      detailed_methodology: "d",
-      endDate: new Date("2025-06-08 19:38:39 -0400"),
-      findings: "d",
-      id: 4,
-      idDuplicate: null,
-      images: ['/uploads/reports/Id 4/report-1749425919381-345499483-1-mandala.jpg', '/uploads/reports/Id 4/report-1749425919387-325340306-mandala.png', '/uploads/reports/Id 4/report-1749425919387-6672292…2622768_854260286819999_6447723401831025285_n.jpg', '/uploads/reports/Id 4/report-1749425919399-8837722…-tecnologia-impulsa-el-desarrollo-y-viceversa.jpg', '/uploads/reports/Id 4/report-1749425919401-2020545…5715485_296208562543640_9157808412213043412_n.jpg', '/uploads/reports/Id 4/report-1749425919402-974399550-5f361ce5cc3c107c008029e631e05c36.jpg', '/uploads/reports/Id 4/report-1749425919402-4663315…953190_1128356091619115_7251787043438431084_n.jpg', '/uploads/reports/Id 4/report-1749425919403-226057615-frases-viajeras-15.jpg', '/uploads/reports/Id 4/report-1749425919404-7771959…ras-frases-de-montana-que-celebran-la-amistad.jpg', '/uploads/reports/Id 4/report-1749425919405-185077049-frases-cortas.jpg'],
-      introduction: "d",
-      receiver: "d",
-      startDate: new Date("2025-06-08 19:38:04 -0400"),
-      // status: "Finalizado",
-      statusId: 1,
-      summary_conclusionAndObservation: "d",
-      summary_methodology: "d",
-      summary_objective: "d",
-      summary_scope: "d",
-      title: "D",
-      } */
-
+  generatePdf(element: any): void {
     if (!element.id || this.isGeneratingPdf) {
-      return;
+      return
     }
-    
-    this.isGeneratingPdf = true;
-    
+
+    this.isGeneratingPdf = true
+
     // Mostrar indicador de carga
-    const loadingToast = this.snackBar.open('Generando PDF...', '', {
+    const loadingToast = this.snackBar.open("Generando PDF de receta médica...", "", {
       duration: undefined,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    });
-    
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
-    this.medicalReportsService.generatePDFMedicalReport(element.id).subscribe({
-      next: () => {
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+    })
+
+    this.medicalPrescriptionService.generateRecipePdf(element.id).subscribe({
+      next: (pdfBlob: Blob) => {
         // Cerrar el indicador de carga
-        loadingToast.dismiss();
-        this.isGeneratingPdf = false;
-        
+        loadingToast.dismiss()
+        this.isGeneratingPdf = false
+
+        // Crear URL del blob y descargar el archivo
+        const url = window.URL.createObjectURL(pdfBlob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = `receta-medica-${element.patientName || "paciente"}-${new Date().toISOString().split("T")[0]}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+
         // Mostrar mensaje de éxito
-        this.snackBar.open('PDF generado correctamente', 'Cerrar', {
+        this.snackBar.open("PDF de receta médica generado correctamente", "Cerrar", {
           duration: 3000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top'
-        });
+          horizontalPosition: "end",
+          verticalPosition: "top",
+        })
       },
       error: (err) => {
         // Cerrar el indicador de carga
-        loadingToast.dismiss();
-        this.isGeneratingPdf = false;
-        
+        loadingToast.dismiss()
+        this.isGeneratingPdf = false
+
         // Mostrar mensaje de error
-        this.snackBar.open(`Error al generar el PDF: ${err.message || 'Error desconocido'}`, 'Cerrar', {
+        this.snackBar.open(`Error al generar el PDF: ${err.message || "Error desconocido"}`, "Cerrar", {
           duration: 5000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
-        });
-        
-        console.error('Error al generar el PDF:', err);
-      }
-    }); 
+          horizontalPosition: "end",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
+        })
+
+        console.error("Error al generar el PDF:", err)
+      },
+    })
+  }
+
+  //previewPdf() no esta en uso
+  previewPdf(element: any): void {
+    if (!element.id || this.isGeneratingPdf) {
+      return
+    }
+
+    this.isGeneratingPdf = true
+
+    // Mostrar indicador de carga
+    const loadingToast = this.snackBar.open("Generando vista previa...", "", {
+      duration: undefined,
+      horizontalPosition: "center",
+      verticalPosition: "bottom",
+    })
+
+    this.medicalPrescriptionService.previewRecipePdf(element.id).subscribe({
+      next: (pdfBlob: Blob) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss()
+        this.isGeneratingPdf = false
+
+        // Crear URL del blob y abrir en nueva ventana
+        const url = window.URL.createObjectURL(pdfBlob)
+        const newWindow = window.open(url, "_blank")
+
+        if (!newWindow) {
+          // Si el popup fue bloqueado, mostrar mensaje
+          this.snackBar.open("Por favor, permite ventanas emergentes para ver la vista previa", "Cerrar", {
+            duration: 5000,
+            horizontalPosition: "end",
+            verticalPosition: "top",
+          })
+        }
+
+        // Limpiar URL después de un tiempo
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url)
+        }, 10000)
+      },
+      error: (err) => {
+        // Cerrar el indicador de carga
+        loadingToast.dismiss()
+        this.isGeneratingPdf = false
+
+        // Mostrar mensaje de error
+        this.snackBar.open(`Error al generar la vista previa: ${err.message || "Error desconocido"}`, "Cerrar", {
+          duration: 5000,
+          horizontalPosition: "end",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
+        })
+
+        console.error("Error al generar la vista previa:", err)
+      },
+    })
   }
 }

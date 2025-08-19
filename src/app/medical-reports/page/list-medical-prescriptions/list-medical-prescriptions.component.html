@@ -1,34 +1,8 @@
-<!-- <p>list-medical-prescriptions works!</p> -->
 <app-header-title [title]="'Recipes Médicos'" ></app-header-title>
-<!-- <mat-toolbar style="background-color: white;">
-
-    <mat-form-field appearance="outline" class="search m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por cédula doctor" [formControl]="searhMedico" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="search m-t-20 m-l-10 ">
-        <input matInput class="p-b-0" placeholder="Buscar por cédula paciente" [formControl]="searhPatient" />
-    </mat-form-field>
-   
-    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
-    (click)="getAllMedicalPrescriptions(this.pageIndex, this.pageSize)">
-        <i-feather name="search"></i-feather>
-    </button>
-
-</mat-toolbar> -->
-
-<!-- 
-@if (this.role != 'enfermero(a)' ){
-    <span class="example-spacer"></span>
-    <button mat-flat-button color="secondary-fixed" (click)="navigateToAddReport()" style="padding: 0 35px;" class="m-l-20">
-        Agregar
-    </button>
-} -->
 
 <br>
 <mat-card class="">
     <mat-card-content>
-        <!-- <div class="d-flex w-100"> -->
         <div class="w-100">
             <div class="m-l-auto">
                 @if (dataSource.length) {
@@ -63,41 +37,17 @@
                                 }
                             </mat-cell>
                          </ng-container>
-      <!--                    <ng-container matColumnDef="mpps">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                              MPPS
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                {{ element.mpps | titlecase}}
-                            </mat-cell>
-                         </ng-container> -->
                          <ng-container matColumnDef="recipeContent">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                               Recipe
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                {{element.recipeContent | titlecase | slice:0:45 }}
-                                @if (element.recipeContent.length > 50) {
+                                {{element.recipeContent | titlecase | slice:0:40 }}
+                                @if (element.recipeContent.length > 40) {
                                     ...
                                 }
                             </mat-cell>
                          </ng-container>
-<!--                          <ng-container matColumnDef="apsCenter">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                              Centro APS
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                             {{ element.apsCenter | titlecase}}
-                            </mat-cell>
-                         </ng-container>
-                         <ng-container matColumnDef="insurance">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                              Aseguradora
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                             {{ element.insurance | titlecase}}
-                            </mat-cell>
-                         </ng-container> -->
                          <ng-container matColumnDef="createdAt">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                               Fecha de prescripción
@@ -114,44 +64,30 @@
                              {{ element.expirationDate | date:'dd-MM-yyyy'}}
                             </mat-cell>
                          </ng-container>
-<!--                          <ng-container matColumnDef="isActive">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                                 Estado
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                 @if (element.isActivate===true) {
-                                     Activo
-                                 }@else {
-                                     Inactivo
-                                   }
-                             </mat-cell>
-                         </ng-container> -->
-<!--                          <ng-container matColumnDef="rol">
-                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
-                             Rol
-                             </mat-header-cell>
-                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                 element.role | titlecase
-                             }}</mat-cell>
-                         </ng-container> -->
                      
                           <ng-container matColumnDef="action" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
                              Acción
                              </mat-header-cell>
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-
-<!--                                 <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
-                                    <i-feather name="eye"></i-feather>
-                                </button>
+<!--                                
                                 <button mat-icon-button title="Editar" (click)="true">
                                     <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                 </button> -->
-                                <button mat-icon-button title="Imprimir" title="Imprimir" (click)="true" >
-                                    <i-feather name="Printer"></i-feather>
-                                </button>  
-                                <button mat-icon-button title="Eliminar" (click)="true">
-                                    <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
+                                
+ <!--                                <button 
+                                  mat-icon-button 
+                                  title="Vista previa PDF" 
+                                  (click)="true"
+                                  [disabled]="isGeneratingPdf">
+                                    <i-feather name="eye"></i-feather>
+                                </button> -->
+                                <button 
+                                  mat-icon-button 
+                                  title="Descargar PDF" 
+                                  (click)="generatePdf(element)"
+                                  [disabled]="isGeneratingPdf">
+                                    <i-feather name="download"></i-feather>
                                 </button>
                              </mat-cell>
                          </ng-container> 

@@ -64,7 +64,7 @@ export class MedicalReportsComponent {
     });
 
     this.dataSource['length'] = 0;
-    this.getAllMedicalReport(this.pageIndex, this.pageSize);
+    this.getAllMedicalReport(this.pageIndex, this.pageSize); 
     this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
 
@@ -187,7 +187,7 @@ export class MedicalReportsComponent {
       patientCedula: this.SearchPatient ? this.SearchPatient.trim() : null,
       createdAt: this.SearhDate ? this.SearhDate.trim() : null,
     };
-    this.medicalReportsService.getAll(parms).subscribe((data: IMedicalReportPagination) => {
+    this.medicalReportsService.getAll(parms).subscribe((data: IMedicalReportPagination) => {console.log(data)
       // this.dataSource = new MatTableDataSource<IUser>(data.list);
       this.dataSource = new MatTableDataSource<IMedicalReports>(data.list);
       this.dataSource.length = data.total;

@@ -105,7 +105,8 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
 
     forkJoin([loadPatients$, loadDoctors$]).subscribe({
       next: () => {
-        if (this.medicalReportId) {console.log("this.medicalReportId",this.medicalReportId)
+        if (this.medicalReportId) {
+          console.log("this.medicalReportId",this.medicalReportId)
           this.medicalReportsService.getMedicalReportById(this.medicalReportId).subscribe({
             next: (report) => {
               console.log("report",report)

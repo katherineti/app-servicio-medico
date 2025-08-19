@@ -14,14 +14,20 @@ export interface IUser{
 
 export interface IMedicalReports {
     id: string;
-    patientId: any,
-    doctorId: any,
-    description: string,
-    insurance: string,
     apsCenter: string,
-    mppsCM: string,
-    isActivate: boolean,
-    createdAt: any
+    insurance: string,
+    doctorId: any,
+    doctorName: string,
+    doctorCedula: string,
+    patientId: any,
+    patientName: string,
+    patientCedula: string,
+    description: string,
+    createdAt: Date,
+    countMedicalPrescriptions:number,//cuenta los recipes del informe
+
+    mppsCM?: string,
+    isActivate?: boolean,
 }
 
 export interface IGetAllMedicalreports {
@@ -38,10 +44,16 @@ export interface IMedicalReportPagination {
   list: IMedicalReports[];
 }
 
-export interface ICreateDTO
-  extends Omit<IMedicalReports, 'id' | 'createdAt' | 'isActivate' > {}
-  // extends Omit<IMedicalReports, 'id' | 'createdAt' | 'updatedAt' > {}
-
+/* export interface ICreateDTO
+  extends Omit<IMedicalReports, 'id' | 'createdAt' | 'isActivate' > {} */
+export interface ICreateDTO  {
+  apsCenter: string,
+  insurance: string,
+  patientId: number,
+  doctorId: number,
+  description: string,
+  mppsCM: string
+}
 
 // Nueva interfaz para la creación de recetas médicas
 export interface ICreateMedicalPrescriptionDTO {
@@ -59,7 +71,7 @@ export interface ICreateMedicalPrescriptionDTO {
 export interface ISearchMedicalPrescription{//GetAll
   page: number;
   take: number;
-  medicalReportId: string;
+  medicalReportId: number;
 }
 
 export interface IMedicalPrescriptioPagination {

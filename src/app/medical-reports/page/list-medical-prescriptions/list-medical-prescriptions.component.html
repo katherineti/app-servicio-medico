@@ -1,5 +1,4 @@
 <app-header-title [title]="'Recipes Médicos'" ></app-header-title>
-
 <br>
 <mat-card class="">
     <mat-card-content>
@@ -8,7 +7,7 @@
                 @if (dataSource.length) {
                  <section class="example-container mat-elevation-z8" tabindex="0">
                      <div class="table-responsive">
-                         <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical reports">
+                         <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-describedby="tabla medical prescriptions">
                          <ng-container matColumnDef="doctorName" sticky>
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Médico
@@ -70,11 +69,7 @@
                              Acción
                              </mat-header-cell>
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-<!--                                
-                                <button mat-icon-button title="Editar" (click)="true">
-                                    <i-feather name="edit" class="big fill-red icon-18"></i-feather>
-                                </button> -->
-                                
+
  <!--                                <button 
                                   mat-icon-button 
                                   title="Vista previa PDF" 
@@ -89,6 +84,14 @@
                                   [disabled]="isGeneratingPdf">
                                     <i-feather name="download"></i-feather>
                                 </button>
+
+                                 <button 
+                                  mat-icon-button 
+                                  title="Editar" 
+                                  (click)="openEditMedicalPrescription(element)">
+                                    <i-feather name="edit"></i-feather>
+                                </button>
+
                              </mat-cell>
                          </ng-container> 
                      
@@ -98,7 +101,7 @@
      
                          <mat-paginator [pageSizeOptions]="[5, 10, 20]" (page)="handlePageEvent($event)"
                          [length]="this.dataSource.length" [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons
-                         aria-describedby="table medical reports"></mat-paginator>
+                         aria-describedby="table medical prescriptions"></mat-paginator>
                      </div>
                  </section>
                 }@else {

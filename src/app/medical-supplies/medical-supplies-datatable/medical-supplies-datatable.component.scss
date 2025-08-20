@@ -47,5 +47,8 @@ th.mat-column-action, td.mat-column-action {
 }
 //phone
 @media only screen and (max-width: 767px) {
-     .mat-column-action { width: 20% !important; }
+     .mat-column-action {  flex: 0 0 150px; }
+     .mat-column-name {
+      flex: 0 0 160px;
+    }
 }

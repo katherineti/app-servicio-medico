@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicalReportsDialogComponent } from './components/medical-reports-dialog/medical-reports-dialog.component';
 import { SwalService} from '../services/swal.service';
-import Swal, { SweetAlertResult } from 'sweetalert2';
 import { MedicalReportsCreateComponent } from './components/medical-reports-create/medical-reports-create.component';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -239,8 +238,6 @@ export class MedicalReportsComponent {
       verticalPosition: 'bottom'
     });
     
-    // this.dashboardService.generateReportPdf(element.id, element).subscribe({
-    // this.dashboardService.generateDashboardReport(element.id, element).subscribe({
     this.medicalReportsService.generatePDFMedicalReport(element.id).subscribe({
       next: () => {
         // Cerrar el indicador de carga

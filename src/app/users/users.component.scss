@@ -12,7 +12,7 @@ flex: 1 1 auto;
   flex: 0 0 100px;
 }
 .mat-column-action {
-  width: 500px !important;
+  flex: 0 0 180px;
   padding-right: 8px;
 }
 th.mat-column-action, td.mat-column-action {
@@ -26,7 +26,10 @@ th.mat-column-action, td.mat-column-action {
 }
 //phone
 @media only screen and (max-width: 767px) {
-     .mat-column-action { width: 20% !important; }
+     .mat-column-action {  flex: 0 0 150px; }
+     .mat-column-name, .mat-column-rol , .mat-column-email {
+      flex: 0 0 160px;
+    }
 }
 .search{
   width: 270px;

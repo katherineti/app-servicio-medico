@@ -1,13 +1,14 @@
-<div class="container-fluid">
+<!-- <div class="container-fluid"> -->
+    <mat-dialog-content class="mat-typography">
   <mat-card class="create-prescription-card">
     <mat-card-header>
       <mat-card-title>
         <mat-icon>receipt_long</mat-icon>
-        Crear Recipe Médico
+        Editar Recipe Médico
       </mat-card-title>
-      <mat-card-subtitle>
+<!--       <mat-card-subtitle>
         <br>Complete los campos para generar el recipe.
-      </mat-card-subtitle>
+      </mat-card-subtitle> -->
     </mat-card-header>
 
     <mat-card-content>
@@ -111,7 +112,8 @@
                 </mat-option>
               </mat-autocomplete>
 
-              <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+              
+              <mat-hint class="hidden-hint">Escriba para buscar por cédula o nombre</mat-hint>
               <mat-error *ngIf="prescriptionForm.get('doctorId')?.hasError('required')">
                 Debe seleccionar un doctor
               </mat-error>
@@ -130,7 +132,8 @@
             </mat-form-field>
 
             <!-- Campo de Paciente con Autocomplete -->
-            <mat-form-field appearance="outline" class="half-width">
+            
+            <mat-form-field appearance="outline" class="half-width m-t-5">
               <mat-label>Buscar paciente</mat-label>
               <input
                 type="text"
@@ -184,7 +187,7 @@
                 </mat-option>
               </mat-autocomplete>
 
-              <mat-hint>Escriba para buscar por cédula o nombre</mat-hint>
+              <mat-hint class="hidden-hint">Escriba para buscar por cédula o nombre</mat-hint>
               <mat-error *ngIf="prescriptionForm.get('patientId')?.hasError('required')">
                 Debe seleccionar un paciente
               </mat-error>
@@ -199,6 +202,7 @@
             <mat-label>Recipe</mat-label>
             <textarea matInput formControlName="recipeContent" rows="10" required
               placeholder="Escriba aquí el contenido del recipe (medicamentos, dosis, etc.)."></textarea>
+            <!-- <mat-hint>Mínimo 50 caracteres, máximo 2000</mat-hint> -->
             <!-- <mat-hint>Mínimo 50 caracteres, máximo 700</mat-hint> -->
             <mat-hint>Máximo 700 caracteres</mat-hint>
             <mat-error *ngIf="prescriptionForm.get('recipeContent')?.hasError('required')">
@@ -233,7 +237,7 @@
         <div class="form-actions">
           <button mat-raised-button color="primary" type="submit" [disabled]="prescriptionForm.invalid || isSubmitting">
             <mat-icon>save</mat-icon>
-            {{ isSubmitting ? 'Guardando...' : 'Crear Recipe' }}
+            {{ isSubmitting ? 'Guardando...' : 'Editar Recipe' }}
           </button>
 
 <!--           <button mat-stroked-button type="button" (click)="onPreview()" [disabled]="prescriptionForm.invalid">
@@ -249,4 +253,5 @@
       </form>
     </mat-card-content>
   </mat-card>
-</div>
+  </mat-dialog-content>
+<!-- </div> -->

@@ -11,15 +11,15 @@ flex: 1 1 auto;
 .mat-column-isActive {
   flex: 0 0 100px;
 }
-
  .mat-column-createdAt,
- .mat-column-expirationDate,
- .mat-column-recipeContent{
+ .mat-column-expirationDate{
   flex: 0 0 190px;
 }
-
+ .mat-column-recipeContent{
+  flex: 0 0 230px;
+}
 .mat-column-action {
-  width: 300px !important;
+  flex: 0 0 110px;
   padding-right: 8px;
 }
 th.mat-column-action, td.mat-column-action {

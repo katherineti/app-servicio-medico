@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../../services/Token.service';
-import type { ICreateMedicalPrescriptionDTO, ISearchMedicalPrescription } from '../interfaces/medical-reports.interface';
+import type { ICreateMedicalPrescriptionDTO, IMedicalPrescriptios, ISearchMedicalPrescription } from '../interfaces/medical-reports.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,13 @@ export class MedicalPrescriptionService {
   createMedicalPrescription(dto: ICreateMedicalPrescriptionDTO): Observable<any> {
     return this.http.post<any>(
       `${this.tokenService.endPoint}medical-prescriptions/create`, 
+      dto
+    );
+  }
+
+  update(id: number, dto: any) {
+    return this.http.put<IMedicalPrescriptios>(
+      `${this.tokenService.endPoint}medical-prescriptions/${id}`,
       dto
     );
   }

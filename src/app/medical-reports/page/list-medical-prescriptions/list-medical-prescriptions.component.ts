@@ -7,17 +7,15 @@ import { MaterialModule } from '../../../material/material.module';
 import { FeatherIconsModule } from '../../../feathericons/feathericons.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { MedicalReportsDialogComponent } from './../../components/medical-reports-dialog/medical-reports-dialog.component';
-import { SwalService} from '../../../services/swal.service';
-import { MedicalReportsCreateComponent } from './../../components/medical-reports-create/medical-reports-create.component';
 import { HeaderTitleComponent } from '../../../header-title/header-title.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MedicalReportsService } from './../../services/medical-reports.service';
-import { ISearchMedicalPrescription, IUser, IMedicalReports, IMedicalPrescriptioPagination, IMedicalPrescriptios } from './../../interfaces/medical-reports.interface';
+import { ISearchMedicalPrescription, IUser, IMedicalPrescriptioPagination, IMedicalPrescriptios } from './../../interfaces/medical-reports.interface';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MedicalPrescriptionService } from '../../services/medical-prescription.service';
+import { MedicalPrescriptionsEditComponent } from '../../components/medical-prescriptions/medical-prescriptions-edit/medical-prescriptions-edit.component';
 
 /**
 * @title pagination table medical prescriptions: Recipes
@@ -77,51 +75,6 @@ export class ListMedicalPrescriptionsComponent {
     this.role = await this.authService.getRol();
   }
 
-/*   get SearhMedico() {
-    return this.searhMedico.value;
-  }
-
-  get SearchPatient() {
-    return this.searhPatient.value;
-  }
-
-  get SearhDate() {
-    return this.searhDate.value;
-  } */
-
-  openDialogCreateMedicalPrescription(data?: any): void {
-    console.log("seleccionado",data)
-    data.actionEdit=false;
-    const ref = this.dialog.open(MedicalReportsDialogComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
-    });
-  }
-
-   /**
-   * Navega a la página de creación de recetas médicas, pasando el ID del informe.
-   * @param medicalReport El informe médico para el cual se creará la receta.
-   */
-  navigateToCreateMedicalPrescription(medicalReport: IMedicalReports): void {
-    console.log("seleccionado ", medicalReport)
-    this.router.navigate(["/medical-prescriptions/create", medicalReport.id])
-  }
-
-  openDialogCreate(data?: any): void {
-    const ref = this.dialog.open(MedicalReportsCreateComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
-    });
-  }
-
   getAllMedicalPrescriptions(page: number, take: number) {
     const parms: ISearchMedicalPrescription = {
       page: page + 1, //page del paginador inicia en 0
@@ -133,8 +86,21 @@ export class ListMedicalPrescriptionsComponent {
       this.dataSource.length = data.total;
     });
   }
+
   handlePageEvent(event: PageEvent) {
     this.getAllMedicalPrescriptions(event.pageIndex, event.pageSize);
+  }
+
+  openEditMedicalPrescription(data?: any): void {
+    // data.actionEdit=true;
+    const ref = this.dialog.open(MedicalPrescriptionsEditComponent, {
+      data: data || null,
+      // disableClose: true,
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getAllMedicalPrescriptions(this.pageIndex, this.pageSize);
+    });
   }
 
   // PDF
@@ -146,7 +112,7 @@ export class ListMedicalPrescriptionsComponent {
     this.isGeneratingPdf = true
 
     // Mostrar indicador de carga
-    const loadingToast = this.snackBar.open("Generando PDF de receta médica...", "", {
+    const loadingToast = this.snackBar.open("Generando PDF del recipe médico...", "", {
       duration: undefined,
       horizontalPosition: "center",
       verticalPosition: "bottom",
@@ -162,14 +128,14 @@ export class ListMedicalPrescriptionsComponent {
         const url = window.URL.createObjectURL(pdfBlob)
         const link = document.createElement("a")
         link.href = url
-        link.download = `receta-medica-${element.patientName || "paciente"}-${new Date().toISOString().split("T")[0]}.pdf`
+        link.download = `recipe-medico-${element.patientName || "paciente"}-${new Date().toISOString().split("T")[0]}.pdf`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         window.URL.revokeObjectURL(url)
 
         // Mostrar mensaje de éxito
-        this.snackBar.open("PDF de receta médica generado correctamente", "Cerrar", {
+        this.snackBar.open("PDF del recipe médico generado correctamente", "Cerrar", {
           duration: 3000,
           horizontalPosition: "end",
           verticalPosition: "top",

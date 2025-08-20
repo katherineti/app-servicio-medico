@@ -86,12 +86,12 @@ export interface IMedicalPrescriptios{
   place: string;
   recipeContent: string;
   doctorId: number;
-  doctorName: string;
-  doctorCedula: string;
+  doctorName?: string;
+  doctorCedula?: string;
   mpps: string;
   patientId: number;
-  patientName: string;
-  patientCedula: string;
+  patientName?: string;
+  patientCedula?: string;
   indications: string;
   expirationDate: Date;
   createdAt: Date;

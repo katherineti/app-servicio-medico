@@ -132,8 +132,9 @@ export class ReportFormComponent {
   }
 
   cancel() {
-    this.reportFormGroup.reset()
-    this.selectedAdditionalAuditors = []
+    this.reportFormGroup.reset();
+    this.selectedAdditionalAuditors = [];
+    this.onOptionSelected({value: this.token.sub, displayText: this.user_name}); 
   }
 
   onImagesChange(images: ImageFile[]) {

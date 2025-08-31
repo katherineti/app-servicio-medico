@@ -1,29 +1,22 @@
-export interface IUser{
-  id: string;
-  name: string;
-  email: string;
-  password?: string;
-  roleId?: number;
-  role: string;
-  isActivate: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-  actionEdit?:boolean;
-  [key: string]: any;
-}
 export interface IPatient{
-    id: string;
-    name: string,
-    birthdate:any,
-    age: number,
-    cedula: string,
-    email: string,
-    phone: string,
-    gender: string,
-    civilStatus: string,
-    children: number,
-    createdAt: Date,
-    updatedAt: Date
+  id: string;
+  name: string,
+  birthdate:any,
+  placeBirth:string,
+  age: number,
+  cedula: string,
+  email: string,
+  phone: string,
+  gender: string,
+  civilStatus: string,
+  children: number,
+  isActivate:boolean,
+  createdAt: Date,
+  updatedAt: Date,
+  actionEdit?:boolean;
+
+  cedulaType?:string;
+  cedulaNumber?:string;
 }
 
 export interface IGetAllPatients {
@@ -40,3 +33,17 @@ export interface IPagination {
 
 export interface ICreatePatientDTO
   extends Omit<IPatient, 'id' | 'createdAt' | 'updatedAt' > {}
+
+export interface UpdatePatientDto{
+    name: string;
+    birthdate: string;
+    placeBirth : string;
+    age: number;
+    cedula: string;
+    email: string;
+    phone:string ;
+    gender: string;
+    civilStatus: string;
+    children: number;
+    isActivate:boolean;
+}

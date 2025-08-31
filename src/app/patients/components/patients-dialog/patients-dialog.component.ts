@@ -5,25 +5,34 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../services/swal.service';
 import { PatientsService } from '../../services/patients.service';
-import { IUser } from '../../interfaces/patients.interface';
+import { IPatient } from '../../interfaces/patients.interface';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import { MY_DATE_FORMATS } from '../../../services/date-format.service';
+import { debounceTime, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-patients-dialog',
   imports: [CommonModule,MaterialModule,FormsModule,ReactiveFormsModule],
   templateUrl: './patients-dialog.component.html',
   styleUrl: './patients-dialog.component.scss',
-  providers: [PatientsService]
+  providers: [
+    PatientsService,
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: "es-VE" },
+  ]  
 })
 
 export class PatientsDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<PatientsDialogComponent>);
-  userFormGroup!: FormGroup;
+  formGroup!: FormGroup;
   imageField?: File;
   imgBase64?: any;
-  selectedUser!: IUser;
+  selectedUser!: IPatient;
   disableButton: boolean = false;
   typeError = '';
   edit:boolean | undefined;
+  public isLoading = false; 
   // listRolesActives!: {id:number,name:string}[];
 
   private formBuilder = inject(FormBuilder);
@@ -31,7 +40,7 @@ export class PatientsDialogComponent implements OnInit {
   private patientsService = inject(PatientsService);
 
   constructor( 
-    @Inject(MAT_DIALOG_DATA) public data: IUser){
+    @Inject(MAT_DIALOG_DATA) public data: IPatient){
     this.buildEditUserForm();
     // this.getRolesActives();
   }
@@ -41,7 +50,9 @@ export class PatientsDialogComponent implements OnInit {
     this.selectedUser = this.data;
     this.edit = this.data.actionEdit;
     if (this.data) {
+      console.log("paciente seleccionado",this.data)
       this.setForm();
+      this.formatNameInput();
     }
   }
 
@@ -54,50 +65,85 @@ export class PatientsDialogComponent implements OnInit {
   }
 
   buildEditUserForm() {
-    this.userFormGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       name: [
         '',
         [
           Validators.required,
           Validators.maxLength(200),
-          // Validators.pattern('/^[a-zA-ZÀ-ÿ\s]+$/')
         ],
       ],
+      birthdate: ['', [Validators.required]], 
+      placeBirth: ['', [Validators.required, Validators.maxLength(40)]], 
+      age: [0, [Validators.required]], 
+      cedulaType: ['V', [Validators.required]], // Valor por defecto 'V'
+      cedulaNumber: ['', [
+        Validators.required,
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]+$/) // Solo números
+      ]],
       email: [
         '',
         [
           Validators.required, 
           Validators.email,
-          Validators.maxLength(50),
+          Validators.maxLength(100)
         ],
       ],
-      isActive: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(20),
-        ],
-      ],
-      role: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.maxLength(50)]], 
+      gender: ['', [Validators.required]], 
+      civilStatus: ['', [Validators.required]], 
+      children: [0, [Validators.required]], 
+      isActive: [ '', [Validators.required] ],
     });
   }
 
   setForm() {
     if(!this.edit){
-      this.userFormGroup.controls['name'].disable();
-      this.userFormGroup.controls['isActive'].disable();
-      this.userFormGroup.controls['role'].disable();
+      this.formGroup.controls['name'].disable();
+      this.formGroup.controls['birthdate'].disable();
+      this.formGroup.controls['placeBirth'].disable();
+      this.formGroup.controls['age'].disable();
+      // this.formGroup.controls['cedula'].disable();
+      this.formGroup.controls['cedulaType'].disable();
+      this.formGroup.controls['cedulaNumber'].disable();
+      this.formGroup.controls['email'].disable();
+      this.formGroup.controls['phone'].disable();
+      this.formGroup.controls['gender'].disable();
+      this.formGroup.controls['civilStatus'].disable();
+      this.formGroup.controls['children'].disable();
+      this.formGroup.controls['isActive'].disable();
     }
 
-    this.userFormGroup.controls['email'].disable();
+    if (this.selectedUser?.birthdate) {
+      const [year, month, day] = this.selectedUser?.birthdate.split("-")
+      const date = new Date(+year, +month - 1, +day) // Month is 0-indexed
 
-      this.userFormGroup.patchValue({
-        name: this.selectedUser?.name,
-        email: this.selectedUser?.email,
-        isActive: this.selectedUser?.isActivate,
-        role: this.selectedUser?.roleId,
-      });
+      this.formGroup.patchValue({
+        birthdate: date,
+      })
+    }
+
+    if (this.selectedUser?.cedula) {
+      const [cedulaType, cedulaNumber] = this.selectedUser?.cedula.split("-");
+
+      this.formGroup.patchValue({
+        cedulaType: cedulaType,
+        cedulaNumber: cedulaNumber,
+      })
+    }
+
+    this.formGroup.patchValue({
+      name: this.selectedUser?.name,
+      placeBirth: this.selectedUser?.placeBirth,
+      age: this.selectedUser?.age,
+      email: this.selectedUser?.email,
+      phone: this.selectedUser?.phone,
+      gender: this.selectedUser?.gender,
+      civilStatus: this.selectedUser?.civilStatus,
+      children: this.selectedUser?.children,
+      isActive: this.selectedUser?.isActivate,
+    });
   }
 
   cancel() {
@@ -110,27 +156,48 @@ export class PatientsDialogComponent implements OnInit {
 
   saveUser() {
     if (this.checkPropId) {
-      return this.updateUser();
+      return this.updatePatient();
     }
   }
 
-  private updateUser() {
+  private updatePatient() {
     this.swalService.loading();
     this.disableButton = true;
-    if (this.userFormGroup.invalid) {
+    if (this.formGroup.invalid) {
       this.swalService.closeload();
       this.disableButton = false;
       return;
     }
-    const { name, role, isActive } = this.userFormGroup.value;
+    const { 
+          name,
+          birthdate,
+          placeBirth,
+          age,
+          email,
+          phone,
+          gender,
+          civilStatus,
+          children,
+          cedulaType,
+          cedulaNumber,
+          isActive
+           } = this.formGroup.value;
     const id = this.selectedUser.id;
 
-/*     this.patientsService
-      .updateUser(
+     this.patientsService
+      .update(
         id, 
         {
-          name, 
-          role,
+          name,
+          birthdate,
+          placeBirth,
+          age,
+          email,
+          phone,
+          gender,
+          civilStatus,
+          children,
+          cedula: cedulaType+'-'+cedulaNumber,
           isActivate: isActive,
         })
       .subscribe({
@@ -146,13 +213,28 @@ export class PatientsDialogComponent implements OnInit {
           this.disableButton = false;
           this.swalService.error('Error', error);
         },
-      }); */
+      }); 
+  }
+ 
+  // Método para capitalizar el nombre
+  private capitalizeName(value: string): string {
+    if (!value) return '';
+    return value.toLowerCase().split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
   }
 
-/*   getRolesActives() {
-    this.patientsService.getRolesActives().subscribe((data: any) => {
-      this.listRolesActives = data;
+  // Nuevo método para suscribirse a los cambios del campo 'name'
+  private formatNameInput() {
+    this.formGroup.get('name')?.valueChanges.pipe(
+      startWith(this.formGroup.get('name')?.value),
+      debounceTime(300) // Para evitar formatear con cada pulsación de tecla
+    ).subscribe(value => {
+      if (value) {
+        const formattedName = this.capitalizeName(value);
+        this.formGroup.get('name')?.setValue(formattedName, { emitEvent: false });
+      }
     });
-  } */
+  }
 
 }

@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>
     @if (!this.edit) {
-        Ver usuario {{this.selectedUser.name | titlecase}}
+        Paciente: {{this.selectedUser.name | titlecase}}
     }@else {
-        Editar usuario 
+        Editar paciente 
     }
   </h2>
 
@@ -10,89 +10,184 @@
     <div class="d-flex align-items-center">
     <div class="right-bg-content p-10">
 
-        <form [formGroup]="userFormGroup" #f="ngForm">
+        <form [formGroup]="formGroup" #f="ngForm">
 
-          <div class="row p-10">
+         <div class="row p-10">
             <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Nombre</mat-label>
                 <input
-                matInput
-                placeholder="Nombre"
                 formControlName="name"
+                matInput
                 required="true"
                 type="text"
                 />
-            <mat-error *ngIf="userFormGroup.controls['name'].hasError('required') || userFormGroup.controls['name'].hasError('maxLength') ">
+            <!-- <mat-error *ngIf="formGroup.controls['name'].hasError('required') || formGroup.controls['name'].hasError('maxLength') ">
                 El nombre es requerido<span class="ocultar-en-movil-tablet m-l-3"> y como máximo puede tener 200 caracteres</span>.
+            </mat-error> -->
+            <mat-error *ngIf="formGroup.controls['name'].hasError('required')">
+                El nombre es requerido.
             </mat-error>
             </mat-form-field>
-        
+
             <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [matDatepicker]="birthdate" placeholder="DD/MM/YYYY" formControlName="birthdate" required="false">
+                <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matIconSuffix [for]="birthdate"></mat-datepicker-toggle>
+                <mat-datepicker #birthdate></mat-datepicker>
+
+                <mat-error *ngIf="formGroup.controls['birthdate'].hasError('required')">
+                    La fecha de nacimiento es requerida.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Lugar de nacimiento</mat-label>
                 <input
                 matInput
-                placeholder="Email"
+                formControlName="placeBirth"
+                required="true"
+                type="text"
+                />
+            <!-- <mat-error *ngIf="formGroup.controls['placeBirth'].hasError('required') || formGroup.controls['placeBirth'].hasError('maxLength') ">
+                El lugar de nacimiento es requerido<span class="ocultar-en-movil-tablet m-l-3"> y como máximo puede tener 0 caracteres</span>.
+            </mat-error> -->
+            <mat-error *ngIf="formGroup.controls['placeBirth'].hasError('required')">
+                El lugar de nacimiento es requerido.
+            </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Edad</mat-label>
+                <input
+                matInput
+                formControlName="age"
+                required="true"
+                type="number"
+                minlength="0"
+                />
+            <mat-error *ngIf="formGroup.controls['age'].hasError('required')">
+                La edad es requerida.
+            </mat-error>
+            </mat-form-field>
+
+            <!-- Nuevo grupo para Cédula con select y input -->
+            <div class="form-group" style="display: flex; gap: 16px;">
+                <mat-form-field appearance="outline" color="primary" style="width: 30%;">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="cedulaType" required [disabled]="isLoading">
+                  <mat-option value="V">V</mat-option>
+                  <mat-option value="E">E</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['cedulaType'].hasError('required')">
+                  Tipo requerido.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" color="primary" style="flex-grow: 1;" >
+                <mat-label>Cédula</mat-label>
+                <input
+                  matInput
+                  placeholder="Ingresa tu cédula"
+                  formControlName="cedulaNumber"
+                  required
+                  type="text"
+                  [disabled]="isLoading"
+                />
+                <mat-error *ngIf="formGroup.controls['cedulaNumber'].hasError('required')">
+                  La cédula es requerida.
+                </mat-error>
+                <mat-error *ngIf="formGroup.controls['cedulaNumber'].hasError('maxlength')">
+                  La cédula no puede exceder los 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="formGroup.controls['cedulaNumber'].hasError('pattern')">
+                  La cédula debe contener solo números.
+                </mat-error>
+              </mat-form-field>
+            </div>
+        
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input
+                matInput
                 formControlName="email"
                 required="true"
                 type="email"
                 />
-            <mat-error *ngIf="userFormGroup.controls['email'].hasError('required') || userFormGroup.controls['email'].hasError('maxLength') ">
-                El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+            <mat-error *ngIf="formGroup.controls['email'].hasError('required') || formGroup.controls['email'].hasError('maxLength') ">
+                El email es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 100 caracteres</span>.
             </mat-error>
-            <mat-error *ngIf="userFormGroup.controls['email'].hasError('email')">
+            <mat-error *ngIf="formGroup.controls['email'].hasError('email')">
                 Por favor, introduce un email válido.
             </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
-                <mat-select
-                placeholder="Roles"
-                formControlName="role"
+                <mat-label>Teléfono</mat-label>
+                <input
+                matInput
+                formControlName="phone"
                 required="true"
-                >
-                    <mat-option [value]="1">{{
-                        'Administrador' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="7">{{
-                        'Administrador RRHH'
-                    }}</mat-option>
-                    <mat-option [value]="2">{{
-                        'Almacén' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="5">{{
-                        'Almacén móvil' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="3">{{
-                        'Médico' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="4">{{
-                        'Auditor' | titlecase
-                    }}</mat-option>
-                    <mat-option [value]="6">{{
-                        'Enfermero(a)' 
-                    }}</mat-option>
-                </mat-select>
-            <mat-error *ngIf="userFormGroup.controls['role'].hasError('required')">
-                El rol es requerido.
+                type="text"
+                />
+            <mat-error *ngIf="formGroup.controls['phone'].hasError('required')">
+                El teléfono es requerido.
             </mat-error>
             </mat-form-field>
-        
-<!--             <mat-form-field appearance="outline" class="example-full-width">
-              <mat-select
-              placeholder="Roles"
-              formControlName="role"
-              required="true"
-              >
-              <mat-option value="null">
-                  Ninguno
-              </mat-option>
-              @for (item of listRolesActives; track item) {
-                  <mat-option [value]="item.id">{{
-                      item.name | titlecase
-                  }}</mat-option>
-              }
-              </mat-select>
-           </mat-form-field> -->
+
+<!-- <div class="form-group" style="display: flex; gap: 8px;"> -->
+<div class="row-with-civil-status">
+            <!-- <mat-form-field appearance="outline" style="width: 40%;"> -->
+            <mat-form-field appearance="outline" >
+                <mat-label>Género</mat-label>
+                <mat-select formControlName="gender" required="true">
+                    <mat-option>Ninguno</mat-option>
+                    <mat-option value="M">Masculino</mat-option>
+                    <mat-option value="F">Femenino</mat-option>
+                </mat-select>
+                @if (formGroup.controls['gender'].hasError('required')) {
+                    <mat-error>Debes hacer una selección</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width"> -->
+            <!-- <mat-form-field appearance="outline"  style="flex-grow: 1;"> -->
+            <mat-form-field appearance="outline" >
+                <mat-label>Estado civil</mat-label>
+                <mat-select
+                formControlName="civilStatus"
+                required="true"
+                >
+                    <mat-option value="S">Soltero(a)</mat-option>
+                    <mat-option value="C">Casado(a)</mat-option>
+                    <mat-option value="D">Divorciado(a)</mat-option>
+                    <mat-option value="Sep">Separado(a)</mat-option>
+                    <mat-option value="V">Viudo(a)</mat-option>
+
+                </mat-select>
+                <mat-error *ngIf="formGroup.controls['civilStatus'].hasError('required')">
+                    El estado civil es requerido.
+                </mat-error>
+            </mat-form-field>
+</div>
 
             <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Hijos</mat-label>
+                <input
+                matInput
+                formControlName="children"
+                required="true"
+                type="number"
+                minlength="0"
+                />
+            <mat-error *ngIf="formGroup.controls['children'].hasError('required')">
+                El número de hijos es requerido.
+            </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Estado</mat-label>
+
               <mat-select
               placeholder="Estado"
               formControlName="isActive"
@@ -106,11 +201,12 @@
                 }}</mat-option>
 
               </mat-select>
-            <mat-error *ngIf="userFormGroup.controls['isActive'].hasError('required')">
+            <mat-error *ngIf="formGroup.controls['isActive'].hasError('required')">
                 El estado es requerido.
             </mat-error>
           </mat-form-field>
-          </div>
+
+         </div>
       
           <div class="row">
               <div class="ml-auto">
@@ -118,7 +214,7 @@
                   <button
                   color="primary"
                   mat-flat-button
-                  [disabled]="userFormGroup.invalid && disableButton"
+                  [disabled]="formGroup.invalid && disableButton"
                   (click)="saveUser()"
                   >
                   Guardar

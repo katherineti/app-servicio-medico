@@ -37,7 +37,7 @@ providers:[PatientsService]
 export class PatientsComponent {
   role:string='';
   // displayedColumns = [ 'name','rol','email','isActive','action'];
-  displayedColumns = [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ];
+  displayedColumns = [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt' ];
   dataSource: any = new MatTableDataSource<IPatient>();
   searhField = new FormControl();
   pageSize: number = 5;
@@ -53,8 +53,8 @@ export class PatientsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ]
-    : [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'createdAt' ];
+    ? [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt','action' ]
+    : [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt','action' ];
     });
     
     this.dataSource['length'] = 0;
@@ -79,7 +79,7 @@ export class PatientsComponent {
     data.actionEdit=false;
     const ref = this.dialog.open(PatientsDialogComponent, {
       data: data || null,
-      disableClose: true
+      disableClose: false
     });
 
     ref.afterClosed().subscribe(() => {
@@ -91,7 +91,7 @@ export class PatientsComponent {
     data.actionEdit=true;
     const ref = this.dialog.open(PatientsDialogComponent, {
       data: data || null,
-      disableClose: true
+      disableClose: false
     });
 
     ref.afterClosed().subscribe(() => {

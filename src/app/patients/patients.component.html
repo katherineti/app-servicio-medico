@@ -117,6 +117,18 @@
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                              {{ element.email }}</mat-cell>
                          </ng-container>
+                         <ng-container matColumnDef="isActive">
+                             <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                 Estado
+                             </mat-header-cell>
+                             <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
+                                 @if (element.isActivate===true) {
+                                     Activo
+                                 }@else {
+                                     Inactivo
+                                   }
+                             </mat-cell>
+                         </ng-container>  
                          <ng-container matColumnDef="createdAt">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Fecha
@@ -132,16 +144,17 @@
                              <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
                                  <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
                                      <i-feather name="eye"></i-feather>
-                                 </button>
+                                 </button> 
  
-<!--                                  @if (this.role === "admin" || this.role === "admin RRHH" ) {
+                                  @if (this.role === "admin" || this.role === "admin RRHH" ) {
                                      <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
                                          <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                      </button>
+                                <!--
                                      <button mat-icon-button aria-label="Eliminar" (click)="deletePatients(element)">
                                          <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
-                                     </button>
-                                 } -->
+                                     </button> -->
+                                 }
                              </mat-cell>
                          </ng-container>
                      

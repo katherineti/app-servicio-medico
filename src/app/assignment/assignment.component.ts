@@ -41,8 +41,18 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
 
     this.familyMemberForm = this.formBuilder.group({
       name: ["", Validators.required],
-      documentId: [null, [Validators.maxLength(10)]],
+      // documentId: [null, [Validators.maxLength(10)]],
+      cedulaType: ['', [Validators.required]], // Valor por defecto 'V'
+      cedulaNumber: ['', [
+        Validators.required,
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]+$/) 
+      ]],
     })
+
+    this.familyMemberForm.patchValue({
+      cedulaType: 'V',
+    }) 
 
 /*   this.employeeForm = this.formBuilder.group({
       name: ["", [Validators.required, Validators.maxLength(200)]],
@@ -254,7 +264,6 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
     this.showNewEmployeeForm = false
     this.employeeForm.reset()
   }
-
 
 }
 

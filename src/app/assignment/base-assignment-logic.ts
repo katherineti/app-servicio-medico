@@ -1,8 +1,4 @@
- import { CommonModule } from '@angular/common';
-import { Component, Inject, inject, model, OnInit } from '@angular/core';
-import { MaterialModule } from '../material/material.module';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, Validators } from '@angular/forms';
 import { map, Observable, of, startWith, switchMap } from 'rxjs';
 import { SwalService } from '../services/swal.service';
 import { AssignmentService } from './services/assignment.service';
@@ -10,20 +6,6 @@ import { toast } from 'ngx-sonner';
 import { ICreateFamily, IEmployee, IEmployeeFamily, ITypesAssignment } from './intefaces/assignment.interface';
 import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
 import { IUser } from '../users/interfaces/users.interface';
- 
-/* import { type FormBuilder, Validators } from "@angular/forms"
-import { type Observable, of, map, switchMap, startWith } from "rxjs"
-import type { AssignmentService } from "./services/assignment.service"
-import type { SwalService } from "../services/swal.service"
-import type {
-  ICreateFamily,
-  IEmployee,
-  IEmployeeFamily,
-  ITypesAssignment,
-  IProduct,
-  IUser,
-} from "./intefaces/assignment.interface"
-import { toast } from "ngx-sonner" */
 
 export abstract class BaseAssignmentLogic {
   selectedProduct!: IProduct
@@ -289,11 +271,15 @@ export abstract class BaseAssignmentLogic {
 
   saveFamilyMember(familyMemberForm: any, employeeId: number, controlFamily: any): void {
     if (familyMemberForm.valid && employeeId) {
-      const { name, documentId } = familyMemberForm.value
+      // const { name, documentId } = familyMemberForm.value
+      const { name, cedulaType, cedulaNumber } = familyMemberForm.value;
+      const fullCedula = `${cedulaType}-${cedulaNumber}`;
+
       const newFamilyMember: ICreateFamily = {
         employeeId: employeeId,
         name,
-        cedula: documentId,
+        // cedula: documentId,
+        cedula: fullCedula,
       }
       this.assignmentService.addFamilyMember(newFamilyMember).subscribe((savedMember) => {
         this.listFamily.push(savedMember)

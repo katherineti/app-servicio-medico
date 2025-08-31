@@ -150,7 +150,7 @@
 
                         <!-- Nuevo grupo para Cédula con select y input -->
                         <div class="form-group" style="display: flex; gap: 8px;">
-                            <mat-form-field appearance="outline" color="primary" style="width: 20%;">
+                            <mat-form-field appearance="outline" color="primary" style="width: 25%;">
                                 <!-- <mat-label>Tipo</mat-label> -->
                                 <mat-select formControlName="cedulaType" required >
                                 <mat-option value="V">V</mat-option>
@@ -319,7 +319,8 @@
                         <option [value]="null" disabled selected>Seleccionar familiar</option>
                         <mat-option [value]="null">Ninguno</mat-option>
                         @for (item of listFamily; track item) {
-                            <mat-option [value]="item.familyId">{{item.familyName | titlecase}}</mat-option>
+                            <!-- <mat-option [value]="item.familyId">{{item.familyName | titlecase}}</mat-option> -->
+                            <mat-option [value]="item.familyId">{{item.familyName | titlecase }}-{{item.familyCedula}}</mat-option>
                         }
                         </mat-select>
                         <mat-error *ngIf="AssignProductForm.controls['family'].errors?.['maxLength']">
@@ -352,12 +353,46 @@
                         <mat-error>Nombre es requerido</mat-error>
                         }
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="example-full-width">
+<!--                     <mat-form-field appearance="outline" class="example-full-width">
                         <input matInput placeholder="Cédula" formControlName="documentId">
                         @if (familyMemberForm.controls['documentId'].errors?.['maxLength'] && familyMemberForm.get('documentId')?.touched) {
                         <mat-error>Máximo de 10 caracteres</mat-error>
                         }
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <!-- Nuevo grupo para Cédula con select y input -->
+                    <div class="form-group" style="display: flex; gap: 8px;">
+                        <mat-form-field appearance="outline" color="primary" style="width: 25%;">
+                            <!-- <mat-label>Tipo</mat-label> -->
+                            <mat-select formControlName="cedulaType" required>
+                                <mat-option value="V">V</mat-option>
+                                <mat-option value="E">E</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="familyMemberForm.controls['cedulaType'].hasError('required')">
+                            Tipo requerido.
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="primary" style="flex-grow: 1;">
+                            <!-- <mat-label>Cédula</mat-label> -->
+                            <input
+                            matInput
+                            placeholder="Ingresa tu cédula"
+                            formControlName="cedulaNumber"
+                            required
+                            type="text"
+                            />
+                            <mat-error *ngIf="familyMemberForm.controls['cedulaNumber'].hasError('required')">
+                            La cédula es requerida.
+                            </mat-error>
+                            <mat-error *ngIf="familyMemberForm.controls['cedulaNumber'].hasError('maxlength')">
+                            La cédula no puede exceder los 10 caracteres.
+                            </mat-error>
+                            <mat-error *ngIf="familyMemberForm.controls['cedulaNumber'].hasError('pattern')">
+                            La cédula debe contener solo números.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
         
                     </div>
                 </form>

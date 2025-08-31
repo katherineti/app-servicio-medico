@@ -52,6 +52,18 @@ export class SwalService {
       cancelButtonText: 'Cancelar',
     });
   }
+  confirmReportMedical(): Promise<SweetAlertResult<any>> {
+    return Swal.fire({
+      title: '¿Está seguro de finalizar?',  
+      text: ' Una vez que guarde, ya no podrá editar',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'rgb(93, 135, 255)',
+      cancelButtonColor: 'rgb(250, 137, 107)',
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+    });
+  }
 
   expiredSession() {
     Swal.fire({

@@ -14,6 +14,8 @@ import { ICreateDTO } from "../../interfaces/medical-reports.interface"
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from "@angular/material/core"
 import { MY_DATE_FORMATS } from "../../../services/date-format.service"
 import { toast } from "ngx-sonner"
+import { SwalService } from "../../../services/swal.service"
+import Swal, { SweetAlertResult } from "sweetalert2"
 
 @Component({
   selector: "app-medical-report-create",
@@ -42,6 +44,7 @@ export class MedicalReportCreateComponent implements OnInit {
   private medicalReportsService = inject(MedicalReportsService)
   private patientsService = inject(PatientsService)
   private usersService = inject(UsersService)
+  public swalService = inject(SwalService)
 
   // Helper function to capitalize the first letter of each word (now static)
   static capitalizeWords(str: string): string {
@@ -223,8 +226,17 @@ export class MedicalReportCreateComponent implements OnInit {
       },
     })
   }
-
   // --- Métodos de Formulario y UI ---
+  async confirmOnSubmit() {
+    const confirmAlert: SweetAlertResult<any> = await this.swalService.confirmReportMedical();
+    if (confirmAlert.isConfirmed) {
+      this.onSubmit();
+
+    } else if (confirmAlert.dismiss === Swal.DismissReason.cancel) {
+      /* cancel */
+    }
+  }
+
   onSubmit() {
     if (this.medicalReportForm.valid) {
       this.isSubmitting = true
@@ -244,7 +256,8 @@ export class MedicalReportCreateComponent implements OnInit {
       
       this.medicalReportsService.create(formData).subscribe({
         next: (response) => {
-          this.showSuccess("Informe médico creado exitosamente");
+          this.swalService.success();
+          // this.showSuccess("Informe médico creado exitosamente"); //snackbar
           // toast.error("Informe médico creado exitosamente")
           
           this.medicalReportForm.reset({ elaborationDate: new Date() }); // Resetear el formulario y establecer la fecha actual

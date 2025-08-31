@@ -313,10 +313,29 @@ export abstract class BaseAssignmentLogic {
   }
 
   saveEmployee(employeeForm: any, employeeControl: any, filteredEmployeesOptions: Observable<IEmployee[]>): void {
+    
     if (employeeForm.valid) {
-      const newEmployee: IEmployee = {
+      console.log("employeeForm ", employeeForm)
+      console.log(" employeeForm.value ",  employeeForm.value)
+      const {
+            name,
+            cedulaType,
+            cedulaNumber,
+            email,
+            phone
+          } = employeeForm.value
+
+      const fullCedula = `${cedulaType}-${cedulaNumber}`;
+
+/*       const newEmployee: IEmployee = {
         id: 0,
         ...employeeForm.value,
+      } */
+      const newEmployee: IEmployee = {
+        name,
+        cedula: fullCedula,
+        email,
+        phone
       }
       console.log("newEmployee ", newEmployee)
       this.assignmentService.addEmployee(newEmployee).subscribe((savedEmployee) => {

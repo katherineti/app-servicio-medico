@@ -11,13 +11,13 @@ export interface ICreateAssignment {
   }
   
 export interface IEmployee{
-    id:number,
+    id?:number,
     name: string,
     cedula: string,
     email: string,
     phone: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt?: Date,
+    updatedAt?: Date,
 } 
 
 export interface ICretateEmployee extends Omit<IEmployee, 'id' | 'createdAt' | 'updatedAt' > {}

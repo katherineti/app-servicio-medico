@@ -178,18 +178,12 @@ export class RegisterComponent {
     } catch (error: any) {
       this.typeError = ''; // Resetear el tipo de error
       this.conflictDetected = false; // Resetear la detección de conflicto
-        console.log("error:",error)
-        this.swalService.error('Error de Registro', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'); // Notificación de error general
-
-      // if (error.status === 409 || error === 'El correo ya existe.') { // Código de estado para conflicto (ej. usuario/email existente)
-/*       if ((error && error.status === 409) || error === 'El correo ya existe.') { // Código de estado para conflicto (ej. usuario/email existente)
-        this.typeError = 'conflicto';
-        this.conflictDetected = true;
-        this.swalService.error('Error de Registro', 'Nombre de usuario o correo electrónico ya existe.'); // Notificación de error específico
-      } else {
-        console.log("error:",error)
-        this.swalService.error('Error de Registro', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'); // Notificación de error general
-      } */
+        if(error){
+          this.swalService.closeload();
+          this.swalService.error('Error', error);
+        }else{
+          this.swalService.error('Error de Registro', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'); // Notificación de error general
+        }
       console.error('Error durante el registro:', error);
     } finally {
       this.isLoading = false; // ✅ Desactivar estado de carga al finalizar (éxito o error)

@@ -131,30 +131,81 @@
                         <div class="form-row">
                             <mat-form-field appearance="outline" class="example-full-width">
                             <input matInput placeholder="Nombre" formControlName="name" required>
-                            @if (employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched) {
+                            @if (employeeForm.get('name')?.invalid && employeeForm.controls['name'].hasError('required') && employeeForm.get('name')?.touched) {
                                 <mat-error>Nombre es requerido</mat-error>
                             }
+                            <mat-error *ngIf="employeeForm.controls['name'].hasError('maxlength')">
+                            El nombre no puede exceder los 200 caracteres.
+                            </mat-error>
                             </mat-form-field>
-                            <mat-form-field appearance="outline" class="example-full-width">
-                            <input matInput placeholder="Cédula" formControlName="cedula" required>
-                            @if (employeeForm.controls['cedula'].hasError('required') && employeeForm.get('cedula')?.touched) {
-                                <mat-error>Cédula es requerido</mat-error>
-                            }
-                            @if (employeeForm.controls['cedula'].errors?.['maxLength']) {
-                                <mat-error>Máximo de 10 caracteres</mat-error>
-                            }
+<!--                             <mat-form-field appearance="outline" class="example-full-width">
+                                <input matInput placeholder="Cédula" formControlName="cedula" required>
+                                @if (employeeForm.controls['cedula'].hasError('required') && employeeForm.get('cedula')?.touched) {
+                                    <mat-error>Cédula es requerido</mat-error>
+                                }
+                                @if (employeeForm.controls['cedula'].errors?.['maxLength']) {
+                                    <mat-error>Máximo de 10 caracteres</mat-error>
+                                }
+                            </mat-form-field> -->
+
+                        <!-- Nuevo grupo para Cédula con select y input -->
+                        <div class="form-group" style="display: flex; gap: 8px;">
+                            <mat-form-field appearance="outline" color="primary" style="width: 20%;">
+                                <!-- <mat-label>Tipo</mat-label> -->
+                                <mat-select formControlName="cedulaType" required >
+                                <mat-option value="V">V</mat-option>
+                                <mat-option value="E">E</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="employeeForm.controls['cedulaType'].hasError('required')">
+                                Tipo requerido.
+                                </mat-error>
                             </mat-form-field>
-                            <mat-form-field appearance="outline" class="example-full-width">
-                            <input matInput placeholder="Email" formControlName="email" required>
-                            @if (employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched) {
-                                <mat-error>Email es requerido</mat-error>
-                            }
+
+                            <mat-form-field appearance="outline" color="primary" style="flex-grow: 1;">
+                                <!-- <mat-label>Cédula</mat-label> -->
+                                <input
+                                matInput
+                                placeholder="Ingresa tu cédula"
+                                formControlName="cedulaNumber"
+                                required
+                                type="text"
+                                />
+                                <mat-error *ngIf="employeeForm.controls['cedulaNumber'].hasError('required')">
+                                La cédula es requerida.
+                                </mat-error>
+                                <mat-error *ngIf="employeeForm.controls['cedulaNumber'].hasError('maxlength')">
+                                La cédula no puede exceder los 10 caracteres.
+                                </mat-error>
+                                <mat-error *ngIf="employeeForm.controls['cedulaNumber'].hasError('pattern')">
+                                La cédula debe contener solo números.
+                                </mat-error>
                             </mat-form-field>
+                        </div>
+
                             <mat-form-field appearance="outline" class="example-full-width">
-                            <input matInput placeholder="Teléfono" formControlName="phone" required>
-                            @if (employeeForm.get('phone')?.invalid && employeeForm.get('phone')?.touched) {
-                                <mat-error>Teléfono es requerido</mat-error>
-                            }
+                                <input matInput placeholder="Email" formControlName="email" required>
+                                @if (employeeForm.get('email')?.invalid && employeeForm.controls['email'].hasError('required') && employeeForm.get('email')?.touched) {
+                                    <mat-error>Email es requerido</mat-error>
+                                }
+                                <mat-error *ngIf="employeeForm.controls['email'].hasError('email')">
+                                Por favor, introduce un email válido.
+                                </mat-error>
+                                <mat-error *ngIf="employeeForm.controls['email'].hasError('maxlength')">
+                                El email no puede exceder los 100 caracteres.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="example-full-width">
+                                <input matInput placeholder="Teléfono" formControlName="phone" required>
+                                @if (employeeForm.get('phone')?.invalid && employeeForm.controls['phone'].hasError('required') && employeeForm.get('phone')?.touched) {
+                                    <mat-error>Teléfono es requerido</mat-error>
+                                }
+                                <mat-error *ngIf="employeeForm.controls['phone'].hasError('pattern')">
+                                Por favor, introduce un número de teléfono válido.
+                                </mat-error>
+                                <mat-error *ngIf="employeeForm.controls['phone'].hasError('maxlength')">
+                                El teléfono no puede exceder los 50 caracteres.
+                                </mat-error>
                             </mat-form-field>
                         </div>
                         </form>

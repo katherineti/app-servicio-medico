@@ -1,19 +1,3 @@
-/*import { CommonModule } from "@angular/common"
-import { Component, Inject, inject, type OnInit } from "@angular/core"
-import { MaterialModule } from "../material/material.module"
-import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog"
-import { map, type Observable, startWith } from "rxjs"
-import  { SwalService } from "../services/swal.service"
-import { AssignmentService } from "./services/assignment.service"
-import { toast } from "ngx-sonner"
-// import type { IEmployee, IUser } from "./intefaces/assignment.interface"
-import type { IEmployee } from "./intefaces/assignment.interface"
-import type { IUser } from '../users/interfaces/users.interface';
-import { FeatherIconsModule } from "../feathericons/feathericons.module"
-import { MatIconModule } from "@angular/material/icon"
-import { BaseAssignmentLogic } from "./base-assignment-logic" // Importa la clase base
-*/
 import { CommonModule } from "@angular/common"
 import { Component, Inject, type OnInit } from "@angular/core"
 import { MaterialModule } from "../material/material.module"
@@ -41,12 +25,6 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
   employeeForm!: FormGroup
   role = ""
 
-  // doctorForm!: FormGroup // Temporarily disabled
-
-  // filteredEmployeesOptions y filteredDoctorsOptions ahora se heredan de BaseAssignmentLogic
-  // No es necesario declararlos aquí nuevamente.
-  // private authService = inject(AuthService)
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AssignmentComponent>,
@@ -66,18 +44,25 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
       documentId: [null, [Validators.maxLength(10)]],
     })
 
-    this.employeeForm = this.formBuilder.group({
+/*   this.employeeForm = this.formBuilder.group({
       name: ["", [Validators.required, Validators.maxLength(200)]],
       cedula: ["", [Validators.required, Validators.maxLength(10)]],
       email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
       phone: ["", [Validators.required, Validators.maxLength(50)]],
+    }) */
+    this.employeeForm = this.formBuilder.group({
+      name: ["", [Validators.required, Validators.maxLength(200)]],
+      // Nuevo control para el tipo de cédula (V o E)
+      cedulaType: ['V', [Validators.required]], // Valor por defecto 'V'
+      // Control para el número de cédula, solo números
+      cedulaNumber: ['', [
+        Validators.required,
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]+$/) 
+      ]],
+      email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
+      phone: ["", [Validators.required, Validators.pattern('^\\+?\\d+$'), Validators.maxLength(50)]], // Validators.pattern('^\\+?\\d+$'): Acepta por ejemplo '123456789' o '+123456789'
     })
-
-    // doctorForm is commented out as per user request
-    // this.doctorForm = this.formBuilder.group({
-    //   name: ["", [Validators.required, Validators.maxLength(200)]],
-    //   email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
-    // });
   }
 
   async ngOnInit() {

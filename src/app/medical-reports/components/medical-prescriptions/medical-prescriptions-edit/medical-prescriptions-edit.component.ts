@@ -189,11 +189,24 @@ export class MedicalPrescriptionsEditComponent implements OnInit {
                 })
               }
 
+              //fecha de emision no puede ser null en BD
+              if (this.selectedMedicalPrescription.createdAt) { 
+                const [year, month, day] = this.selectedMedicalPrescription.createdAt.split("-");
+                const date = new Date(+year, +month - 1, +day);
+                this.prescriptionForm.patchValue({
+                  emissionDate: date,
+                })
+              }else{
+                this.prescriptionForm.patchValue({
+                  emissionDate: null,
+                })
+              }
+
               this.prescriptionForm.patchValue({
                 doctorId: this.selectedMedicalPrescription.doctorId,
                 patientId: this.selectedMedicalPrescription.patientId,
                 place: this.selectedMedicalPrescription.place,
-                emissionDate: this.selectedMedicalPrescription.createdAt,
+                // emissionDate: this.selectedMedicalPrescription.createdAt,
                 // expirationDate: this.selectedMedicalPrescription.expirationDate,
                 recipeContent: this.selectedMedicalPrescription.recipeContent,
                 indications: this.selectedMedicalPrescription.indications,

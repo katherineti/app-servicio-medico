@@ -209,9 +209,13 @@ export class PatientsDialogComponent implements OnInit {
         },
         error: (error) => {
           console.log("Error ", error)
-          this.swalService.closeload();
           this.disableButton = false;
-          this.swalService.error('Error', error);
+          if(error){
+            this.swalService.closeload();
+            this.swalService.error('Error', error);
+          }else{
+            this.swalService.error('Error de actualización', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.');
+          }
         },
       }); 
   }

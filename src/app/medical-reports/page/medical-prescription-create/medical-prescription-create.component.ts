@@ -2,11 +2,9 @@ import { Component, type OnInit, inject } from "@angular/core"
 import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { ActivatedRoute, Router } from "@angular/router" // Importar ActivatedRoute
 import { CommonModule } from "@angular/common"
-
 import { MaterialModule } from "../../../material/material.module"
 import { FeatherIconsModule } from "../../../feathericons/feathericons.module"
 import { MatSnackBar } from "@angular/material/snack-bar"
-// import { capitalizeWords } from "../../../utils/string-utils"
 import { MedicalReportsService } from "../../services/medical-reports.service"
 import { PatientsService } from "../../../patients/services/patients.service"
 import { UsersService } from "../../../users/services/users.service"
@@ -18,6 +16,10 @@ import { MY_DATE_FORMATS } from "../../../services/date-format.service"
 import { MedicalPrescriptionService } from "../../services/medical-prescription.service"
 import { capitalizeWords } from "../../../utils/string-utils"
 import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoin } from "rxjs" // Importar forkJoin
+import { toast } from "ngx-sonner"
+import { AuthService } from "../../../services/auth.service"
+import Swal, { SweetAlertResult } from "sweetalert2"
+import { SwalService } from "../../../services/swal.service"
 
 @Component({
   selector: "app-medical-prescription-create",
@@ -32,6 +34,7 @@ import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoi
   ],
 })
 export class MedicalPrescriptionCreateComponent implements OnInit {
+  role = ""
   prescriptionForm!: FormGroup
   medicalReportId: string | null = null
   medicalReport: IMedicalReports | null = null
@@ -55,8 +58,10 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
   private patientsService = inject(PatientsService)
   private usersService = inject(UsersService)
   private medicalPrescriptionService = inject(MedicalPrescriptionService)
-
-  ngOnInit(): void {
+  private authService = inject(AuthService)
+   private swalService = inject(SwalService);
+  async ngOnInit(): Promise<void> {
+    this.role = await this.authService.getRol()
     this.medicalReportId = this.route.snapshot.paramMap.get("reportId")
     this.initializeForm()
     this.loadInitialData()
@@ -250,6 +255,21 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
     })
   }
 
+  async confirmOnSubmit() {
+    if(this.role === "admin" || this.role === 'admin RRHH' ){
+      this.onSubmit()
+    }
+    else{
+      const confirmAlert: SweetAlertResult<any> = await this.swalService.confirmReportMedical();
+      if (confirmAlert.isConfirmed) {
+        this.onSubmit();
+  
+      } else if (confirmAlert.dismiss === Swal.DismissReason.cancel) {
+        /* cancel */
+      }
+    }
+  }
+
   onSubmit(): void {
     if (this.prescriptionForm.valid) {
       this.isSubmitting = true;
@@ -278,7 +298,11 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
           this.router.navigate(["/medical-reports"])
         },
         error: (error) => {
-          this.showError("Error al crear el recipe")
+          if (typeof error === 'string' && error!='' ) {
+            toast.error(error)
+          }else{
+            this.showError("Error al crear el recipe")
+          }
           this.isSubmitting = false
         },
       })

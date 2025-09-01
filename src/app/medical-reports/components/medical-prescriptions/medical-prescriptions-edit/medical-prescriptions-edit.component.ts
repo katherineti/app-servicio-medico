@@ -16,6 +16,7 @@ import { MedicalPrescriptionService } from "../../../services/medical-prescripti
 import { capitalizeWords } from "../../../../utils/string-utils"
 import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoin } from "rxjs" // Importar forkJoin
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog"
+import { toast } from "ngx-sonner"
 
 @Component({
   standalone: true,
@@ -369,7 +370,11 @@ export class MedicalPrescriptionsEditComponent implements OnInit {
           this.closeDialog()
         },
         error: (error) => {
-          this.showError("Error al editar el recipe")
+          if (typeof error === 'string' && error!='' ) {
+            toast.error(error)
+          }else{
+            this.showError("Error al editar el recipe")
+          }
           this.isSubmitting = false
         },
       }) 

@@ -264,7 +264,12 @@ export class MedicalReportCreateComponent implements OnInit {
           this.router.navigate(["/medical-reports"])
         },
         error: (error) => {
-          this.showError("Error al crear el informe médico")
+          if (typeof error === 'string' && error!='' ) {
+            toast.error(error)
+          }else{
+
+            this.showError("Error al crear el informe médico")
+          }
           this.isSubmitting = false
         },
       })

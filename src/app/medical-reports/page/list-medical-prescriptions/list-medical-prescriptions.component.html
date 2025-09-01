@@ -85,12 +85,14 @@
                                     <i-feather name="download"></i-feather>
                                 </button>
 
-                                 <button 
-                                  mat-icon-button 
-                                  title="Editar" 
-                                  (click)="openEditMedicalPrescription(element)">
+                                @if(this.role === "admin" || this.role === "admin RRHH"){
+                                    <button 
+                                    mat-icon-button 
+                                    title="Editar" 
+                                    (click)="openEditMedicalPrescription(element)">
                                     <i-feather name="edit"></i-feather>
                                 </button>
+                                }
 
                              </mat-cell>
                          </ng-container> 

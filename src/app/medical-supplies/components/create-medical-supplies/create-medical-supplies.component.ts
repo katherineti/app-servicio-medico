@@ -46,6 +46,8 @@ export class CreateMedicalSuppliesComponent {
 
   selectedFile: File | null = null
 
+  image_fileSizeMB = 10; //10MB
+
   // Signal para controlar la visibilidad de las opciones 3 y 4 del estado
   showExpirationStatusOptions = signal(false)
 
@@ -168,7 +170,7 @@ export class CreateMedicalSuppliesComponent {
    */
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement
-
+console.log("Si no existe longitud entonces imagen es null. input.files?.length:" ,input.files?.length)
     if (!input.files?.length) {
       this.selectedFile = null
       this.createProdFormGroup.patchValue({ url_image: null })
@@ -186,9 +188,9 @@ export class CreateMedicalSuppliesComponent {
       return
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      this.errorMessage.set("La imagen no debe superar los 5MB")
-      toast.error("La imagen no debe superar los 5MB")
+    if (file.size > this.image_fileSizeMB * 1024 * 1024) {
+      this.errorMessage.set(`La imagen no debe superar los ${this.image_fileSizeMB}MB`)
+      toast.error(`La imagen no debe superar los ${this.image_fileSizeMB}MB`)
       this.selectedFile = null
       this.createProdFormGroup.patchValue({ url_image: null })
       return
@@ -276,6 +278,8 @@ export class CreateMedicalSuppliesComponent {
         console.error("Error al crear el producto", error)
         if (error.status === 413) {
           toast.error("La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.")
+        } else if (typeof error === 'string' && error!='' ) {
+          toast.error(error)
         } else {
           toast.error("Error al crear el producto. Por favor, inténtalo de nuevo.")
         }

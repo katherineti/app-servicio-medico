@@ -54,6 +54,8 @@ export class EditMedicalSuppliesComponent {
   edit: boolean | undefined
   imageError = false
 
+  image_fileSizeMB = 10; //10MB
+
   private destroy$ = new Subject<void>()
   EXPIRING_PRODUCT = [3, 4]
   // Signal para controlar la visibilidad de las opciones 3 y 4 del estado
@@ -558,9 +560,9 @@ export class EditMedicalSuppliesComponent {
     }
 
     // Validar tamaño (máximo 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      this.errorMessage.set("La imagen no debe superar los 5MB")
-      toast.error("La imagen no debe superar los 5MB")
+    if (file.size > this.image_fileSizeMB * 1024 * 1024) {
+      this.errorMessage.set(`La imagen no debe superar los ${this.image_fileSizeMB}MB`)
+      toast.error(`La imagen no debe superar los ${this.image_fileSizeMB}MB`)
       this.selectedFile = null
       this.editProdFormGroup.patchValue({ url_image: null })
       return
@@ -588,9 +590,9 @@ export class EditMedicalSuppliesComponent {
    */
   removeImage(): void {
     this.imgBase64.set(null)
-    this.editProdFormGroup.patchValue({
+     this.editProdFormGroup.patchValue({
       url_image: null,
-    })
+    }) 
   }
 
   cancel() {
@@ -617,7 +619,7 @@ export class EditMedicalSuppliesComponent {
     this.isLoading.set(true)
     const formData = new FormData()
 
-    console.log("this.editProdFormGroup.value", this.editProdFormGroup.value)
+    console.log("*****this.editProdFormGroup.value", this.editProdFormGroup.value)
     if (this.editProdFormGroup.controls["type"].value != 1) {
       this.editProdFormGroup.patchValue({
         expirationDate: null,
@@ -631,11 +633,16 @@ export class EditMedicalSuppliesComponent {
         formData.append(key, this.editProdFormGroup.get(key)?.value)
       }
     })
-
+    console.log("Archivo imagen seleccionado? " , this.selectedFile)
     // Agregar el archivo de la imagen al FormData
     if (this.selectedFile) {
       formData.append("url_image", this.selectedFile, this.selectedFile.name)
     }
+
+    if (this.editProdFormGroup.get('url_image')?.value===null && !this.selectedFile) {
+      formData.append("url_image", "null")
+    }
+
     for (const entry of formData.entries()) {
       console.log(`${entry[0]}: ${entry[1]}`)
     }
@@ -658,6 +665,8 @@ export class EditMedicalSuppliesComponent {
         console.error("Error al editar el producto", error)
         if (error.status === 413) {
           toast.error("La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.")
+        } else if (typeof error === 'string' && error!='' ) {
+          toast.error(error)
         } else {
           toast.error("Error al editar el producto. Por favor, inténtalo de nuevo.")
         }

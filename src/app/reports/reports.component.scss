@@ -20,16 +20,21 @@ flex: 1 1 auto;
   flex: 0 0 100px;
 }
 
-.mat-column-title,
-.mat-column-status,
-.mat-column-duplicated{
+.mat-column-title
+// .mat-column-status,
+// .mat-column-duplicated
+{
   flex: 0 0 200px;
+}
+.mat-column-status, .mat-column-duplicated{
+  flex: 0 0 130px;
 }
 .mat-column-endDate, .mat-column-startDate{
   flex: 0 0 190px;
 }
 .mat-column-action{
-  flex: 0 0 120px;
+  // flex: 0 0 130px;
+  flex: 0 0 220px;
 }
 .search{
   width: 270px;

@@ -1,3 +1,4 @@
+<!-- Ver/Editar reporte de auditoria -->
 <div mat-dialog-title class="center-img">
     <img
         src="./assets/logo-ciip.png"
@@ -330,7 +331,7 @@
                 <div class="action-buttons">
                     <mat-dialog-actions align="end">
                         <div class="d-flex justify-content-end gap-2">
-                            @if (activeSection === 'summary' || activeSection === 'conclusions') {
+                            <!-- @if (activeSection === 'summary' || activeSection === 'conclusions') {
                                 <button
                                     mat-flat-button
                                     class="bg-error"
@@ -338,7 +339,7 @@
                                 >
                                     <mat-icon>arrow_back</mat-icon> Regresar
                                 </button>
-                            }
+                            } -->
 
                             <button
                                 mat-flat-button
@@ -354,7 +355,8 @@
                                     color="primary"
                                     (click)="save()"
                                 >
-                                    Siguiente <mat-icon>arrow_forward</mat-icon>
+                                    <!-- Siguiente <mat-icon>arrow_forward</mat-icon> -->
+                                    Siguiente
                                 </button>
                             }
 
@@ -364,7 +366,8 @@
                                     color="primary"
                                     (click)="updateReport()"
                                 >
-                                    Siguiente <mat-icon>arrow_forward</mat-icon>
+                                    <!-- Siguiente <mat-icon>arrow_forward</mat-icon> -->
+                                    Siguiente 
                                 </button>
                             }
 

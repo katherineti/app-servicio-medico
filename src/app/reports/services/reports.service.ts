@@ -44,6 +44,14 @@ export class ReportsService {
   deleteReport(id: string) {
     return this.http.delete<IReport>(`${this.tokenService.endPoint}temp-auditor-reports/${id}`);
   }
+
+  duplicate(id: number) {
+    console.log("id", id)
+    return this.http.post<IReport>(
+      `${this.tokenService.endPoint}temp-auditor-reports/duplicate`,
+      {id: id}
+    );
+  }
   
   /**
    * Genera y descarga un PDF para un reporte de auditoría

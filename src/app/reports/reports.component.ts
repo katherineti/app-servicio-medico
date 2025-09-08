@@ -103,7 +103,7 @@ export class ReportsComponent {
     data.actionEdit=true;
     const ref = this.dialog.open(EditReportComponent, {
       data: data || null,
-      disableClose: true
+      disableClose: false
     });
 
     ref.afterClosed().subscribe(() => {
@@ -213,5 +213,39 @@ export class ReportsComponent {
         console.error('Error al generar el PDF:', err);
       }
     });
+  }
+
+  //Duplicar
+  duplicate_auditReport(id: number){
+  console.log(id)
+
+/*     this.reportsService.duplicate(id).subscribe((element) => {
+      if (element) {
+        this.getAllReports(this.pageIndex, this.pageSize);
+        this.swalService.success();
+      } else {
+        this.swalService.error('Error', 'Error al eliminar el reporte.');
+      }
+    }); */
+    this.reportsService.duplicate(id).subscribe({
+        error: (error) => {
+          console.log("Error ", error)
+          // this.disableButton = false;
+          if(error){
+            this.swalService.closeload();
+            this.swalService.error('Error', error);
+          }else{
+            this.swalService.error('Error', 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.');
+          }
+        },
+        complete: () => {
+          this.swalService.closeload();
+          this.swalService.success();
+          this.getAllReports(this.pageIndex, this.pageSize);
+          // this.disableButton = false;
+          // this.closeDialog();
+        },
+      });
+    
   }
 }

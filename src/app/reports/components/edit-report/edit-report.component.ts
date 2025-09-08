@@ -9,7 +9,7 @@ import { ReportsService } from "../../services/reports.service"
 import { AuthService } from "../../../services/auth.service"
 import { TokenAuth } from "../../../authentication/models/token-auth.model"
 import type { Auditor, ICreateReport, IReport } from "../../interfaces/reports.interface"
-import { MAT_DIALOG_DATA } from "@angular/material/dialog"
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog"
 import { DomSanitizer } from "@angular/platform-browser"
 import { API_URL } from "../../../../../environment"
 import type { AuditorOption } from "../report-form/report-form.component"
@@ -56,7 +56,7 @@ export class EditReportComponent {
   private sanitizer= inject( DomSanitizer)
   private auditoresService= inject(AuditoresService);
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: IReport){
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IReport, public dialogRef: MatDialogRef<EditReportComponent>){
     this.buildAddReportForm();
     this.selectedImages = [];
     this.reportCreated_id = 0;
@@ -236,6 +236,10 @@ export class EditReportComponent {
     this.reportFormGroup.reset()
     // this.getAuditorInSesion();
     this.selectedAdditionalAuditors = []
+
+    if(this.edit){
+      this.closeDialog()
+    }
   }
 
   // Método para manejar cambios en las imágenes desde el componente hijo
@@ -419,5 +423,9 @@ export class EditReportComponent {
     if (!this.showAddAuditorForm) {
       this.reportFormGroup.patchValue({ additionalAuditors: "" })
     }
+  }
+
+  closeDialog(): void | null {
+    this.dialogRef.close({ event: "Cancel" })
   }
 }

@@ -77,9 +77,13 @@
                                 <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                                 Duplicado
                                 </mat-header-cell>
-                                <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
-                                    element.idDuplicate 
-                                }}</mat-cell>
+                                <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">          
+                                    @if (element.idDuplicate) {
+                                       {{ element.idDuplicate}}
+                                    }@else {
+                                        No
+                                    }
+                                </mat-cell>
                             </ng-container>
                         
                             <ng-container matColumnDef="action">
@@ -87,20 +91,27 @@
                                 Acción
                                 </mat-header-cell>
                                 <mat-cell class="p-16 f-s-14 p-r-0 text-right" *matCellDef="let element">
-                                    <button mat-icon-button aria-label="Ver" (click)="openDialogSee(element)">
-                                        <i-feather name="eye"></i-feather>
-                                    </button>
-                                    <!-- @if(element.code.charAt(0) === 'O'){ -->
-                                        <button mat-icon-button aria-label="Imprimir" (click)="generatePdf(element)" [disabled]="isGeneratingPdf">
+                                    @if(element.code.charAt(0) == 'O' || element.status==='Copia editada' || element.status==='Duplicado'){
+                                        <button mat-icon-button aria-label="Ver"  title="Ver" (click)="openDialogSee(element)">
+                                            <i-feather name="eye"></i-feather>
+                                        </button>
+                                        <button mat-icon-button aria-label="Imprimir" title="Imprimir" (click)="generatePdf(element)" [disabled]="isGeneratingPdf">
                                             <i-feather name="Printer"></i-feather>
                                         </button> 
-                                    <!-- } -->
+                                        
+                                        @if( !(element.status==='Duplicado')){
+                                            <button mat-icon-button aria-label="Duplicar" title="Duplicar" (click)="duplicate_auditReport(element.id)">
+                                                <i-feather name="copy"></i-feather>
+                                            </button>
+                                        }
+                                    }
+  
                                     @if (this.role === "admin" || this.role === "admin RRHH" ) {
-                                        @if(element.code.charAt(0) === 'D'){
-                                            <button mat-icon-button aria-label="Editar" (click)="openDialogEdit(element)">
+                                        @if(element.code.charAt(0) == 'D' && element.status!='Copia editada' && element.status!='Duplicado'){ <!--Si es una copia de un reporte de auditoria, editado, ya no se podran mostrar los botones de Editar,Eliminar. Las copias de reportes solo se podran editar una vez-->
+                                            <button mat-icon-button aria-label="Editar" title="Editar" (click)="openDialogEdit(element)">
                                                <i-feather name="edit" class="big fill-red icon-18"></i-feather>
                                            </button>
-                                           <button mat-icon-button aria-label="Eliminar" (click)="deleteReport(element)">
+                                           <button mat-icon-button aria-label="Eliminar" title="Inhabilitar" (click)="deleteReport(element)">
                                                <i-feather name="Trash2" class="big fill-red icon-18"></i-feather>
                                            </button>
                                         }

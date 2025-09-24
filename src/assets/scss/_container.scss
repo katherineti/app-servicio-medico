@@ -7,10 +7,16 @@
 }
 
 body {
-  font-family: $font-family;
+  // font-family: $font-family;
+  font-family: Georama !important;
   line-height: 1.334rem;
   overflow-x: hidden;
   color: var(--mat-sys-on-background);
+
+  mat-card-title,mat-card-subtitle, div, button, table .mat-mdc-header-cell, table .mat-mdc-cell, form, mat-label, .mat-dialog-container, .mat-mdc-dialog-title, .mat-mdc-list-item,
+  mat-list-item span , a.mat-mdc-list-item .mat-mdc-list-item-unscoped-content{
+    font-family: Georama !important;
+  }
 }
 
 .app-topstrip{

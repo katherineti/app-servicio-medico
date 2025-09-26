@@ -142,3 +142,8 @@ td.hljs-ln-line.hljs-ln-numbers {
   }
 }
 
+//elimina cursor de texto dentro de los campos de texto de angular material
+.mdc-notched-outline__notch{
+    border-left: 0 !important;
+    // background-color: red;
+}

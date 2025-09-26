@@ -1,7 +1,7 @@
 import { Component, inject, signal } from "@angular/core"
 import { MaterialModule } from "../../../material/material.module"
 import { CommonModule } from "@angular/common"
-import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
+import { AbstractControl, FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from "@angular/forms"
 import { MatDialogRef } from "@angular/material/dialog"
 import { SwalService } from "../../../services/swal.service"
 import { type Category, MedicalSuppliesService } from "../../services/medical-supplies.service"
@@ -20,6 +20,32 @@ import { MY_DATE_FORMATS } from "../../../services/date-format.service"
 import { AuthService } from "../../../services/auth.service"
 import { ProvidersService } from "../../services/providers.service"
 import type { Provider, ProvidersAll } from "../../interfaces/providers.interface"
+
+/**
+ * Validador personalizado para asegurar que la fecha no sea pasada (menor que hoy).
+ */
+export function futureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    // Si no hay valor o el valor no es válido, no valida (deja que Validators.required actúe)
+    if (!control.value) {
+      return null;
+    }
+
+    // El DatePicker de Angular Material devuelve un objeto Date
+    const expirationDate = new Date(control.value);
+    
+    // Configurar la fecha de hoy al inicio del día (00:00:00) para una comparación precisa
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+
+    // Si la fecha de expiración es menor que la de hoy, es inválida.
+    if (expirationDate < today) {
+      return { 'pastDate': true }; // Devuelve el error 'pastDate'
+    }
+
+    return null; // La fecha es válida
+  };
+}
 
 @Component({
   selector: "app-create-medical-supplies",
@@ -110,7 +136,11 @@ export class CreateMedicalSuppliesComponent {
         // Patrón: Letras (a-z, A-Z), Números (0-9), Guiones (-), Puntos (.), y Espacios (\s)
         Validators.pattern(/^[a-zA-Z0-9.\-\s]*$/)
       ]],
-      expirationDate: ["", [Validators.maxLength(50)]],
+      expirationDate: ["", [
+        Validators.maxLength(50),
+        // Aplica el validador personalizado
+        futureDateValidator()
+      ]],
       status: ["", [Validators.required, Validators.maxLength(50)]],
       url_image: [null],
     })

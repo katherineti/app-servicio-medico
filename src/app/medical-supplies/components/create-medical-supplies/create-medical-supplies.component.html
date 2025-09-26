@@ -303,14 +303,28 @@
 
             @if ( createProdFormGroup.controls['type'].value!='' && createProdFormGroup.controls['type'].value != 2 && createProdFormGroup.controls['type'].value != 3) {
               <mat-form-field appearance="outline" class="example-full-width">
-                 <input matInput [matDatepicker]="expirationDate" placeholder="Fecha de vencimiento" formControlName="expirationDate" required="false">
+                 <input 
+                    matInput 
+                    [matDatepicker]="expirationDate" 
+                    placeholder="Fecha de vencimiento" 
+                    formControlName="expirationDate" 
+                    readonly>
                  <mat-hint>DD/MM/YYYY</mat-hint>
                  <mat-datepicker-toggle matIconSuffix [for]="expirationDate"></mat-datepicker-toggle>
                  <mat-datepicker #expirationDate></mat-datepicker>
    
-                 <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('required') || createProdFormGroup.controls['expirationDate'].hasError('maxLength') ">
+                 <!-- <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('required') || createProdFormGroup.controls['expirationDate'].hasError('maxLength') ">
                      La fecha de vencimiento es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
-                 </mat-error>
+                 </mat-error> -->
+
+                <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('maxLength')">
+                    El campo es demasiado largo (máx. 50 caracteres).
+                </mat-error>
+
+                <mat-error *ngIf="createProdFormGroup.controls['expirationDate'].hasError('pastDate')">
+                    La fecha de vencimiento no puede ser anterior al día de hoy. 📅
+                </mat-error>
+
               </mat-form-field>
             }
 

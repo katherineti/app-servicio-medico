@@ -74,6 +74,9 @@
                 <mat-error *ngIf="createProdFormGroup.controls['name'].hasError('required') || createProdFormGroup.controls['name'].hasError('maxLength') ">
                     El nombre es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
                 </mat-error>
+                <mat-error *ngIf="createProdFormGroup.controls['name'].hasError('pattern') && createProdFormGroup.get('name')?.dirty">
+                  El nombre solo debe contener letras y espacios. No se permiten números ni signos.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -112,7 +115,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <!-- Formulario para Agregar Nuevo Empleado -->
+            <!-- Formulario para Agregar Nuevo Proveedor -->
             @if (showAddProviderForm) {
                 <mat-card class="nested-form-card">
                   <mat-card-header>
@@ -135,9 +138,17 @@
                                   <ng-container *ngIf="providerForm.controls['name'].hasError('maxlength')">
                                       No puede tener más de 200 caracteres.
                                   </ng-container>
-                              </mat-error>
-                            </mat-form-field>
-        
+                                  <ng-container *ngIf="providerForm.controls['name'].hasError('pattern') && providerForm.controls['name']?.dirty">
+                                      <!-- El nombre solo puede contener letras, números, espacios y los signos: (. , - &) -->
+                                      El nombre solo puede contener letras, números, espacios y los signos: punto (.), coma (,), guion (-) y ampersand (&).
+                                    </ng-container>
+                                  </mat-error>
+                                </mat-form-field>
+                                
+                            <div class="p-t-16"
+                              *ngIf="providerForm.controls['name'].hasError('pattern') && providerForm.controls['name']?.dirty">
+                            </div>
+
                             <!-- Email del proveedor -->
                             <mat-form-field appearance="outline" class="example-full-width">
                               <!-- <mat-label>email</mat-label> -->
@@ -249,17 +260,25 @@
                 formControlName="stock"
                 required="true"
                 type="number"
+                step="1"
                 />
-                <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('required') || createProdFormGroup.controls['stock'].hasError('maxLength')">
+                <!-- <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('required') || createProdFormGroup.controls['stock'].hasError('maxLength')">
                     El stock es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 3 caracteres</span>.
+                </mat-error> -->
+                <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('required')">
+                  El stock es requerido.
                 </mat-error>
-                <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('maxLength')">
-                    El stock como máximo puede tener 3 caracteres.
+                <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('pattern') && createProdFormGroup.controls['stock']?.dirty">
+                  El stock debe ser un número entero sin decimales.
+                </mat-error>
+                <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('min')">
+                  El stock no puede ser negativo (valor mínimo 0).
                 </mat-error>
                 <mat-error *ngIf="createProdFormGroup.controls['stock'].hasError('max')">
-                    El stock como máximo puede tener un valor de 100.
+                    El stock no puede exceder el valor máximo de 100.
                 </mat-error>
             </mat-form-field>
+
             <mat-form-field appearance="outline" class="example-full-width">
                 <input
                 matInput
@@ -268,8 +287,17 @@
                 required="true"
                 type="text"
                 />
-                <mat-error *ngIf="createProdFormGroup.controls['code'].hasError('required') || createProdFormGroup.controls['code'].hasError('maxLength') ">
-                    El código es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+              <!--   <mat-error *ngIf="createProdFormGroup.controls['code'].hasError('required') || createProdFormGroup.controls['code'].hasError('maxLength') ">
+                  El código es requerido<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+                </mat-error> -->
+                <mat-error *ngIf="createProdFormGroup.controls['code'].hasError('required')">
+                  El código es requerido.
+                </mat-error>
+                <mat-error *ngIf="createProdFormGroup.controls['code'].hasError('maxlength') || createProdFormGroup.controls['code'].hasError('minlength')">
+                  El código debe tener entre 3 y 50 caracteres.
+                </mat-error>
+                <mat-error *ngIf="createProdFormGroup.controls['code'].hasError('pattern') && createProdFormGroup.controls['code']?.dirty">
+                  El código solo puede contener letras, números, espacios, guiones y puntos.
                 </mat-error>
             </mat-form-field>
 

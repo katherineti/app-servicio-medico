@@ -133,23 +133,41 @@ export class EditMedicalSuppliesComponent {
 
   buildForm() {
     this.editProdFormGroup = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.maxLength(50)]],
-      providerId: [null, [Validators.required]],
-      description: ["", [Validators.required, Validators.maxLength(50)]],
-      category: ["", [Validators.required, Validators.maxLength(50)]],
-      type: ["", [Validators.required, Validators.maxLength(50)]],
-      stock: [0, [Validators.required, Validators.maxLength(3), Validators.max(100)]],
-      code: ["", [Validators.required, Validators.maxLength(50)]],
-      expirationDate: [
-        "",
-        [
-          // Validators.required,
-          Validators.maxLength(50),
-        ],
-      ],
-      status: ["", [Validators.required, Validators.maxLength(50)]],
-      url_image: [null],
-    })
+          name: [
+            "", [
+              Validators.required, 
+              Validators.maxLength(50), 
+              // Esta RegEx permite: [a-zA-Z] letras, [áéíóúÁÉÍÓÚñÑ] acentos/eñes, [\s] espacios
+              Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/)
+            ]
+          ],
+          providerId: [null, [Validators.required]],
+          description: ["", [Validators.required, Validators.maxLength(50)]],
+          category: ["", [Validators.required, Validators.maxLength(50)]],
+          type: ["", [Validators.required, Validators.maxLength(50)]],
+          stock: [0, [
+            Validators.required, 
+            Validators.max(100),
+            Validators.min(0),
+            // Permite solo dígitos (números enteros)
+            Validators.pattern(/^[0-9]*$/)
+           ]
+          ],
+          code: ["", [
+            Validators.required, 
+            Validators.maxLength(50),
+            Validators.minLength(3),
+            // Patrón: Letras (a-z, A-Z), Números (0-9), Guiones (-), Puntos (.), y Espacios (\s)
+            Validators.pattern(/^[a-zA-Z0-9.\-\s]*$/)
+          ]],
+          expirationDate: ["", [
+            Validators.maxLength(50),
+            // Aplica el validador personalizado
+            // futureDateValidator()
+          ]],
+          status: ["", [Validators.required, Validators.maxLength(50)]],
+          url_image: [null],
+        })
 
     // Provider form for adding new providers
     this.providerForm = this.formBuilder.group({

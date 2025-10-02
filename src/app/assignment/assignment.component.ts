@@ -9,8 +9,10 @@ import  { AssignmentService } from "./services/assignment.service"
 import { toast } from "ngx-sonner"
 import { FeatherIconsModule } from "../feathericons/feathericons.module"
 import { MatIconModule } from "@angular/material/icon"
-import { BaseAssignmentLogic, noSpecialCharactersValidator } from "./base-assignment-logic" // Importa la clase base
+import { BaseAssignmentLogic, noSpecialCharactersValidator, onlyNumbersValidator } from "./base-assignment-logic" // Importa la clase base
 import { AuthService } from "../services/auth.service"
+
+
 
 @Component({
   selector: "app-assignment",
@@ -100,9 +102,11 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
         0,
         [
           Validators.required,
+          onlyNumbersValidator,
           Validators.minLength(0),
           Validators.min(1),
           Validators.max(3), // Initial max for 'employee' type
+          // Validators.pattern('^[0-9]{1,3}$')
         ],
       ],
       employee: ["", [noSpecialCharactersValidator]], // Validators set dynamically

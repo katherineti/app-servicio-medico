@@ -59,6 +59,8 @@
                 formControlName="products"
                 required="true"
                 type="number"
+                min="0"  maxlength="3" step="1"
+                (keypress)="preventNonInteger($event)"
                 />
 <!--                 si
                 <mat-error *ngIf="AssignProductForm.controls['products'].hasError('required') || AssignProductForm.controls['products'].hasError('min') ">
@@ -75,6 +77,12 @@
 
                 <!-- <mat-error *ngIf="AssignProductForm.get('recipient')?.value === 'medico' && AssignProductForm.controls['products'].hasError('required') || AssignProductForm.controls['products'].hasError('min') ">
                     Mínimo de 4 productos para la asignación al médico.
+                </mat-error> -->
+                <mat-error *ngIf="AssignProductForm.controls['products'].hasError('hasSpecialCharacters')">
+                    Solo se permiten números enteros. No use puntos, comas o paréntesis.
+                </mat-error>
+                <!-- <mat-error *ngIf="AssignProductForm.controls['products'].hasError('pattern')">
+                    Solo se permiten números enteros (máximo 3 dígitos).
                 </mat-error> -->
 
                 <mat-error *ngIf="AssignProductForm.controls['products'].hasError('required') && AssignProductForm.get('recipient')?.value === 'employee'">

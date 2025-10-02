@@ -24,6 +24,23 @@ export function noSpecialCharactersValidator(control: AbstractControl): Validati
   return null
 }
 
+// NUEVA FUNCIÓN (o modificación de la existente para solo permitir números)
+export function onlyNumbersValidator(control: AbstractControl): ValidationErrors | null { 
+  const value = control.value;
+  if (!value) {
+    return null;
+  }
+  
+  // Solo permite uno o más dígitos del 0 al 9
+  const onlyNumbersRegex = /^\d+$/; 
+  
+  if (typeof value === "string" && !onlyNumbersRegex.test(value)) {
+    return { hasSpecialCharacters: true };
+  }
+  
+  return null;
+}
+
 export abstract class BaseAssignmentLogic {
   selectedProduct!: IProduct
   disableButton = false
@@ -137,13 +154,25 @@ export abstract class BaseAssignmentLogic {
     const employeeControl = this.controlEmployee
     const medicoControl = this.controlMedico
     const familyControl = this.controlFamily
+    const controlType = this.controlType
+    const controlObservation = this.controlObservation
 
     if (productsControl) {
       productsControl.clearValidators()
+
+      const baseValidators = [
+        Validators.required, 
+        onlyNumbersValidator
+      ];
+
+      productsControl.setValue(null)
+      controlType.setValue(null)
+      controlObservation.setValue(null)
+
       if (recipient === "employee") {
-        productsControl.setValidators([Validators.required, Validators.min(1), Validators.max(3)])
+        productsControl.setValidators([...baseValidators, Validators.min(1), Validators.max(3) ]) //Validators.pattern('^[0-9]{1,3}$') //solo numeros
       } else {
-        productsControl.setValidators([Validators.required, Validators.min(4)])
+        productsControl.setValidators([...baseValidators, Validators.min(4) ])
       }
       productsControl.updateValueAndValidity()
       productsControl.markAsUntouched()
@@ -172,6 +201,14 @@ export abstract class BaseAssignmentLogic {
     }
     employeeControl.updateValueAndValidity()
     medicoControl.updateValueAndValidity()
+
+    //Resetea su estado de interacción a un estado "limpio
+    medicoControl.markAsUntouched()
+    medicoControl.markAsPristine()
+    employeeControl.markAsUntouched()
+    employeeControl.markAsPristine()
+    controlType.markAsUntouched()
+    controlType.markAsPristine()
 
     this.showNewEmployeeForm = false
     // this.showNewDoctorForm = false;
@@ -363,6 +400,24 @@ export abstract class BaseAssignmentLogic {
     } else {
       employeeForm.markAllAsTouched()
       toast.error("Por favor, complete los campos del empleado.")
+    }
+  }
+
+   /**
+   * Función para bloquear caracteres no deseados en tiempo real.
+   * Mantiene el bloqueo de '.', ',', '-', 'e', etc.
+   */
+   preventNonInteger(event: KeyboardEvent) {
+    const regex = /[0-9]/;
+    const key = event.key;
+
+    // Si la tecla NO es un dígito O NO es una tecla de control (Backspace, Flechas, Tab)
+    if (!regex.test(key) &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        key.length === 1
+    ) {
+      event.preventDefault();
     }
   }
 }

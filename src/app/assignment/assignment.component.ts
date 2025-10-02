@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common"
 import { Component, Inject, type OnInit } from "@angular/core"
 import { MaterialModule } from "../material/material.module"
-import {  FormBuilder, FormControl, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
+import {  FormBuilder, FormControl, type FormGroup, FormsModule, ReactiveFormsModule, Validators, type AbstractControl, type ValidationErrors } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog"
 import { map, startWith } from "rxjs"
 import  { SwalService } from "../services/swal.service"
@@ -9,7 +9,7 @@ import  { AssignmentService } from "./services/assignment.service"
 import { toast } from "ngx-sonner"
 import { FeatherIconsModule } from "../feathericons/feathericons.module"
 import { MatIconModule } from "@angular/material/icon"
-import { BaseAssignmentLogic } from "./base-assignment-logic" // Importa la clase base
+import { BaseAssignmentLogic, noSpecialCharactersValidator } from "./base-assignment-logic" // Importa la clase base
 import { AuthService } from "../services/auth.service"
 
 @Component({
@@ -105,8 +105,8 @@ export class AssignmentComponent extends BaseAssignmentLogic implements OnInit {
           Validators.max(3), // Initial max for 'employee' type
         ],
       ],
-      employee: ["", []], // Validators set dynamically
-      medico: ["", []], // Validators set dynamically
+      employee: ["", [noSpecialCharactersValidator]], // Validators set dynamically
+      medico: ["", [noSpecialCharactersValidator]], // Validators set dynamically
       family: [{ value: null, disabled: true }, []],
       type: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
       observation: ["", [Validators.maxLength(200)]],

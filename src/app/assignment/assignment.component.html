@@ -96,7 +96,9 @@
                <div class="employee-selection" class="example-full-width">
                 @if (!showNewEmployeeForm) {
                    <div  class="form-row">
-                       <mat-form-field appearance="outline" class="example-full-width">
+                       <mat-form-field appearance="outline" 
+                            class="example-full-width"
+                            [ngClass]=" {'m-b-15': AssignProductForm.controls['employee'].hasError('hasSpecialCharacters') && AssignProductForm.controls['employee'].touched }">
                            <input type="text" matInput placeholder="Empleado" formControlName="employee" [matAutocomplete]="autoEmployee">
                            <mat-autocomplete #autoEmployee="matAutocomplete" [displayWith]="displayFn">
                              @for (option of filteredEmployeesOptions | async; track option) {
@@ -107,13 +109,16 @@
                            <mat-error *ngIf="AssignProductForm.controls['employee'].hasError('required')">
                                El empleado es requerido.
                            </mat-error>
+                           <mat-error *ngIf="AssignProductForm.controls['employee'].hasError('hasSpecialCharacters')">
+                               No se permiten signos especiales en este campo.
+                           </mat-error>
                            <button 
                            mat-icon-button 
                            matSuffix 
                            type="button" 
                            (click)="toggleNewEmployeeForm()"
                            matTooltip="Agregar nuevo empleado"
-                         >
+                           >
                            <mat-icon>person_add</mat-icon> 
                          </button>
                        </mat-form-field>
@@ -235,7 +240,9 @@
 
              <!-- Campo de selección de Médico (Inventario Móvil)  -->
             @if (AssignProductForm.get('recipient')?.value === 'mobile-warehouse') {
-                <div class="medico-selection" class="example-full-width">
+                <div class="medico-selection" 
+                class="example-full-width"
+                [ngClass]=" {'m-b-15': AssignProductForm.controls['medico'].hasError('hasSpecialCharacters') && AssignProductForm.controls['medico'].touched }">
                     <div  class="form-row">
                         <mat-form-field appearance="outline" class="example-full-width">
                             <input type="text" matInput placeholder="Médico" formControlName="medico" [matAutocomplete]="autoMedico">
@@ -248,6 +255,9 @@
                             <mat-error *ngIf="AssignProductForm.controls['medico'].hasError('required')">
                                 El médico es requerido.
                             </mat-error>
+                           <mat-error *ngIf="AssignProductForm.controls['medico'].hasError('hasSpecialCharacters')">
+                               No se permiten signos especiales en este campo.
+                           </mat-error>
 <!--                              Botón para agregar nuevo médico (comentado según tu solicitud) 
                              <button 
                             mat-icon-button 

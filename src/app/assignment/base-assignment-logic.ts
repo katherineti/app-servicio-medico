@@ -1,4 +1,4 @@
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { map, Observable, of, startWith, switchMap } from 'rxjs';
 import { SwalService } from '../services/swal.service';
 import { AssignmentService } from './services/assignment.service';
@@ -6,6 +6,23 @@ import { toast } from 'ngx-sonner';
 import { ICreateFamily, IEmployee, IEmployeeFamily, ITypesAssignment } from './intefaces/assignment.interface';
 import { IProduct } from '../medical-supplies/interfaces/medical-supplies.interface';
 import { IUser } from '../users/interfaces/users.interface';
+
+export function noSpecialCharactersValidator(control: AbstractControl): ValidationErrors | null { 
+  console.log("Validador: control.value" , control.value)
+  if (!control.value) {
+    return null
+  }
+
+  const value = typeof control.value === "string" ? control.value : ""
+  // Solo permite: letras (a-z, A-Z), números (0-9), espacios, guiones (-), comas (,) y puntos (.)
+  const allowedCharactersRegex = /^[a-zA-Z0-9\s,.\-]+$/
+
+  if (!allowedCharactersRegex.test(value)) {
+    return { hasSpecialCharacters: true }
+  }
+
+  return null
+}
 
 export abstract class BaseAssignmentLogic {
   selectedProduct!: IProduct
@@ -115,7 +132,7 @@ export abstract class BaseAssignmentLogic {
       })
   }
 
-  updateFormOnRecipientChange(recipient: "employee" | "mobile-warehouse") {
+  updateFormOnRecipientChange(recipient: "employee" | "mobile-warehouse") { console.log("cambio el destinariop***")
     const productsControl = this.controlProducts
     const employeeControl = this.controlEmployee
     const medicoControl = this.controlMedico
@@ -139,12 +156,16 @@ export abstract class BaseAssignmentLogic {
     this.listFamily = []
 
     if (recipient === "employee") {
-      employeeControl.setValidators([Validators.required])
+      const currentValidators = employeeControl.validator ? [employeeControl.validator] : []
+      // employeeControl.setValidators([Validators.required])
+      // employeeControl.setValidators([Validators.required, ...currentValidators])
+      employeeControl.setValidators([Validators.required, noSpecialCharactersValidator])
       medicoControl.clearValidators()
       medicoControl.disable()
       employeeControl.enable()
     } else {
-      medicoControl.setValidators([Validators.required])
+      const currentValidators = medicoControl.validator ? [medicoControl.validator] : []
+      medicoControl.setValidators([Validators.required, noSpecialCharactersValidator])
       employeeControl.clearValidators()
       employeeControl.disable()
       medicoControl.enable()

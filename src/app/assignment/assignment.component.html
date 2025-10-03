@@ -52,14 +52,23 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width"
+            [ngClass]=" {
+            'm-b-15': AssignProductForm.controls['products'].touched && 
+                 (
+                    AssignProductForm.controls['products'].hasError('required') || 
+                    AssignProductForm.controls['products'].hasError('min') || 
+                    AssignProductForm.controls['products'].hasError('max')  || 
+                    AssignProductForm.controls['products'].hasError('hasSpecialCharacters') 
+                )
+            }">
                 <input
                 matInput
                 [placeholder]="AssignProductForm.get('recipient')?.value === 'employee' ? 'Número de productos (máx. 3)' : 'Número de productos (mín. 4)'"
                 formControlName="products"
                 required="true"
                 type="number"
-                min="0"  maxlength="3" step="1"
+                min="0" maxlength="3" step="1"
                 (keypress)="preventNonInteger($event)"
                 />
 <!--                 si

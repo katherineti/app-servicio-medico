@@ -62,7 +62,15 @@
             />
           </div>
           <div class="row p-10">
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width"
+              [ngClass]=" {'m-b-20':  editProdFormGroup.controls['name'].touched &&
+                (
+                  editProdFormGroup.controls['name'].hasError('required') ||
+                  editProdFormGroup.controls['name'].hasError('maxLength') ||
+                  editProdFormGroup.controls['name'].hasError('pattern')
+                )
+              }"
+            >
                 <input
                 matInput
                 placeholder="Nombre"
@@ -82,9 +90,9 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
-                <mat-label>Proveedor</mat-label>
-                
+            <mat-form-field appearance="outline" class="example-full-width"
+                [ngClass]=" {'m-b-15': editProdFormGroup.controls['providerId'].hasError('pattern') && editProdFormGroup.controls['providerId'].touched }">
+                <mat-label>Proveedor</mat-label>                
                 <input 
                     type="text"
                     matInput
@@ -92,8 +100,7 @@
                     formControlName="providerId"
                     [matAutocomplete]="auto"
                     required
-                />
-                
+                />                
                 <button 
                     mat-icon-button 
                     matSuffix 
@@ -103,7 +110,7 @@
                     tabindex="-1"
                     *ngIf="this.edit"
                 >
-                  <mat-icon>person_add</mat-icon> 
+                <mat-icon>person_add</mat-icon> 
                 </button>
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -114,8 +121,11 @@
                 <mat-error *ngIf="editProdFormGroup.controls['providerId'].hasError('required')">
                     El proveedor es requerido
                 </mat-error>
-                <mat-error *ngIf="editProdFormGroup.get('providerId')?.hasError('maxlength')">
+                 <mat-error *ngIf="editProdFormGroup.get('providerId')?.hasError('maxlength')">
                     Máximo de 50 caracteres.
+                </mat-error> 
+                <mat-error *ngIf="editProdFormGroup.get('providerId')?.hasError('pattern')">
+                  El proveedor solo puede contener letras, números, espacios y los símbolos: ., - & / ( )
                 </mat-error>
             </mat-form-field>
 
@@ -197,7 +207,9 @@
                 </mat-card>
             }
             
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width"
+              [ngClass]=" {'m-b-15': editProdFormGroup.controls['description'].touched && ( editProdFormGroup.controls['description'].hasError('required') || editProdFormGroup.controls['description'].hasError('maxLength') ) }"
+            >
                 <input
                 matInput
                 placeholder="Descripción"
@@ -206,7 +218,8 @@
                 type="text"
                 />
                 <mat-error *ngIf="editProdFormGroup.controls['description'].hasError('required') || editProdFormGroup.controls['description'].hasError('maxLength') ">
-                    La descripción es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>.
+                    <!-- La descripción es requerida<span class="ocultar-en-movil-tablet m-l-5"> y como máximo puede tener 50 caracteres</span>. -->
+                    La descripción es requerida y como máximo puede tener 50 caracteres.
                 </mat-error>
             </mat-form-field>
 
@@ -264,13 +277,16 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width"
+              [ngClass]=" {'m-b-15': editProdFormGroup.controls['stock'].hasError('max') && editProdFormGroup.controls['stock'].touched }">
                 <input
                 matInput
                 placeholder="Stock"
                 formControlName="stock"
                 required="true"
                 type="number"
+                min="0" maxlength="3" step="1"
+                (keypress)="preventNonInteger($event)"
                 />
 
                 <mat-error *ngIf="editProdFormGroup.controls['stock'].hasError('required')">

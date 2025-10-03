@@ -141,7 +141,7 @@ export class EditMedicalSuppliesComponent {
               Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/)
             ]
           ],
-          providerId: [null, [Validators.required]],
+          providerId: [null, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.,\-&/()]{3,100}$/) ]],
           description: ["", [Validators.required, Validators.maxLength(50)]],
           category: ["", [Validators.required, Validators.maxLength(50)]],
           type: ["", [Validators.required, Validators.maxLength(50)]],
@@ -706,6 +706,24 @@ export class EditMedicalSuppliesComponent {
   handleImageError(): void {
     this.imageError = true
     this.imgBase64.set("../../assets/images/products/default_product_image.png")
+  }
+
+   /**
+   * Función para bloquear caracteres no deseados en tiempo real.
+   * Mantiene el bloqueo de '.', ',', '-', 'e', etc.
+   */
+   preventNonInteger(event: KeyboardEvent) {
+    const regex = /[0-9]/;
+    const key = event.key;
+
+    // Si la tecla NO es un dígito O NO es una tecla de control (Backspace, Flechas, Tab)
+    if (!regex.test(key) &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        key.length === 1
+    ) {
+      event.preventDefault();
+    }
   }
 
   ngOnDestroy(): void {

@@ -44,14 +44,14 @@
                                  element.cedula | titlecase
                              }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="birthdate" >
+<!--                          <ng-container matColumnDef="birthdate" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Fecha de Nacimiento
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
                                  element.birthdate | date:'dd-MM-yyyy'
                              }}</mat-cell>
-                         </ng-container>
+                         </ng-container> -->
                          <ng-container matColumnDef="age" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Edad
@@ -74,12 +74,12 @@
                                 } 
                             </mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="civilStatus" >
+<!--                          <ng-container matColumnDef="civilStatus" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Estado Civil
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
-                                <!-- {{ element.civilStatus | titlecase }} -->
+                                <!-- {{ element.civilStatus | titlecase }} - ->
                                 @if(element.civilStatus === 'S'){
                                     Soltero(a)
                                 }
@@ -93,15 +93,15 @@
                                     Divorciado/a
                                 }
                              </mat-cell>
-                         </ng-container>
-                         <ng-container matColumnDef="children" >
+                         </ng-container> -->
+<!--                          <ng-container matColumnDef="children" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Hijos
                              </mat-header-cell>
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">{{
                                  element.children
                              }}</mat-cell>
-                         </ng-container>
+                         </ng-container> -->
                          <ng-container matColumnDef="phone" >
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Teléfono
@@ -117,7 +117,7 @@
                              <mat-cell class="p-16" *matCellDef="let element" class="f-s-14">
                              {{ element.email }}</mat-cell>
                          </ng-container>
-                         <ng-container matColumnDef="isActive">
+<!--                          <ng-container matColumnDef="isActive">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                                  Estado
                              </mat-header-cell>
@@ -128,7 +128,7 @@
                                      Inactivo
                                    }
                              </mat-cell>
-                         </ng-container>  
+                         </ng-container> -->  
                          <ng-container matColumnDef="createdAt">
                              <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
                              Fecha

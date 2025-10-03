@@ -53,8 +53,8 @@ export class PatientsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt','action' ]
-    : [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt','action' ];
+    ? [ 'name', 'cedula', 'age', 'gender', 'phone', 'email', 'createdAt', 'action' ]
+    : [ 'name', 'cedula', 'age', 'gender', 'phone', 'email', 'createdAt', 'action' ];
     });
     
     this.dataSource['length'] = 0;

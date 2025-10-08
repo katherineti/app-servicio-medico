@@ -19,7 +19,10 @@ import { ModalLinksComponent } from '../modal-links/modal-links.component';
 
 @Component({
   selector: "app-login",
-  imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, ModalLinksComponent],
+  imports: [
+    CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, 
+    // ModalLinksComponent
+  ],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.scss",
   providers: [LoginService, SwalService],

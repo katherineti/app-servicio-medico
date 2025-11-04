@@ -30,7 +30,7 @@ export class AuthService {
   sessionExpiredGracePeriod$ = this.sessionExpiredGracePeriodSubject.asObservable()
 
   constructor( readonly swalService: SwalService) {
-      this.startSessionMonitor();
+      // this.startSessionMonitor();
   }
 
   // Nuevo método síncrono para obtener el token en texto plano de localStorage
@@ -72,15 +72,18 @@ export class AuthService {
     const token = await this.getToken();
     if (token) {
       const tokenIsExpirated = this.tokenIsExpirated(token);
+      // console.log("tokenIsExpirated? ", tokenIsExpirated)
       if (tokenIsExpirated) {
-        this.clearToken();
+        this.clearLocalSession();
         this.swalService.expiredSession();
       }
+      // console.log("!tokenIsExpirated ",  !tokenIsExpirated)
       return !tokenIsExpirated;
     }
     return false;
   }
-    clearToken() {
+
+  clearLocalSession() {
     localStorage.removeItem('token');
   }
 
@@ -169,7 +172,7 @@ export class AuthService {
     this.gracePeriodActive = false
   }
 
-  private startSessionMonitor(): void {
+/*   private startSessionMonitor(): void {
     this.destroy$.next()
     this.destroy$ = new Subject<void>()
 
@@ -191,7 +194,8 @@ export class AuthService {
 
         const tokenIsExpired = this.tokenIsExpirated(decodedToken)
 
-        if (tokenIsExpired) {console.log("tokenIsExpired")
+        if (tokenIsExpired) {
+          // console.log("tokenIsExpired")
           if (!this.gracePeriodActive) {
             // El token ha expirado, inicia el período de gracia
             this.gracePeriodActive = true
@@ -216,9 +220,10 @@ export class AuthService {
           }
         }
       })
-  }
+  } */
 
-  async extendSession(): Promise<void> {console.log("Extendiendo sesión...")
+/*   async extendSession(): Promise<void> {
+    console.log("Extendiendo sesión...")
     const loadingToast = this.snackBar.open("Extendiendo sesión...", "", {
       duration: undefined,
       horizontalPosition: "center",
@@ -236,12 +241,12 @@ export class AuthService {
       this.snackBar.open("Sesión extendida correctamente", "Cerrar", {
         duration: 3000,
 /*         horizontalPosition: "end",
-        verticalPosition: "top", */
+        verticalPosition: "top", * /
         horizontalPosition: "center",
         verticalPosition: "bottom",
       })
       this.clearGracePeriod() // Limpia el período de gracia si la extensión es exitosa
-      this.startSessionMonitor() // Reinicia el monitoreo con el nuevo token
+      // this.startSessionMonitor() // Reinicia el monitoreo con el nuevo token
     } catch (error: any) {
       loadingToast.dismiss()
       this.snackBar.open(`Error al extender la sesión: ${error.message || "Error desconocido"}`, "Cerrar", {
@@ -253,7 +258,7 @@ export class AuthService {
       console.error("Error extending session:", error)
       await this.logout() // Si falla la extensión, cierra la sesión
     }
-  }
+  } */
 
   ngOnDestroy(): void {
     this.destroy$.next()
@@ -280,6 +285,38 @@ export class AuthService {
     } else {
       await this.logout();
       return null as any;
+    }
+  }
+
+  //nuevo
+/**
+   * Verifica si el usuario tiene un token y si este no ha expirado.
+   * @returns true si el token es válido y no ha expirado.
+   */
+  public isLoggedIn(): boolean {
+    // const token =  this.getToken();
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false; // El token no existe
+    }
+
+    try {
+      // 1. Decodificar el token para obtener sus datos (claims)
+      const decodedToken: { exp: number } = this.jwt_decode(token);
+      
+      // 2. Obtener el tiempo de expiración (exp) y el tiempo actual
+      const expirationTime = decodedToken.exp * 1000; // El 'exp' está en segundos, lo convertimos a milisegundos
+      const currentTime = new Date().getTime();
+
+      // 3. Comparar: si el tiempo actual es menor que el tiempo de expiración, el token es válido.
+      return expirationTime > currentTime;
+
+    } catch (error) {
+      // Manejar el caso de un token mal formado o corrupto
+      console.error('Error al decodificar el token:', error);
+      this.clearLocalSession(); // Limpiar el token malo
+      return false;
     }
   }
 

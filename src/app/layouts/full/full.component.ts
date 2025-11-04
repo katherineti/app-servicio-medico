@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from '../../services/core.service';
@@ -15,7 +15,7 @@ import { navItems, navItemsAdmin, navItemsAlmacen2Movil, navItemsMedico } from '
 import { MaterialModule } from '../../material/material.module';
 import { FeatherIconsModule } from '../../feathericons/feathericons.module';
 import { AuthService } from '../../services/auth.service';
-
+import { IdleService } from '../../services/idle.service';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -35,14 +35,12 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
   templateUrl: './full.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class FullComponent implements OnInit {
+export class FullComponent implements OnInit, OnDestroy {
   navItems = navItemsAdmin;
-
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav = new MatSidenav;
   resView = false;
   @ViewChild('content', { static: true }) content!: MatSidenavContent;
-  //get options from service
   options: any;
   private layoutChangesSubscription = Subscription.EMPTY;
   private isMobileScreen = false;
@@ -50,6 +48,13 @@ export class FullComponent implements OnInit {
   private isCollapsedWidthFixed = false;
   private htmlElement!: HTMLHtmlElement;
   private role:string='';
+
+// Variables para mostrar en la vista el tiempo para el cierre por inactividad
+  public minutes: number = 5;
+  public seconds: number = 0;
+  public isLoggedIn: boolean = false; // Asume que esto viene de tu AuthService
+  private timeSubscription: Subscription | undefined;
+  private timeoutSubscription: Subscription | undefined;
 
   get isOver(): boolean {
     return this.isMobileScreen;
@@ -60,7 +65,7 @@ export class FullComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
 
-  constructor() {
+  constructor(private idleService: IdleService) {
     this.options = this.settings.getOptions();
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -98,21 +103,42 @@ export class FullComponent implements OnInit {
     rol admin RRHH: administrador secundario para la gerencia de Recursos Humanos
     */
   async ngOnInit(): Promise<void> {
-    this.role = await this.authService.getRol();
-    if( this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'auditor' ){
-      this.navItems = navItemsAdmin;
-    }else if(this.role === 'almacen movil'){
-      this.navItems = navItemsAlmacen2Movil;
-    }else if(this.role === 'medico' || this.role === 'enfermero(a)'){
-      this.navItems = navItemsMedico;
-    }else{
-      this.navItems = navItems; //almacen1 admin
-    }
-   }
+    //Monitoreo de inactividad. 🔔 Suscribirse al evento de tiempo agotado del servicio de inactividad
+        console.log("En el full.component.ts")
+        // 1. 🔔 Suscribirse al tiempo restante
+        this.timeSubscription = this.idleService.timeRemaining$.subscribe(totalSeconds => {
+          // Convertir el total de segundos en minutos y segundos para el display
+          this.minutes = Math.floor(totalSeconds / 60);
+          this.seconds = totalSeconds % 60;
+        });
 
-  ngOnDestroy() {
-    this.layoutChangesSubscription.unsubscribe();
+        // 2. 🔔 Suscribirse al evento de timeout (cierre de sesión)
+        this.timeoutSubscription = this.idleService.onTimeout.subscribe(() => {
+          this.handleLogout();
+        });
+        
+        // Asume que solo inicias el monitoreo si el usuario está logueado
+        this.isLoggedIn = this.authService.isLoggedIn();
+        if (this.isLoggedIn) {
+            this.idleService.startMonitoring();
+        }
+
+    //gestion de menu
+        this.role = await this.authService.getRol();
+        if( this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'auditor' ){
+          this.navItems = navItemsAdmin;
+        }else if(this.role === 'almacen movil'){
+          this.navItems = navItemsAlmacen2Movil;
+        }else if(this.role === 'medico' || this.role === 'enfermero(a)'){
+          this.navItems = navItemsMedico;
+        }else{
+          this.navItems = navItems; //almacen1 admin
+        }
   }
+
+/*   ngOnDestroy() {
+    this.layoutChangesSubscription.unsubscribe();
+  } */
 
   toggleCollapsed() {
     this.isContentWidthFixed = false;
@@ -132,6 +158,37 @@ export class FullComponent implements OnInit {
     this.isCollapsedWidthFixed = !this.isOver;
     this.options.sidenavOpened = isOpened;
     this.settings.setOptions(this.options);
+  }
+
+  //Monitoreo de inactividad
+  /**
+   * Lógica para cerrar la sesión (Logout).
+   */
+  private handleLogout(): void {
+    console.log('¡5 minutos de inactividad! Cerrando sesión...');
+    
+    // 1. 📞 Llamada a NestJS: Invalidar el token/sesión en el servidor
+    try {
+      this.authService.logout()
+        // 2. 🧹 Limpiar sesión y redirigir
+        this.authService.clearLocalSession(); // Elimina el token del localStorage
+        this.router.navigate(['/login']);
+    } catch (error) {
+        // Aún si la llamada al servidor falla, limpiamos por seguridad.
+        console.error('Error al cerrar sesión en el servidor, limpiando localmente.', error);
+        this.authService.clearLocalSession(); 
+        this.router.navigate(['/login']);
+    }
+
+  }
+  
+  ngOnDestroy(): void {
+    this.layoutChangesSubscription.unsubscribe();
+    
+    //Monitoreo de inactividad
+    this.timeSubscription!.unsubscribe();
+    this.timeoutSubscription!.unsubscribe();
+    this.idleService.stopMonitoring();
   }
 
 }

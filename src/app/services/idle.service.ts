@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, merge, Subject, Subscription, timer } from 'rxjs';
-import { debounceTime, switchMap, startWith } from 'rxjs/operators';
+import { fromEvent, interval, merge, Subject, Subscription, timer } from 'rxjs';
+import { debounceTime, switchMap, startWith, takeWhile, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdleService {
   // 5 minutos * 60 segundos/minuto * 1000 ms/segundo
-  private readonly IDLE_TIMEOUT_MS = 5 * 60 * 1000; 
+  private readonly IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutos
+  // Mantenemos el timeout en milisegundos para la lógica principal
+  private readonly IDLE_TIMEOUT_SECONDS = this.IDLE_TIMEOUT_MS / 1000; // 300 segundos
+
+  // Subject para emitir el tiempo restante (en segundos)
+  public timeRemaining$ = new Subject<number>(); 
+  
+  // Subject para el cierre de sesión
+  public onTimeout = new Subject<void>();// Emitirá cuando se agote el tiempo
 
   private activityEvents$ = merge(
     fromEvent(document, 'mousemove'), // Movimiento del ratón
@@ -18,7 +26,6 @@ export class IdleService {
   );
 
   private idleSubscription: Subscription | null = null;
-  public onTimeout = new Subject<void>(); // Emitirá cuando se agote el tiempo
 
   constructor() {
     this.startMonitoring();
@@ -33,18 +40,35 @@ export class IdleService {
     }
 
     this.idleSubscription = this.activityEvents$.pipe(
-      // Evita un 'reset' inmediato si hay muchos eventos seguidos.
       debounceTime(500), 
-      // Emite un valor inicial para que el temporizador comience inmediatamente al inicio.
       startWith(null), 
-      // Reinicia el temporizador de 5 minutos cada vez que hay actividad.
-      // Si el temporizador finaliza, el 'subscribe' se ejecuta.
-      switchMap(() => timer(this.IDLE_TIMEOUT_MS))
-    ).subscribe(() => {
-      // El temporizador terminó sin actividad: ¡El usuario está inactivo!
-      this.onTimeout.next(); 
-      this.stopMonitoring(); // Detenemos el monitoreo hasta que se reinicie la sesión
-    });
+      
+      // 🎯 NUEVA LÓGICA: Combina el reinicio y el cronómetro.
+      switchMap(() => {
+        // En cada actividad, iniciamos un nuevo cronómetro inverso
+        
+        // El operador 'interval(1000)' emite un valor cada 1 segundo.
+        return interval(1000).pipe(
+          // 'takeWhile' detiene el cronómetro cuando el tiempo restante es 0 o menos.
+          takeWhile(count => count <= this.IDLE_TIMEOUT_SECONDS),
+          
+          // 'tap' se usa para calcular y emitir el tiempo restante en cada tic.
+          tap(count => {
+            const remaining = this.IDLE_TIMEOUT_SECONDS - count;
+            this.timeRemaining$.next(remaining);
+            
+            // Si remaining es 0, significa que el tiempo se agotó (la emisión de onTimeout
+            // se puede manejar aquí o en el subscribe principal, esta es la forma más limpia)
+            if (remaining <= 0) {
+              this.onTimeout.next();
+              this.stopMonitoring();
+            }
+          })
+        );
+      })
+    ).subscribe(); // El subscribe principal ahora solo necesita activarse para mantener el pipe vivo
+    
+    console.log(`🟢 Monitoreo iniciado. El contador se muestra en el componente.`);
   }
 
   /**

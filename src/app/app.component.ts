@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
-import { AuthService } from './services/auth.service';
+// import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,9 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'app';
-    private authService = inject(AuthService) // Inyecta AuthService
+   // private authService = inject(AuthService) // Inyecta AuthService
   ngOnInit() {
-    // Suscribirse al evento de sesión a punto de expirar (advertencia previa)
+/*     // Suscribirse al evento de sesión a punto de expirar (advertencia previa)
     this.authService.sessionAboutToExpire$.subscribe(() => {console.log("sessionAboutToExpire$")
       toast.warning("Tu sesión expirará pronto.", {
         description: 'Presiona "Extender" para extender el tiempo de sesión.',
@@ -46,6 +46,6 @@ export class AppComponent {
           console.log("Notificación de sesión expirada se cerró automáticamente (sesión forzada a cerrar).")
         },
       })
-    })
+    }) */
   }
 }

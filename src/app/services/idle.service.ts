@@ -1,3 +1,4 @@
+// Con estos cambios, tu frontend ignorará el exp del token y el IdleService será el único encargado de decidir cuándo ha pasado la inactividad de 5 minutos para forzar el cierre de sesión.
 import { Injectable } from '@angular/core';
 import { fromEvent, interval, merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap, startWith, takeWhile, tap } from 'rxjs/operators';

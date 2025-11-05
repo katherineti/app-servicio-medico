@@ -103,25 +103,24 @@ export class FullComponent implements OnInit, OnDestroy {
     rol admin RRHH: administrador secundario para la gerencia de Recursos Humanos
     */
   async ngOnInit(): Promise<void> {
-    //Monitoreo de inactividad. 🔔 Suscribirse al evento de tiempo agotado del servicio de inactividad
-        console.log("En el full.component.ts")
-        // 1. 🔔 Suscribirse al tiempo restante
-        this.timeSubscription = this.idleService.timeRemaining$.subscribe(totalSeconds => {
-          // Convertir el total de segundos en minutos y segundos para el display
-          this.minutes = Math.floor(totalSeconds / 60);
-          this.seconds = totalSeconds % 60;
-        });
+    // Monitoreo de inactividad.
+    console.log("En el full.component.ts");
+    
+    // 1. 🔔 Suscribirse al tiempo restante y al timeout
+    this.timeSubscription = this.idleService.timeRemaining$.subscribe(totalSeconds => {
+      this.minutes = Math.floor(totalSeconds / 60);
+      this.seconds = totalSeconds % 60;
+    });
 
-        // 2. 🔔 Suscribirse al evento de timeout (cierre de sesión)
-        this.timeoutSubscription = this.idleService.onTimeout.subscribe(() => {
-          this.handleLogout();
-        });
-        
-        // Asume que solo inicias el monitoreo si el usuario está logueado
-        this.isLoggedIn = this.authService.isLoggedIn();
-        if (this.isLoggedIn) {
-            this.idleService.startMonitoring();
-        }
+    this.timeoutSubscription = this.idleService.onTimeout.subscribe(() => {
+      this.handleLogout();
+    });
+    
+    // 2. ⚠️ Verificar y comenzar el monitoreo
+    this.isLoggedIn = this.authService.isLoggedIn(); // Usa la versión SÓLO de chequeo de existencia
+    if (this.isLoggedIn) {
+        this.idleService.startMonitoring();
+    }
 
     //gestion de menu
         this.role = await this.authService.getRol();
@@ -169,10 +168,18 @@ export class FullComponent implements OnInit, OnDestroy {
     
     // 1. 📞 Llamada a NestJS: Invalidar el token/sesión en el servidor
     try {
-      this.authService.logout()
-        // 2. 🧹 Limpiar sesión y redirigir
-        this.authService.clearLocalSession(); // Elimina el token del localStorage
-        this.router.navigate(['/login']);
+    console.log('¡5 minutos de inactividad! Cerrando sesión...');
+      
+      // 1. Detener el monitoreo de inactividad inmediatamente
+      this.idleService.stopMonitoring();
+      
+      // 2. Llamar al método completo de logout que limpia todo y navega.
+      // Tu authService.logout() ya maneja la limpieza y la navegación.
+      this.authService.logout();
+      
+      // **IMPORTANTE**: Quita las líneas redundantes de navegación/limpieza:
+      // this.authService.clearLocalSession(); 
+      // this.router.navigate(['/login']);
     } catch (error) {
         // Aún si la llamada al servidor falla, limpiamos por seguridad.
         console.error('Error al cerrar sesión en el servidor, limpiando localmente.', error);

@@ -1,3 +1,4 @@
+// Con estos cambios, tu frontend ignorará el exp del token y el IdleService será el único encargado de decidir cuándo ha pasado la inactividad de 5 minutos para forzar el cierre de sesión.
 import { Injectable, inject } from "@angular/core"
 import { Router } from "@angular/router"
 import { HttpClient } from "@angular/common/http"
@@ -7,6 +8,7 @@ import { MatSnackBar } from "@angular/material/snack-bar"
 import { TokenService } from "./Token.service"
 import { TokenAuth } from "../authentication/models/token-auth.model"
 import { SwalService } from "./swal.service"
+import { IdleService } from "./idle.service"
 
 @Injectable({
   providedIn: "root",
@@ -29,6 +31,8 @@ export class AuthService {
   private sessionExpiredGracePeriodSubject = new Subject<void>()
   sessionExpiredGracePeriod$ = this.sessionExpiredGracePeriodSubject.asObservable()
 
+  private readonly idleService = inject(IdleService)
+  
   constructor( readonly swalService: SwalService) {
       // this.startSessionMonitor();
   }
@@ -77,7 +81,7 @@ export class AuthService {
         this.clearLocalSession();
         this.swalService.expiredSession();
       }
-      // console.log("!tokenIsExpirated ",  !tokenIsExpirated)
+      console.log("tokenIsExpirated ",  tokenIsExpirated)
       return !tokenIsExpirated;
     }
     return false;
@@ -88,11 +92,15 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
-    localStorage.removeItem("token")
+localStorage.removeItem("token")
     this.destroy$.next()
     this.destroy$.complete()
-    this.destroy$ = new Subject<void>() // Reinicia el Subject para futuras sesiones
-    this.clearGracePeriod() // Limpia cualquier temporizador de gracia pendiente
+    this.destroy$ = new Subject<void>()
+    this.clearGracePeriod()
+    
+    // 🛑 Detener el monitoreo al cerrar sesión
+    this.idleService.stopMonitoring() 
+    
     await this.router.navigateByUrl("/login")
   }
 
@@ -288,12 +296,33 @@ export class AuthService {
     }
   }
 
-  //nuevo
 /**
+ * Verifica si el usuario tiene un token almacenado.
+ * ¡La validez de la sesión por tiempo ahora es responsabilidad del IdleService!
+ * @returns true si el token existe.
+ *  Solo comprueba la existencia del token, ignora el campo 'exp'
+ */
+public isLoggedIn(): boolean {
+  // Simplemente verifica la existencia del token.
+  // La decodificación y el check de expiración (exp) ya NO son necesarios aquí.
+  const token = localStorage.getItem('token');
+  
+  if (token && token.length > 0) {
+      // Si el token existe, se asume que la sesión es válida hasta que el IdleService lo mate.
+      return true;
+  }
+  
+  // Si no hay token, se asume que no está logueado y limpiamos por si acaso.
+  this.clearLocalSession();
+  return false;
+}
+
+  
+/** se usaba cuando en el backend se manejaba la expiracion del token. Pero debido a que se deshabilito entonces se utiliza el metodo de arriba
    * Verifica si el usuario tiene un token y si este no ha expirado.
    * @returns true si el token es válido y no ha expirado.
    */
-  public isLoggedIn(): boolean {
+/*   public isLoggedIn(): boolean {
     // const token =  this.getToken();
     const token = localStorage.getItem('token');
 
@@ -318,6 +347,6 @@ export class AuthService {
       this.clearLocalSession(); // Limpiar el token malo
       return false;
     }
-  }
+  } */
 
 }

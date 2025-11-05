@@ -7,12 +7,12 @@
    <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver"
     (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
 <!-- Contador para el Monitoreo de inactividad del usuario: -->
-    <header>
+<!--     <header>
         <p *ngIf="isLoggedIn">
             Cierre de sesión, por inactividad en: 
             <strong>{{ minutes | number: '2.0' }}:{{ seconds | number: '2.0' }}</strong>
         </p>
-    </header> 
+    </header>  -->
     
     <div class="flex-layout">
       <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>

@@ -49,4 +49,34 @@ export class UsersService {
       `${this.tokenService.endPoint}roles/getRolesActives`
     );
   }  
+
+  //excel
+  exportUsers(format: "xlsx" | "csv", name?: string, cedula?: string, role?: string): Observable<Blob> {
+    const body = {
+      format,
+      name: name || "",
+      cedula: cedula || "",
+      role: role || "all",
+    }
+    return this.http.post(`${this.tokenService.endPoint}/export/download`, body, {
+      responseType: "blob",
+    })
+  }
+
+  exportUsersToExcel(name?: string, cedula?: string, role?: string): Observable<Blob> {
+    return this.exportUsers("xlsx", name, cedula, role)
+  }
+
+  exportUsersToCSV(name?: string, cedula?: string, role?: string): Observable<Blob> {
+    return this.exportUsers("csv", name, cedula, role)
+  }
+
+  downloadFile(blob: Blob, fileName: string): void {
+    const link = document.createElement("a")
+    const url = window.URL.createObjectURL(blob)
+    link.href = url
+    link.download = fileName
+    link.click()
+    window.URL.revokeObjectURL(url)
+  }
 }

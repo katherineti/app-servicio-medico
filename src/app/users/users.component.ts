@@ -186,8 +186,9 @@ export class UsersComponent {
   // ... existing methods ...
 
   exportToExcel(): void {
-    const searchName = this.searchValue?.get("name")?.value || ""
-    const searchCedula = ''//this.searchForm?.get("cedula")?.value || ""
+    // const searchName = this.searchValue?.get("name")?.value || ""
+    const searchName = this.searchValue ? this.searchValue.trim() : '';
+    const searchCedula = '';//this.searchForm?.get("cedula")?.value || ""
 
     this.usersService.exportUsers("xlsx", searchName, searchCedula).subscribe({
       next: (blob: Blob) => {
@@ -203,8 +204,8 @@ export class UsersComponent {
   }
 
   exportToCsv(): void {
-    const searchName = this.searchValue?.get("name")?.value || ""
-    const searchCedula ='' //this.searchForm?.get("cedula")?.value || ""
+    const searchName = this.searchValue ? this.searchValue.trim() : '';
+    const searchCedula = ''; //this.searchForm?.get("cedula")?.value || ""
 
     this.usersService.exportUsers("csv", searchName, searchCedula).subscribe({
       next: (blob: Blob) => {

@@ -58,7 +58,7 @@ export class UsersService {
       cedula: cedula || "",
       role: role || "all",
     }
-    return this.http.post(`${this.tokenService.endPoint}/export/download`, body, {
+    return this.http.post(`${this.tokenService.endPoint}excel/download`, body, {
       responseType: "blob",
     })
   }

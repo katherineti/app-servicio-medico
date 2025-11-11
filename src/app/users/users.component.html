@@ -1,32 +1,35 @@
 <app-header-title [title]="'Usuarios'" ></app-header-title>
-<mat-toolbar style="background-color: white;">
+<div class="toolbar-container"> 
+    <mat-toolbar style="background-color: white;">
+        
+        <div class="search-group"> 
+            <mat-form-field appearance="outline" class="search m-t-20">
+                <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
+            </mat-form-field>
+            
+            <button mat-flat-button color="primary" class="m-l-10 margin-left-none search-button"
+            (click)="getAllUser(this.pageIndex, this.pageSize)">
+                <i-feather name="search"></i-feather>
+            </button>
+        </div>
+        <span class="example-spacer"></span>
 
-    <mat-form-field appearance="outline" class="search m-t-20">
-        <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
-    </mat-form-field>
-    
-    <button mat-flat-button color="primary" class="m-l-10 margin-left-none"
-    (click)="getAllUser(this.pageIndex, this.pageSize)">
-        <i-feather name="search"></i-feather>
-    </button>
+        @if (this.role === "admin" || this.role === "admin RRHH" ) {
+            <div class="action-buttons-group m-t-0 p-t-0" style="padding-top: 0;  margin-top: 0px !important">
+                <button mat-flat-button color="secondary-fixed" (click)="openDialogCreateUser()" class="action-button-m">
+                    Agregar
+                </button>
 
-</mat-toolbar>
-
-@if (this.role === "admin" || this.role === "admin RRHH" ) {
-    <span class="example-spacer"></span>
-    <button mat-flat-button color="secondary-fixed" (click)="openDialogCreateUser()" style="padding: 0 35px;" class="m-l-20">
-        Agregar
-    </button>
-
-    <!-- Added Export to Excel button -->
-    <button mat-flat-button color="accent" (click)="exportToCsv()" style="padding: 0 35px;" class="m-l-20">
-        <i-feather name="download"></i-feather> Exportar Csv
-    </button>
-    <button mat-flat-button color="accent" (click)="exportToExcel()" style="padding: 0 35px;" class="m-l-20">
-        <i-feather name="download"></i-feather> Exportar Excel
-    </button>
-    <br>
-}
+                <button mat-flat-button color="accent" (click)="exportToCsv()" class="action-button-m">
+                    Csv
+                </button>
+                <button mat-flat-button color="accent" (click)="exportToExcel()" class="action-button-m">
+                    Excel
+                </button>
+            </div>
+        }
+    </mat-toolbar>
+</div>
 <br>
 <mat-card class="">
     <mat-card-content>

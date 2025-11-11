@@ -34,3 +34,94 @@ th.mat-column-action, td.mat-column-action {
 .search{
   width: 270px;
 }
+
+
+// --- Estilos para la barra de herramientas y responsive ---
+
+// Contenedor general para la barra de herramientas y botones
+.toolbar-container {
+  display: block; 
+}
+
+// Estilo de la barra de herramientas (Pantalla Grande)
+mat-toolbar {
+  display: flex; 
+  // CORRECCIÓN CLAVE: Alinea a la base para resolver el problema de altura
+  align-items: flex-end; 
+  flex-wrap: wrap; 
+  height: auto !important; 
+  padding: 10px; 
+}
+
+// Estilo del campo de búsqueda en pantalla grande
+.search {
+  flex-grow: 1; 
+  max-width: 300px; 
+  margin-top: 0 !important; 
+}
+
+// Grupo de botones de acción
+.action-buttons-group {
+    display: flex; 
+    gap: 8px; 
+    flex-wrap: wrap; 
+    justify-content: flex-end; 
+    align-items: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+// Media Query para pantallas pequeñas (móviles, hasta 900px)
+@media (max-width: 900px) {
+    // En pantallas pequeñas, forzamos que el mat-toolbar apile sus elementos verticalmente
+    mat-toolbar {
+        flex-direction: column;
+        align-items: flex-start; // Alinea a la izquierda al apilar
+    }
+
+    // El espaciador no debe ocupar espacio verticalmente
+    .example-spacer {
+        display: none; 
+    }
+    
+    // Grupo de Búsqueda: Mantiene el input y el botón en la misma línea
+    .search-group {
+        display: flex;
+        align-items: flex-end; // Alinea el input y el botón a la base
+        width: 100%; // Ocupa todo el ancho disponible
+        margin-bottom: 10px; 
+    }
+
+    // El campo de búsqueda debe ocupar el máximo espacio posible dentro del grupo
+    .search {
+        flex-grow: 1; 
+        max-width: none; 
+        margin-top: 0 !important;
+        
+        // Ajuste específico de Material para evitar padding inferior excesivo
+        .mat-mdc-form-field-wrapper {
+            padding-bottom: 0; 
+        }
+    }
+    
+    // Ajuste del botón de búsqueda
+    .search-button {
+        margin-left: 10px !important; 
+        margin-top: 0 !important; // Eliminar ajuste manual
+        align-self: flex-end; 
+    }
+
+    // El grupo de botones de acción ocupa todo el ancho y los distribuye.
+    .action-buttons-group {
+        width: 100%;
+        justify-content: space-between; 
+        margin-top: 10px;
+    }
+
+    // Asegura que cada botón de acción pueda ocupar el espacio necesario
+    .action-buttons-group button {
+        flex-grow: 1; 
+        margin-left: 0 !important;
+        padding: 6px 15px !important; 
+    }
+}

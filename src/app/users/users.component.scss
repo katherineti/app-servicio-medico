@@ -1,29 +1,37 @@
 table {
     width: 100%;
 }
+
 .example-spacer {
-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
+
 .example-container {
   max-width: 100%;
   overflow: auto;
 }
+
 .mat-column-isActive {
   flex: 0 0 100px;
 }
+
 .mat-column-action {
   flex: 0 0 180px;
   padding-right: 8px;
 }
+
 th.mat-column-action, td.mat-column-action {
   padding-left: 8px;
 }
+
 .mat-mdc-table-sticky-border-elem-right {
   border-left: 1px solid #e0e0e0;
 }
+
 .mat-mdc-table-sticky-border-elem-left {
   border-right: 1px solid #e0e0e0;
 }
+
 //phone
 @media only screen and (max-width: 767px) {
      .mat-column-action {  flex: 0 0 150px; }
@@ -31,10 +39,10 @@ th.mat-column-action, td.mat-column-action {
       flex: 0 0 160px;
     }
 }
-.search{
+
+.search {
   width: 270px;
 }
-
 
 // --- Estilos para la barra de herramientas y responsive ---
 
@@ -43,32 +51,52 @@ th.mat-column-action, td.mat-column-action {
   display: block; 
 }
 
-// Estilo de la barra de herramientas (Pantalla Grande)
+// <CHANGE> Estilo de la barra de herramientas - ALINEA TODOS LOS ELEMENTOS AL MISMO NIVEL
 mat-toolbar {
   display: flex; 
-  // CORRECCIÓN CLAVE: Alinea a la base para resolver el problema de altura
-  align-items: flex-end; 
+  align-items: center;
   flex-wrap: wrap; 
   height: auto !important; 
   padding: 10px; 
+  gap: 8px;
 }
 
-// Estilo del campo de búsqueda en pantalla grande
+// <CHANGE> Estilo del campo de búsqueda - SIN MARGEN SUPERIOR
 .search {
   flex-grow: 1; 
   max-width: 300px; 
-  margin-top: 0 !important; 
+  // margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-// Grupo de botones de acción
+// <CHANGE> Grupo de botones de acción - ALINEADOS AL CENTRO VERTICALMENTE
 .action-buttons-group {
-    display: flex; 
-    gap: 8px; 
-    flex-wrap: wrap; 
-    justify-content: flex-end; 
-    align-items: center;
-    margin-top: 0px;
-    padding-top: 0px;
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+  justify-content: flex-end; 
+  align-items: center;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+// <CHANGE> Botones dentro del grupo - MISMA ALTURA QUE EL INPUT
+.action-buttons-group button {
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// <CHANGE> Input de búsqueda - ALTURA ESTÁNDAR
+.search ::ng-deep .mat-mdc-text-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+.search ::ng-deep .mat-mdc-form-field {
+  width: 100%;
 }
 
 // Media Query para pantallas pequeñas (móviles, hasta 900px)
@@ -76,7 +104,7 @@ mat-toolbar {
     // En pantallas pequeñas, forzamos que el mat-toolbar apile sus elementos verticalmente
     mat-toolbar {
         flex-direction: column;
-        align-items: flex-start; // Alinea a la izquierda al apilar
+        align-items: flex-start;
     }
 
     // El espaciador no debe ocupar espacio verticalmente
@@ -84,44 +112,51 @@ mat-toolbar {
         display: none; 
     }
     
-    // Grupo de Búsqueda: Mantiene el input y el botón en la misma línea
+    // <CHANGE> Grupo de Búsqueda: Mantiene el input y el botón en la misma línea
     .search-group {
         display: flex;
-        align-items: flex-end; // Alinea el input y el botón a la base
-        width: 100%; // Ocupa todo el ancho disponible
-        margin-bottom: 10px; 
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+        gap: 8px;
     }
 
-    // El campo de búsqueda debe ocupar el máximo espacio posible dentro del grupo
+    // <CHANGE> El campo de búsqueda en móvil
     .search {
         flex-grow: 1; 
         max-width: none; 
-        margin-top: 0 !important;
-        
-        // Ajuste específico de Material para evitar padding inferior excesivo
-        .mat-mdc-form-field-wrapper {
-            padding-bottom: 0; 
-        }
+        // margin-top: 0 !important;
+        margin-top: 10px !important;
+        margin-bottom: 0 !important;
     }
     
-    // Ajuste del botón de búsqueda
+    // <CHANGE> Ajuste del botón de búsqueda en móvil
     .search-button {
-        margin-left: 10px !important; 
-        margin-top: 0 !important; // Eliminar ajuste manual
-        align-self: flex-end; 
+        // height: 30px !important;
+        margin-left: 0 !important; 
+        margin-top: -10px !important;
+        align-self: center;
     }
 
-    // El grupo de botones de acción ocupa todo el ancho y los distribuye.
+    // <CHANGE> El grupo de botones de acción en móvil
     .action-buttons-group {
         width: 100%;
-        justify-content: space-between; 
-        margin-top: 10px;
+        justify-content: flex-start;
+        margin-top: 10px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
 
-    // Asegura que cada botón de acción pueda ocupar el espacio necesario
+    // <CHANGE> Botones de acción en móvil con altura consistente
     .action-buttons-group button {
+        height: 40px !important;
         flex-grow: 1; 
         margin-left: 0 !important;
-        padding: 6px 15px !important; 
+        padding: 6px 15px !important;
     }
+}
+
+mat-toolbar.mat-toolbar.mat-toolbar-single-row {
+    margin-top: 0;
+    padding-top: 0;
 }

@@ -3,7 +3,7 @@
     <mat-toolbar style="background-color: white;">
         
         <div class="search-group"> 
-            <mat-form-field appearance="outline" class="search m-t-20">
+            <mat-form-field appearance="outline" class="search m-t-14">
                 <input matInput class="p-b-0" placeholder="Buscar por nombre" [formControl]="searhField" />
             </mat-form-field>
             
@@ -15,7 +15,7 @@
         <span class="example-spacer"></span>
 
         @if (this.role === "admin" || this.role === "admin RRHH" ) {
-            <div class="action-buttons-group m-t-0 p-t-0" style="padding-top: 0;  margin-top: 0px !important">
+            <div class="action-buttons-group m-t-0 p-t-0" style="padding-top: -10;  margin-top: -10px !important">
                 <button mat-flat-button color="secondary-fixed" (click)="openDialogCreateUser()" class="action-button-m">
                     Agregar
                 </button>

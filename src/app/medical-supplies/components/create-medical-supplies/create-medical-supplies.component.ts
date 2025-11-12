@@ -85,6 +85,8 @@ export class CreateMedicalSuppliesComponent {
   showAddProviderForm = false
   providerForm!: FormGroup
 
+  canCreateUniforms: boolean = false;
+
   private authService = inject(AuthService)
   private formBuilder = inject(FormBuilder)
   private swalService = inject(SwalService)
@@ -103,6 +105,12 @@ export class CreateMedicalSuppliesComponent {
 
   async ngOnInit() {
     this.role = await this.authService.getRol()
+    
+    // **Lógica de restricción:**
+    // Solo el Admin RRHH puede ver la opción de Uniformes.
+    const ROL_ADMIN_RRHH = 'admin RRHH';
+    this.canCreateUniforms = this.role === ROL_ADMIN_RRHH;
+
     this.subscribeToExpirationDateChanges()
     this.loadProvidersAndSetupAutocomplete()
   }

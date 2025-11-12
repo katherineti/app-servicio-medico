@@ -245,9 +245,9 @@
                 formControlName="type"
                 required="true"
                 >
-                <mat-option [value]="1">Medicamentos</mat-option>
-                <mat-option [value]="2">Uniformes</mat-option>
-                <mat-option [value]="3">Equipos Odontológicos</mat-option>
+                  <mat-option [value]="1">Medicamentos</mat-option>
+                  <mat-option [value]="2" *ngIf="canCreateUniforms">Uniformes</mat-option>
+                  <mat-option [value]="3">Equipos Odontológicos</mat-option>
                 </mat-select>
                 <mat-error *ngIf="createProdFormGroup.controls['type'].hasError('required')">
                     El tipo es requerido.

@@ -10,7 +10,7 @@ import { CoreService } from '../../../services/core.service';
         src="./assets/logo-ciip.png"
         class="m-2"
         alt="logo ciip"
-        width="150"
+        width="225"
       />
     </a>
   `,

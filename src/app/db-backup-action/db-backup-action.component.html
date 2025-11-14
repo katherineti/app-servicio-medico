@@ -1,4 +1,4 @@
-@if (userRole === 'admin' || userRole === 'adminRRHH' || userRole === 'auditor') {
+@if (userRole === 'admin') {
   <div class="sidebar-fixed-action p-t-16 p-b-16 p-l-20 p-r-20">
     <button mat-flat-button color="primary" class="w-100 m-b-0" (click)="onDownloadDbClick()" [disabled]="isDownloading">
       <div class="icon-text-aligned">

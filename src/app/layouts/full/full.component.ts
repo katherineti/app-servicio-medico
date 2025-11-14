@@ -16,6 +16,7 @@ import { MaterialModule } from '../../material/material.module';
 import { FeatherIconsModule } from '../../feathericons/feathericons.module';
 import { AuthService } from '../../services/auth.service';
 import { IdleService } from '../../services/idle.service';
+import { DbBackupActionComponent } from '../../db-backup-action/db-backup-action.component';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -30,7 +31,9 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
     SidebarComponent,
     NgScrollbarModule,
     HeaderComponent,
-    FeatherIconsModule
+    FeatherIconsModule,
+    //para el Backup de BD
+    DbBackupActionComponent
   ],
   templateUrl: './full.component.html',
   encapsulation: ViewEncapsulation.None
@@ -55,6 +58,8 @@ export class FullComponent implements OnInit, OnDestroy {
   public isLoggedIn: boolean = false; // Asume que esto viene de tu AuthService
   private timeSubscription: Subscription | undefined;
   private timeoutSubscription: Subscription | undefined;
+
+    public userRole: string | null = null; // Propiedad para el rol
 
   get isOver(): boolean {
     return this.isMobileScreen;
@@ -124,6 +129,7 @@ export class FullComponent implements OnInit, OnDestroy {
 
     //gestion de menu
         this.role = await this.authService.getRol();
+        this.userRole = this.role; 
         if( this.role === 'admin' || this.role === 'admin RRHH' || this.role === 'auditor' ){
           this.navItems = navItemsAdmin;
         }else if(this.role === 'almacen movil'){

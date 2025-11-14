@@ -1,0 +1,25 @@
+@if (userRole === 'admin' || userRole === 'adminRRHH' || userRole === 'auditor') {
+  <div class="sidebar-fixed-action p-t-16 p-b-16 p-l-20 p-r-20">
+    <button mat-flat-button color="primary" class="w-100 m-b-0" (click)="onDownloadDbClick()" [disabled]="isDownloading">
+      <div class="icon-text-aligned">
+        <i-feather name="database" class="icon-16 d-flex align-items-center m-r-8"></i-feather>
+        @if (!isDownloading) {
+          <span>Backup DB</span>
+        } @else {
+          <span class="d-flex align-items-center justify-content-center">
+            <mat-spinner diameter="20" class="m-r-8"></mat-spinner>
+            <span>Descargando...</span>
+          </span>
+        }
+      </div>
+    </button>
+
+      @if (isDownloading){
+        <p class="f-s-12 text-center text-muted m-t-8 m-b-0">
+            <!-- Descarga segura para administradores y auditores. -->
+            <!-- <br> -->
+            ⚠️ Requiere PostgreSQL 16 o superior instalado localmente.
+        </p>
+      }
+  </div>
+}

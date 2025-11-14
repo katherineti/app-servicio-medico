@@ -89,6 +89,15 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
     external: true,
     chipClass: 'bg-secondary text-white',
   },
+
+  // --- AÑADIDO: Copia de Seguridad de la Base de Datos (Solo Admin) ---
+/*   {
+    displayName: 'Copia de Seguridad DB',
+    iconName: 'database', // Icono sugerido
+    route: './db-backup', // Ruta sugerida (debes crear el componente y la ruta)
+    external: true,
+    chipClass: 'bg-secondary text-white',
+  }, */
 ];
 export const navItems: NavItem[] = [ //almacen1 admin 
   {

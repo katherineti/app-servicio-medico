@@ -1,0 +1,39 @@
+.sidebar-fixed-action {
+/* Estilos para el contenedor de la acción fija en el sidebar */
+border-top: 1px solid rgba(0, 0, 0, 0.05);
+margin-top: 20px;
+}
+
+/* Ajuste del botón para que se vea bien en el sidebar */
+.mat-mdc-button.mat-primary {
+background-color: #1e88e5 !important; /* Azul primario */
+color: white !important;
+box-shadow: 0 4px 6px rgba(30, 136, 229, 0.25);
+transition: all 0.2s ease-in-out;
+/* Asegura que el contenido esté centrado */
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.mat-mdc-button.mat-primary:hover:not([disabled]) {
+background-color: #1565c0 !important;
+box-shadow: 0 6px 8px rgba(30, 136, 229, 0.35);
+}
+
+.mat-mdc-button[disabled] {
+background-color: #e0e0e0 !important;
+color: #757575 !important;
+box-shadow: none;
+}
+
+mat-spinner {
+/* Color del spinner cuando está dentro del botón */
+--mdc-circular-progress-active-indicator-color: white;
+}
+
+.icon-text-aligned{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

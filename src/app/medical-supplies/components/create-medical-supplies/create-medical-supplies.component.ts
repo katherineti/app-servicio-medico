@@ -109,7 +109,8 @@ export class CreateMedicalSuppliesComponent {
     // **Lógica de restricción:**
     // Solo el Admin RRHH puede ver la opción de Uniformes.
     const ROL_ADMIN_RRHH = 'admin RRHH';
-    this.canCreateUniforms = this.role === ROL_ADMIN_RRHH;
+    const ROL_ADMIN = 'admin';
+    this.canCreateUniforms = this.role === ROL_ADMIN_RRHH || this.role === ROL_ADMIN ;
 
     this.subscribeToExpirationDateChanges()
     this.loadProvidersAndSetupAutocomplete()

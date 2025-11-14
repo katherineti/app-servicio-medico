@@ -21,6 +21,31 @@ background-color: #1565c0 !important;
 box-shadow: 0 6px 8px rgba(30, 136, 229, 0.35);
 }
 
+/* ================================================= */
+/* ✅ NUEVO ESTILO: Botón de Restaurar (color="warn") */
+/* ================================================= */
+.mat-mdc-button.mat-warn {
+    background-color: #ffb300 !important; /* Amarillo/Naranja de advertencia */
+    color: black !important; 
+    box-shadow: 0 4px 6px rgba(255, 179, 0, 0.25);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mat-mdc-button.mat-warn:hover:not([disabled]) {
+    background-color: #ff8f00 !important;
+    box-shadow: 0 6px 8px rgba(255, 179, 0, 0.35);
+}
+
+/* ✅ AJUSTE PARA SPINNER EN BOTÓN 'WARN' */
+.mat-mdc-button.mat-warn mat-spinner {
+    --mdc-circular-progress-active-indicator-color: black !important;
+}
+/* ================================================= */
+
+
 .mat-mdc-button[disabled] {
 background-color: #e0e0e0 !important;
 color: #757575 !important;
@@ -28,8 +53,8 @@ box-shadow: none;
 }
 
 mat-spinner {
-/* Color del spinner cuando está dentro del botón */
---mdc-circular-progress-active-indicator-color: white;
+/* Color del spinner cuando está dentro del botón primario */
+--mdc-circular-progress-active-indicator-color: white !important;
 }
 
 .icon-text-aligned{

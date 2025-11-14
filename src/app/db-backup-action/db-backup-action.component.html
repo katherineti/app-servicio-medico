@@ -1,6 +1,39 @@
 @if (userRole === 'admin') {
   <div class="sidebar-fixed-action p-t-16 p-b-16 p-l-20 p-r-20">
-    <button mat-flat-button color="primary" class="w-100 m-b-0" (click)="onDownloadDbClick()" [disabled]="isDownloading">
+
+    <button mat-flat-button 
+            color="warn" 
+            class="w-100 m-b-8" 
+            (click)="fileInput.click()" 
+            [disabled]="isUploading || isDownloading"
+            matTooltip="La restauración es una operación crítica y debe usarse con precaución. Requiere PostgreSQL 16 o superior instalado localmente."
+            matTooltipPosition="above"> <div class="icon-text-aligned">
+        <i-feather name="upload" class="icon-16 d-flex align-items-center m-r-8"></i-feather>
+        @if (!isUploading) {
+            <span>Restaurar DB</span>
+        } @else {
+            <span class="d-flex align-items-center justify-content-center">
+                <mat-spinner diameter="20" class="m-r-8"></mat-spinner>
+                <span>Restaurando...</span>
+            </span>
+        }
+      </div>
+    </button>
+    
+    <input 
+        type="file" 
+        #fileInput 
+        (change)="onFileSelected($event)" 
+        accept=".sql" 
+        style="display: none;" 
+    />
+
+
+    <button mat-flat-button 
+            color="primary" 
+            class="w-100 m-b-8" 
+            (click)="onDownloadDbClick()" 
+            [disabled]="isDownloading || isUploading">
       <div class="icon-text-aligned">
         <i-feather name="database" class="icon-16 d-flex align-items-center m-r-8"></i-feather>
         @if (!isDownloading) {
@@ -14,12 +47,15 @@
       </div>
     </button>
 
-      @if (isDownloading){
-        <p class="f-s-12 text-center text-muted m-t-8 m-b-0">
-            <!-- Descarga segura para administradores y auditores. -->
-            <!-- <br> -->
-            ⚠️ Requiere PostgreSQL 16 o superior instalado localmente.
-        </p>
-      }
+    <!-- <p class="f-s-12 text-center text-muted m-t-8 m-b-0">
+        La descarga está disponible para administradores y auditores.
+    </p> -->
+
+    <p class="f-s-12 text-center text-muted m-t-8 m-b-0">
+        @if (isDownloading) {
+          ⚠️ Requiere PostgreSQL versión 16 o superior instalado localmente.
+        }
+    </p>
+
   </div>
 }

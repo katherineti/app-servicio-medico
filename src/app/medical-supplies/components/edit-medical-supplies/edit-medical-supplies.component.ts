@@ -1,7 +1,7 @@
 import { Component, Inject, signal } from "@angular/core"
 import { MaterialModule } from "../../../material/material.module"
 import { CommonModule } from "@angular/common"
-import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
+import { FormBuilder, type FormGroup, FormsModule, ReactiveFormsModule, Validators, ValidationErrors, AbstractControl, ValidatorFn } from "@angular/forms"
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog"
 import { SwalService } from "../../../services/swal.service"
 import type { IProduct } from "../../interfaces/medical-supplies.interface"
@@ -25,6 +25,7 @@ import { Subject } from "rxjs"
 import { ProvidersService } from "../../services/providers.service"
 import type { Provider, ProvidersAll } from "../../interfaces/providers.interface"
 import { inject } from "@angular/core"
+import { providerPatternValidator } from "../../../utils/providers-custom-validators"
 
 @Component({
   selector: "app-edit-medical-supplies",
@@ -141,7 +142,13 @@ export class EditMedicalSuppliesComponent {
               Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/)
             ]
           ],
-          providerId: [null, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.,\-&/()]{3,100}$/) ]],
+          providerId: [null, [
+            Validators.required, 
+            Validators.maxLength(50),
+            // 🎯 Usando la función importada sin argumentos (si es que la función original no los necesitaba)
+            providerPatternValidator()
+            // Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.,\-&/()]{3,100}$/) 
+          ]],
           description: ["", [Validators.required, Validators.maxLength(50)]],
           category: ["", [Validators.required, Validators.maxLength(50)]],
           type: ["", [Validators.required, Validators.maxLength(50)]],
@@ -171,7 +178,7 @@ export class EditMedicalSuppliesComponent {
 
     // Provider form for adding new providers
     this.providerForm = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.maxLength(200)]],
+      name: ["", [Validators.required, Validators.maxLength(200), providerPatternValidator() ]],
       email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
       phone: ["", [Validators.required, Validators.maxLength(50)]],
     })

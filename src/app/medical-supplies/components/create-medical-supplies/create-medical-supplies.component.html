@@ -110,8 +110,11 @@
                 <mat-error *ngIf="createProdFormGroup.controls['providerId'].hasError('required')">
                     El proveedor es requerido
                 </mat-error>
-                <mat-error *ngIf="createProdFormGroup.get('providerId')?.hasError('maxlength')">
+                 <mat-error *ngIf="createProdFormGroup.get('providerId')?.hasError('maxlength')">
                     Máximo de 50 caracteres.
+                </mat-error> 
+                <mat-error *ngIf="createProdFormGroup.get('providerId')?.hasError('pattern')">
+                  El proveedor solo puede contener letras, números, espacios y los símbolos: ., - & / ( )
                 </mat-error>
             </mat-form-field>
 

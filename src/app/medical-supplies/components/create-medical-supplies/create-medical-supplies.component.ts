@@ -20,6 +20,7 @@ import { MY_DATE_FORMATS } from "../../../services/date-format.service"
 import { AuthService } from "../../../services/auth.service"
 import { ProvidersService } from "../../services/providers.service"
 import type { Provider, ProvidersAll } from "../../interfaces/providers.interface"
+import { providerPatternValidator } from "../../../utils/providers-custom-validators"
 
 /**
  * Validador personalizado para asegurar que la fecha no sea pasada (menor que hoy).
@@ -126,7 +127,12 @@ export class CreateMedicalSuppliesComponent {
           Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/)
         ]
       ],
-      providerId: [null, [Validators.required]],
+      providerId: [null, [
+            Validators.required, 
+            Validators.maxLength(50),
+            providerPatternValidator()
+            // Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.,\-&/()]{3,100}$/) 
+      ]],
       description: ["", [Validators.required, Validators.maxLength(50)]],
       category: ["", [Validators.required, Validators.maxLength(50)]],
       type: ["", [Validators.required, Validators.maxLength(50)]],
@@ -159,7 +165,8 @@ export class CreateMedicalSuppliesComponent {
         Validators.required, 
         Validators.maxLength(200),
         // Nueva Expresión Regular para Proveedores
-        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s.,& -]*$/)
+        // Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s.,& -]*$/)
+        providerPatternValidator()
       ]],
       email: ["", [Validators.required, Validators.email, Validators.maxLength(100)]],
       phone: ["", [Validators.required, Validators.maxLength(50)]],

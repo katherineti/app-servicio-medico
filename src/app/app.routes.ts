@@ -17,6 +17,8 @@ import { MedicalReportCreateComponent } from './medical-reports/components/medic
 import { MedicalPrescriptionCreateComponent } from './medical-reports/page/medical-prescription-create/medical-prescription-create.component';
 import { PaginaJaComponent } from './pagina-ja/pagina-ja.component';
 import { ListMedicalPrescriptionsComponent } from './medical-reports/page/list-medical-prescriptions/list-medical-prescriptions.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -95,9 +97,16 @@ export const routes: Routes = [
       path: 'register',
       component: RegisterComponent
     },
-
     {
       path: 'pagina-ja',
       component: PaginaJaComponent,
+    },
+    {
+      path: 'forgot-password',
+      component: ForgotPasswordComponent
+    },
+    {
+      path: 'reset-password/:token',
+      component: ResetPasswordComponent
     }
 ];

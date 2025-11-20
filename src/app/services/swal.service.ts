@@ -83,7 +83,15 @@ export class SwalService {
     });
   }
 
-  successEdit(titulo: string, msj: string) {
+  successEdit(titulo: string, msj: string, showConfirmButton=null) {
+    if(!showConfirmButton){
+      return Swal.fire({
+        title: titulo,
+        icon: 'success',
+        html: '<b class="text-sucess">' + msj + '</b>',
+      });
+    }
+
     return Swal.fire({
       title: titulo,
       icon: 'success',

@@ -521,3 +521,28 @@
   z-index: 9999;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
+
+.form-content {
+  // .login-form {
+
+    .forgot-password-link {
+      // text-align: right;
+      text-align: center;
+      margin: 0.5rem 0 1.5rem 0;
+      
+      .forgot-password-anchor {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: var(--transition);
+        
+        &:hover {
+          color: var(--primary-hover);
+          text-decoration: underline;
+        }
+      }
+    }
+
+  // }
+}

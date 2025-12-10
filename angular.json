@@ -30,7 +30,7 @@
 
             "outputPath": "dist/app",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -48,19 +48,42 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
+                "customWebpackConfig": {
+                    "path": "./webpack.config.js",
+                    "mergeStrategies": {
+                      "plugins": "prepend"
+                    }
+                  },
+                  "outputPath": "dist/app",
+                  "index": "src/index.html",
+                  "main": "src/main.ts",
+                  "polyfills": [
+                    "zone.js"
+                  ],
+                  "tsConfig": "tsconfig.app.json",
+                  "inlineStyleLanguage": "scss",
+                  "assets": ["src/favicon.ico", "src/assets"],
+                  "styles": [
+                    "@angular/material/prebuilt-themes/azure-blue.css",
+                    "src/styles.scss",
+                    "src/assets/scss/style.scss"
+                  ],
+                  "scripts": [
+                    "node_modules/apexcharts/dist/apexcharts.min.js"
+                  ],    
+                  "budgets": [
+                    {
+                      "type": "initial",
+                      "maximumWarning": "500kB",
+                      "maximumError": "1MB"
+                    },
+                    {
+                      "type": "anyComponentStyle",
+                      "maximumWarning": "4kB",
+                      "maximumError": "8kB"
+                    }
+                  ],
+                  "outputHashing": "all"
             },
             "development": {
               "optimization": false,

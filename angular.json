@@ -23,6 +23,10 @@
                 "plugins": "prepend"
               }
             },
+            "allowedCommonJsDependencies": [
+                  "sweetalert2",
+                  "moment-timezone"
+                ],
 
             "outputPath": "dist/app",
             "index": "src/index.html",

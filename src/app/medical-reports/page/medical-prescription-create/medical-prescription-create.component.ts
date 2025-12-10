@@ -1,6 +1,6 @@
 import { Component, type OnInit, inject } from "@angular/core"
 import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
-import { ActivatedRoute, Router } from "@angular/router" // Importar ActivatedRoute
+import { ActivatedRoute, Router } from "@angular/router" 
 import { CommonModule } from "@angular/common"
 import { MaterialModule } from "../../../material/material.module"
 import { FeatherIconsModule } from "../../../feathericons/feathericons.module"
@@ -15,7 +15,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 import { MY_DATE_FORMATS } from "../../../services/date-format.service"
 import { MedicalPrescriptionService } from "../../services/medical-prescription.service"
 import { capitalizeWords } from "../../../utils/string-utils"
-import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoin } from "rxjs" // Importar forkJoin
+import { Observable, startWith, map, debounceTime, distinctUntilChanged, forkJoin } from "rxjs" 
 import { toast } from "ngx-sonner"
 import { AuthService } from "../../../services/auth.service"
 import Swal, { SweetAlertResult } from "sweetalert2"
@@ -46,8 +46,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
   isLoadingData = true
   isLoadingPatients = false
   isLoadingDoctors = false
-
-  // Exponer la función capitalizeWords para el template
   capitalizeWords = capitalizeWords
 
   private fb = inject(FormBuilder)
@@ -74,15 +72,12 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       place: ["", [Validators.required, Validators.maxLength(100)]],
       emissionDate: [{ value: new Date(), disabled: true }, [Validators.required]],
       expirationDate: ["", [Validators.required]],
-      // recipeContent: ["", [Validators.required, Validators.minLength(50), Validators.maxLength(2000)]],
-      // recipeContent: ["", [Validators.required, Validators.minLength(50), Validators.maxLength(700)]],
       recipeContent: ["", [Validators.required, Validators.maxLength(700)]],
       doctorId: ["", [Validators.required]],
-      doctorSearch: [""], // Nuevo control para la búsqueda de doctor
-      // mppsNumber: ["", [Validators.required, Validators.maxLength(50)]],
+      doctorSearch: [""], 
       mppsNumber: ["", [Validators.required, Validators.maxLength(100)]],
       patientId: ["", [Validators.required]],
-      patientSearch: [""], // Nuevo control para la búsqueda de paciente
+      patientSearch: [""], 
       indications: ["", [Validators.maxLength(700)]],
     })
   }
@@ -147,8 +142,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       },
     })
   }
-
-  // --- Autocomplete para Pacientes ---
   private setupPatientAutocomplete() {
     this.filteredPatients = this.prescriptionForm.get("patientSearch")!.valueChanges.pipe(
       startWith(""),
@@ -160,7 +153,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       }),
     )
   }
-
   private filterPatients(value: string): IPatient[] {
     if (!value || value.trim() === "") {
       return this.patients
@@ -197,8 +189,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
       patientSearch: "",
     })
   }
-
-  // --- Autocomplete para Doctores ---
   private setupDoctorAutocomplete() {
     this.filteredDoctors = this.prescriptionForm.get("doctorSearch")!.valueChanges.pipe(
       startWith(""),
@@ -233,7 +223,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
     this.prescriptionForm.patchValue({
       doctorId: doctor.id,
       doctorSearch: displayValue,
-      // mppsNumber: doctor.mppsNumber || "", // Precargar MPPS si el doctor lo tiene
     })
   }
 
@@ -245,13 +234,11 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
     const cedula = doctorOrString.cedula || ""
     return cedula && cedula !== "V-" ? `${name} - ${cedula}` : name
   }
-
-  //se ejecuta cuando da click en la 'x' de limpiar el campo 'Buscar doctor'
   clearDoctorSelection() {
     this.prescriptionForm.patchValue({
       doctorId: "",
       doctorSearch: "",
-      mppsNumber: "", // Limpiar MPPS también
+      mppsNumber: "", 
     })
   }
 
@@ -265,7 +252,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
         this.onSubmit();
   
       } else if (confirmAlert.dismiss === Swal.DismissReason.cancel) {
-        /* cancel */
       }
     }
   }
@@ -279,7 +265,6 @@ export class MedicalPrescriptionCreateComponent implements OnInit {
 
       const formData: ICreateMedicalPrescriptionDTO = {
         place: this.prescriptionForm.value.place,
-        // emissionDate: this.prescriptionForm.value.emissionDate.toISOString(),
         recipeContent: this.prescriptionForm.value.recipeContent,
         doctorId: this.prescriptionForm.value.doctorId,
         mpps: this.prescriptionForm.value.mppsNumber,

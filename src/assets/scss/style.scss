@@ -1,14 +1,10 @@
 @use "sass:map";
 @use "@angular/material" as mat;
-
 @use "themecolors/blue_theme";
-
 @use "variables" as *;
 @use "override-component";
 @use "theme-variables/default-variables";
 @use "theme-variables/light-theme-variables";
-
-//container layout
 @use "layouts/transitions";
 @use "helpers/color";
 @use "helpers/border-color";
@@ -18,7 +14,4 @@
 @use "grid/grid";
 @use "helpers/custom-flex";
 @use "helpers";
-
-// pages
 @use "pages/auth";
-// @import "pages/dashboards";

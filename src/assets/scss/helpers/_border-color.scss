@@ -1,7 +1,6 @@
 @use "../variables" as *;
-@use "sass:meta"; // Import meta module for working with keyword arguments
+@use "sass:meta"; 
 
-// Mixin to dynamically generate classes based on provided colors
 @mixin syntax-colors2($args2...) {
   @each $name2, $color2 in meta.keywords($args2) {
     html .border-#{$name2} {
@@ -9,8 +8,6 @@
     }
   }
 }
-
-// Including the mixin with variables and CSS variables
 @include syntax-colors2($primary: var(--mat-sys-primary),
   $secondary: var(--mat-sys-secondary),
   $success: $success,

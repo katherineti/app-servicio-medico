@@ -2,7 +2,7 @@ export interface ICreateReport {
   title: string
   receiver: string
   auditorId: number
-  additionalAuditorIds?: number[] // Nueva propiedad para auditores adicionales
+  additionalAuditorIds?: number[] 
   id?: number
 }
 
@@ -14,7 +14,7 @@ export interface IReport {
   receiver: string
   auditorId: number
   auditor: string
-  additionalAuditorIds?: number[] // Nueva propiedad para auditores adicionales
+  additionalAuditorIds?: number[] 
   statusId?: number
   startDate?: Date
   endDate?: Date

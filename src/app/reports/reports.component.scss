@@ -8,21 +8,16 @@ flex: 1 1 auto;
   max-width: 100%;
   overflow: auto;
 }
-
 .mat-mdc-table-sticky-border-elem-right {
   border-left: 1px solid #e0e0e0;
 }
 .mat-mdc-table-sticky-border-elem-left {
   border-right: 1px solid #e0e0e0;
 }
-
 .mat-column-id{
   flex: 0 0 100px;
 }
-
 .mat-column-title
-// .mat-column-status,
-// .mat-column-duplicated
 {
   flex: 0 0 200px;
 }
@@ -33,7 +28,6 @@ flex: 1 1 auto;
   flex: 0 0 190px;
 }
 .mat-column-action{
-  // flex: 0 0 130px;
   flex: 0 0 220px;
 }
 .search{

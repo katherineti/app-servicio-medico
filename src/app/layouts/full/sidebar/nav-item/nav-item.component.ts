@@ -9,7 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../material/material.module';
 import { FeatherIconsModule } from '../../../../feathericons/feathericons.module';
-import { trigger, state, style, transition, animate } from '@angular/animations'; // Importa las funciones de animación
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NavItem } from './nav-item';
 import { Router, RouterModule } from '@angular/router';
 import { NavService } from '../../../../services/nav.service';
@@ -34,7 +34,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     ])
   ],
   providers: [
-    provideAnimations() // Proporciona la configuración de animaciones
+    provideAnimations()
   ]
 })
 export class AppNavItemComponent implements OnChanges {
@@ -64,7 +64,6 @@ export class AppNavItemComponent implements OnChanges {
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;
     }
-    //scroll
     window.scroll({
       top: 0,
       left: 0,

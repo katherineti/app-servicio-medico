@@ -1,11 +1,8 @@
-// Reset global
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-// Variables CSS
 :root {
   --primary-color: #1976d2;
   --primary-hover: #1565c0;
@@ -14,8 +11,6 @@
   --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.12);
   --transition: all 0.3s ease;
 }
-
-// Host ocupando toda la pantalla SIN márgenes
 :host {
   position: fixed;
   top: 0;
@@ -27,8 +22,6 @@
   overflow: hidden;
   display: block;
 }
-
-// Contenedor principal - PANTALLA COMPLETA
 .register-container {
   position: absolute;
   top: 0;
@@ -40,7 +33,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  
   .row {
     position: absolute;
     top: 0;
@@ -52,7 +44,6 @@
     overflow: hidden;
     display: flex;
     flex-wrap: nowrap;
-    
     > [class*="col-"] {
       margin: 0;
       padding: 0;
@@ -66,12 +57,11 @@
   }
 }
 
-// Columna Izquierda - IMAGEN: horizontal completa, vertical rellena automáticamente
 .background-column {
-  background-image: url('./../../assets/fondo.png'); // Asegúrate que la ruta sea correcta
-  background-size: auto 100%; // Altura 100%, ancho automático (mantiene proporción)
+  background-image: url('./../../assets/fondo.png'); 
+  background-size: auto 100%; 
   background-repeat: no-repeat;
-  background-position: left center; // Centrar la imagen
+  background-position: left center; 
   background-color: #e8f4f8;
   position: relative;
   width: 60%;
@@ -79,8 +69,6 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  
-  // Overlay sutil para mejorar contraste
   &::before {
     content: '';
     position: absolute;
@@ -92,16 +80,14 @@
     z-index: 1;
   }
 }
-
-// Columna Derecha - FORMULARIO con fondo blanco sólido
 .form-column {
-  background: white !important; // Fondo blanco sólido
+  background: white !important;
   position: relative;
   width: 40%;
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: auto; // Cambiar de 'hidden' a 'auto' para permitir scroll
+  overflow: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,33 +96,29 @@
     width: 100%;
     max-width: 400px;
     height: auto;
-    margin: 0 auto; // Centrar el bloque form-container horizontalmente
+    margin: 0 auto; 
     padding: 0.5rem 2rem 2rem 2rem;
     position: relative;
     overflow: visible;
-    background: white !important; // Asegurar fondo blanco
-    min-height: min-content; // Asegura que el contenedor tenga el tamaño mínimo de su contenido
-    
+    background: white !important;
+    min-height: min-content; 
     .form-content {
       width: 100%;
       margin: 0;
       padding: 0;
-      background: white !important; // Asegurar fondo blanco
-      
+      background: white !important;
       .header-section {
         margin-bottom: 2rem;
-        padding: 2rem 0 0 0; /* Padding superior por defecto */
+        padding: 2rem 0 0 0;
         text-align: center;
-        
         .welcome-title {
           font-size: 2.4rem;
           font-weight: 700;
           color: var(--text-primary);
-          margin: 1rem 0 0.5rem 0; /* Margen superior por defecto */
+          margin: 1rem 0 0.5rem 0; 
           padding: 0;
           line-height: 1.2;
         }
-        
         .welcome-subtitle {
           color: var(--text-secondary);
           font-size: 1.1rem;
@@ -146,59 +128,49 @@
           line-height: 1.4;
         }
       }
-      
       .register-form {
         width: 100%;
         margin: 0;
         padding: 0;
-        
         .form-group {
-          margin: 0 0 1rem 0; // Espacio entre campos de formulario
+          margin: 0 0 1rem 0;
           padding: 0;
           position: relative;
           width: 100%;
-          
           mat-form-field {
             width: 100%;
           }
         }
-
         .password-requirements {
-          margin-top: -0.5rem; // Ajuste para acercar a la contraseña
-          margin-bottom: 1rem; // Espacio antes del botón
+          margin-top: -0.5rem;
+          margin-bottom: 1rem;
           padding: 12px;
           background-color: #f8f9fa;
           border-radius: 4px;
           border: 1px solid #e9ecef;
-          font-size: 0.85rem; // Tamaño de fuente para los requisitos
+          font-size: 0.85rem; 
         }
-
         .requirement-item {
           display: flex;
           align-items: center;
-          margin-bottom: 4px; // Espacio entre ítems de requisito
-          font-size: 0.85rem; // Consistencia con el padre
+          margin-bottom: 4px; 
+          font-size: 0.85rem; 
           transition: color 0.3s ease;
-
           &:last-child {
             margin-bottom: 0;
           }
-
           .requirement-icon {
             margin-right: 6px;
             font-weight: bold;
-            font-size: 1.1em; // Icono ligeramente más grande que el texto
+            font-size: 1.1em; 
           }
-
           &.valid {
-            color: #28a745; // Verde para requisitos cumplidos
+            color: #28a745; 
           }
-
           &.invalid {
-            color: #dc3545; // Rojo para requisitos no cumplidos
+            color: #dc3545; 
           }
         }
-        
         .register-button {
           width: 100%;
           height: 56px;
@@ -209,30 +181,25 @@
           border-radius: 8px;
           text-transform: none;
           transition: var(--transition);
-          
           &:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
           }
-          
           &:active:not(:disabled) {
             transform: translateY(0);
           }
-          
           &.loading {
             pointer-events: none;
             opacity: 0.8;
           }
         }
       }
-      
       .login-link {
         text-align: center;
         margin: 1.2rem 0 0 0;
         padding: 0;
         font-size: 0.9rem;
         color: var(--text-secondary);
-        
         .login-anchor {
           color: var(--primary-color);
           text-decoration: none;
@@ -240,7 +207,6 @@
           margin-left: 0.25rem;
           padding: 0;
           transition: var(--transition);
-          
           &:hover {
             color: var(--primary-hover);
             text-decoration: underline;
@@ -250,25 +216,19 @@
     }
   }
 }
-
-// Media Queries para Responsive
 @media (max-width: 1200px) {
   .background-column {
     width: 55%;
   }
-  
   .form-column {
     width: 45%;
   }
 }
-
-// TABLETS Y MÓVILES - La segunda columna ocupa TODA la pantalla
 @media (max-width: 991.98px) {
   .background-column {
     display: none !important;
     width: 0 !important;
   }
-  
   .form-column {
     width: 100vw !important;
     height: 100vh !important;
@@ -284,11 +244,9 @@
     z-index: 1000;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    
     &::before {
       display: none !important;
     }
-    
     .form-container {
       position: relative;
       z-index: 1;
@@ -302,7 +260,6 @@
       align-items: center !important;
       justify-content: flex-start !important;
       min-height: auto;
-      
       .form-content {
         background: white !important;
         border-radius: 0;
@@ -310,25 +267,20 @@
         box-shadow: none;
         margin: 0;
         width: 100%;
-        
         .header-section {
           margin-bottom: 2rem;
-          padding: 2rem 0 0 0; /* Aumentado a 2rem para dar más espacio superior al título */
-          
+          padding: 2rem 0 0 0;
           .welcome-title {
             font-size: 2.5rem;
           }
-          
           .welcome-subtitle {
             font-size: 1.2rem;
           }
         }
-        
         .register-form {
           .form-group {
             margin-bottom: 1.2rem;
           }
-          
           .password-requirements {
             margin-top: -0.5rem;
             margin-bottom: 1.2rem;
@@ -337,14 +289,12 @@
           .requirement-item {
             font-size: 0.9rem;
           }
-          
           .register-button {
             height: 60px;
             font-size: 1.2rem;
             margin: 0;
           }
         }
-        
         .login-link {
           margin-top: 1.5rem;
           font-size: 1.1rem;
@@ -352,10 +302,8 @@
       }
     }
   }
-  
   .register-container .row {
     flex-direction: row !important;
-    
     > [class*="col-"] {
       &.form-column {
         flex: 1 1 100% !important;
@@ -364,29 +312,22 @@
     }
   }
 }
-
-// TABLETS medianos
 @media (max-width: 768px) {
   .form-column {
     padding: 1.5rem !important;
-    
     .form-container {
       max-width: 450px !important;
-      
       .form-content {
         .header-section {
           margin-bottom: 1.5rem;
-          padding: 1.5rem 0 0 0; /* Aumentado a 1.5rem para dar más espacio superior al título */
-          
+          padding: 1.5rem 0 0 0;
           .welcome-title {
             font-size: 2rem;
           }
-          
           .welcome-subtitle {
             font-size: 1.1rem;
           }
         }
-        
         .register-form {
           .form-group {
             margin-bottom: 1rem;
@@ -398,14 +339,12 @@
           .requirement-item {
             font-size: 0.85rem;
           }
-          
           .register-button {
             height: 56px;
             font-size: 1.1rem;
             margin: 0;
           }
         }
-        
         .login-link {
           margin-top: 1.3rem;
           font-size: 1rem;
@@ -414,29 +353,22 @@
     }
   }
 }
-
-// MÓVILES
 @media (max-width: 480px) {
   .form-column {
     padding: 1rem !important;
-    
     .form-container {
       max-width: 100% !important;
-      
       .form-content {
         .header-section {
           margin-bottom: 1rem;
-          padding: 1.2rem 0 0 0; /* Aumentado a 1.2rem para dar más espacio superior al título */
-          
+          padding: 1.2rem 0 0 0;
           .welcome-title {
             font-size: 1.6rem;
           }
-          
           .welcome-subtitle {
             font-size: 0.95rem;
           }
         }
-        
         .register-form {
           .form-group {
             margin-bottom: 0.8rem;
@@ -448,14 +380,12 @@
           .requirement-item {
             font-size: 0.8rem;
           }
-          
           .register-button {
             height: 52px;
             font-size: 1rem;
             margin: 0;
           }
         }
-        
         .login-link {
           margin-top: 1.2rem;
           font-size: 0.9rem;
@@ -464,8 +394,6 @@
     }
   }
 }
-
-// Estilos para ocultar scrollbar pero mantener funcionalidad
 .form-column {
   &::-webkit-scrollbar {
     display: none;
@@ -473,87 +401,67 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
-// Utilidades Bootstrap
 .w-100 { width: 100% !important; }
 .h-100 { height: 100% !important; }
 .no-gutters { margin-right: 0; margin-left: 0; }
 .text-center { text-align: center !important; }
-
 .col-12 { 
   flex: 0 0 100%; 
   max-width: 100%; 
 }
-
 .col-xl-4 { 
   flex: 0 0 33.333333%; 
   max-width: 33.333333%; 
-  
   @media (max-width: 991.98px) {
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
 }
-
 .col-xl-8 { 
   flex: 0 0 66.666667%; 
   max-width: 66.666667%; 
-  
   @media (max-width: 991.98px) {
     flex: 0 0 0% !important;
     max-width: 0% !important;
     display: none !important;
   }
 }
-
 .col-lg-5 { 
   flex: 0 0 41.666667%; 
   max-width: 41.666667%; 
-  
   @media (max-width: 991.98px) {
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
 }
-
 .col-lg-7 { 
   flex: 0 0 58.333333%; 
   max-width: 58.333333%; 
-  
   @media (max-width: 991.98px) {
     flex: 0 0 0% !important;
     max-width: 0% !important;
     display: none !important;
   }
 }
-
 .col-md-6 { 
   flex: 0 0 50%; 
   max-width: 50%; 
-  
   @media (max-width: 991.98px) {
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
 }
-
 @media (min-width: 992px) {
   .d-md-flex { display: flex !important; }
 }
-
 @media (max-width: 991.98px) {
   .d-none { display: none !important; }
 }
-
-// Media query para resoluciones muy altas (zoom 200%+) o alturas bajas
-// Este bloque es importante para asegurar que en pantallas grandes pero con zoom alto,
-// el padding superior no se reduzca demasiado.
 @media (min-height: 900px) {
   .form-column .form-container .form-content .header-section {
-    padding: 2rem 0 0 0; /* Mantener un padding suficiente en la parte superior */
-    
+    padding: 2rem 0 0 0; 
     .welcome-title {
-      margin: 1rem 0 0.5rem 0; /* Mantener un margen suficiente */
+      margin: 1rem 0 0.5rem 0; 
     }
   }
 }

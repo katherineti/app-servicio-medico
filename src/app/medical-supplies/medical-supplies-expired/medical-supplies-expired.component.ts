@@ -17,7 +17,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { AssignmentComponent } from '../../assignment/assignment.component';
 import { AuthService } from '../../services/auth.service';
-//Formateo a fecha local en dd/mm/yyyy
 import { DateFormatService, MY_DATE_FORMATS } from '../../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
@@ -37,7 +36,6 @@ import { IGetAllProductsExpired, IProductExpired, IProductExpiredPagination } fr
     RouterModule,
     ReactiveFormsModule
   ],
-  //Formateo a fecha local en dd/mm/yyyy
   providers: [ 
     { provide: DateAdapter, useClass: NativeDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -48,17 +46,12 @@ import { IGetAllProductsExpired, IProductExpired, IProductExpiredPagination } fr
 export class MedicalSuppliesExpiredComponent {
   role:string='';
   displayedColumns = ['name', 'stock', 'code','action'];
-  // @Input()
-  // data!: string;
-  
   dataSource: any = new MatTableDataSource<IProductExpired>();
   searhField = new FormControl();  searhCategoryField = new FormControl();  searh_expirationDate = new FormControl();
   pageSize: number = 5;
   pageIndex = 0;
-  
   categories: any;   loadingCategorie = signal(false);
   API_URL= API_URL;
-  
   readonly dialog = inject(MatDialog);
   private medicalSuppliesService = inject(MedicalSuppliesService);
   private readonly paginatorIntl = inject(MatPaginatorIntl);
@@ -87,17 +80,10 @@ export class MedicalSuppliesExpiredComponent {
   }
 
   async ngOnInit() {
-    
     this.role = await this.authService.getRol();
- 
-    // if(this.data=='allProducts'){
-      this.dataSource['length'] = 0;
-      this.getAllProducts(this.pageIndex, this.pageSize);
-      this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
-
-    // }else if(this.data=='expiredProducts'){
-
-    // }
+    this.dataSource['length'] = 0;
+    this.getAllProducts(this.pageIndex, this.pageSize);
+    this.paginatorIntl.itemsPerPageLabel = 'Registros por página';
   }
 
   get searchValue() {

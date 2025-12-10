@@ -38,14 +38,10 @@ th.mat-column-action, td.mat-column-action {
 .mat-mdc-table-sticky-border-elem-left {
   border-right: 1px solid #e0e0e0;
 }
-
-// .search{
-//   width: 90%;
-// }
 .search{
   width: 270px;
 }
-//phone
+
 @media only screen and (max-width: 767px) {
      .mat-column-action {  flex: 0 0 150px; }
      .mat-column-name {

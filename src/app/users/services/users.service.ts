@@ -50,7 +50,6 @@ export class UsersService {
     );
   }  
 
-  //excel
   exportUsers(format: "xlsx" | "csv", name?: string, cedula?: string, role?: string): Observable<Blob> {
     const body = {
       format,

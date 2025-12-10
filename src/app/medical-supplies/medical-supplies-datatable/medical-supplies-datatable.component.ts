@@ -17,7 +17,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { AssignmentComponent } from '../../assignment/assignment.component';
 import { AuthService } from '../../services/auth.service';
-//Formateo a fecha local en dd/mm/yyyy
 import { DateFormatService, MY_DATE_FORMATS } from '../../services/date-format.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
@@ -33,7 +32,6 @@ import { MatButtonToggleGroup } from '@angular/material/button-toggle';
     RouterModule,
     ReactiveFormsModule
   ],
-//Formateo a fecha local en dd/mm/yyyy
   providers: [ 
     { provide: DateAdapter, useClass: NativeDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
@@ -168,7 +166,6 @@ export class MedicalSuppliesDatatableComponent {
     };
     this.medicalSuppliesService.getProducts(parms).subscribe((data: IProductPagination) => {
       data.list.forEach((ele:any) => {
-        // ele.expirationDate = ele.expirationDate ? this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.expirationDate ) ) : "";
         ele.createdAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.createdAt ) );
         ele.updatedAt = this.dateFormatService.convertUtcToVenezuelaWithMoment( new Date( ele.updatedAt ) );
       }); 

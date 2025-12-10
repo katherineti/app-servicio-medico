@@ -1,6 +1,5 @@
 import { NavItem } from './nav-item/nav-item';
-
-export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role === 'auditor' )
+export const navItemsAdmin: NavItem[] = [
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -19,11 +18,6 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
         iconName: 'file-text',
         route: './medical-supplies'
       },
-/*       {
-        displayName: 'Inventario móvil',
-        iconName: 'file-text',
-        route: '/'
-      }, */
     ],
   },
   {
@@ -47,16 +41,6 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
     external: true,
     chipClass: 'bg-secondary text-white',
   },
-  // {
-  //   displayName: 'Crear reporte',
-  //   iconName: 'file-text',
-  //   route: './create-report',
-  //   external: true,
-  //   chipClass: 'bg-secondary text-white',
-  // },
-  // {
-  //   navCap: 'Auth',
-  // },
   {
     displayName: 'Reportes auditoría',
     iconName: 'file-text',
@@ -88,18 +72,9 @@ export const navItemsAdmin: NavItem[] = [ //( this.role === 'admin' || this.role
     route: './medical-reports',
     external: true,
     chipClass: 'bg-secondary text-white',
-  },
-
-  // --- AÑADIDO: Copia de Seguridad de la Base de Datos (Solo Admin) ---
-/*   {
-    displayName: 'Copia de Seguridad DB',
-    iconName: 'database', // Icono sugerido
-    route: './db-backup', // Ruta sugerida (debes crear el componente y la ruta)
-    external: true,
-    chipClass: 'bg-secondary text-white',
-  }, */
+  }
 ];
-export const navItems: NavItem[] = [ //almacen1 admin 
+export const navItems: NavItem[] = [
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -118,22 +93,10 @@ export const navItems: NavItem[] = [ //almacen1 admin
         iconName: 'file-text',
         route: './medical-supplies'
       },
-/*       {
-        displayName: 'Inventario móvil',
-        iconName: 'file-text',
-        route: '/'
-      } */
     ],
-  },
-/*   {
-    displayName: 'Insumos Médicos',
-    iconName: 'activity',
-    route: './medical-supplies',
-    external: true,
-    chipClass: 'bg-secondary text-white',
-  } */
+  }
 ];
-export const navItemsMedico: NavItem[] = [ //medico y enfermero(a)
+export const navItemsMedico: NavItem[] = [
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -151,21 +114,9 @@ export const navItemsMedico: NavItem[] = [ //medico y enfermero(a)
         displayName: 'Inventario almacén',
         iconName: 'file-text',
         route: './medical-supplies'
-      },
-/*       {
-        displayName: 'Inventario móvil',
-        iconName: 'file-text',
-        route: '/'
-      } */
+      }
     ],
   },
-/*   {
-    displayName: 'Insumos Médicos',
-    iconName: 'activity',
-    route: './medical-supplies',
-    external: true,
-    chipClass: 'bg-secondary text-white',
-  } */
   {
     displayName: 'Pacientes',
     iconName: 'users',
@@ -181,8 +132,7 @@ export const navItemsMedico: NavItem[] = [ //medico y enfermero(a)
     chipClass: 'bg-secondary text-white',
   },
 ];
-
-export const navItemsAlmacen2Movil: NavItem[] = [ //almacen2 movil
+export const navItemsAlmacen2Movil: NavItem[] = [
   {
     displayName: 'Dashboard',
     iconName: 'grid',
@@ -195,12 +145,6 @@ export const navItemsAlmacen2Movil: NavItem[] = [ //almacen2 movil
     iconName: 'activity',
     route: '',
     chipClass: 'bg-secondary text-white',
-    children: [
-/*       {
-        displayName: 'Inventario móvil',
-        iconName: 'file-text',
-        route: '/'
-      } */
-    ]
+    children: [ ]
   }
 ];

@@ -14,7 +14,6 @@ export function noSpecialCharactersValidator(control: AbstractControl): Validati
   }
 
   const value = typeof control.value === "string" ? control.value : ""
-  // Solo permite: letras (a-z, A-Z), números (0-9), espacios, guiones (-), comas (,) y puntos (.)
   const allowedCharactersRegex = /^[a-zA-Z0-9\s,.\-]+$/
 
   if (!allowedCharactersRegex.test(value)) {
@@ -24,14 +23,12 @@ export function noSpecialCharactersValidator(control: AbstractControl): Validati
   return null
 }
 
-// NUEVA FUNCIÓN (o modificación de la existente para solo permitir números)
 export function onlyNumbersValidator(control: AbstractControl): ValidationErrors | null { 
   const value = control.value;
   if (!value) {
     return null;
   }
   
-  // Solo permite uno o más dígitos del 0 al 9
   const onlyNumbersRegex = /^\d+$/; 
   
   if (typeof value === "string" && !onlyNumbersRegex.test(value)) {
@@ -52,9 +49,7 @@ export abstract class BaseAssignmentLogic {
 
   showNewFamilyMemberForm = false
   showNewEmployeeForm = false
-  // showNewDoctorForm = false; // Temporarily disabled
 
-  // Declaraciones de las propiedades de autocompletado movidas a la clase base
   public filteredEmployeesOptions!: Observable<IEmployee[]>
   public filteredDoctorsOptions!: Observable<IUser[]>
 
@@ -68,28 +63,20 @@ export abstract class BaseAssignmentLogic {
     this.assignmentService = assignmentService
   }
 
-  // Método abstracto que debe ser implementado por la clase hija para construir el formulario
   protected abstract buildAssignmentForm(): void
 
-  // Método abstracto para obtener el control del formulario para el empleado
   protected abstract get controlEmployee(): any
 
-  // Método abstracto para obtener el control del formulario para el médico
   protected abstract get controlMedico(): any
 
-  // Método abstracto para obtener el control del formulario para el destinatario
   protected abstract get controlRecipient(): any
 
-  // Método abstracto para obtener el control del formulario para los productos
   protected abstract get controlProducts(): any
 
-  // Método abstracto para obtener el control del formulario para la familia
   protected abstract get controlFamily(): any
 
-  // Método abstracto para obtener el control del formulario para el tipo de asignación
   protected abstract get controlType(): any
 
-  // Método abstracto para obtener el control del formulario para la observación
   protected abstract get controlObservation(): any
 
   async loadInitialData() {
@@ -111,12 +98,9 @@ export abstract class BaseAssignmentLogic {
   }
 
   protected setupEmployeeAutocomplete(): void {
-    // Implementado en la clase hija
   }
 
-  protected setupDoctorAutocomplete(): void {
-    // Implementado en la clase hija
-  }
+  protected setupDoctorAutocomplete(): void { }
 
   setupFormDynamics() {
     this.updateFormOnRecipientChange(this.controlRecipient.value)
@@ -170,7 +154,7 @@ export abstract class BaseAssignmentLogic {
       controlObservation.setValue(null)
 
       if (recipient === "employee") {
-        productsControl.setValidators([...baseValidators, Validators.min(1), Validators.max(3) ]) //Validators.pattern('^[0-9]{1,3}$') //solo numeros
+        productsControl.setValidators([...baseValidators, Validators.min(1), Validators.max(3) ])
       } else {
         productsControl.setValidators([...baseValidators, Validators.min(4) ])
       }
@@ -186,8 +170,6 @@ export abstract class BaseAssignmentLogic {
 
     if (recipient === "employee") {
       const currentValidators = employeeControl.validator ? [employeeControl.validator] : []
-      // employeeControl.setValidators([Validators.required])
-      // employeeControl.setValidators([Validators.required, ...currentValidators])
       employeeControl.setValidators([Validators.required, noSpecialCharactersValidator])
       medicoControl.clearValidators()
       medicoControl.disable()
@@ -202,7 +184,6 @@ export abstract class BaseAssignmentLogic {
     employeeControl.updateValueAndValidity()
     medicoControl.updateValueAndValidity()
 
-    //Resetea su estado de interacción a un estado "limpio
     medicoControl.markAsUntouched()
     medicoControl.markAsPristine()
     employeeControl.markAsUntouched()
@@ -211,7 +192,6 @@ export abstract class BaseAssignmentLogic {
     controlType.markAsPristine()
 
     this.showNewEmployeeForm = false
-    // this.showNewDoctorForm = false;
     this.showNewFamilyMemberForm = false
   }
 
@@ -245,62 +225,10 @@ export abstract class BaseAssignmentLogic {
     )
   }
 
-/*
-  protected assignProduct(formData: any, productId: number) {
-    this.swalService.loading()
-    this.disableButton = true
-
-    const { products, employee, medico, family, type, observation, recipient } = formData
-
-    const obj: any = {
-      type: type.id,
-      observation: observation,
-      productId: productId,
-      products: products,
-      // quantity: products,
-      // assignmentTypeId: type.id,
-      employeeId: null,
-      medicoId: null,
-    }
-
-    if (recipient === "employee") {
-      obj.employeeId = employee.id
-      if (family) {
-        obj.familyId = family
-      }
-    } else if (recipient === "mobile-warehouse") {
-      obj.medicoId = medico.id
-    }
-
-    console.log("Objeto para guardar: ", obj)
-
-    this.assignmentService.createAssignment(obj).subscribe({
-      complete: () => {
-        // Resetting form and closing dialog will be handled by the component
-/*         toast.success("Asignación de producto realizado con éxito.")
-        this.swalService.closeload()
-        this.disableButton = false * /
-
-          this.AssignProductForm.reset();
-          toast.success("Asignación de producto realizado con éxito.");
-          this.closeDialog();
-      },
-      error: (error) => {
-        this.swalService.closeload()
-        this.disableButton = false
-        toast.error(error.message || "Error al crear la asignación de producto.")
-        console.error("Error al crear la asignación de producto", error)
-      },
-    })
-  }
-  */
-
   toggleNewFamilyMemberForm(): void {
     this.showNewFamilyMemberForm = !this.showNewFamilyMemberForm
     this.showNewEmployeeForm = false
-    // this.showNewDoctorForm = false;
     if (!this.showNewFamilyMemberForm) {
-      // Reset the form directly using a new FormGroup instance
       this.formBuilder
         .group({
           name: ["", Validators.required],
@@ -313,9 +241,7 @@ export abstract class BaseAssignmentLogic {
   toggleNewEmployeeForm(): void {
     this.showNewEmployeeForm = !this.showNewEmployeeForm
     this.showNewFamilyMemberForm = false
-    // this.showNewDoctorForm = false;
     if (!this.showNewEmployeeForm) {
-      // Reset the form directly using a new FormGroup instance
       this.formBuilder
         .group({
           name: ["", [Validators.required, Validators.maxLength(200)]],
@@ -329,14 +255,12 @@ export abstract class BaseAssignmentLogic {
 
   saveFamilyMember(familyMemberForm: any, employeeId: number, controlFamily: any): void {
     if (familyMemberForm.valid && employeeId) {
-      // const { name, documentId } = familyMemberForm.value
       const { name, cedulaType, cedulaNumber } = familyMemberForm.value;
       const fullCedula = `${cedulaType}-${cedulaNumber}`;
 
       const newFamilyMember: ICreateFamily = {
         employeeId: employeeId,
         name,
-        // cedula: documentId,
         cedula: fullCedula,
       }
       this.assignmentService.addFamilyMember(newFamilyMember).subscribe((savedMember) => {
@@ -371,10 +295,6 @@ export abstract class BaseAssignmentLogic {
 
       const fullCedula = `${cedulaType}-${cedulaNumber}`;
 
-/*       const newEmployee: IEmployee = {
-        id: 0,
-        ...employeeForm.value,
-      } */
       const newEmployee: IEmployee = {
         name,
         cedula: fullCedula,
@@ -384,8 +304,6 @@ export abstract class BaseAssignmentLogic {
       console.log("newEmployee ", newEmployee)
       this.assignmentService.addEmployee(newEmployee).subscribe((savedEmployee) => {
         this.employees.push(savedEmployee)
-        // Re-initialize filtered options for employees to include the new one
-        // Assign to 'this.filteredEmployeesOptions' directly
         this.filteredEmployeesOptions = employeeControl.valueChanges.pipe(
           startWith(savedEmployee),
           map((value: any) =>
@@ -403,15 +321,10 @@ export abstract class BaseAssignmentLogic {
     }
   }
 
-   /**
-   * Función para bloquear caracteres no deseados en tiempo real.
-   * Mantiene el bloqueo de '.', ',', '-', 'e', etc.
-   */
    preventNonInteger(event: KeyboardEvent) {
     const regex = /[0-9]/;
     const key = event.key;
 
-    // Si la tecla NO es un dígito O NO es una tecla de control (Backspace, Flechas, Tab)
     if (!regex.test(key) &&
         !event.ctrlKey &&
         !event.metaKey &&

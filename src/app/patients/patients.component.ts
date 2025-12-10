@@ -16,10 +16,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PatientsService } from './services/patients.service';
 import { IGetAllPatients, IPatient, IPagination } from './interfaces/patients.interface';
 import { AuthService } from '../services/auth.service';
-
-/**
-* @title pagination table patients
-*/
 @Component({
 selector: 'app-patients',
 templateUrl: './patients.component.html',
@@ -36,7 +32,6 @@ providers:[PatientsService]
 })
 export class PatientsComponent {
   role:string='';
-  // displayedColumns = [ 'name','rol','email','isActive','action'];
   displayedColumns = [ 'name', 'cedula', 'birthdate', 'age', 'gender', 'civilStatus','children', 'phone', 'email', 'isActive', 'createdAt' ];
   dataSource: any = new MatTableDataSource<IPatient>();
   searhField = new FormControl();
@@ -114,18 +109,6 @@ export class PatientsComponent {
     const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
       'eliminar registro'
     );
-/*     if (deleteAlert.isConfirmed) {
-      this.patientsService.deleteUser(data.id).subscribe((element) => {
-        if (element) {
-          this.getAllPatients(this.pageIndex, this.pageSize);
-          this.swalService.success();
-        } else {
-          this.swalService.error('Error', 'Error al eliminar el informe médico.');
-        }
-      });
-    } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel * /
-    } */
   }
 
   getAllPatients(page: number, take: number) {

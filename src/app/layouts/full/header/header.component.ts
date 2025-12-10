@@ -43,7 +43,6 @@ export class HeaderComponent {
   private logService = inject(LogService)
 
   async ngOnInit(): Promise<void> {
-    // this.token = this.authService.getTokenInfo( await this.authService.getPlainToken() );
     this.token = this.authService.getTokenInfo( await this.authService.getPlainToken() );
     if( this.token.sub ){
       this.getUser(this.token.sub ) 

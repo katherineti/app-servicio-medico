@@ -16,11 +16,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from './services/users.service';
 import { IGetAllUsers, IUser, IUserPagination } from './interfaces/users.interface';
 import { AuthService } from '../services/auth.service';
-// import * as XLSX from "xlsx"
-
-/**
-* @title pagination table users
-*/
 @Component({
 selector: 'app-users',
 templateUrl: './users.component.html',
@@ -124,13 +119,12 @@ export class UsersComponent {
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
     }
   }
 
   getAllUser(page: number, take: number) {
     const parms: IGetAllUsers = {
-      page: page + 1, //page del paginador inicia en 0
+      page: page + 1, 
       take: take,
       name: this.searchValue ? this.searchValue.trim() : null,
     };
@@ -143,14 +137,12 @@ export class UsersComponent {
     this.getAllUser(event.pageIndex, event.pageSize);
   }
 
-  // excel
   exportToExcel_(): void {
     if (!this.dataSource.data || this.dataSource.data.length === 0) {
       this.swalService.error("Error", "No hay datos para exportar")
       return
     }
 
-    // Transform data for Excel export
     const exportData = this.dataSource.data.map((user: IUser) => ({
       Nombre: user.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "",
       Rol: user.role ? user.role.toUpperCase() : "",
@@ -158,37 +150,11 @@ export class UsersComponent {
       Estado: user.isActivate ? "Activo" : "Inactivo",
       Cédula: user.cedula || "",
     }))
-
-  /*   // Create workbook and worksheet
-    const worksheet = XLSX.utils.json_to_sheet(exportData)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios")
-
-    // Set column widths for better readability
-    const columnWidths = [
-      { wch: 25 }, // Nombre
-      { wch: 15 }, // Rol
-      { wch: 25 }, // Email
-      { wch: 12 }, // Estado
-      { wch: 15 }, // Cédula
-    ]
-    worksheet["!cols"] = columnWidths
-
-    // Generate filename with current date
-    const date = new Date().toISOString().slice(0, 10)
-    const fileName = `Usuarios_${date}.xlsx`
-
-    // Save the file
-    XLSX.writeFile(workbook, fileName)
-    this.swalService.success() */
   }
 
-  // ... existing methods ...
-
   exportToExcel(): void {
-    // const searchName = this.searchValue?.get("name")?.value || ""
     const searchName = this.searchValue ? this.searchValue.trim() : '';
-    const searchCedula = '';//this.searchForm?.get("cedula")?.value || ""
+    const searchCedula = '';
 
     this.usersService.exportUsers("xlsx", searchName, searchCedula).subscribe({
       next: (blob: Blob) => {
@@ -205,7 +171,7 @@ export class UsersComponent {
 
   exportToCsv(): void {
     const searchName = this.searchValue ? this.searchValue.trim() : '';
-    const searchCedula = ''; //this.searchForm?.get("cedula")?.value || ""
+    const searchCedula = ''; 
 
     this.usersService.exportUsers("csv", searchName, searchCedula).subscribe({
       next: (blob: Blob) => {

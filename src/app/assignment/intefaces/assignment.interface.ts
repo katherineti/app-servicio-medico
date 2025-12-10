@@ -5,7 +5,7 @@ export interface ICreateAssignment {
     type: number;
     observation?: string;
     productId?:number;
-    products: number;//numero de productos asignados a un empleado ?
+    products: number;
     createdAt?: Date;
     updatedAt?: Date;
   }

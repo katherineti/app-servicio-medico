@@ -1,10 +1,6 @@
 import { Component} from '@angular/core';
 import { HeaderTitleComponent } from '../header-title/header-title.component';
 import { MedicalSuppliesDatatableComponent } from './medical-supplies-datatable/medical-supplies-datatable.component';
-
-/**
-* @title pagination table medical supplies
-*/
 @Component({
   selector: 'app-medical-supplies',
   imports: [
@@ -14,7 +10,5 @@ import { MedicalSuppliesDatatableComponent } from './medical-supplies-datatable/
   templateUrl: './medical-supplies.component.html',
 })
 export class MedicalSuppliesComponent {
-
   constructor() { }
-
 }

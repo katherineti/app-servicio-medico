@@ -59,13 +59,11 @@ export class UserDialogComponent implements OnInit {
         Validators.required, 
         Validators.maxLength(50),
       ]],
-      // Nuevo control para el tipo de cédula (V o E)
-      cedulaType: ['V', [Validators.required]], // Valor por defecto 'V'
-      // Control para el número de cédula, solo números
+      cedulaType: ['V', [Validators.required]],
       cedulaNumber: ['', [
         Validators.required,
         Validators.maxLength(10),
-        Validators.pattern(/^[0-9]+$/) // Solo números
+        Validators.pattern(/^[0-9]+$/) 
       ]],
       email: ['', [
         Validators.required, 
@@ -91,21 +89,11 @@ export class UserDialogComponent implements OnInit {
       this.userFormGroup.controls['isActive'].disable();
       this.userFormGroup.controls['role'].disable();
     }
-    
     this.userFormGroup.controls['email'].disable();
     this.userFormGroup.controls['cedulaType'].disable();
     this.userFormGroup.controls['cedulaNumber'].disable();
+    const cedulaValue = this.selectedUser?.cedula; 
 
-/*  this.userFormGroup.patchValue({
-      name: this.selectedUser?.name,
-      email: this.selectedUser?.email,
-      isActive: this.selectedUser?.isActivate,
-      role: this.selectedUser?.roleId,
-    }); */
-
-    const cedulaValue = this.selectedUser?.cedula; //cedula: "V-0002020"
-
-    // Comprueba si cedulaValue existe y es una cadena con un guion
     if (cedulaValue && cedulaValue.includes('-')) {
       const parts = cedulaValue.split('-');
       this.userFormGroup.patchValue({
@@ -117,33 +105,28 @@ export class UserDialogComponent implements OnInit {
         cedulaNumber: parts[1],
       });
     } else {
-      // Manejar el caso donde no existe cédula o está en un formato inesperado
       this.userFormGroup.patchValue({
         name: this.selectedUser?.name,
         email: this.selectedUser?.email,
         isActive: this.selectedUser?.isActivate,
         role: this.selectedUser?.roleId,
         cedulaType: 'V', 
-        cedulaNumber: this.selectedUser?.cedula || null, // Or null, or ""
+        cedulaNumber: this.selectedUser?.cedula || null, 
       });
     }
-
   }
 
   cancel() {
     this.closeDialog();
   }
-
   closeDialog(): void | null {
     this.dialogRef.close({ event: 'Cancel' });
   }
-
   saveUser() {
     if (this.checkPropId) {
       return this.updateUser();
     }
   }
-
   private updateUser() {
     this.swalService.loading();
     this.disableButton = true;

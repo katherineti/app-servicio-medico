@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
-
 @Component({
   selector: 'app-branding',
   imports: [],
@@ -16,7 +15,6 @@ import { CoreService } from '../../../services/core.service';
   `,
 })
 export class BrandingComponent {
-  // options = this.settings.getOptions();
   options:any;
   constructor(private settings: CoreService) {
     this.options = this.settings.getOptions();

@@ -16,9 +16,6 @@ import { IGetAllRoles, IRolePagination, IRole } from './interfaces/roles.interfa
 import { RolesService } from './services/roles.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-/**
-* @title pagination table roles
-*/
 @Component({
   selector: 'app-rol',
   templateUrl: './rol.component.html',
@@ -121,7 +118,6 @@ export class RolComponent {
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
     }
   }
 

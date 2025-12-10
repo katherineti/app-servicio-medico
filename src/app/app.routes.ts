@@ -58,7 +58,7 @@ export const routes: Routes = [
             component: ReportFormComponent,
           },
           {
-            path: 'reports',//de auditoria
+            path: 'reports',
             component: ReportsComponent,
           },
           {
@@ -66,25 +66,21 @@ export const routes: Routes = [
             component: PatientsComponent,
           },
           {
-            path: 'medical-reports',//informes medicos
+            path: 'medical-reports',
             component: MedicalReportsComponent,
           },
           {
-            path: 'create-medical-reports',//Ruta para crear informes medicos
+            path: 'create-medical-reports',
             component: MedicalReportCreateComponent,
           },
           {
-            path: "medical-prescriptions/create/:reportId", // Ruta para crear recipes
+            path: "medical-prescriptions/create/:reportId", 
             component: MedicalPrescriptionCreateComponent,
           },
           {
-            path: "medical-prescriptions/:reportId", // Ruta para listar recipes por informe medico
+            path: "medical-prescriptions/:reportId",
             component: ListMedicalPrescriptionsComponent,
-          },
-          // {
-          //   path: 'pagina-ja',
-          //   component: PaginaJaComponent,
-          // }
+          }
         ],
     },
     {

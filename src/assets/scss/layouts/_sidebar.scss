@@ -1,25 +1,20 @@
 @use "../variables" as *;
-
 .mat-drawer.sidebarNav {
   width: $sidenav-desktop;
   flex-shrink: 0;
   transition: swift-ease-out(width);
-  // position: absolute;
   position: fixed;
   overflow-x: hidden;
   border-right: 1px solid $borderColor;
   border-radius: 0px !important;
   height: 100vh;
 }
-
 .branding {
   padding: 20px;
 }
-
 .sidebar-list {
   &.mdc-list {
     padding: 0 24px;
-
     .mdc-list-group__subheader {
       margin: 12px 0;
       text-transform: uppercase;
@@ -27,18 +22,14 @@
       font-weight: 700;
       margin-top: 24px;
     }
-
     .menu-list-item {
       height: 45px;
       padding: 8px 10px !important;
       margin-bottom: 2px;
-
       &:before,
       &:focus {
         z-index: -1;
       }
-
-
       .item-chip {
         height: 18px;
         display: flex;
@@ -46,19 +37,15 @@
         justify-content: center;
         font-size: 10px;
       }
-
       &.activeMenu {
         background-color: var(--mat-sys-primary);
-
         .mdc-list-item__primary-text {
           color: $white !important;
         }
-
         .mat-mdc-list-item-icon {
           color: $white !important;
         }
       }
-
       .mdc-list-item__start {
         margin-right: 14px;
         margin-left: 0 !important;
@@ -67,16 +54,13 @@
         line-height: 0px;
         fill: transparent !important;
       }
-
       .mdc-list-item__primary-text {
         display: flex;
         align-items: center;
         justify-content: space-between;
-
         .arrow-icon {
           display: flex;
           gap: 2px;
-
           .mat-icon {
             font-size: 18px;
             width: 18px;
@@ -90,7 +74,6 @@
     }
   }
 }
-
 .flex-layout {
   display: flex;
   flex-direction: column;

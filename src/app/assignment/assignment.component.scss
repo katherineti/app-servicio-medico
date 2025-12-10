@@ -1,15 +1,11 @@
 .example-full-width {
  width: 100% !important;
 }
-
-
 .assignment-type-selection {
   margin-bottom: 24px;
   padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
-
-  // Question label styling
   .assignment-question {
     font-size: 16px;
     font-weight: 600;
@@ -19,7 +15,6 @@
     line-height: 1.4;
   }
 }
-
 mat-button-toggle-group {
   display: flex;
   flex-wrap: wrap;
@@ -27,17 +22,14 @@ mat-button-toggle-group {
   gap: 12px;
   width: 100%;
   border-radius: 12px;
-  overflow: visible; // Allow shadows to show
+  overflow: visible;
   background: transparent;
   border: none;
-  
-  // Remove default Material Design styling
   &.mat-button-toggle-group {
     box-shadow: none;
     border: none;
   }
 }
-
 mat-button-toggle {
   flex: 1 1 calc(50% - 6px);
   min-width: 160px;
@@ -50,13 +42,9 @@ mat-button-toggle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   position: relative;
-
-  // Remove default Material Design styling
   &.mat-button-toggle {
     border: 2px solid #e5e7eb;
   }
-
-  // Enhanced hover state
   &:hover:not(.mat-button-toggle-checked) {
     background: #f8fafc;
     border-color: #d1d5db;
@@ -64,21 +52,16 @@ mat-button-toggle {
     transform: translateY(-1px);
     color: #4b5563;
   }
-
   &.mat-button-toggle-checked {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     border-color: #2563eb;
     color: #ffffff;
     box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25);
     transform: translateY(-2px);
-
-    // Icon styling for selected state
     mat-icon {
       color: #ffffff;
       filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
-
-    // Subtle inner glow effect
     &::before {
       content: '';
       position: absolute;
@@ -90,7 +73,6 @@ mat-button-toggle {
       pointer-events: none;
     }
   }
-
   .mat-button-toggle-button {
     padding: 16px 20px;
     display: flex;
@@ -106,16 +88,12 @@ mat-button-toggle {
     letter-spacing: 0.025em;
     border: none;
     background: transparent;
-
-    // Icon styling
     mat-icon {
       font-size: 20px;
       width: 20px;
       height: 20px;
       transition: all 0.3s ease;
     }
-
-    // Text styling
     .mat-button-toggle-label-content {
       font-weight: 500;
       white-space: nowrap;
@@ -123,31 +101,25 @@ mat-button-toggle {
       text-overflow: ellipsis;
     }
   }
-
   &:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
-
   &:active {
     transform: translateY(0);
   }
-
   @media (max-width: 599px) {
     flex: 1 1 100%;
     max-width: 100%;
     margin-bottom: 12px;
     min-width: unset;
-
     &:last-child {
       margin-bottom: 0;
     }
-
     .mat-button-toggle-button {
       padding: 14px 16px;
       min-height: 52px;
       font-size: 14px;
-
       mat-icon {
         font-size: 18px;
         width: 18px;
@@ -155,10 +127,8 @@ mat-button-toggle {
       }
     }
   }
-
   @media (min-width: 600px) and (max-width: 991px) {
     min-width: 140px;
-    
     .mat-button-toggle-button {
       padding: 14px 18px;
       font-size: 13px;
@@ -170,18 +140,15 @@ mat-button-toggle {
   .assignment-type-selection .assignment-question {
     color: #f9fafb;
   }
-
   mat-button-toggle {
     background: #1f2937;
     border-color: #374151;
     color: #d1d5db;
-
     &:hover:not(.mat-button-toggle-checked) {
       background: #111827;
       border-color: #4b5563;
       color: #f3f4f6;
     }
-
     &.mat-button-toggle-checked {
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       border-color: #2563eb;
@@ -189,7 +156,6 @@ mat-button-toggle {
     }
   }
 }
-
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after{
   color: white;
 }

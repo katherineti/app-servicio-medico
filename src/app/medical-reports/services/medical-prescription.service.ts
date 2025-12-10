@@ -9,34 +9,26 @@ import type { ICreateMedicalPrescriptionDTO, IMedicalPrescriptios, ISearchMedica
 })
 
 export class MedicalPrescriptionService {
-  
   private readonly tokenService = inject(TokenService);
   private readonly http = inject(HttpClient);
-
-  // Método para crear recipe médico
   createMedicalPrescription(dto: ICreateMedicalPrescriptionDTO): Observable<any> {
     return this.http.post<any>(
       `${this.tokenService.endPoint}medical-prescriptions/create`, 
       dto
     );
   }
-
   update(id: number, dto: any) {
     return this.http.put<IMedicalPrescriptios>(
       `${this.tokenService.endPoint}medical-prescriptions/${id}`,
       dto
     );
   }
-
-  //Para el listado de recipes
   getAllMedicalPrescription(dto: ISearchMedicalPrescription): Observable<any> {
     return this.http.post<any>(
       `${this.tokenService.endPoint}medical-prescriptions/getAll`, 
       dto
     );
   }
-
-  // Método para generar y descargar PDF del recipe médico
   generateRecipePdf(prescriptionId: string): Observable<Blob> {console.log("prescriptionId", typeof prescriptionId)
     return this.http.get(`${this.tokenService.endPoint}medical-prescriptions/${prescriptionId}/pdf`, {
       responseType: "blob",
@@ -45,8 +37,6 @@ export class MedicalPrescriptionService {
       },
     })
   }
-
-  // Método para previsualizar PDF de receta médica en nueva ventana. No esta en uso
   previewRecipePdf(prescriptionId: string): Observable<Blob> {
     return this.http.get(`${this.tokenService.endPoint}medical-prescriptions/${prescriptionId}/pdf/preview`, {
       responseType: "blob",
@@ -55,5 +45,4 @@ export class MedicalPrescriptionService {
       },
     })
   }
- 
 }

@@ -1,14 +1,11 @@
 @use "sass:map";
 @use "@angular/material" as mat;
-
 @include mat.checkbox-overrides(
   (
     unselected-focus-icon-color:
       var(--mdc-checkbox-unselected-hover-state-layer-color),
   )
 );
-
-//   styles
 html {
   .mdc-checkbox__background {
     border-radius: 4px;
@@ -16,7 +13,6 @@ html {
     height: 21px;
     border: 1px solid var(--mat-sys-outline);
   }
-
   .mdc-checkbox .mdc-checkbox__native-control:focus ~ .mdc-checkbox__ripple {
     background-color: var(--mdc-checkbox-unselected-hover-state-layer-color);
   }

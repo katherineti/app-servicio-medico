@@ -11,8 +11,8 @@ import type { Auditor, ICreateReport, IReport } from "../../interfaces/reports.i
 import { ReportsService } from "../../services/reports.service"
 import { AuditorMultiSelectComponent} from "../auditor-multi-select/auditor-multi-select.component"
 export interface AuditorOption {
-  value: any // El valor real (this.token.sub)
-  displayText: string // El texto a mostrar como primera opción (Nombre del usuario activo)
+  value: any 
+  displayText: string 
 }
 
 const REPORT_STATUS_ENPROCESO = 2
@@ -83,7 +83,7 @@ export class ReportFormComponent {
         title: [Validators.required, Validators.maxLength(50)],
         receiver: [Validators.required, Validators.maxLength(50)],
         auditor: [Validators.required, Validators.maxLength(50)],
-        additionalAuditors: [], // Sin validadores requeridos para auditores adicionales
+        additionalAuditors: [],
       },
       summary: {
         summary_objective: [Validators.required, Validators.maxLength(50)],
@@ -111,7 +111,7 @@ export class ReportFormComponent {
       title: ["", [Validators.maxLength(50)]],
       receiver: ["", [Validators.maxLength(50)]],
       auditor: ["", [Validators.maxLength(50)]],
-      additionalAuditors: [[]], // Nuevo campo para auditores adicionales
+      additionalAuditors: [[]], 
       summary_objective: ["", [Validators.maxLength(50)]],
       summary_scope: ["", [Validators.maxLength(50)]],
       summary_methodology: ["", [Validators.maxLength(50)]],
@@ -123,48 +123,38 @@ export class ReportFormComponent {
       images: [null],
     })
   }
-
-  // Nuevo método para manejar cambios en auditores adicionales
   onAdditionalAuditorsChange(auditors: Auditor[]): void {
     this.selectedAdditionalAuditors = auditors
     const auditorIds = auditors.map((auditor) => auditor.id)
     this.reportFormGroup.get("additionalAuditors")?.setValue(auditorIds)
   }
-
   cancel() {
     this.reportFormGroup.reset();
     this.selectedAdditionalAuditors = [];
     this.onOptionSelected({value: this.token.sub, displayText: this.user_name}); 
   }
-
   onImagesChange(images: ImageFile[]) {
     this.selectedImages = images
   }
-
   async save(): Promise<void> {
     this.disableButton = true
     this.activeConclutions = false
-
     if (this.activeSection === "title" && this.reportFormGroup.invalid) {
       this.disableButton = false
       toast.error("Por favor complete todos los campos requeridos en la sección título")
       return
     }
-
     const data: ICreateReport = {
       title: this.reportFormGroup.value.title,
       receiver: this.reportFormGroup.value.receiver,
-      // auditorId: this.reportFormGroup.value.auditor,
       auditorId: this.token.sub,
-      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], // Incluir auditores adicionales
+      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], 
     }
-
     try {
       const isExistingReport = this.reportCreated_id !== undefined && this.reportCreated_id > 0
       if (isExistingReport) {
         data.id = this.reportCreated_id
       }
-console.log("creando reporte  - paso 1 " , data)
       const reportCreated = await firstValueFrom(this.reportsService.create(data))
       this.reportCreated_id = reportCreated?.id
       this.hiddenButtonCreation = true
@@ -195,9 +185,8 @@ console.log("creando reporte  - paso 1 " , data)
 
     const reportData: IReport = {
       ...this.reportFormGroup.value,
-      // auditorId: this.reportFormGroup.value.auditor,
       auditorId: this.token.sub,
-      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], // Incluir auditores adicionales
+      additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [], 
       statusId: this.activeSection === "conclusions" ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
     }
 
@@ -208,7 +197,6 @@ console.log("creando reporte  - paso 1 " , data)
         Object.keys(reportData).forEach((key) => {
           const value = reportData[key as keyof IReport]
           if (key === "additionalAuditorIds" && Array.isArray(value)) {
-            // Manejar array de IDs de auditores adicionales
             value.forEach((id, index) => {
               formData.append(`additionalAuditorIds[${index}]`, id.toString())
             })
@@ -228,7 +216,6 @@ console.log("creando reporte  - paso 1 " , data)
       } else {
         const dataToUpdate = {
           ...this.reportFormGroup.value,
-          // auditorId: this.reportFormGroup.value.auditor,
           auditorId: this.token.sub,
           additionalAuditorIds: this.reportFormGroup.value.additionalAuditors || [],
           statusId: this.activeSection === "conclusions" ? REPORT_STATUS_FINALIZADO : REPORT_STATUS_ENPROCESO,
@@ -283,11 +270,9 @@ console.log("creando reporte  - paso 1 " , data)
     }
   }
 
-  // Cuando se selecciona una opción
   onOptionSelected(option: AuditorOption): void {
     this.onChange(option.value)
 
-    // Pero mostramos el texto personalizado
     this.reportFormGroup.patchValue({
       auditor: this.titleCasePipe.transform( option.displayText )
     });
@@ -295,14 +280,10 @@ console.log("creando reporte  - paso 1 " , data)
     this.onTouched();
   }
 
-  // Función para mostrar el texto en el input cuando se selecciona una opción
   displayFn(option: AuditorOption | string): any {
-    // Si es un objeto (nuestra opción), mostramos su displayText
     if (option && typeof option === "object") {
       return option
-      // return option.displayText
     }
-    // Si es un string, lo devolvemos tal cual
     return option as string
   }
 

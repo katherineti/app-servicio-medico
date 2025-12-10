@@ -37,7 +37,6 @@ export class MedicalReportsCreateComponent {
         [
           Validators.required,
           Validators.maxLength(200),
-          // Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/)
         ],
       ],
       email: [

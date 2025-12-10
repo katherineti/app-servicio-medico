@@ -25,7 +25,6 @@ export class MedicalSuppliesService {
     );
   }
 
-  // createProduct(dto: ICreateProductDTO) {
   createProduct(dto: any) {
     console.log("dto create" , dto)
     return this.http.post<IProduct>(

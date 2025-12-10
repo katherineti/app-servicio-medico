@@ -1,19 +1,6 @@
-
-<!-- <app-topstrip></app-topstrip> -->
 <mat-sidenav-container class="mainWrapper blue_theme light-theme" autosize autoFocus dir="ltr">
-  <!-- ============================================================== -->
-  <!-- Vertical Sidebar -->
-  <!-- ============================================================== -->
    <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver"
     (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
-<!-- Contador para el Monitoreo de inactividad del usuario: -->
-<!--     <header>
-        <p *ngIf="isLoggedIn">
-            Cierre de sesión, por inactividad en: 
-            <strong>{{ minutes | number: '2.0' }}:{{ seconds | number: '2.0' }}</strong>
-        </p>
-    </header>  -->
-    
     <div class="flex-layout">
       <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>
       <ng-scrollbar class="position-relative" style="height: 100%">
@@ -24,49 +11,16 @@
           }
         </mat-nav-list>
       </ng-scrollbar>
-
-
-      <!-- Acción Fija de Backup de Base de Datos -->
       <app-db-backup-action [userRole]="userRole"></app-db-backup-action>
-<!--       <div class="p-24">
-        <div class="bg-light-secondary d-flex align-items-center gap-4 rounded p-20 m-t-20">
-          <div>
-            <h5 class="f-s-16 f-w-600 m-b-8">
-              Check Pro <br> Version
-            </h5>
-            <a mat-flat-button
-              href="https://adminmart.com/product/modernize-angular-material-dashboard/?ref=56" target="_blank"
-              class="d-flex justify-content-center bg-secondary">
-              Check
-            </a>
-          </div>
-          <img src="https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png" 
-          width="40" alt="imgae" class="side-img m-t--48 m-r--8" />
-        </div>
-      </div> -->
     </div>
   </mat-sidenav> 
-  
-  <!-- ============================================================== -->
-  <!-- Main Content -->
-  <!-- ============================================================== -->
-  <mat-sidenav-content class="contentWrapper" #content>
-    <!-- ============================================================== -->
-    <!-- VerticalHeader -->
-    <!-- ============================================================== -->
-    
+  <mat-sidenav-content class="contentWrapper" #content>    
     <app-header [showToggle]="!isOver" (toggleMobileNav)="sidenav.toggle()"></app-header>
-    
     <main class="pageWrapper maxWidth">
-      <!-- ============================================================== -->
-      <!-- Outlet -->
-      <!-- ============================================================== -->
       <router-outlet></router-outlet>
     </main>
-
     <div class="p-16 p-b-30 text-center">
       Servicio médico del CIIP ©2025.
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

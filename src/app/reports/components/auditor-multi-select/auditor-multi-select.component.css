@@ -1,133 +1,104 @@
 .example-full-width{
   width: 100% !important;
 }
-
 .chip-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-
 .auditor-name {
   font-weight: 500;
   font-size: 14px;
 }
-
 .auditor-email {
   font-size: 12px;
   color: #666;
   margin-top: 2px;
 }
-
 .auditor-option {
   height: auto !important;
   padding: 12px 16px !important;
 }
-
 .option-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
-
 .auditor-info {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-
 .auditor-name-option {
   font-weight: 500;
   font-size: 14px;
   color: #333;
 }
-
 .auditor-email-option {
   font-size: 12px;
   color: #666;
   margin-top: 2px;
 }
-
 .status-icon {
   font-size: 18px;
   width: 18px;
   height: 18px;
   color: #4caf50;
 }
-
 @media (max-width: 768px) {
   .chip-content {
     max-width: 200px;
   }
-
   .auditor-email {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
-
-/* estilos deshabilitado */
 .disabled-form-field {
   opacity: 0.6;
 }
-
-/* Estilos específicos para el borde del campo deshabilitado - color más claro */
 .mat-mdc-form-field.disabled-form-field .mdc-notched-outline__leading,
 .mat-mdc-form-field.disabled-form-field .mdc-notched-outline__notch,
 .mat-mdc-form-field.disabled-form-field .mdc-notched-outline__trailing {
   border-color: rgba(0, 0, 0, 0.06) !important;
   border-width: 1px !important;
 }
-
-/* Estado focused */
 .mat-mdc-form-field.disabled-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.disabled-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.disabled-form-field.mat-focused .mdc-notched-outline__trailing {
   border-color: rgba(0, 0, 0, 0.06) !important;
   border-width: 1px !important;
 }
-
-/* Estado hover - mantener el mismo color cuando el cursor está encima */
 .mat-mdc-form-field.disabled-form-field:hover .mdc-notched-outline__leading,
 .mat-mdc-form-field.disabled-form-field:hover .mdc-notched-outline__notch,
 .mat-mdc-form-field.disabled-form-field:hover .mdc-notched-outline__trailing {
   border-color: rgba(0, 0, 0, 0.06) !important;
   border-width: 1px !important;
 }
-
-/* Combinación hover + focused */
 .mat-mdc-form-field.disabled-form-field:hover.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.disabled-form-field:hover.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.disabled-form-field:hover.mat-focused .mdc-notched-outline__trailing {
   border-color: rgba(0, 0, 0, 0.06) !important;
   border-width: 1px !important;
 }
-
 .mat-mdc-form-field.disabled-form-field .mat-mdc-form-field-input-control {
   color: rgba(0, 0, 0, 0.38);
 }
-
 .mat-mdc-form-field.disabled-form-field .mat-mdc-floating-label {
   color: rgba(0, 0, 0, 0.38);
 }
-
 .mat-mdc-form-field.disabled-form-field .mat-mdc-chip {
   opacity: 0.6;
 }
-
 .mat-mdc-form-field.disabled-form-field .mat-mdc-chip-remove {
   opacity: 0.38;
   cursor: not-allowed;
 }
-
-/* Deshabilitar pointer events para evitar interacciones */
 .mat-mdc-form-field.disabled-form-field {
   pointer-events: none;
 }
-
-/* Permitir pointer events solo para mostrar el cursor, pero sin funcionalidad */
 .mat-mdc-form-field.disabled-form-field:hover {
   cursor: not-allowed;
 }

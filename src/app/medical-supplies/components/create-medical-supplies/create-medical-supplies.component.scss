@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  
     .img {
       min-width: 80px;
       min-height: 80px;
@@ -13,24 +12,18 @@
       margin-bottom: 1rem;
     }
   }
-
   .example-full-width {
     width: 100%;
   }
-  
 .ocultar-en-movil-tablet {
   display: inline-block !important;
-
-  // Media query para tabletas 
   @media (min-width: 600px) and (max-width: 991px) {
     display: none !important;
   }
-  // Media query para teléfonos 
   @media (max-width: 599px) {
     display: none !important;
   }
 }
-
 .error-message{
     display: flex;
     flex-direction: column;

@@ -1,7 +1,4 @@
 .example-container {
-    // width: 500px;
-    // height: 80vh;
-    // border: 1px solid rgba(0, 0, 0, 0.5);
     border: 1px solid #d7dde2;
     border-radius: 10px;
   }
@@ -17,14 +14,12 @@
     padding: 20px;
   }  
 
-  // ancho del submenu
   mat-drawer.mat-drawer.example-sidenav.mat-drawer-opened.mat-drawer-side {
     width: 250px;
-    // width: 200px;
  }
 
  .hide-on-mobile {
-    @media (max-width: 768px) { /* Tablet breakpoint */
+    @media (max-width: 768px) { 
         display: none;
     }
 }
@@ -43,17 +38,13 @@ mat-list-item:active, .active{
 }
 
 
-// Estilos para la sección de auditores adicionales
 .selected-auditors-summary {
-  // margin: 20px 0;
-  // padding: 15px;
   background-color: #f8f9fa;
   border-radius: 8px;
   border-left: 4px solid #007bff;
 }
 
 .selected-auditors-summary h4 {
-  // margin: 0 0 15px 0;
   color: #333;
   font-size: 16px;
   font-weight: 500;
@@ -73,8 +64,6 @@ mat-list-item:active, .active{
   background-color: #e3f2fd;
   border: 1px solid #bbdefb;
   border-radius: 16px;
-  // max-width: 200px;
-  // width: auto;
 }
 
 .auditor-email-chip {
@@ -84,7 +73,6 @@ mat-list-item:active, .active{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  // width: 100%;
 }
 
 @media (max-width: 768px) {

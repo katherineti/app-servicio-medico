@@ -12,8 +12,8 @@ import { IRole } from '../../interfaces/roles.interface';
 
 export interface Element {
   id: number;
-  role:string; //rol seleccionado Administrador
-  module:string; //cada uno de los modulos del sistema/menus en el sistema. Ej:Dashboard
+  role:string; 
+  module:string; 
   permission:string;
   gestionarUsuarios:boolean;
   gestionarRoles:boolean;
@@ -25,7 +25,6 @@ export interface Element {
   generarReporte: boolean;
 }
 
-//Modal editar rol: Que antes de entrar en el dialog, ya este preseleccionada la data del rol del usuario en sesion. Solo se deben recibir los registros de un rol
 @Component({
   selector: 'app-rol-dialog',
   templateUrl: './rol-dialog.component.html',
@@ -161,7 +160,6 @@ export class RolDialogComponent {
     });
   }
 
-  // Función para convertir un string a Title Case
   toTitleCase(str: string): string {
     if (!str) {
       return '';

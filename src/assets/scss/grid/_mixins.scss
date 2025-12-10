@@ -8,7 +8,6 @@
   @return $min;
 }
 
-// Media of at least the minimum breakpoint width.
 @mixin bp-gt($name, $breakpoints: variables.$breakpoints) {
   $min: bp($name, $breakpoints);
 
@@ -22,7 +21,6 @@
   }
 }
 
-// Media of at most the maximum breakpoint width.
 @mixin bp-lt($name, $breakpoints: variables.$breakpoints) {
   $max: bp($name, $breakpoints) - 1px;
 

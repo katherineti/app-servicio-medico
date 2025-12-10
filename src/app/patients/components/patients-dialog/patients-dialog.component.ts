@@ -33,8 +33,6 @@ export class PatientsDialogComponent implements OnInit {
   typeError = '';
   edit:boolean | undefined;
   public isLoading = false; 
-  // listRolesActives!: {id:number,name:string}[];
-
   private formBuilder = inject(FormBuilder);
   private swalService = inject(SwalService);
   private patientsService = inject(PatientsService);
@@ -42,7 +40,6 @@ export class PatientsDialogComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data: IPatient){
     this.buildEditUserForm();
-    // this.getRolesActives();
   }
 
   async ngOnInit() {
@@ -76,11 +73,11 @@ export class PatientsDialogComponent implements OnInit {
       birthdate: ['', [Validators.required]], 
       placeBirth: ['', [Validators.required, Validators.maxLength(40)]], 
       age: [0, [Validators.required]], 
-      cedulaType: ['V', [Validators.required]], // Valor por defecto 'V'
+      cedulaType: ['V', [Validators.required]], 
       cedulaNumber: ['', [
         Validators.required,
         Validators.maxLength(10),
-        Validators.pattern(/^[0-9]+$/) // Solo números
+        Validators.pattern(/^[0-9]+$/)
       ]],
       email: [
         '',
@@ -104,7 +101,6 @@ export class PatientsDialogComponent implements OnInit {
       this.formGroup.controls['birthdate'].disable();
       this.formGroup.controls['placeBirth'].disable();
       this.formGroup.controls['age'].disable();
-      // this.formGroup.controls['cedula'].disable();
       this.formGroup.controls['cedulaType'].disable();
       this.formGroup.controls['cedulaNumber'].disable();
       this.formGroup.controls['email'].disable();
@@ -117,7 +113,7 @@ export class PatientsDialogComponent implements OnInit {
 
     if (this.selectedUser?.birthdate) {
       const [year, month, day] = this.selectedUser?.birthdate.split("-")
-      const date = new Date(+year, +month - 1, +day) // Month is 0-indexed
+      const date = new Date(+year, +month - 1, +day) 
 
       this.formGroup.patchValue({
         birthdate: date,
@@ -220,7 +216,6 @@ export class PatientsDialogComponent implements OnInit {
       }); 
   }
  
-  // Método para capitalizar el nombre
   private capitalizeName(value: string): string {
     if (!value) return '';
     return value.toLowerCase().split(' ').map(word => {
@@ -228,11 +223,10 @@ export class PatientsDialogComponent implements OnInit {
     }).join(' ');
   }
 
-  // Nuevo método para suscribirse a los cambios del campo 'name'
   private formatNameInput() {
     this.formGroup.get('name')?.valueChanges.pipe(
       startWith(this.formGroup.get('name')?.value),
-      debounceTime(300) // Para evitar formatear con cada pulsación de tecla
+      debounceTime(300) 
     ).subscribe(value => {
       if (value) {
         const formattedName = this.capitalizeName(value);

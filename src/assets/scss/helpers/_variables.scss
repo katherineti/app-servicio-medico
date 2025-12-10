@@ -1,11 +1,5 @@
 @use "functions" as *;
-
-// Utility Map
-
 $utilities: () !default;
-
-// Spacing
-
 $spacer: 16px !default;
 $spacers: (
   0: 0,
@@ -26,9 +20,6 @@ $spacers: (
   48: $spacer * 3,
 ) !default;
 $negative-spacers: negativify-map($spacers) !default;
-
-// Border
-
 $border-color: var(--mat-sys-outline-variant) !default;
 $borders: (
   0: 0,
@@ -37,9 +28,6 @@ $borders: (
   4: 4px solid $border-color,
   8: 8px solid $border-color,
 ) !default;
-
-// Border radius
-
 $radius-base: 7px !default;
 $radius: (
   0: 0,
@@ -49,9 +37,6 @@ $radius: (
   16: $radius-base * 4,
   full: 9999px,
 ) !default;
-
-// Text
-
 $font-wieghts: (
   100: 100,
   200: 200,
@@ -63,7 +48,6 @@ $font-wieghts: (
   800: 800,
   900: 900,
 ) !default;
-
 $font-sizes: (
   0: 0,
   10: 10px,
@@ -77,9 +61,6 @@ $font-sizes: (
   24: 24px,
   30: 30px,
 ) !default;
-
-// Sizing
-
 $sizes: (
   0: 0,
   20: 20%,

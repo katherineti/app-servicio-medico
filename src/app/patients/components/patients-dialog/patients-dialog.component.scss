@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  
     .img {
       min-width: 80px;
       min-height: 80px;
@@ -13,78 +12,58 @@
       margin-bottom: 1rem;
     }
   }
-
   .example-full-width {
     width: 100%;
   }
-
 .ocultar-en-movil-tablet {
   display: inline-bloc !important;
-
-  // Media query para tabletas 
   @media (min-width: 600px) and (max-width: 991px) {
     display: none !important;
   }
-  // Media query para teléfonos 
   @media (max-width: 599px) {
     display: none !important;
   }
 }
-
 .row-with-civil-status {
   display: flex;
-  flex-direction: row; /* Por defecto en fila */
+  flex-direction: row; 
   width: 100%;
-  gap: 16px; /* Espacio predeterminado en pantallas grandes */
-  // margin-bottom: 16px;
-
+  gap: 16px; 
   .mat-form-field {
-    flex-grow: 1; /* Permite que ambos crezcan y compartan el espacio en pantallas grandes */
+    flex-grow: 1; 
     margin: 0;
     width: 100%;
   }
-
-  /* Si quieres que "Género" tenga un ancho fijo y "Estado Civil" ocupe el resto en pantallas grandes */
   .gender-field {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 180px; /* Ancho fijo para "Género" en pantallas grandes */
+    width: 180px; 
   }
-
   .civil-status-field {
-    flex-grow: 1; /* "Estado Civil" ocupa el resto en pantallas grandes */
+    flex-grow: 1;
     flex-shrink: 1;
   }
 }
-
-  /* --- Media Query para Teléfonos --- */
-  @media (max-width: 767px) { /* Por ejemplo, para pantallas con un ancho máximo de 767px (típico de teléfonos) */
+  @media (max-width: 767px) {
     .row-with-civil-status {
-      flex-direction: column; /* Apila los elementos verticalmente */
-      gap: 0; /* Elimina el espacio entre ellos cuando están apilados */
-
+      flex-direction: column; 
+      gap: 0;
       .mat-form-field {
-        width: 100%; /* Cada campo ocupa el 100% del ancho disponible */
-        margin-bottom: 16px; /* Añade un espacio entre los campos apilados verticalmente */
-        flex-grow: 1; /* Sigue permitiendo que crezcan si es necesario */
-        flex-shrink: 1; /* Permite que se encojan */
+        width: 100%; 
+        margin-bottom: 16px; 
+        flex-grow: 1; 
+        flex-shrink: 1; 
       }
-
-      /* Sobrescribir los estilos específicos para "Género" en modo teléfono */
       .gender-field,
       .civil-status-field {
-        width: 100%; /* Ambos ocupan el 100% del ancho */
+        width: 100%; 
         flex-grow: 1;
         flex-shrink: 1;
       }
     }
-
-    /* También puedes aplicar esto a otras filas si quieres que se apilen en móvil */
-    /* Por ejemplo, la fila de Tipo/Cédula */
     .full-width-row {
         flex-direction: column;
         gap: 0;
-
         .mat-form-field {
           margin-bottom: 16px;
         }

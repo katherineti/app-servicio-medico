@@ -19,10 +19,6 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { SwalService } from '../services/swal.service';
 import { EditReportComponent } from './components/edit-report/edit-report.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-/**
-* @title pagination table reports
-*/
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -63,7 +59,7 @@ export class ReportsComponent {
   constructor() {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
     this.displayedColumns = result.matches
-    ? ['id', 'title', 'startDate', 'endDate', 'status', 'duplicated', 'action']//phone
+    ? ['id', 'title', 'startDate', 'endDate', 'status', 'duplicated', 'action']
     : ['id', 'title', 'startDate', 'endDate', 'status', 'duplicated', 'action'];
     });
     
@@ -110,18 +106,6 @@ export class ReportsComponent {
       this.getAllReports(this.pageIndex, this.pageSize);
     });
   }
-
-/*   openDialogCreateUser(data?: any): void {
-    const ref = this.dialog.open(UserCreateComponent, {
-      data: data || null,
-      disableClose: true
-    });
-
-    ref.afterClosed().subscribe(() => {
-      this.getAllReports(this.pageIndex, this.pageSize);
-    });
-  }
-*/
   async deleteReport(data: any) {
     const deleteAlert: SweetAlertResult<any> = await this.swalService.confirm(
       'eliminar registro'
@@ -136,7 +120,6 @@ export class ReportsComponent {
         }
       });
     } else if (deleteAlert.dismiss === Swal.DismissReason.cancel) {
-      /* cancel */
     }
   } 
 
@@ -164,12 +147,6 @@ export class ReportsComponent {
   handlePageEvent(event: PageEvent) {
     this.getAllReports(event.pageIndex, event.pageSize);
   }
-
-  
-  /**
-   * Genera y descarga el PDF del reporte
-   * @param element Reporte para el que se generará el PDF
-   */
   generatePdf(element: IReport): void {console.group("element" , element)
     if (!element.id || this.isGeneratingPdf) {
       return;
@@ -177,7 +154,6 @@ export class ReportsComponent {
     
     this.isGeneratingPdf = true;
     
-    // Mostrar indicador de carga
     const loadingToast = this.snackBar.open('Generando PDF...', '', {
       duration: undefined,
       horizontalPosition: 'center',
@@ -186,11 +162,8 @@ export class ReportsComponent {
     
     this.reportsService.generateReportPdf(element.id, element).subscribe({
       next: () => {
-        // Cerrar el indicador de carga
         loadingToast.dismiss();
         this.isGeneratingPdf = false;
-        
-        // Mostrar mensaje de éxito
         this.snackBar.open('PDF generado correctamente', 'Cerrar', {
           duration: 3000,
           horizontalPosition: 'end',
@@ -198,39 +171,22 @@ export class ReportsComponent {
         });
       },
       error: (err) => {
-        // Cerrar el indicador de carga
         loadingToast.dismiss();
         this.isGeneratingPdf = false;
-        
-        // Mostrar mensaje de error
         this.snackBar.open(`Error al generar el PDF: ${err.message || 'Error desconocido'}`, 'Cerrar', {
           duration: 5000,
           horizontalPosition: 'end',
           verticalPosition: 'top',
           panelClass: ['error-snackbar']
         });
-        
         console.error('Error al generar el PDF:', err);
       }
     });
   }
-
-  //Duplicar
   duplicate_auditReport(id: number){
-  console.log(id)
-
-/*     this.reportsService.duplicate(id).subscribe((element) => {
-      if (element) {
-        this.getAllReports(this.pageIndex, this.pageSize);
-        this.swalService.success();
-      } else {
-        this.swalService.error('Error', 'Error al eliminar el reporte.');
-      }
-    }); */
     this.reportsService.duplicate(id).subscribe({
         error: (error) => {
           console.log("Error ", error)
-          // this.disableButton = false;
           if(error){
             this.swalService.closeload();
             this.swalService.error('Error', error);
@@ -242,8 +198,6 @@ export class ReportsComponent {
           this.swalService.closeload();
           this.swalService.success();
           this.getAllReports(this.pageIndex, this.pageSize);
-          // this.disableButton = false;
-          // this.closeDialog();
         },
       });
     

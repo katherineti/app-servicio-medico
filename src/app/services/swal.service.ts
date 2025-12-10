@@ -1,27 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
-
 @Injectable({
   providedIn: 'root',
 })
 export class SwalService {
   private readonly spinner = inject(NgxSpinnerService);
-
   close() {
     Swal.close();
   }
-
   success() {
     Swal.fire({
       title: 'Acción realizada con éxito',
       icon: 'success',
-      // html: '<b class="text-success">La acción se ha llevado a cabo exitosamente.</b>',
       html: '<br>',
       showConfirmButton: false,
     });
   }
-
   successDownload() {
     Swal.fire({
       title: 'La descarga comenzará en breve',
@@ -30,7 +25,6 @@ export class SwalService {
       showConfirmButton: false,
     });
   }
-
   error(titulo: string, msj: string) {
     Swal.fire({
       title: titulo,
@@ -39,7 +33,6 @@ export class SwalService {
       showConfirmButton: false,
     });
   }
-
   confirm(text: string): Promise<SweetAlertResult<any>> {
     return Swal.fire({
       title: '¿Está seguro de realizar la acción de ' + text + '?',
@@ -64,7 +57,6 @@ export class SwalService {
       cancelButtonText: 'Cancelar',
     });
   }
-
   expiredSession() {
     Swal.fire({
       title: 'La sesión ha expirado',
@@ -73,7 +65,6 @@ export class SwalService {
       showConfirmButton: false,
     });
   }
-
   warningEdit(titulo: string, msj: string) {
     Swal.fire({
       title: titulo,
@@ -82,7 +73,6 @@ export class SwalService {
       showConfirmButton: false,
     });
   }
-
   successEdit(titulo: string, msj: string) {
     return Swal.fire({
       title: titulo,
@@ -91,7 +81,6 @@ export class SwalService {
       showConfirmButton: true,
     });
   }
-
   loadingSwal() {
     Swal.fire({
       title: 'Cargando...',
@@ -99,16 +88,13 @@ export class SwalService {
       showConfirmButton: false,
     });
   }
-
   closeloadSwal() {
     Swal.hideLoading();
     Swal.close();
   }
-
    loading() {
     this.spinner.show();
   }
-
   closeload() {
     this.spinner.hide();
   }
